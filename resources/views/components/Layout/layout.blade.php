@@ -22,10 +22,24 @@
 
 <body data-mode="light" data-sidebar-size="lg" class="group">
 
-    <x-Layout.sidebar />
-    <x-Layout.navbar />
 
-    {{ $slot }}
+        <x-Layout.sidebar />
+
+        <x-Layout.navbar />
+   
+    
+        <div class="main-content group-data-[sidebar-size=sm]:ml-[70px]">
+            <div class="page-content dark:bg-zinc-700">
+                {{ $slot }}
+            </div>
+        </div>
+
+
+        
+
+    
+
+
 
     <script src="{{ asset('/assets/libs/@popperjs/core/umd/popper.min.js') }}"></script>
     <script src="./assets/libs/feather-icons/feather.min.js"></script>

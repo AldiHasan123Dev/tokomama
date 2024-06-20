@@ -4,7 +4,7 @@
                 <div class="flex items-center topbar-brand">
                     <div class="hidden lg:flex navbar-brand items-center justify-between shrink px-6 h-[70px]  ltr:border-r rtl:border-l bg-[#fbfaff] border-gray-50 dark:border-zinc-700 dark:bg-zinc-800 shadow-none">
                         <a href="#" class="flex items-center text-lg flex-shrink-0 font-bold dark:text-white leading-[69px]">
-                            <img src="./assets/img/logo-sm.svg" alt="" class="inline-block w-6 h-6 align-middle ltr:xl:mr-2 rtl:xl:ml-2">
+                            <img src="{{ asset('/assets/img/logo-sm.svg') }}" alt="" class="inline-block w-6 h-6 align-middle ltr:xl:mr-2 rtl:xl:ml-2">
                             <span class="hidden font-bold text-gray-700 align-middle xl:block dark:text-gray-100 leading-[69px]">Minia</span>
                         </a>
                     </div>
@@ -67,8 +67,8 @@
                             </button>
                         </div>
                         <div>
-                            <div class="relative hidden text-gray-600 dropdown sm:block">
-                                <button type="button" class="btn border-0 h-[70px] text-xl px-3 dropdown-toggle dark:text-gray-100" data-bs-toggle="dropdown" id="dropdownMenuButton1">
+                            <div class="relative hidden text-gray-600 dark:text-gray-100 dropdown sm:block">
+                                <button type="button" class="btn border-0 h-[70px] text-xl px-3 dropdown-toggle text-gray-600 dark:text-gray-100" data-bs-toggle="dropdown" id="dropdownMenuButton1">
                                     <i data-feather="grid" class="w-5 h-5"></i>
                                 </button>
                                 <div class="absolute z-50 hidden list-none bg-white border rounded shadow dropdown-menu ltr:!right-0 ltr:!left-auto rtl:!left-0 rtl:!right-auto w-72 border-gray-50 dark:bg-zinc-700 dark:border-zinc-600 dark:text-gray-300" aria-labelledby="dropdownMenuButton1">
@@ -109,7 +109,7 @@
                         <div>
                             <div class="relative dropdown text-gray-600">
                                 <div class="relative">
-                                    <button type="button" class="btn border-0 h-[70px] dropdown-toggle px-4  dark:text-gray-100 ltr:mr-2 rtl:ml-2" aria-expanded="false" data-dropdown-toggle="notification">
+                                    <button type="button" class="btn border-0 h-[70px] dropdown-toggle px-4  text-gray-600 dark:text-gray-100 ltr:mr-2 rtl:ml-2" aria-expanded="false" data-dropdown-toggle="notification">
                                         <i data-feather="bell" class="w-5 h-5"></i>
                                     </button>
                                     <span class="absolute text-xs px-1 bg-red-500 text-white font-medium rounded-full left-6 top-2.5">5</span>
@@ -129,7 +129,7 @@
                                                 <a href="#!" class="text-reset notification-item">
                                                     <div class="flex px-4 py-2 hover:bg-gray-50/50 dark:hover:bg-zinc-700/50">
                                                         <div class=" ltr:mr-3 rtl:ml-3">
-                                                            <img src="./assets/images/avatar-3.jpg" class="w-8 h-8 rounded-full" alt="user-pic">
+                                                            <img src="{{ asset('/assets/images/avatar-3.jpg') }}" class="w-8 h-8 rounded-full" alt="user-pic">
                                                         </div>
                                                         <div class="flex-grow">
                                                             <h6 class="mb-1 text-gray-700 dark:text-gray-100">James Lemire</h6>
@@ -175,7 +175,7 @@
                                                 <a href="#!" class="text-reset notification-item">
                                                     <div class="flex px-4 py-2 hover:bg-gray-50/50 dark:hover:bg-zinc-700/50">
                                                         <div class=" ltr:mr-3 rtl:ml-3">
-                                                            <img src="./assets/images/avatar-6.jpg" class="w-8 h-8 rounded-full" alt="user-pic">
+                                                            <img src="{{ asset('/assets/images/avatar-6.jpg') }}" class="w-8 h-8 rounded-full" alt="user-pic">
                                                         </div>
                                                         <div class="flex-grow">
                                                             <h6 class="mb-1 text-gray-700 dark:text-gray-100">Salena Layfield</h6>
@@ -200,8 +200,8 @@
                         <div>
                             <div class="relative dropdown">
                                 <button type="button" class="flex items-center px-3 py-2 h-[70px] border-x border-gray-50 bg-gray-50/30  dropdown-toggle dark:bg-zinc-700 dark:border-zinc-600 dark:text-gray-100" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <img class="border-[3px] border-gray-700 dark:border-zinc-400 rounded-full w-9 h-9 ltr:xl:mr-2 rtl:xl:ml-2" src="./assets/images/avatar-1.jpg" alt="Header Avatar">
-                                    <span class="hidden font-medium xl:block">{{ auth()->user()->name }}</span>
+                                    <img class="border-[3px] border-gray-700 dark:border-zinc-400 rounded-full w-9 h-9 ltr:xl:mr-2 rtl:xl:ml-2" src="{{ asset('/assets/images/avatar-1.jpg') }}" alt="Header Avatar">
+                                    <span class="hidden font-medium xl:block text-gray-600 dark:text-gray-100">{{ auth()->user()->name }}</span>
                                     <i class="hidden align-bottom mdi mdi-chevron-down xl:block"></i>
                                 </button>
                                 <div class="absolute top-0 z-50 hidden w-40 list-none bg-white dropdown-menu dropdown-animation rounded shadow  dark:bg-zinc-800" id="profile/log">

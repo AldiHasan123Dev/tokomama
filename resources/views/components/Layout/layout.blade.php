@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-
+    
 <head>
     <meta charset="utf-8">
     <title>RAS | Sarana Bahagia</title>
@@ -8,7 +8,7 @@
     <meta content="Tailwind Admin & Dashboard Template" name="description">
     <meta content="Themesbrand" name="author">
     <!-- App favicon -->
-    <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="shortcut icon" href="/assets/images/favicon.ico'">
     <!-- Layout config Js -->
     <!-- Icons CSS -->
     @vite('resources/css/app.css')
@@ -29,30 +29,21 @@
 
 <body data-mode="light" data-sidebar-size="lg" class="group">
 
+    <x-Layout.sidebar />
 
-        <x-Layout.sidebar />
-
-        <x-Layout.navbar />
+    <x-Layout.navbar />
    
-    
-        <div class="main-content group-data-[sidebar-size=sm]:ml-[70px]">
-            <div class="page-content dark:bg-zinc-700">
-                {{ $slot }}
-            </div>
+    <div class="main-content group-data-[sidebar-size=sm]:ml-[70px]">
+        <div class="page-content">
+            {{ $slot }}
         </div>
-
-
-        
-
-    
-
-
+    </div>
 
         
     <script src="{{ asset('/assets/libs/@popperjs/core/umd/popper.min.js') }}"></script>
-    <script src="/assets/libs/feather-icons/feather.min.js"></script>
-    <script src="/assets/libs/metismenujs/metismenujs.min.js"></script>
-    <script src="/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="{{ asset('/assets/libs/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ asset('/assets/libs/metismenujs/metismenujs.min.js') }}"></script>
+    <script src="{{ asset('/assets/libs/simplebar/simplebar.min.js') }}"></script>
 
     <!-- plugin js -->
     <!-- <script src="assets/libs/fullcalendar/index.global.min.js"></script> -->

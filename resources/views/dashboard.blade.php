@@ -15,9 +15,3 @@
         </div>
     </div>
 </x-Layout.layout>
-
-@section('scripts')
-    <script>
-        alert('aowkoakw');
-    </script>
-@endsection

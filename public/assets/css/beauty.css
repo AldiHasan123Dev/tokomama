@@ -8130,8 +8130,8 @@
 @font-face {
   font-family: FontAwesome;
   font-display: block;
-  src: url(./fa-regular-400.woff2) format("woff2"),
-    url(./fa-regular-400.ttf) format("truetype");
+  src: url(/fa-regular-400.woff2) format("woff2"),
+    url(/fa-regular-400.ttf) format("truetype");
   unicode-range: U+F003, U+F006, U+F014, U+F016-F017, U+F01A-F01B, U+F01D,
     U+F022, U+F03E, U+F044, U+F046, U+F05C-F05D, U+F06E, U+F070, U+F087-F088,
     U+F08A, U+F094, U+F096-F097, U+F09D, U+F0A0, U+F0A2, U+F0A4-F0A7, U+F0C5,
@@ -8144,12 +8144,12 @@
 }
 @font-face {
   font-family: Material Design Icons;
-  src: url(./materialdesignicons-webfont.eot?v=7.1.96);
-  src: url(./materialdesignicons-webfont.eot?#iefix&v=7.1.96)
+  src: url(/materialdesignicons-webfont.eot?v=7.1.96);
+  src: url(/materialdesignicons-webfont.eot?#iefix&v=7.1.96)
       format("embedded-opentype"),
-    url(./materialdesignicons-webfont.woff2?v=7.1.96) format("woff2"),
-    url(./materialdesignicons-webfont.woff?v=7.1.96) format("woff"),
-    url(./materialdesignicons-webfont.ttf?v=7.1.96) format("truetype");
+    url(/materialdesignicons-webfont.woff2?v=7.1.96) format("woff2"),
+    url(/materialdesignicons-webfont.woff?v=7.1.96) format("woff"),
+    url(/materialdesignicons-webfont.ttf?v=7.1.96) format("truetype");
   font-weight: 400;
   font-style: normal;
 }

@@ -44,7 +44,7 @@
                         <div class="mb-6 row">
                             <div class="col">
                                 <div>
-                                    <input type="checkbox" class="w-4 h-4 mt-1 align-top transition duration-200 bg-white bg-center bg-no-repeat bg-contain border border-gray-300 rounded cursor-pointer checked:bg-blue-600 checked:border-blue-600 focus:outline-none ltr:float-left rtl:float-right ltr:mr-2 rtl:ml-2 focus:ring-offset-0" checked id="remember_me" name="remember">
+                                    <input type="checkbox" class="w-4 h-4 mt-1 align-top transition duration-200 bg-white bg-center bg-no-repeat bg-contain border border-gray-300 rounded cursor-pointer checked:bg-blue-600 checked:border-blue-600 focus:outline-none ltr:float-left rtl:float-right ltr:mr-2 rtl:ml-2 focus:ring-offset-0" id="remember_me" name="remember">
                                     <label class="font-medium text-gray-600 align-middle dark:text-gray-100" for="remember_me">
                                         {{ __('Remember me') }}
                                     </label>
@@ -57,27 +57,6 @@
                         </div>
                     </form>
 
-                    <div class="pt-2 mt-5 text-center">
-                        <div>
-                            <h6 class="mb-3 font-medium text-gray-500 text-14 dark:text-gray-100">- Sign in with -</h6>
-                        </div>
-
-                        <div class="flex justify-center gap-3">
-                            <a href="" class="w-8 h-8 leading-8 rounded-full bg-violet-500">
-                                <i class="text-sm text-white fa-brands fa-facebook"></i>
-                            </a>
-                            <a href="" class="w-8 h-8 leading-8 rounded-full bg-gray-800">
-                                <i class="text-sm text-white fa-brands fa-x-twitter"></i>
-                            </a>
-                            <a href="" class="w-8 h-8 leading-8 bg-red-500 rounded-full">
-                                <i class="text-sm text-white fa-brands fa-google"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="mt-12 text-center">
-                        <p class="text-gray-500 dark:text-gray-100">Don't have an account ? <a href="{{ route('register') }}" class="font-semibold text-violet-500"> Signup now </a> </p>
-                    </div>
                 </div>
             </div>
         </div>

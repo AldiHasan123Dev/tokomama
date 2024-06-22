@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->collation('utf8mb4_unicode_ci');
+            $table->string('title');
+            $table->string('icon');
+            $table->string('name');
+            $table->string('url');
+            $table->integer('order');
             $table->timestamps();
             $table->softDeletes('deleted_at', precision: 0);
         });
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('menus');
     }
 };

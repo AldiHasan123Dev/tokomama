@@ -4,89 +4,116 @@
             <div class="card-body">
                 <h2 class="card-title">Form Surat Jalan</h2>
                 <form action="#" method="post">
+                    @csrf
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                <span class="label-text">No. Surat</span>
+                                    <span class="label-text">No. Surat</span>
                                 </div>
-                                <input type="text" class="input input-bordered w-full max-w-xs rounded-lg" id="no_surat" />
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="nomor_surat" name="nomor_surat" />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                <span class="label-text">Kepada</span>
+                                    <span class="label-text">Kepada</span>
                                 </div>
-                                <input type="text" class="input input-bordered w-full max-w-xs rounded-lg" id="kepada" />
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="kepada" name="kepada" />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                <span class="label-text">Jumlah</span>
+                                    <span class="label-text">Jumlah</span>
                                 </div>
-                                <input type="number" class="input input-bordered w-full max-w-xs rounded-lg" id="jumlah" />
+                                <input type="number"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="jumlah" name="jumlah" />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                <span class="label-text">Satuan</span>
+                                    <span class="label-text">Satuan</span>
                                 </div>
-                                <input type="text" class="input input-bordered w-full max-w-xs rounded-lg" id="satuan" />
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="satuan" name="satuan" />
+                            </label>
+                        </div>
+                        <div class="text-container">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text">Jenis Barang</span>
+                                </div>
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="jenis_barang" name="jenis_barang" list="jenis_barang_list" autocomplete="off"
+                                    multiple />
+                                <datalist id="jenis_barang_list">
+                                    @foreach ($masterBarangs as $mb)
+                                    <option value="{{ $mb->nama }}">{{ $mb->nama }}</option>
+                                    @endforeach
+                                </datalist>
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                <span class="label-text">Jenis Barang</span>
+                                    <span class="label-text">Nama Kapal</span>
                                 </div>
-                                <input type="text" class="input input-bordered w-full max-w-xs rounded-lg" id="jenis_barang" />
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="nama_kapal" name="nama_kapal" />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                <span class="label-text">Nama Kapal</span>
+                                    <span class="label-text">No. Cont</span>
                                 </div>
-                                <input type="text" class="input input-bordered w-full max-w-xs rounded-lg" id="nama_kapal" />
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="no_cont" name="no_cont" />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                <span class="label-text">No. Cont</span>
+                                    <span class="label-text">No. Seal</span>
                                 </div>
-                                <input type="text" class="input input-bordered w-full max-w-xs rounded-lg" id="no_cont" />
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="no_seal" name="no_seal" />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                <span class="label-text">No. Seal</span>
+                                    <span class="label-text">No. Pol</span>
                                 </div>
-                                <input type="text" class="input input-bordered w-full max-w-xs rounded-lg" id="no_seal" />
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="no_pol" name="no_pol" />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                <span class="label-text">No. Pol</span>
+                                    <span class="label-text">Tujuan/Nama Customer</span>
                                 </div>
-                                <input type="text" class="input input-bordered w-full max-w-xs rounded-lg" id="no_pol" />
-                            </label>
-                        </div>
-                        <div>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                <span class="label-text">Tujuan/Nama Customer</span>
-                                </div>
-                                <input type="text" class="input input-bordered w-full max-w-xs rounded-lg" id="tujuan" />
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="tujuan" name="tujuan" />
                             </label>
                         </div>
                     </div>
-                    <button class="btn btn-sm w-full bg-green-500 text-white rounded-lg mt-3">
+                    <button type="submit" class="btn btn-sm w-full bg-green-500 text-white rounded-lg mt-3">
                         <span><i class="fas fa-print"></i></span> Cetak
                     </button>
                 </form>
@@ -96,13 +123,16 @@
             <div class="grid grid-cols-2 justify-items-stretch">
                 <div class="grid grid-cols-3">
                     <div>
-                        <img src="https://cdn.dribbble.com/users/1814782/screenshots/8500787/media/43acdb907462e9c7055110773f9d683f.jpg" alt="company_logo" class="w-32">
+                        <img src="https://cdn.dribbble.com/users/1814782/screenshots/8500787/media/43acdb907462e9c7055110773f9d683f.jpg"
+                            alt="company_logo" class="w-32">
                     </div>
                     <div class="font-bold font-serif col-span-2">
                         <p>CV.SARANA BAHAGIA</p>
                         <p>JL.Kalianak 55 BLOK G, SURABAYA</p>
-                        <p>Telp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;031-123456</p>
-                        <p>Fax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 031-123456</p>
+                        <p>Telp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;031-123456
+                        </p>
+                        <p>Fax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            031-123456</p>
                     </div>
                 </div>
                 <div class="justify-self-end font-bold font-serif">
@@ -159,7 +189,7 @@
                 <div class="grid grid-cols-2 justify-items-stretch mx-20 mb-3">
                     <div class="justify-self-start"></div>
                     <div class="justify-self-end">
-                        <p class="text-center">Surabaya, 13 Maret 2003</p>
+                        <p class="text-center">{{ now()->format('d F Y') }}</p>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 justify-items-stretch mx-20">

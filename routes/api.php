@@ -5,6 +5,8 @@ use App\Http\Resources\DatatableCollection;
 use App\Http\Resources\DatatableResource;
 use App\Models\NSFP;
 use Illuminate\Http\Request;
+use App\Http\Resources\SuratJalanCollection;
+use App\Models\SuratJalan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +28,8 @@ Route::post('generate-nsfp', [NSFPController::class, 'generate'])->name('api.nsf
 Route::get('/nsfpcolection', function () {
     return new DatatableCollection(NSFP::all());
 })->name('nsfp.data');
+
+
+Route::post('/surat_jalan', function () {
+    return new SuratJalanCollection(SuratJalan::all()); 
+})->name('suratJalan.data');

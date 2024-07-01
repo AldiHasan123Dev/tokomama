@@ -1,5 +1,6 @@
 <x-Layout.layout>
-    <link rel="stylesheet" href="{{ asset('assets/css/table.css')}}">
+    <!-- <link rel="stylesheet" href="{{ asset('assets/css/table.css')}}"> -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets/css/ui.jqgrid-bootstrap5.css') }}" />
     <x-pajak.card>
         <x-slot:tittle>Laporan PPN</x-slot:tittle>
         <div class="grid grid-cols-7">
@@ -16,7 +17,7 @@
             
         </div>
         <hr>
-        <div class="overflow-x-auto mt-3">
+        <div class="overflow-x-auto w-[80em]">
             <table id="jqGrid"></table>
             <div id="jqGridPager"></div>
         </div>
@@ -130,15 +131,16 @@
                 {search:true, name: 'jurnal_bupot', label : 'Jurnal Bupot'},
 
             ],
+            guiStyle: 'bootstrap',
             autowidth: true,
             shrinkToFit: false,
             height: 250,
-            oadonce: true,
+            // oadonce: true,
             rowNum: 25,
             rowList:[10,25,50,100],
 			viewrecords: true,
-            pager: "#jqGridPager"
-
+            pager: "#jqGridPager",
         });
+        
     </script>
 </x-Layout.layout>

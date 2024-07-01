@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\NSFPController;
+use App\Http\Controllers\NSFPController as nsfp;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\PajakController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Resources\DatatableResource;
+use App\Models\NSFP as ModelsNSFP;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -28,7 +32,7 @@ Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('au
 Route::prefix('pajak')->middleware('auth')->group(function() {
     Route::get('nsfp', [PajakController::class, 'index'])->name('pajak.nsfp');
     Route::get('laporan-ppn', [PajakController::class, 'lapPpn'])->name('pajak.laporan-ppn');
-    // Route::get('/pajak/ppn')
 });
+
 
 require __DIR__.'/auth.php';

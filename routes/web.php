@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {
     Route::get('', 'index')->name('keuangan');
     Route::get('surat-jalan', 'suratJalan')->name('keuangan.surat-jalan');
+    Route::post('surat-jalan', 'suratJalanStore')->name('keuangan.surat-jalan');
     Route::get('invoice', 'invoice')->name('keuangan.invoice');
 });
 

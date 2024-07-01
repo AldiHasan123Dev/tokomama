@@ -12,7 +12,7 @@ class PajakController extends Controller
     {
         $data = DB::table('nsfp')->get();
 
-        return view('pajak.nsfp',  ["data" => $data]);
+        return view('pajak.nsfp',  compact('data'));
     }
 
     public function lapPpn()

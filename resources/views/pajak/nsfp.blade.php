@@ -33,6 +33,7 @@
               <!-- head -->
               <thead>
                 <tr>
+                    <th>ID</th>
                     <th>No.</th>
                     <th>NSFP</th>
                     <th>Keterangan</th>
@@ -42,11 +43,6 @@
               <tbody>
               </tbody>
             </table>
-          </div>
-          <div class="join self-end">
-            <button class="join-item btn">«</button>
-            <button class="join-item btn">Page 22</button>
-            <button class="join-item btn">»</button>
           </div>
     </x-pajak.card>
 
@@ -70,6 +66,7 @@
               <!-- head -->
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>No.</th>
                   <th>NSFP</th>
                   <th>Inovice</th>
@@ -119,10 +116,11 @@
                 // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             },
             columns: [
-                { data: 'id', name: 'id'},
+                { data: 'id', name: 'id', visible:false},
+                { data: 'DT_RowIndex', name: 'number'},
                 { data: 'nomor', name: 'nomor' },
                 { data: 'keterangan', name: 'keterangan' },
-                { data: 'available', name: 'available', visible:false},
+                { data: 'aksi', name: 'aksi' },
             ]
         });
 

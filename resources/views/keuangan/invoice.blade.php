@@ -48,7 +48,7 @@
                 ajax: {
                     url: "{{ route('suratJalan.data') }}",
                     dataSrc: 'data',
-                    type: 'POST'
+                    method: 'POST',
                 },
                 columns: [
                     { data: 'nomor_surat' },

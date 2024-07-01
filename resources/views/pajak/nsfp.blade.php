@@ -1,5 +1,5 @@
 <x-Layout.layout>
-  
+
     <x-pajak.card>
         <x-slot:tittle>Buat Nomor Faktur</x-slot:tittle>
         <div class="grid grid-cols-3 gap-4">
@@ -43,11 +43,7 @@
               </tbody>
             </table>
           </div>
-          <div class="join self-end">
-            <button class="join-item btn">«</button>
-            <button class="join-item btn">Page 22</button>
-            <button class="join-item btn">»</button>
-          </div>
+          
     </x-pajak.card>
 
     <x-pajak.card>
@@ -115,7 +111,7 @@
         let table = $('#table-available').DataTable({
             ajax:{
                 url: "{{ route('nsfp.data') }}",
-                dataSrc: "data"
+                dataSrc: "data",
                 // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             },
             columns: [
@@ -144,7 +140,7 @@
               jumlah:$('#jumlah-i').val()
             },
             success: function(response) {
-              console.log(response)
+              table.ajax.reload();
             }
           })
         }

@@ -1,5 +1,6 @@
 <x-Layout.layout>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/select/1.6.1/css/select.dataTables.min.css"> --}}
     <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
             <div class="grid grid-cols-5">
@@ -40,15 +41,16 @@
             </table>
         </div>
     </div>
-    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.6.1/js/dataTables.select.min.js"></script>
     <script>
         $(document).ready(function () {
             var table = $('#surat_jalan_table').DataTable({
                 serverSide: true,
+                select:true,
                 ajax: {
                     url: "{{ route('suratJalan.data') }}",
-                    dataSrc: 'data',
-                    method: 'POST',
+                    type: 'POST'
                 },
                 columns: [
                     { data: 'nomor_surat' },
@@ -66,9 +68,10 @@
                 ]
             });
 
-            table.on('draw', function () {
-                alert('Table redrawn');
-            });
+            $('#surat_jalan_table tbody').on( 'click', 'tr', function () {
+                let row =  table.row( this ).data();
+                console.log(row);
+            })
         });
     </script>
 </x-Layout.layout>

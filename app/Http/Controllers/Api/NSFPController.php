@@ -30,5 +30,16 @@ class NSFPController extends Controller
         // dd("berhasil masuk controller");
     }
 
+    public function data()
+    {
+        $query = NSFP::query();
+        return Datatables::of($query)
+        ->addIndexColumn()
+        ->addColumn('aksi', function ($row) {
+            return '<a href='.route('nsfp.data').'>Edit</a>';
+        })
+        ->rawColumns(['aksi'])
+        ->make();
+    }   
     
 }

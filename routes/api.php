@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\NSFPController;
+use App\Http\Controllers\Api\SuratJalanController;
 use App\Http\Resources\DatatableCollection;
 use App\Http\Resources\DatatableResource;
 use App\Models\NSFP;
@@ -25,11 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('generate-nsfp', [NSFPController::class, 'generate'])->name('api.nsfp.generate');
-Route::get('/nsfpcolection', function () {
-    return new DatatableCollection(NSFP::all());
-})->name('nsfp.data');
+Route::get('/nsfpcolection', [NSFPController::class,'data'])->name('nsfp.data');
 
 
-Route::post('/surat_jalan', function () {
-    return new SuratJalanCollection(SuratJalan::all()); 
-})->name('suratJalan.data');
+Route::post('/surat_jalan', [SuratJalanController::class, 'dataTable'])->name('suratJalan.data');

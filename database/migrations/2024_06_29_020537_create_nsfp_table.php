@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('nsfp', function (Blueprint $table) {
             $table->id();
+            $table->text('invoice')->nullable();
             $table->string('nomor');
             $table->text('keterangan')->nullable();
             $table->boolean('available')->default(1);

@@ -33,3 +33,4 @@ Route::get('/nsfpcolection', [NSFPController::class,'data'])->name('nsfp.data');
 Route::post('/surat_jalan', [SuratJalanController::class, 'dataTable'])->name('suratJalan.data');
 
 Route::get('/pre-invoice', [InvoiceController::class, 'dataTable'])->name('invoice.pre-invoice');
+Route::post('/pre-invoice', [InvoiceController::class, 'ambil'])->name('invoice.pre-invoice.ambil');

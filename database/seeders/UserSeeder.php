@@ -42,5 +42,19 @@ class UserSeeder extends Seeder
             'updated_at' => null,
             'deleted_at' => null
         ]);
+
+        DB::table('users')->insert([
+            'role_id' => 1,
+            'name' => "Trial",
+            'email' => "trial@gmail.com",
+            'email_verified_at' => now(),
+            'password' => Hash::make('cobacoba'),
+            'phone' => "085812345678",
+            'address' => "SDJ",
+            'remember_token' => Str::random(10),
+            'created_at' => now(),
+            'updated_at' => null,
+            'deleted_at' => null
+        ]);
     }
 }

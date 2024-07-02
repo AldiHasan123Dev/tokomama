@@ -7,17 +7,28 @@ use App\Models\SuratJalan;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
+use function Laravel\Prompts\alert;
+
 class InvoiceController extends Controller
 {
-    public function dataTable() {
-        $data = SuratJalan::query();
+    public function dataTable()
+    {
+        $data = SuratJalan::query()->where('status', 'pre');
 
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
-                return '<a href='.route('nsfp.data').'>Ambil</a>';
+                return '<form method=' . 'post' . ' action = ' . route('invoice.pre-invoice.ambil') . '><input type=hidden name=id value='. $row->id .'><button type=submit>ambil</button></form>';
             })
             ->rawColumns(['aksi'])
             ->make(true);
+    }
+
+    public function ambil(Request $request)
+    {
+        
+        
+        // alert("hello");
+        // $data = SuratJalan::query();
     }
 }

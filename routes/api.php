@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\NSFPController;
 use App\Http\Controllers\Api\SuratJalanController;
 use App\Http\Resources\DatatableCollection;
@@ -30,3 +31,5 @@ Route::get('/nsfpcolection', [NSFPController::class,'data'])->name('nsfp.data');
 
 
 Route::post('/surat_jalan', [SuratJalanController::class, 'dataTable'])->name('suratJalan.data');
+
+Route::get('/pre-invoice', [InvoiceController::class, 'dataTable'])->name('invoice.pre-invoice');

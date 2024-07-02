@@ -121,7 +121,7 @@
                 { data: 'DT_RowIndex', name: 'number'},
                 { data: 'nomor', name: 'nomor' },
                 { data: 'keterangan', name: 'keterangan' },
-                { data: 'aksi', name: 'aksi' },
+                { data: 'aksi', name: 'aksi' }
             ]
         });
 

@@ -26,4 +26,8 @@ class KeuanganController extends Controller
     function invoice() {
         return view('keuangan.invoice');
     }
+
+    function preInvoice() {
+        return view('keuangan.pre-invoice');
+    }
 }

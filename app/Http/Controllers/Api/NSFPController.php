@@ -40,7 +40,8 @@ class NSFPController extends Controller
         return Datatables::of($query)
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
-                return '<form method=' . 'post' . ' action = ' . route('nsfp.delete') . '><input type=hidden name=id value=' . $row->id . '><button type="submit" class="btn bg-red-600 text-white">Hapus</button></form>';
+                return '<button class="btn" onclick="getDataNSFP(' . $row->id . ',\''.$row->nomor.'\')">open modal</button>
+                <form method=' . 'post' . ' action = ' . route('nsfp.delete') . '><input type=hidden name=id value=' . $row->id . '><button type="submit" class="btn bg-red-600 text-white">Hapus</button></form>';
             })
             ->rawColumns(['aksi'])
             ->make();

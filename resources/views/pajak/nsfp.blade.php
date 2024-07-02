@@ -1,17 +1,17 @@
 <x-Layout.layout>
 
-  <dialog id="my_modal_1" class="modal">
-    <div class="modal-box">
-      <h3 class="text-lg font-bold">Hello!</h3>
-      <p class="py-4">Press ESC key or click the button below to close</p>
-      <div class="modal-action">
-        <form method="dialog">
-          <!-- if there is a button in form, it will close the modal -->
-          <button class="btn">Close</button>
-        </form>
+    <dialog id="my_modal_1" class="modal">
+      <div class="modal-box">
+        <h3 class="text-lg font-bold">Hello!</h3>
+        <p class="py-4">Press ESC key or click the button below to close</p>
+        <div class="modal-action">
+          <form method="dialog">
+            <!-- if there is a button in form, it will close the modal -->
+            <button class="btn">Close</button>
+          </form>
+        </div>
       </div>
-    </div>
-  </dialog>
+    </dialog>
 
     <x-pajak.card>
         <x-slot:tittle>Buat Nomor Faktur</x-slot:tittle>
@@ -78,80 +78,88 @@
           </div>
     </x-pajak.card>
 
-    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
-    <script>
 
+    <!-- Open the modal using ID.showModal() method -->
+    <button class="btn" onclick="my_modal_1.showModal()">open modal</button>
+    <x-slot name="script">
+      <script>
         // table available invoice
-        let table = $('#table-available').DataTable({
-            ajax:{
-                url: "{{ route('nsfp.data') }}",
-                dataSrc: "data",
-                // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            },
-            columns: [
-                { data: 'id', name: 'id', visible:false},
-                { data: 'DT_RowIndex', name: 'number'},
-                { data: 'nomor', name: 'nomor' },
-                { data: 'keterangan', name: 'keterangan' },
-                { data: 'aksi', name: 'aksi' }
-            ]
-        });
+          let table = $('#table-available').DataTable({
+              ajax:{
+                  url: "{{ route('nsfp.data') }}",
+                  dataSrc: "data",
+                  // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+              },
+              columns: [
+                  { data: 'id', name: 'id', visible:false},
+                  { data: 'DT_RowIndex', name: 'number'},
+                  { data: 'nomor', name: 'nomor' },
+                  { data: 'keterangan', name: 'keterangan' },
+                  { data: 'aksi', name: 'aksi' }
+              ]
+          });
 
-        //delete all nsfp
-        $('#delete-nsfp-all').click(function(e) {
-          if(confirm('Apakah anda yakin?')) {
+          //delete all nsfp
+          $('#delete-nsfp-all').click(function(e) {
+            if(confirm('Apakah anda yakin?')) {
+              $.ajax({
+                headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'POST',
+                url: "{{ route('nsfp.delete-all') }}",
+                success: function(response) {
+                  alert('Data berhasil di hapus semua');
+                  table.ajax.reload();
+                }
+              })
+            }
+          })
+
+          // Generate nomor faktur
+        $('#generate').click(function(e) {
+          // var data = $('#jumlah-i').val();
+          // console.log(data);
+          if(confirm('are you sure?')) {
             $.ajax({
               headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
               },
-              type: 'POST',
-              url: "{{ route('nsfp.delete-all') }}",
+              type: "POST",
+              url: "{{ route('api.nsfp.generate') }}",
+              data: {
+                nomor:$('#nomor-i').val(),
+                jumlah:$('#jumlah-i').val()
+              },
               success: function(response) {
-                alert('Data berhasil di hapus semua');
                 table.ajax.reload();
               }
             })
           }
         })
 
-        // Generate nomor faktur
-      $('#generate').click(function(e) {
-        // var data = $('#jumlah-i').val();
-        // console.log(data);
-        if(confirm('are you sure?')) {
-          $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            type: "POST",
-            url: "{{ route('api.nsfp.generate') }}",
-            data: {
-              nomor:$('#nomor-i').val(),
-              jumlah:$('#jumlah-i').val()
-            },
-            success: function(response) {
-              table.ajax.reload();
-            }
-          })
+
+        // table invoice with nomor faktur
+        let tableDone = $(`#table-done`).DataTable({
+          ajax: {
+            url: "{{ route('nsfp.done') }}",
+            dataSrc: "data",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+          },
+          columns: [
+            
+            { data: 'DT_RowIndex', name: 'number'},
+            { data: 'id', name: 'id', visible:false},
+            { data: 'nomor', name: 'nomor'},
+            { data: 'invoice', name: 'invoice'},
+            { data: 'keterangan', name: 'keterangan'}
+          ]
+        });
+
+        function getDataNSFP(id, nomor){
+          alert(nomor);
+          my_modal_1.showModal();
         }
-      })
-
-
-      // table invoice with nomor faktur
-      let tableDone = $(`#table-done`).DataTable({
-        ajax: {
-          url: "{{ route('nsfp.done') }}",
-          dataSrc: "data",
-          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        },
-        columns: [
-          
-          { data: 'DT_RowIndex', name: 'number'},
-          { data: 'id', name: 'id', visible:false},
-          { data: 'nomor', name: 'nomor'},
-          { data: 'invoice', name: 'invoice'},
-          { data: 'keterangan', name: 'keterangan'}
-        ]
-      });
-    </script>
+      </script>
+    </x-slot>
 </x-Layout.layout>

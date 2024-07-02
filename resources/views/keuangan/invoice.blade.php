@@ -1,27 +1,13 @@
 <x-Layout.layout>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
-    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/select/1.6.1/css/select.dataTables.min.css"> --}}
-    <div class="card bg-base-100 shadow-xl">
-        <div class="card-body">
-            <div class="grid grid-cols-5">
-                <div>
-                    <button class="btn btn-sm bg-green-400 text-white font-bold w-fit">Edit tanggal</button>
-                </div>
-                <div>
-                    <p>List Semua Invoice </p>
-                </div>
-                <div>
-                    <p class="font-bold">INVOICE (selected): </p>
-                </div>
-                <div>
-                    <button class="btn btn-sm bg-blue-400 text-white font-bold w-fit">Rekap Invoice Excel</button>
-                </div>
-                <div>
-                    <button class="btn btn-sm bg-green-400 text-white font-bold w-fit"><i class="fas fa-print"></i>
-                        Cetak Invoice Ulang</button>
-                </div>
-            </div>
-            <table id="surat_jalan_table" class="display mt-3">
+    <x-keuangan.card-keuangan>
+        <x-slot:tittle>Tabel Invoice</x-slot:tittle>
+        <div class="overflow-x-auto">
+            <a href="{{route('invoice.print')}}" target="_blank"
+                class="btn bg-green-400 text-white my-5 py-4 font-bold hidden">
+                <i class="fas fa-print"></i> Cetak Invoice</button>
+            </a>
+            <table class=" table" id="surat_jalan_table">
+                <!-- head -->
                 <thead>
                     <tr>
                         <th>Nomor Surat</th>
@@ -34,22 +20,22 @@
                         <th>No. Seal</th>
                         <th>No. Pol</th>
                         <th>Tujuan</th>
-                        <th>Created at</th>
-                        <th>Updated at</th>
                     </tr>
                 </thead>
+                <tbody>
+                </tbody>
             </table>
         </div>
-    </div>
-    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/select/1.6.1/js/dataTables.select.min.js"></script>
+    </x-keuangan.card-keuangan>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
     <script>
         $(document).ready(function () {
             var table = $('#surat_jalan_table').DataTable({
                 serverSide: true,
                 select:true,
                 ajax: {
-                    url: "{{ route('suratJalan.data') }}",
+                    url: "{{ route('invoice.data') }}",
                     type: 'POST'
                 },
                 columns: [
@@ -63,14 +49,12 @@
                     { data: 'no_seal' },
                     { data: 'no_pol' },
                     { data: 'tujuan' },
-                    { data: 'created_at' },
-                    { data: 'updated_at' },
                 ]
             });
 
             $('#surat_jalan_table tbody').on( 'click', 'tr', function () {
                 let row =  table.row( this ).data();
-                console.log(row);
+                $('.btn').removeClass('hidden');
             })
         });
     </script>

@@ -27,10 +27,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('generate-nsfp', [NSFPController::class, 'generate'])->name('api.nsfp.generate');
-Route::get('/nsfpcolection', [NSFPController::class,'data'])->name('nsfp.data');
+Route::get('/nsfpcolection', [NSFPController::class, 'data'])->name('nsfp.data');
 
 
-Route::post('/surat_jalan', [SuratJalanController::class, 'dataTable'])->name('suratJalan.data');
+Route::post('/invoice', [SuratJalanController::class, 'dataTable'])->name('invoice.data');
 
 Route::get('/pre-invoice', [InvoiceController::class, 'dataTable'])->name('invoice.pre-invoice');
 Route::post('/pre-invoice', [InvoiceController::class, 'ambil'])->name('invoice.pre-invoice.ambil');

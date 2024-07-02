@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('no_job')->nullable();
             $table->string('tujuan')->nullable();
             $table->string('status')->default('pre')->nullable();
+            $table->integer('no')->default(0);
             $table->timestamps();
             $table->softDeletes('deleted_at', precision: 0);
             $table->foreignId('created_by')->nullable()->constrained('users');

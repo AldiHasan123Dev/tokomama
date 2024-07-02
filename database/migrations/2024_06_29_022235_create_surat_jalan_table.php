@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('no_cont')->nullable();
             $table->string('no_seal')->nullable();
             $table->string('no_pol')->nullable();
+            $table->string('no_job')->nullable();
             $table->string('tujuan')->nullable();
             $table->string('status')->default('pre')->nullable();
             $table->timestamps();

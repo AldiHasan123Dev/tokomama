@@ -11,7 +11,7 @@ class SuratJalanController extends Controller
 {
     public function dataTable()
     {
-        $data = SuratJalan::query();
+        $data = SuratJalan::query()->where('status', 'tarik');
         return DataTables::of($data)
             ->addIndexColumn()
             ->make(true);

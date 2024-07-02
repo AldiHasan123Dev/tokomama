@@ -133,6 +133,16 @@
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
+                                    <span class="label-text">No. Job</span>
+                                </div>
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="no_job" name="no_job" />
+                            </label>
+                        </div>
+                        <div>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
                                     <span class="label-text">Tujuan/Nama Customer</span>
                                 </div>
                                 <input type="text"
@@ -142,7 +152,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-sm w-full bg-green-500 text-white rounded-lg mt-3">
-                        <span><i class="fas fa-print"></i></span> Cetak
+                        Konfirmasi Surat Jalan
                     </button>
                 </form>
             </div>
@@ -185,11 +195,11 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th class="text-center border border-black" rowspan="5">1</th>
-                            <td class="text-center border border-black" rowspan="5"><span id="txt_jumlah"></td>
-                            <td class="text-center border border-black" rowspan="5"><span id="txt_satuan"></td>
+                            <th class="text-center border border-black" rowspan="6">1</th>
+                            <td class="text-center border border-black" rowspan="6"><span id="txt_jumlah"></td>
+                            <td class="text-center border border-black" rowspan="6"><span id="txt_satuan"></td>
                             <td class="border border-black"><span id="txt_jenis_barang"></td>
-                            <td class="text-center border border-black" rowspan="5"><span id="txt_tujuan"></td>
+                            <td class="text-center border border-black" rowspan="6"><span id="txt_tujuan"></td>
                         </tr>
                         <tr>
                             <td class="border border-black py-1">
@@ -209,6 +219,11 @@
                         <tr>
                             <td class="border border-black py-1">
                                 No. Pol: <span id="txt_no_pol">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border border-black py-1">
+                                No. Job: <span id="txt_no_job">
                             </td>
                         </tr>
                     </tbody>
@@ -270,6 +285,10 @@
         $('#no_pol').on('input', function() {
             var inputValue = $(this).val();
             $('#txt_no_pol').text(inputValue);
+        });
+        $('#no_job').on('input', function() {
+            var inputValue = $(this).val();
+            $('#txt_no_job').text(inputValue);
         });
         $('#tujuan').on('input', function() {
             var inputValue = $(this).val();

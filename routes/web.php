@@ -31,10 +31,16 @@ Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('au
     Route::get('pre-invoice', 'preInvoice')->name('keuangan.pre-invoice');
 });
 
-Route::prefix('pajak')->middleware('auth')->group(function() {
+Route::prefix('pajak')->middleware('auth')->group(function () {
     Route::get('nsfp', [PajakController::class, 'index'])->name('pajak.nsfp');
     Route::get('laporan-ppn', [PajakController::class, 'lapPpn'])->name('pajak.laporan-ppn');
 });
 
+Route::get('/invoice', function () {
+    return view('invoice');
+});
 
-require __DIR__.'/auth.php';
+Route::get('/invoice_pdf', [KeuanganController::class, 'generatePDF'])->name('invoice.print');
+
+
+require __DIR__ . '/auth.php';

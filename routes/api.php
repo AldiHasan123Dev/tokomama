@@ -33,7 +33,7 @@ Route::post('/nsfp_delete_all', [NSFPController::class, 'deleteAllNSFP']) ->name
 Route::post('/nsfp_delete', [NSFPController::class, 'deleteNSFP']) ->name('nsfp.delete');
 
 
-Route::post('/surat_jalan', [SuratJalanController::class, 'dataTable'])->name('suratJalan.data');
+Route::post('/invoice', [SuratJalanController::class, 'dataTable'])->name('invoice.data');
 
 Route::get('/pre-invoice', [InvoiceController::class, 'dataTable'])->name('invoice.pre-invoice');
 Route::post('/pre-invoice', [InvoiceController::class, 'ambil'])->name('invoice.pre-invoice.ambil');

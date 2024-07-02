@@ -1,5 +1,18 @@
 <x-Layout.layout>
 
+  <dialog id="my_modal_1" class="modal">
+    <div class="modal-box">
+      <h3 class="text-lg font-bold">Hello!</h3>
+      <p class="py-4">Press ESC key or click the button below to close</p>
+      <div class="modal-action">
+        <form method="dialog">
+          <!-- if there is a button in form, it will close the modal -->
+          <button class="btn">Close</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
     <x-pajak.card>
         <x-slot:tittle>Buat Nomor Faktur</x-slot:tittle>
         <div class="grid grid-cols-3 gap-4">
@@ -27,7 +40,7 @@
 
     <x-pajak.card>
         <x-slot:tittle>Nomor Faktur Tersedia</x-slot:tittle>
-        <button class="btn btn-error w-56 self-end text-white font-semibold mb-3">Hapus Semua NSFP</button>
+          <button id="delete-nsfp-all" class="btn btn-error w-56 text-white font-semibold mb-3 self-end">Hapus Semua NSFP</button>
         <div class="overflow-x-auto">
             <table class="table" id="table-available">
               <!-- head -->
@@ -49,25 +62,10 @@
 
     <x-pajak.card>
         <x-slot:tittle>Faktur Pajak Invoice</x-slot:tittle>
-        <div class="action w-full">
-            <form action="" class="grid grid-cols-2 justify-between">
-                <select class="select select-bordered max-w-20">
-                    <option disabled selected>10</option>
-                    <option>30</option>
-                    <option>60</option>
-                </select>
-                <label class="input input-bordered flex items-center ml-40">
-                    <input type="text" class="grow border-none" placeholder="Search" />
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg>
-                  </label>
-            </form>
-        </div>
         <div class="overflow-x-auto">
-            <table class="table">
-              <!-- head -->
+            <table class="table" id="table-done">
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>No.</th>
                   <th>NSFP</th>
                   <th>Inovice</th>
@@ -75,41 +73,15 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- row 1 -->
-                <tr>
-                  <th>1</th>
-                  <td>Cy Ganderton</td>
-                  <td>Quality Control Specialist</td>
-                  <td></td>
-                </tr>
-                <!-- row 2 -->
-                <tr class="hover">
-                  <th>2</th>
-                  <td>Hart Hagerty</td>
-                  <td>Desktop Support Technician</td>
-                  <td></td>
-                </tr>
-                <!-- row 3 -->
-                <tr>
-                  <th>3</th>
-                  <td>Brice Swyre</td>
-                  <td>Tax Accountant</td>
-                  <td></td>
-                </tr>
               </tbody>
             </table>
-          </div>
-          <div class="join self-end">
-            <button class="join-item btn">«</button>
-            <button class="join-item btn">Page 22</button>
-            <button class="join-item btn">»</button>
           </div>
     </x-pajak.card>
 
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script>
 
-        // let id;
+        // table available invoice
         let table = $('#table-available').DataTable({
             ajax:{
                 url: "{{ route('nsfp.data') }}",
@@ -125,12 +97,27 @@
             ]
         });
 
-      // console.log(table);
+        //delete all nsfp
+        $('#delete-nsfp-all').click(function(e) {
+          if(confirm('Apakah anda yakin?')) {
+            $.ajax({
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              },
+              type: 'POST',
+              url: "{{ route('nsfp.delete-all') }}",
+              success: function(response) {
+                alert('Data berhasil di hapus semua');
+                table.ajax.reload();
+              }
+            })
+          }
+        })
 
-
+        // Generate nomor faktur
       $('#generate').click(function(e) {
-        var data = $('#jumlah-i').val();
-        console.log(data);
+        // var data = $('#jumlah-i').val();
+        // console.log(data);
         if(confirm('are you sure?')) {
           $.ajax({
             headers: {
@@ -148,5 +135,23 @@
           })
         }
       })
+
+
+      // table invoice with nomor faktur
+      let tableDone = $(`#table-done`).DataTable({
+        ajax: {
+          url: "{{ route('nsfp.done') }}",
+          dataSrc: "data",
+          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        },
+        columns: [
+          
+          { data: 'DT_RowIndex', name: 'number'},
+          { data: 'id', name: 'id', visible:false},
+          { data: 'nomor', name: 'nomor'},
+          { data: 'invoice', name: 'invoice'},
+          { data: 'keterangan', name: 'keterangan'}
+        ]
+      });
     </script>
 </x-Layout.layout>

@@ -1,26 +1,33 @@
 <x-Layout.layout>
     <style>
-        @media print{
-            body * {
-                visibility: hidden !important;
-            }
-            #print .header{
+        @media print {
+            #print .header {
                 margin-top: 10px;
             }
-            #print, #print * {
+
+            #print,
+            #print * {
                 visibility: visible !important;
                 font-family: 'Open Sans', sans-serif;
                 font-size: .7rem !important;
                 color: black !important;
             }
+
             #print {
-                height: 100%;
                 width: 100%;
                 font-family: 'Open Sans', sans-serif;
             }
+
+            .card {
+                display: none !important;
+            }
+
+            #reset {
+                all: unset !important;
+            }
         }
     </style>
-    <div class="grid grid-cols-3 gap-3">
+    <div class="grid grid-cols-3 gap-3" id="reset">
         <div class="card w-fit bg-base-100 shadow-xl">
             <div class="card-body">
                 <h2 class="card-title">Form Surat Jalan</h2>
@@ -228,7 +235,7 @@
     </div>
 
     <script>
-        $('#no_surat').on('input', function() {
+        $('#nomor_surat').on('input', function() {
             var inputValue = $(this).val();
             $('#txt_no_surat').text(inputValue);
         });

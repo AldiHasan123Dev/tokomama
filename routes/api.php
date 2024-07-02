@@ -28,6 +28,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('generate-nsfp', [NSFPController::class, 'generate'])->name('api.nsfp.generate');
 Route::get('/nsfpcolection', [NSFPController::class,'data'])->name('nsfp.data');
+Route::get('/nsfp_with_invoice', [NSFPController::class, 'dataNSFPDone'])->name('nsfp.done');
+Route::post('/nsfp_delete_all', [NSFPController::class, 'deleteAllNSFP']) ->name('nsfp.delete-all');
+Route::post('/nsfp_delete', [NSFPController::class, 'deleteNSFP']) ->name('nsfp.delete');
 
 
 Route::post('/surat_jalan', [SuratJalanController::class, 'dataTable'])->name('suratJalan.data');

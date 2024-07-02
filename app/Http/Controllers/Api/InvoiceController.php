@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\NSFP;
 use App\Models\SuratJalan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-use function Laravel\Prompts\alert;
 
 class InvoiceController extends Controller
 {
@@ -18,7 +19,7 @@ class InvoiceController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
-                return '<form method=' . 'post' . ' action = ' . route('invoice.pre-invoice.ambil') . '><input type=hidden name=id value='. $row->id .'><button type=submit>ambil</button></form>';
+                return '<form method=' . 'post' . ' action = ' . route('invoice.pre-invoice.ambil') . '><input type=hidden name=id value=' . $row->id . '><button type=submit>ambil</button></form>';
             })
             ->rawColumns(['aksi'])
             ->make(true);
@@ -26,9 +27,34 @@ class InvoiceController extends Controller
 
     public function ambil(Request $request)
     {
-        
-        
-        // alert("hello");
-        // $data = SuratJalan::query();
+
+        $suratJalan = SuratJalan::find($request->id);
+        $suratJalan->status = 'tarik';
+
+        // mengubah nomor surat jalan menjadi nomor invoice
+        $nomor = str_replace(' ', '', $suratJalan->nomor_surat);
+        $noExplode = explode('/', $nomor);
+        $one = $noExplode[0];
+        $two = str_replace('SJ', 'INV', $noExplode[1]);
+        $three = str_replace('-', '/', $noExplode[2]);
+        $four = $noExplode[3];
+        $nomorInvoice = $one . '/' . $two . '/' . $three . '/' . $four;
+        // dd($nomorInvoice);
+        $suratJalan->invoice = $nomorInvoice;
+
+        //tanggal current
+        $suratJalan->tgl_invoice = Carbon::now();
+
+        // update table nsfp
+        $nsfp = NSFP::where('available', '1')->first();
+        $nsfp->invoice = $nomorInvoice;
+        $nsfp->available = 0;
+        // dd($nsfp);
+
+        // save
+        $suratJalan->save();
+        $nsfp->save();
+
+        return redirect()->route('keuangan.invoice');
     }
 }

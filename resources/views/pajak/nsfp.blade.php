@@ -89,14 +89,7 @@
                   url: "{{ route('nsfp.data') }}",
                   dataSrc: "data",
                   // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-              },
-              columns: [
-                  { data: 'id', name: 'id', visible:false},
-                  { data: 'DT_RowIndex', name: 'number'},
-                  { data: 'nomor', name: 'nomor' },
-                  { data: 'keterangan', name: 'keterangan' },
-                  { data: 'aksi', name: 'aksi' }
-              ]
+              }Store a newly created resource in storage.
           });
 
           //delete all nsfp

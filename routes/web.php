@@ -1,13 +1,17 @@
 <?php
 
 use App\Http\Controllers\Api\NSFPController;
+use App\Http\Controllers\BarangController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\NSFPController as nsfp;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\NopolController;
 use App\Http\Controllers\PajakController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuratJalanController;
 use App\Http\Resources\DatatableResource;
+use App\Models\Customer;
 use App\Models\NSFP as ModelsNSFP;
 use Illuminate\Support\Facades\Route;
 
@@ -41,8 +45,28 @@ Route::prefix('pajak')->middleware('auth')->group(function () {
     Route::get('laporan-ppn', [PajakController::class, 'lapPpn'])->name('pajak.laporan-ppn');
 });
 
-Route::prefix('masters')->controller(MasterController::class)->middleware('auth')->group(function() {
+Route::prefix('master')->controller(CustomerController::class)->middleware('auth')->group(function() {
     Route::get('customer', 'index')->name('master.customer');
+    Route::get('customer_list', 'datatable')->name('master.customer.list');
+    Route::post('customer', 'store')->name('master.customer.add');
+    Route::post('customer_delete', 'destroy')->name('master.customer.delete');
+    Route::post('costumer_edit', 'update')->name('master.customer.edit');  
+});
+
+Route::prefix('master')->controller(BarangController::class)->middleware('auth')->group(function() {
+    Route::get('barang', 'index')->name('master.barang');
+    Route::get('barang_list', 'datatable')->name('master.barang.list');
+    Route::post('barang_add', 'store')->name('master.barang.add');
+    Route::post('barang_edit', 'update')->name('master.barang.edit');
+    Route::post('barang_delete', 'destroy')->name('master.barang.delete');
+});
+
+Route::prefix('master')->controller(NopolController::class)->middleware('auth')->group(function() {
+    Route::get('nopol', 'index')->name('master.nopol');
+    Route::get('nopol_list', 'datatable')->name('master.nopol.list');
+    Route::post('nopol_add', 'store')->name('master.nopol.add');
+    Route::post('nopol_edit', 'update')->name('master.nopol.edit');
+    Route::post('nopol_delete', 'destroy')->name('master.nopol.delete');
 });
 
 Route::get('/invoice', function () {

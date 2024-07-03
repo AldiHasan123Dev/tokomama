@@ -97,7 +97,7 @@
           {
             // alert(nama);
             $('#satu').html(`<dialog id="my_modal_5" class="modal">
-              <div class="modal-box w-11/12 max-w-2xl pl-10">
+              <div class="modal-box w-11/12 max-w-2xl pl-10 py-9">
               <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
               </form>

@@ -66,17 +66,33 @@ class SuratJalanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        // id, invoice, nomor_surat, kepada, jumlah, satuan, jenis_barang, nama_kapal, no_cont, no_seal, no_pol, no_job
+        $data = SuratJalan::find($request->id);
+        $data->invoice = $request->invoice;
+        $data->nomor_surat = $request->nomor_surat;
+        $data->kepada = $request->kepada;
+        $data->jumlah = $request->jumlah;
+        $data->satuan = $request->satuan;
+        $data->jenis_barang = $request->jenis_barang;
+        $data->nama_kapal = $request->nama_kapal;
+        $data->no_cont = $request->no_cont;
+        $data->no_seal = $request->no_seal;
+        $data->no_pol = $request->no_pol;
+        $data->no_job = $request->no_job;
+        $data->save();
+        
+        return redirect()->route('surat-jalan.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy()
     {
-        //
+        SuratJalan::destroy(request('id'));
+        return route('surat-jalan.index');
     }
 
     public function cetak(SuratJalan $surat_jalan)
@@ -94,9 +110,9 @@ class SuratJalanController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     return '<div class="flex gap-3 mt-2">
-                                <a target="_blank" href="'.route('surat-jalan.cetak',$row).'" class="font-semibold mb-3 self-end"><i class="fa-solid fa-print mt-2"></i></a>
-                                <button id="edit" class=" font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>
-                                <button id="delete-faktur-all" class=" font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>
+                                <a target="_blank" href="'.route('surat-jalan.cetak',$row).'" class="text-green-500 font-semibold mb-3 self-end"><i class="fa-solid fa-print mt-2"></i></a>
+                                <button onclick="getData(' . $row->id . ', \'' . addslashes($row->invoice) . '\', \'' . addslashes($row->nomor_surat) . '\', \'' . addslashes($row->kepada) . '\', \'' . addslashes($row->jumlah) . '\', \'' . addslashes($row->satuan) . '\', \'' . addslashes($row->jenis_barang) . '\', \'' . addslashes($row->nama_kapal) . '\', \'' . addslashes($row->no_cont) . '\', \'' . addslashes($row->no_seal) . '\', \'' . addslashes($row->no_pol) . '\', \'' . addslashes($row->no_job) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>
+                                <button onclick="deleteData('. $row->id .')"  id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>
                             </div>';
                     })
                 ->rawColumns(['aksi'])

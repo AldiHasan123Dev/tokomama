@@ -40,14 +40,14 @@
                         <li>
                             <a href="javascript: void(0);" aria-expanded="false" class="block :rtl:pr-10 py-2.5 px-6 text-sm font-medium text-gray-950 transition-all duration-150 ease-linear nav-menu hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
                                 <i class="fa-solid fa-money-check-dollar"></i>
-                                <span data-key="t-auth">&nbsp; Keuangan</span>
+                                <span data-key="t-auth">&nbsp; Surat Jalan</span>
                             </a>
                             <ul>
                                 <li>
-                                    <a href="{{ route('keuangan.surat-jalan') }}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Buat Surat Jalan (SJ)</a>
+                                    <a href="{{ route('surat-jalan.create') }}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Buat Surat Jalan (SJ)</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('keuangan.surat-jalan') }}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">List Surat Jalan (SJ)</a>
+                                    <a href="{{ route('surat-jalan.index') }}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">List Surat Jalan (SJ)</a>
                                 </li>
                             </ul>
                         </li>

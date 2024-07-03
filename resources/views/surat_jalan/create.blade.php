@@ -31,11 +31,11 @@
         <div class="card w-fit bg-base-100 shadow-xl">
             <div class="card-body">
                 <h2 class="card-title">Form Surat Jalan</h2>
-                <form action="#" method="post">
+                <form action="{{ route('surat-jalan.store') }}" method="post">
                     <input type="hidden" name="no" value="{{ $no }}">
                     @csrf
                     <div>
-                        <label class="form-control w-full max-w-xs">
+                        <label class="form-control w-100">
                             <div class="label">
                                 <span class="label-text">No. Surat</span>
                             </div>
@@ -84,11 +84,11 @@
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
                                     id="jenis_barang" name="jenis_barang" list="jenis_barang_list" autocomplete="off"
                                     multiple />
-                                <datalist id="jenis_barang_list">
-                                    @foreach ($masterBarangs as $mb)
-                                    <option value="{{ $mb->nama }}">{{ $mb->nama }}</option>
-                                    @endforeach
-                                </datalist>
+                                    <datalist id="jenis_barang_list">
+                                        @foreach ($barang as $item)
+                                        <option value="{{ $item }}">{{ $item }}</option>
+                                        @endforeach
+                                    </datalist>
                             </label>
                         </div>
                         <div>
@@ -108,7 +108,12 @@
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="no_cont" name="no_cont" />
+                                    id="no_cont" name="no_cont" autocomplete="off" list="container_list" />
+                                    <datalist id="container_list">
+                                        @foreach ($container as $item)
+                                        <option value="{{ $item }}">{{ $item }}</option>
+                                        @endforeach
+                                    </datalist>
                             </label>
                         </div>
                         <div>
@@ -118,7 +123,12 @@
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="no_seal" name="no_seal" />
+                                    id="no_seal" name="no_seal" autocomplete="off" list="seal_list" />
+                                    <datalist id="seal_list">
+                                        @foreach ($seal as $item)
+                                        <option value="{{ $item }}">{{ $item }}</option>
+                                        @endforeach
+                                    </datalist>
                             </label>
                         </div>
                         <div>
@@ -128,7 +138,12 @@
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="no_pol" name="no_pol" />
+                                    id="no_pol" name="no_pol" autocomplete="off" list="nopol_list" />
+                                    <datalist id="nopol_list">
+                                        @foreach ($nopol as $item)
+                                        <option value="{{ $item }}">{{ $item }}</option>
+                                        @endforeach
+                                    </datalist>
                             </label>
                         </div>
                         <div>

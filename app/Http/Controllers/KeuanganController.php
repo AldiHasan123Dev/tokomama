@@ -18,7 +18,12 @@ class KeuanganController extends Controller
     function suratJalan()
     {
         $masterBarangs = Barang::all();
-        return view('keuangan.surat-jalan', compact('masterBarangs'));
+        $no = SuratJalan::whereYear('created_at', date('Y'))->max('no') + 1;
+        $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"); // daftar angka Romawi
+        $month_number = date("n", strtotime(date('Y-m-d'))); // mengambil nomor bulan dari tanggal
+        $month_roman = $roman_numerals[$month_number];
+        $nomor = sprintf('%03d', $no).'/SJ/SB-'.$month_roman.'/'.date('Y');
+        return view('keuangan.surat-jalan', compact('masterBarangs','nomor','no'));
     }
 
     function suratJalanStore(Request $request): RedirectResponse

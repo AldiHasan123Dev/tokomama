@@ -6,6 +6,7 @@ use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PajakController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SuratJalanController;
 use App\Http\Resources\DatatableResource;
 use App\Models\NSFP as ModelsNSFP;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/surat-jalan-cetak/{surat_jalan}', [SuratJalanController::class, 'cetak'])->name('surat-jalan.cetak');
+    Route::post('/surat-jalan-data', [SuratJalanController::class, 'dataTable'])->name('surat-jalan.data');
+    Route::resource('surat-jalan', SuratJalanController::class);
 });
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {

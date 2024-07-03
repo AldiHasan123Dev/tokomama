@@ -10,4 +10,5 @@ class Customer extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'customer';
+    protected $guarded = ['id'];
 }

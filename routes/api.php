@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\NSFPController;
 use App\Http\Controllers\Api\SuratJalanController;
@@ -8,6 +9,7 @@ use App\Http\Resources\DatatableResource;
 use App\Models\NSFP;
 use Illuminate\Http\Request;
 use App\Http\Resources\SuratJalanCollection;
+use App\Models\Role;
 use App\Models\SuratJalan;
 use Illuminate\Support\Facades\Route;
 
@@ -37,3 +39,5 @@ Route::post('/invoice', [SuratJalanController::class, 'dataTable'])->name('invoi
 
 Route::get('/pre-invoice', [InvoiceController::class, 'dataTable'])->name('invoice.pre-invoice');
 Route::post('/pre-invoice', [InvoiceController::class, 'ambil'])->name('invoice.pre-invoice.ambil');
+
+

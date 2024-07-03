@@ -10,4 +10,5 @@ class Nopol extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'nopol';
+    protected $guarded = ['id'];
 }

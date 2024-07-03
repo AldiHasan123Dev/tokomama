@@ -34,8 +34,8 @@ class SuratJalanController extends Controller
         $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"); // daftar angka Romawi
         $month_number = date("n", strtotime(date('Y-m-d'))); // mengambil nomor bulan dari tanggal
         $month_roman = $roman_numerals[$month_number];
-        $nomor = sprintf('%03d', $no).'/SJ/SB-'.$month_roman.'/'.date('Y');
-        return view('surat_jalan.create', compact('barang','container','seal','nopol','nomor','no'));
+        $nomor = sprintf('%03d', $no) . '/SJ/SB-' . $month_roman . '/' . date('Y');
+        return view('surat_jalan.create', compact('barang', 'container', 'seal', 'nopol', 'nomor', 'no'));
     }
 
     /**
@@ -105,7 +105,7 @@ class SuratJalanController extends Controller
 
     public function dataTable()
     {
-        $data = SuratJalan::query()->orderBy('nomor_surat','desc');
+        $data = SuratJalan::query()->orderBy('nomor_surat', 'desc');
         return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
@@ -114,8 +114,8 @@ class SuratJalanController extends Controller
                                 <button onclick="getData(' . $row->id . ', \'' . addslashes($row->invoice) . '\', \'' . addslashes($row->nomor_surat) . '\', \'' . addslashes($row->kepada) . '\', \'' . addslashes($row->jumlah) . '\', \'' . addslashes($row->satuan) . '\', \'' . addslashes($row->jenis_barang) . '\', \'' . addslashes($row->nama_kapal) . '\', \'' . addslashes($row->no_cont) . '\', \'' . addslashes($row->no_seal) . '\', \'' . addslashes($row->no_pol) . '\', \'' . addslashes($row->no_job) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>
                                 <button onclick="deleteData('. $row->id .')"  id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>
                             </div>';
-                    })
-                ->rawColumns(['aksi'])
-                ->make();
+            })
+            ->rawColumns(['aksi'])
+            ->make();
     }
 }

@@ -39,7 +39,6 @@ class InvoiceController extends Controller
         $three = str_replace('-', '/', $noExplode[2]);
         $four = $noExplode[3];
         $nomorInvoice = $one . '/' . $two . '/' . $three . '/' . $four;
-        // dd($nomorInvoice);
         $suratJalan->invoice = $nomorInvoice;
 
         //tanggal current

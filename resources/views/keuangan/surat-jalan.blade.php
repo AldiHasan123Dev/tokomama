@@ -31,7 +31,7 @@
         <div class="card w-fit bg-base-100 shadow-xl">
             <div class="card-body">
                 <h2 class="card-title">Form Surat Jalan</h2>
-                <form action="#" method="post">
+                <form action="/invoice" method="post">
                     <input type="hidden" name="no" value="{{ $no }}">
                     @csrf
                     <div>
@@ -41,7 +41,7 @@
                             </div>
                             <input type="text"
                                 class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                id="nomor_surat" name="nomor_surat" readonly value="{{ $nomor }}"/>
+                                id="nomor_surat" name="nomor_surat" readonly value="{{ $nomor }}" />
                         </label>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
@@ -152,7 +152,8 @@
                             </label>
                         </div>
                     </div>
-                    <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-sm w-full bg-green-500 text-white rounded-lg mt-3">
+                    <button type="submit" onclick="return confirm('Apakah anda yakin?')"
+                        class="btn btn-sm w-full bg-green-500 text-white rounded-lg mt-3">
                         Konfirmasi Surat Jalan
                     </button>
                 </form>

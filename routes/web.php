@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuratJalanController;
 use App\Http\Resources\DatatableResource;
 use App\Models\NSFP as ModelsNSFP;
+use App\Models\SuratJalan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -41,10 +42,11 @@ Route::prefix('pajak')->middleware('auth')->group(function () {
 });
 
 Route::get('/invoice', function () {
-    return view('invoice');
+    $surat_jalan = SuratJalan::all();
+    return view('keuangan.invoice_pdf', compact('surat_jalan'));
 });
 
-Route::get('/invoice_pdf', [KeuanganController::class, 'generatePDF'])->name('invoice.print');
+Route::get('/invoice_pdf/{id}', [KeuanganController::class, 'generatePDF'])->name('invoice.print');
 
 
 require __DIR__ . '/auth.php';

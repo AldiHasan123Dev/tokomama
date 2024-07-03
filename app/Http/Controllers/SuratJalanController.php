@@ -34,8 +34,8 @@ class SuratJalanController extends Controller
         $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"); // daftar angka Romawi
         $month_number = date("n", strtotime(date('Y-m-d'))); // mengambil nomor bulan dari tanggal
         $month_roman = $roman_numerals[$month_number];
-        $nomor = sprintf('%03d', $no).'/SJ/SB-'.$month_roman.'/'.date('Y');
-        return view('surat_jalan.create', compact('barang','container','seal','nopol','nomor','no'));
+        $nomor = sprintf('%03d', $no) . '/SJ/SB-' . $month_roman . '/' . date('Y');
+        return view('surat_jalan.create', compact('barang', 'container', 'seal', 'nopol', 'nomor', 'no'));
     }
 
     /**
@@ -89,17 +89,17 @@ class SuratJalanController extends Controller
 
     public function dataTable()
     {
-        $data = SuratJalan::query()->orderBy('nomor_surat','desc');
+        $data = SuratJalan::query()->orderBy('nomor_surat', 'desc');
         return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('aksi', function ($row) {
-                    return '<div class="flex gap-3 mt-2">
-                                <a target="_blank" href="'.route('surat-jalan.cetak',$row).'" class="font-semibold mb-3 self-end"><i class="fa-solid fa-print mt-2"></i></a>
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($row) {
+                return '<div class="flex gap-3 mt-2">
+                                <a target="_blank" href="' . route('surat-jalan.cetak', $row) . '" class="font-semibold mb-3 self-end"><i class="fa-solid fa-print mt-2"></i></a>
                                 <button id="edit" class=" font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>
                                 <button id="delete-faktur-all" class=" font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>
                             </div>';
-                    })
-                ->rawColumns(['aksi'])
-                ->make();
+            })
+            ->rawColumns(['aksi'])
+            ->make();
     }
 }

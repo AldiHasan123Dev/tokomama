@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\NSFPController;
 use App\Http\Controllers\NSFPController as nsfp;
 use App\Http\Controllers\KeuanganController;
+use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PajakController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Resources\DatatableResource;
@@ -34,6 +35,10 @@ Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('au
 Route::prefix('pajak')->middleware('auth')->group(function () {
     Route::get('nsfp', [PajakController::class, 'index'])->name('pajak.nsfp');
     Route::get('laporan-ppn', [PajakController::class, 'lapPpn'])->name('pajak.laporan-ppn');
+});
+
+Route::prefix('masters')->controller(MasterController::class)->middleware('auth')->group(function() {
+    Route::get('customer', 'index')->name('master.customer');
 });
 
 Route::get('/invoice', function () {

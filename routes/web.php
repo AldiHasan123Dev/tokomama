@@ -47,6 +47,7 @@ Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('au
 Route::prefix('pajak')->middleware('auth')->group(function () {
     Route::get('nsfp', [PajakController::class, 'index'])->name('pajak.nsfp');
     Route::get('laporan-ppn', [PajakController::class, 'lapPpn'])->name('pajak.laporan-ppn');
+    Route::get('laporan-ppn-data', [PajakController::class, 'datatable'])->name('pajak.laporan-ppn.data');
 });
 
 Route::prefix('master')->controller(CustomerController::class)->middleware('auth')->group(function () {

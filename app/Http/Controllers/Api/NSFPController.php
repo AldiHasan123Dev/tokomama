@@ -40,17 +40,16 @@ class NSFPController extends Controller
         return Datatables::of($query)
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
-                return '<button class="btn" onclick="getDataNSFP(' . $row->id . ',\''.$row->nomor.'\')">open modal</button>
-                <form method=' . 'post' . ' action = ' . route('nsfp.delete') . '><input type=hidden name=id value=' . $row->id . '><button type="submit" class="btn bg-red-600 text-white">Hapus</button></form>';
+                return '<button class="text-yellow-400" onclick="getDataNSFP(' . $row->id . ', \'' . addslashes($row->nomor) . '\', \'' . addslashes($row->keterangan) . '\')"><i class="fa-solid fa-pencil"></i></button> | <button onclick="deleteData(' . $row->id . ')" id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end" ><i class="fa-solid fa-trash"></i></button>';
             })
             ->rawColumns(['aksi'])
             ->make();
     }
 
-    public function deleteNSFP(Request $request)
+    public function deleteNSFP()
     {
-        NSFP::destroy($request->id);
-        return redirect()->route('pajak.nsfp');
+        NSFP::destroy(request('id'));
+        return route('pajak.nsfp');
     }
 
     public function dataNSFPDone()
@@ -65,6 +64,14 @@ class NSFPController extends Controller
     {
         NSFP::where('available', 1)->delete();
 
+        return redirect()->route('pajak.nsfp');
+    }
+
+    public function update(Request $request) {
+        $data = NSFP::find($request->id);
+        $data->nomor = $request->nomor;
+        $data->keterangan = $request->keterangan;
+        $data->save();
         return redirect()->route('pajak.nsfp');
     }
 }

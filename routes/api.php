@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\SuratJalanController;
 use App\Http\Controllers\CoaController;
 use App\Http\Resources\DatatableCollection;
 use App\Http\Resources\DatatableResource;
+use App\Http\Resources\PajakResource;
 use App\Models\NSFP;
 use Illuminate\Http\Request;
 use App\Http\Resources\SuratJalanCollection;
@@ -32,8 +33,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('generate-nsfp', [NSFPController::class, 'generate'])->name('api.nsfp.generate');
 Route::get('/nsfpcolection', [NSFPController::class, 'data'])->name('nsfp.data');
 Route::get('/nsfp_with_invoice', [NSFPController::class, 'dataNSFPDone'])->name('nsfp.done');
-Route::post('/nsfp_delete_all', [NSFPController::class, 'deleteAllNSFP'])->name('nsfp.delete-all');
-Route::post('/nsfp_delete', [NSFPController::class, 'deleteNSFP'])->name('nsfp.delete');
+Route::post('/nsfp_delete_all', [NSFPController::class, 'deleteAllNSFP']) ->name('nsfp.delete-all');
+Route::post('/nsfp_delete', [NSFPController::class, 'deleteNSFP']) ->name('nsfp.delete');
+Route::post('/nsfp_edit', [NSFPController::class, 'update'])->name('nsfp.edit');
 
 
 Route::post('/invoice', [SuratJalanController::class, 'dataTable'])->name('invoice.data');
@@ -42,3 +44,4 @@ Route::post('/coa', [CoaController::class, 'dataTable'])->name('coa.data');
 
 Route::get('/pre-invoice', [InvoiceController::class, 'dataTable'])->name('invoice.pre-invoice');
 Route::post('/pre-invoice', [InvoiceController::class, 'ambil'])->name('invoice.pre-invoice.ambil');
+

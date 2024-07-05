@@ -17,83 +17,65 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="javascript: void(0);" aria-expanded="false"
-                        class="block py-2.5 px-6 text-sm font-medium text-gray-950 transition-all duration-150 ease-linear nav-menu hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
-                        <i class="fa-solid fa-database"></i><span data-key="t-pages"> &nbsp; Masters</span>
-                    </a>
-                    <ul>
                         <li>
-                            <a href="{{route('master.customer')}}"
-                                class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Customer</a>
+                            <a href="javascript: void(0);" aria-expanded="false" class="block py-2.5 px-6 text-sm font-medium text-gray-950 transition-all duration-150 ease-linear nav-menu hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
+                                <i class="fa-solid fa-database"></i><span data-key="t-pages"> &nbsp; Masters</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="{{route('master.customer')}}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Customer</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('master.barang')}}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Barang</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('master.nopol') }}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Nopol</a>
+                                </li>
+                            </ul>
+                        </li>
+        
+                        <li>
+                            <a href="javascript: void(0);" aria-expanded="false" class="block :rtl:pr-10 py-2.5 px-6 text-sm font-medium text-gray-950 transition-all duration-150 ease-linear nav-menu hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
+                                <i class="fa-solid fa-person-walking-luggage"></i>
+                                <span data-key="t-auth">&nbsp; Surat Jalan</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="{{ route('surat-jalan.create') }}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Buat Surat Jalan (SJ)</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('surat-jalan.index') }}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">List Surat Jalan (SJ)</a>
+                                </li>
+                            </ul>
                         </li>
                         <li>
-                            <a href="{{route('master.barang')}}"
-                                class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Barang</a>
+                            <a href="javascript: void(0);" aria-expanded="false" class="block :rtl:pr-10 py-2.5 px-6 text-sm font-medium text-gray-950 transition-all duration-150 ease-linear nav-menu hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
+                                <i class="fa-solid fa-money-check-dollar"></i>
+                                <span data-key="t-auth">&nbsp; Keuangan</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="{{ route('keuangan.pre-invoice') }}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Pre Invoice</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('keuangan.invoice') }}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Invoice</a>
+                                </li>
+                            </ul>
                         </li>
+        
                         <li>
-                            <a href="{{ route('master.nopol') }}"
-                                class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Nopol</a>
+                            <a href="javascript: void(0);" aria-expanded="false" class="block py-2.5 px-6 text-sm font-medium text-gray-950 transition-all duration-150 ease-linear nav-menu hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
+                                <i class="fa-solid fa-circle-dollar-to-slot"></i><span data-key="t-pages"> &nbsp; Pajak</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="{{route('pajak.nsfp')}}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Nomor Seri NSFP</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('pajak.laporan-ppn')}}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Laporan PPN</a>
+                                </li>
+                            </ul>
                         </li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="javascript: void(0);" aria-expanded="false"
-                        class="block :rtl:pr-10 py-2.5 px-6 text-sm font-medium text-gray-950 transition-all duration-150 ease-linear nav-menu hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
-                        <i class="fa-solid fa-money-check-dollar"></i>
-                        <span data-key="t-auth">&nbsp; Surat Jalan</span>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="{{ route('surat-jalan.create') }}"
-                                class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Buat
-                                Surat Jalan (SJ)</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('surat-jalan.index') }}"
-                                class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">List
-                                Surat Jalan (SJ)</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript: void(0);" aria-expanded="false"
-                        class="block :rtl:pr-10 py-2.5 px-6 text-sm font-medium text-gray-950 transition-all duration-150 ease-linear nav-menu hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
-                        <i class="fa-solid fa-money-check-dollar"></i>
-                        <span data-key="t-auth">&nbsp; Keuangan</span>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="{{ route('keuangan.pre-invoice') }}"
-                                class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Pre
-                                Invoice</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('keuangan.invoice') }}"
-                                class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Invoice</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="javascript: void(0);" aria-expanded="false"
-                        class="block py-2.5 px-6 text-sm font-medium text-gray-950 transition-all duration-150 ease-linear nav-menu hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
-                        <i class="fa-solid fa-circle-dollar-to-slot"></i><span data-key="t-pages"> &nbsp; Pajak</span>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="{{route('pajak.nsfp')}}"
-                                class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Nomor
-                                Seri NSFP</a>
-                        </li>
-                        <li>
-                            <a href="{{route('pajak.laporan-ppn')}}"
-                                class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Laporan
-                                PPN</a>
-                        </li>
-                    </ul>
-                </li>
 
                 <li>
                     <a href="javascript: void(0);" aria-expanded="false"

@@ -33,7 +33,7 @@
         
                         <li>
                             <a href="javascript: void(0);" aria-expanded="false" class="block :rtl:pr-10 py-2.5 px-6 text-sm font-medium text-gray-950 transition-all duration-150 ease-linear nav-menu hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
-                                <i class="fa-solid fa-money-check-dollar"></i>
+                                <i class="fa-solid fa-person-walking-luggage"></i>
                                 <span data-key="t-auth">&nbsp; Surat Jalan</span>
                             </a>
                             <ul>

@@ -20,6 +20,13 @@ class NSFP extends Model
         'available',
     ];
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+
+
     // protected static function booted()
     // {
     //     static::creating(function ($model) {

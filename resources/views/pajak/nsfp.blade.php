@@ -1,17 +1,6 @@
 <x-Layout.layout>
 
-    <dialog id="my_modal_1" class="modal">
-      <div class="modal-box">
-        <h3 class="text-lg font-bold">Hello!</h3>
-        <p class="py-4">Press ESC key or click the button below to close</p>
-        <div class="modal-action">
-          <form method="dialog">
-            <!-- if there is a button in form, it will close the modal -->
-            <button class="btn">Close</button>
-          </form>
-        </div>
-      </div>
-    </dialog>
+    <div id="dialog"></div>
 
     <x-pajak.card>
         <x-slot:tittle>Buat Nomor Faktur</x-slot:tittle>
@@ -46,7 +35,6 @@
               <!-- head -->
               <thead>
                 <tr>
-                    <th>ID</th>
                     <th>No.</th>
                     <th>NSFP</th>
                     <th>Keterangan</th>
@@ -78,9 +66,6 @@
           </div>
     </x-pajak.card>
 
-
-    <!-- Open the modal using ID.showModal() method -->
-    <button class="btn" onclick="my_modal_1.showModal()">open modal</button>
     <x-slot name="script">
       <script>
         // table available invoice
@@ -88,8 +73,15 @@
               ajax:{
                   url: "{{ route('nsfp.data') }}",
                   dataSrc: "data",
-                  // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-              }Store a newly created resource in storage.
+                   // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+              },
+              columns: [
+                { data: 'DT_RowIndex', name: 'number'},
+                { data: 'nomor', name: 'nomor' },
+                { data: 'keterangan', name: 'keterangan' },
+                { data: 'aksi', name: 'aksi' },
+                { data: 'id', name: 'id', visible:false},
+            ]
           });
 
           //delete all nsfp
@@ -111,8 +103,8 @@
 
           // Generate nomor faktur
         $('#generate').click(function(e) {
-          // var data = $('#jumlah-i').val();
-          // console.log(data);
+          var data = $('#jumlah-i').val();
+          console.log(data);
           if(confirm('are you sure?')) {
             $.ajax({
               headers: {
@@ -149,9 +141,52 @@
           ]
         });
 
-        function getDataNSFP(id, nomor){
-          alert(nomor);
+        function getDataNSFP(id, nomor, keterangan){
+          $('#dialog').html(`<dialog id="my_modal_1" class="modal">
+              <div class="modal-box  w-11/12 max-w-2xl pl-10 py-9 ">
+              <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <h3 class="text-lg font-bold">Edit Data</h3>
+                <form action="{{route('nsfp.edit')}}" method="post">
+                  @csrf
+                  <input type="hidden" name="id" value="${id}" class="border-none" />
+                  <label class="input border flex items-center gap-2 mt-3">
+                    Nomor :
+                    <input type="text" name="nomor" value="${nomor}" class="border-none" />
+                  </label>
+                  <label class="input border flex items-center gap-2 mt-4">
+                    Keterangan :
+                    <input type="text" name="keterangan" value="${keterangan}" class="border-none" />
+                  </label>
+                  <button type="submit" class="btn bg-green-400 text-white font-semibold w-72 mt-4">Edit</button>
+                </form>
+              </div>
+            </dialog>`);
           my_modal_1.showModal();
+        }
+
+        function deleteData(id) {
+          if (confirm('Apakah anda ingin menghapus data ini?')) 
+            {
+                $.ajax
+                ({
+                    method: 'post',
+                    url: "{{ route('nsfp.delete') }}",
+                    data: {id: id},
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success: function(response) 
+                    {
+                        table.ajax.reload();
+                    },
+                    error: function(xhr, status, error) 
+                    {
+                        console.log('Error:', error);
+                        console.log('Status:', status);
+                        console.dir(xhr);
+                    }
+                })
+            }
         }
       </script>
     </x-slot>

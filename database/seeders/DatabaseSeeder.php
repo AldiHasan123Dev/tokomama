@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             BarangSeeder::class,
             MenuSeeder::class,
-            SubMenuSeeder::class
+            SubMenuSeeder::class,
+            CoaSeeder::class
         ]);
     }
 }

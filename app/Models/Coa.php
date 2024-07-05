@@ -10,4 +10,6 @@ class Coa extends Model
     use HasFactory;
 
     protected $table = 'coa';
+
+    protected $guarded = ['id'];
 }

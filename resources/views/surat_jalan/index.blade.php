@@ -1,4 +1,7 @@
 <x-Layout.layout>
+
+    <div id="dialog"></div>
+
     <x-keuangan.card-keuangan>
         <x-slot:tittle>List Surat Jalan</x-slot:tittle>
         <div class="overflow-x-auto">
@@ -56,7 +59,91 @@
                     
                 ]
             });
-        </script>
 
+            function getData(id, invoice, nomor_surat, kepada, jumlah, satuan, jenis_barang, nama_kapal, no_cont, no_seal, no_pol, no_job) {
+                $('#dialog').html(`<dialog id="my_modal_5" class="modal">
+                <div class="modal-box w-11/12 max-w-2xl pl-10">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                    <h3 class="text-lg font-bold">Edit Data</h3>
+                    <form action="{{route('surat-jalan.data.edit')}}" method="post">
+                    @csrf
+                    <input type="hidden" name="id" value="${id}" class="border-none" />
+                    <label class="input border flex items-center gap-2 mt-3">
+                        Invoice :
+                        <input type="text" name="invoice" value="${invoice}" class="border-none" />
+                    </label>
+                    <label class="input border flex items-center gap-2 mt-3">
+                        Nomor Surat :
+                        <input type="text" name="nomor_surat" value="${nomor_surat}" class="border-none" />
+                    </label>
+                    <label class="input border flex items-center gap-2 mt-3">
+                        Kepada :
+                        <input type="text" name="kepada" value="${kepada}" class="border-none" />
+                    </label>
+                    <label class="input border flex items-center gap-2 mt-3">
+                        Jumlah :
+                        <input type="text" name="jumlah" value="${jumlah}" class="border-none" />
+                    </label>
+                    <label class="input border flex items-center gap-2 mt-3">
+                        Satuan:
+                        <input type="text" name="satuan" value="${satuan}" class="border-none" />
+                    </label>
+                    <label class="input border flex items-center gap-2 mt-3">
+                        Jenis Barang:
+                        <input type="text" name="jenis_barang" value="${jenis_barang}" class="border-none" />
+                    </label>
+                    <label class="input border flex items-center gap-2 mt-3">
+                        Nama Kapal:
+                        <input type="text" name="nama_kapal" value="${nama_kapal}" class="border-none" />
+                    </label>
+                    <label class="input border flex items-center gap-2 mt-3">
+                        Nomor Cont:
+                        <input type="text" name="no_cont" value="${no_cont}" class="border-none" />
+                    </label>
+                    <label class="input border flex items-center gap-2 mt-3">
+                        Nomor Seal:
+                        <input type="text" name="no_seal" value="${no_seal}" class="border-none" />
+                    </label>
+                    <label class="input border flex items-center gap-2 mt-3">
+                        Nomor Pol:
+                        <input type="text" name="no_pol" value="${no_pol}" class="border-none" />
+                    </label>
+                    <label class="input border flex items-center gap-2 mt-3">
+                        Nomor Seal:
+                        <input type="text" name="no_job" value="${no_job}" class="border-none" />
+                    </label>
+                    <button type="submit" class="btn bg-green-400 text-white font-semibold w-72 mt-2">Edit</button>
+                    </form>
+                </div>
+                </dialog>`);
+                my_modal_5.showModal();
+            }
+
+            function deleteData(id) {
+                if (confirm('Are you sure you want to delete this data?'))
+            {
+              $.ajax
+              ({
+                method: 'post',
+                url: "{{ route('surat-jalan.data.delete') }}",
+                data: {id: id},
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function(response) 
+                {
+                  table.ajax.reload();
+                },
+                error: function(xhr, status, error) 
+                {
+                  console.log('Error:', error);
+                  console.log('Status:', status);
+                  console.dir(xhr);
+                }
+              })
+            }  
+            }
+            
+        </script>
     </x-slot:script>
 </x-Layout.layout>

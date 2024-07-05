@@ -63,8 +63,11 @@
           })
 
           function getData(id, kode_objek, nama) {
-            $('#dialog').html(`<dialog id="my_modal_6" class="modal modal-bottom sm:modal-middle">
-              <div class="modal-box">
+            $('#dialog').html(`<dialog id="my_modal_6" class="modal">
+              <div class="modal-box  w-11/12 max-w-2xl pl-10 py-9 ">
+              <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
                 <h3 class="text-lg font-bold">Edit Data</h3>
                 <form action="{{route('master.nopol.edit')}}" method="post">
                   @csrf
@@ -79,11 +82,6 @@
                   </label>
                   <button type="submit" class="btn bg-green-400 text-white font-semibold w-72 mt-4">Edit</button>
                 </form>
-                <div class="modal-action">
-                  <form method="dialog">
-                    <button class="btn">Close</button>
-                  </form>
-                </div>
               </div>
             </dialog>`);
             my_modal_6.showModal();

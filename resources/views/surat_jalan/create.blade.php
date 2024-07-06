@@ -41,7 +41,7 @@
                             </div>
                             <input type="text"
                                 class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                id="nomor_surat" name="nomor_surat" readonly value="{{ $nomor }}" autofocus />
+                                id="nomor_surat" name="nomor_surat" readonly value="{{ $nomor }}" />
                         </label>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
@@ -96,11 +96,16 @@
                                     multiple />
                                 <datalist id="jenis_barang_list">
                                     @foreach ($barang as $item)
-                                    <option value="{{ $item }}">{{ $item }}</option>
+                                    <option value="{{ $item->nama }}" data-text="{{ $item->value }}">{{
+                                        $item->nama }}
+                                    </option>
                                     @endforeach
                                 </datalist>
                             </label>
                         </div>
+                        <input type="hidden"
+                            class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                            id="value_barang" name="value_barang" />
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -166,7 +171,7 @@
                                 <div class="label">
                                     <span class="label-text">Harga Beli</span>
                                 </div>
-                                <input type="text"
+                                <input type="number"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
                                     id="harga_beli" name="harga_beli" />
                             </label>
@@ -176,7 +181,7 @@
                                 <div class="label">
                                     <span class="label-text">Harga Jual</span>
                                 </div>
-                                <input type="text"
+                                <input type="number"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
                                     id="harga_jual" name="harga_jual" />
                             </label>
@@ -188,7 +193,7 @@
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="profit" name="profit" readonly />
+                                    id="profit" name="profit" />
                             </label>
                         </div>
                         <div>
@@ -222,6 +227,7 @@
                             </label>
                         </div>
                     </div>
+                    <input type="hidden" name="total" id="total">
                     <button type="submit" onclick="return confirm('Apakah anda yakin?')"
                         class="btn btn-sm w-full bg-green-500 text-white rounded-lg mt-3">
                         Konfirmasi Surat Jalan
@@ -252,7 +258,7 @@
                     <p>Surabaya</p>
                 </div>
             </div>
-            <p class="font-bold font-serif mb-5">SURAT JALAN No.: &nbsp; <span id="txt_no_surat"></span></p>
+            <p class="font-bold font-serif mb-5">SURAT JALAN No.: &nbsp; <span id="txt_nomor_surat"></span></p>
             <div class="overflow-x-auto">
                 <table class="table border border-black">
                     <!-- head -->
@@ -270,7 +276,9 @@
                             <th class="text-center border border-black" rowspan="6">1</th>
                             <td class="text-center border border-black" rowspan="6"><span id="txt_jumlah"></td>
                             <td class="text-center border border-black" rowspan="6"><span id="txt_satuan"></td>
-                            <td class="border border-black"><span id="txt_jenis_barang"> (<span id="txt_total">)</td>
+                            <td class="border border-black"><span id="txt_jenis_barang"></span> (<span
+                                    id="txt_total"></span>)
+                            </td>
                             <td class="text-center border border-black" rowspan="6"><span id="txt_tujuan"></td>
                         </tr>
                         <tr>
@@ -304,7 +312,7 @@
                 <div class="grid grid-cols-2 justify-items-stretch mx-20 mb-3">
                     <div class="justify-self-start"></div>
                     <div class="justify-self-end">
-                        <p class="text-center">{{ now()->format('d F Y') }}</p>
+                        <p class="text-center"><span id="txt_kota_pengirim"></span>, {{ now()->format('d F Y') }}</p>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 justify-items-stretch mx-20">
@@ -322,57 +330,114 @@
     </div>
 
     <script>
-        $('#nomor_surat').on('focus', function() {
-            var inputValue = $(this).val();
-            $('#txt_no_surat').text(inputValue);
-        });
         $('#kepada').on('input', function() {
             var inputValue = $(this).val();
             $('#txt_kepada').text(inputValue);
         });
+        
         $('#jumlah').on('input', function() {
             var inputValue = $(this).val();
             $('#txt_jumlah').text(inputValue);
+            $('#txt_total').text(inputValue);
         });
+        
+        $('#jumlah_satuan').on('input', function() {
+            var inputValue = $(this).val();
+            $('#txt_total').text($('#jumlah').val() * inputValue);
+        });
+        
         $('#satuan').on('input', function() {
             var inputValue = $(this).val();
             $('#txt_satuan').text(inputValue);
         });
+        
         $('#jenis_barang').on('input', function() {
             var inputValue = $(this).val();
             $('#txt_jenis_barang').text(inputValue);
+            var text = $("#jenis_barang_list option[value='"+inputValue+"']").data('text');
+            $('#txt_jenis_barang').text(inputValue);
+            $('#txt_total').text($('#jumlah').val() * $('#jumlah_satuan').val() * text);
+            $('#total').val($('#jumlah').val() * $('#jumlah_satuan').val() * text);
+
         });
+        
         $('#nama_kapal').on('input', function() {
             var inputValue = $(this).val();
             $('#txt_nama_kapal').text(inputValue);
         });
+        
         $('#no_cont').on('input', function() {
             var inputValue = $(this).val();
             $('#txt_no_cont').text(inputValue);
         });
+        
         $('#no_seal').on('input', function() {
             var inputValue = $(this).val();
             $('#txt_no_seal').text(inputValue);
         });
+        
         $('#no_pol').on('input', function() {
             var inputValue = $(this).val();
             $('#txt_no_pol').text(inputValue);
         });
+        
         $('#no_job').on('input', function() {
             var inputValue = $(this).val();
             $('#txt_no_job').text(inputValue);
         });
+        
         $('#tujuan').on('input', function() {
             var inputValue = $(this).val();
             $('#txt_tujuan').text(inputValue);
         });
-        $('#kota_tujuan').on('input', function() {
-            var inputValue = $(this).val();
-            $('#txt_kota_tujuan').text(inputValue);
+
+        $('#harga_jual').on('click', function() {
+            var harga_jual = $('#harga_jual').val();
+            var harga_beli = $('#harga_beli').val();
+            var total = $('#txt_total').text();
+
+            $('#profit').val((harga_jual * total) - (harga_beli * total));
         });
-        $('#kota_tujuan').on('input', function() {
-            var inputValue = $(this).val();
-            $('#txt_kota_tujuan').text(inputValue);
+
+        //jquery ready function
+        $(document).ready( function(){
+            $('#txt_nomor_surat').text($('#nomor_surat').val());
+            $('#txt_kota_pengirim').text($('#kota_pengirim').val());
+            $('#txt_nama_pengirim').text($('#nama_pengirim').val());
+            $('#txt_nama_penerima').text($('#nama_penerima').val());
+        });
+        
+        $("#kota_pengirim").on({
+            input: function(){
+                var inputValue = $(this).val();
+                $('#txt_kota_pengirim').text(inputValue);
+            },
+            click: function(){
+                var inputValue = $(this).val();
+                $('#txt_kota_pengirim').text(inputValue);
+            }
+        });
+        
+        $("#nama_pengirim").on({
+            input: function(){
+                var inputValue = $(this).val();
+                $('#txt_nama_pengirim').text(inputValue);
+            },
+            click: function(){
+                var inputValue = $(this).val();
+                $('#txt_nama_pengirim').text(inputValue);
+            }
+        });
+        
+        $("#nama_penerima").on({
+            input: function(){
+                var inputValue = $(this).val();
+                $('#txt_nama_penerima').text(inputValue);
+            },
+            click: function(){
+                var inputValue = $(this).val();
+                $('#txt_nama_penerima').text(inputValue);
+            }
         });
     </script>
 </x-Layout.layout>

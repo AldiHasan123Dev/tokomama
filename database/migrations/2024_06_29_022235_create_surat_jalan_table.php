@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string('nama_pengirim')->default('FIRDA')->nullable();
             $table->string('nama_penerima')->default('IFAN')->nullable();
             $table->integer('no')->default(0);
+            $table->integer('ppn')->nullable();
             $table->timestamps();
             $table->softDeletes('deleted_at', precision: 0);
             $table->foreignId('created_by')->nullable()->constrained('users');

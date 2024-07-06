@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $surat_jalan->nomor_surat }}</title>
     <style>
-        table{
+        table {
             border-collapse: collapse;
             width: 100%;
         }
-        .logo{
+
+        .logo {
             max-width: 100%;
             height: 100px;
         }
-        body{
+
+        body {
             width: 100%;
             /* padding: 10px 30px; */
         }
-        table.table{
+
+        table.table {
             margin-top: 10px;
         }
 
-        .border.border-black{
+        .border.border-black {
             border: 1px solid black;
             padding: 5px;
         }
-        .py-1{
+
+        .py-1 {
             padding: 5px 0;
         }
-        .text-center{
+
+        .text-center {
             text-align: center !important;
             justify-content: center;
         }
     </style>
 </head>
+
 <body>
     <main>
         <table>
@@ -51,11 +58,11 @@
                     <td>{{ $surat_jalan->kepada }}</td>
                 </tr>
                 <tr>
-                    <td>Telp: </td>
+                    <td>Telp: 031-123456</td>
                     <td>Jl. Kalianak 55 Blok G, Surabaya</td>
                 </tr>
                 <tr>
-                    <td>Fax: </td>
+                    <td>Fax: 031-123456</td>
                     <td>Surabaya</td>
                 </tr>
                 <tr>
@@ -77,10 +84,13 @@
             <tbody>
                 <tr>
                     <th class="text-center border border-black" rowspan="6">1</th>
-                    <td class="text-center border border-black text-center" rowspan="6"> {{ $surat_jalan->jumlah }} </td>
-                    <td class="text-center border border-black text-center" rowspan="6"> {{ $surat_jalan->satuan }} </td>
-                    <td class="border border-black">{{ $surat_jalan->jenis_barang }}</td>
-                    <td class="text-center border border-black text-center" rowspan="6"> {{ $surat_jalan->tujuan }} </td>
+                    <td class="text-center border border-black text-center" rowspan="6"> {{ $surat_jalan->jumlah }}
+                    </td>
+                    <td class="text-center border border-black text-center" rowspan="6"> {{ $surat_jalan->satuan }}
+                    </td>
+                    <td class="border border-black">{{ $surat_jalan->jenis_barang }} ({{ $surat_jalan->total }})</td>
+                    <td class="text-center border border-black text-center" rowspan="6"> {{ $surat_jalan->tujuan }}
+                    </td>
                 </tr>
                 <tr>
                     <td class="border border-black py-1">
@@ -109,7 +119,9 @@
             <table>
                 <tr>
                     <th style="width: 50%;"></th>
-                    <th style="width: 50%; text-align: right; font-weight: normal !important; padding-right:20px">{{ date('d F Y') }}</th>
+                    <th style="width: 50%; text-align: right; font-weight: normal !important; padding-right:20px">{{
+                        $surat_jalan->kota_pengirim }}, {{
+                        date('d F Y') }}</th>
                 </tr>
                 <tr>
                     <td style="height: 30px"></td>
@@ -121,14 +133,15 @@
                 </tr>
                 <tr style="height: 200px !important">
                     <th style="height: 100px"> </th>
-                    <th ></th>
+                    <th></th>
                 </tr>
                 <tr>
-                    <th>(PENERIMA)</th>
-                    <th>(PENGIRIM)</th>
+                    <th>({{ $surat_jalan->nama_penerima }})</th>
+                    <th>({{ $surat_jalan->nama_pengirim }})</th>
                 </tr>
             </table>
         </div>
     </main>
 </body>
+
 </html>

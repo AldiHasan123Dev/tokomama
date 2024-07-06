@@ -68,6 +68,16 @@
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
+                                    <span class="label-text">Jumlah per Satuan</span>
+                                </div>
+                                <input type="number"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="jumlah_satuan" name="jumlah_satuan" />
+                            </label>
+                        </div>
+                        <div>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
                                     <span class="label-text">Satuan</span>
                                 </div>
                                 <input type="text"
@@ -151,6 +161,66 @@
                                     id="tujuan" name="tujuan" />
                             </label>
                         </div>
+                        <div>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text">Harga Beli</span>
+                                </div>
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="harga_beli" name="harga_beli" />
+                            </label>
+                        </div>
+                        <div>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text">Harga Jual</span>
+                                </div>
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="harga_jual" name="harga_jual" />
+                            </label>
+                        </div>
+                        <div>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text">Profit</span>
+                                </div>
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="profit" name="profit" />
+                            </label>
+                        </div>
+                        <div>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text">Kota Pengirim</span>
+                                </div>
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="kota_pengirim" name="kota_pengirim" value="Surabaya" />
+                            </label>
+                        </div>
+                        <div>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text">Nama Pengirim</span>
+                                </div>
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="nama_pengirim" name="nama_pengirim" value="FIRDA" />
+                            </label>
+                        </div>
+                        <div>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text">Nama Penerima</span>
+                                </div>
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="nama_penerima" name="nama_penerima" value="IFAN" />
+                            </label>
+                        </div>
                     </div>
                     <button type="submit" onclick="return confirm('Apakah anda yakin?')"
                         class="btn btn-sm w-full bg-green-500 text-white rounded-lg mt-3">
@@ -200,7 +270,8 @@
                             <th class="text-center border border-black" rowspan="6">1</th>
                             <td class="text-center border border-black" rowspan="6"><span id="txt_jumlah"></td>
                             <td class="text-center border border-black" rowspan="6"><span id="txt_satuan"></td>
-                            <td class="border border-black"><span id="txt_jenis_barang"></td>
+                            <td class="border border-black"><span id="txt_jenis_barang"> (<span id="txt_total"></span>)
+                            </td>
                             <td class="text-center border border-black" rowspan="6"><span id="txt_tujuan"></td>
                         </tr>
                         <tr>
@@ -240,11 +311,11 @@
                 <div class="grid grid-cols-2 justify-items-stretch mx-20">
                     <div class="justify-self-start font-bold">
                         <p class="mb-20 text-center">Penerima</p>
-                        <p>(Galeh Ariya Irwana)</p>
+                        <p>(<span id="txt_penerima"></span>)</p>
                     </div>
                     <div class="justify-self-end font-bold">
                         <p class="mb-20 text-center">Pengirim</p>
-                        <p>(Nanda Dwi Cahyo Wibowo)</p>
+                        <p>(<span id="txt_pengirim"></span>)</p>
                     </div>
                 </div>
             </div>

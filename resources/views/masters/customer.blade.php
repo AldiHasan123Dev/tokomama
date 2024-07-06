@@ -26,7 +26,7 @@
 
     <x-master.card-master>
       <x-slot:tittle>Menambah Data Customer</x-slot:tittle>
-      <form action="{{route('master.customer.add')}}" method="post" class="grid grid-cols-3 gap-5">
+      <form action="{{route('master.customer.add')}}" method="post" class="grid grid-cols-4 gap-5">
         @csrf
         <label class="form-control w-full max-w-xs col-start-1">
           <div class="label">
@@ -41,6 +41,12 @@
           <input type="text" placeholder="NPWP" name="npwp" class="input input-bordered w-full max-w-xs rounded-md" />
         </label>
         <label class="form-control w-full max-w-xs col-start-3">
+          <div class="label">
+            <span class="label-text">Nama NPWP</span>
+          </div>
+          <input type="text" placeholder="Nama NPWP" name="nama_npwp" class="input input-bordered w-full max-w-xs rounded-md" />
+        </label>
+        <label class="form-control w-full max-w-xs col-start-4">
           <div class="label">
             <span class="label-text">Email</span>
           </div>
@@ -65,7 +71,7 @@
           </div>
           <input type="text" placeholder="Alamat NPWP" name="alamat_npwp" class="input input-bordered w-full max-w-xs rounded-md" />
         </label>
-        <button type="submit" class="btn p-4 text-semibold text-white bg-green-500">Simpan Data Customer</button>
+        <button type="submit" class="btn p-4 mt-9 text-semibold text-white bg-green-500">Simpan Data Customer</button>
       </form>
   </x-master.card-master>
 
@@ -93,7 +99,7 @@
             ]
           })
 
-          function getData(id, nama, npwp, email, no_telp, alamat, alamat_npwp ) 
+          function getData(id, nama, npwp, nama_npwp, email, no_telp, alamat, alamat_npwp ) 
           {
             // alert(nama);
             $('#satu').html(`<dialog id="my_modal_5" class="modal">
@@ -112,6 +118,10 @@
                   <label class="input border flex items-center gap-2 mt-3">
                     NPWP :
                     <input type="text" name="npwp" value="${npwp}" class="border-none" />
+                  </label>
+                  <label class="input border flex items-center gap-2 mt-3">
+                    Nama NPWP :
+                    <input type="text" name="nama_npwp" value="${nama_npwp}" class="border-none" />
                   </label>
                   <label class="input border flex items-center gap-2 mt-3">
                     Email :

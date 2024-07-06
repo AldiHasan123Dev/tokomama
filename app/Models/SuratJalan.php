@@ -11,4 +11,14 @@ class SuratJalan extends Model
 
     protected $guarded = ['id'];
     protected $table = 'surat_jalan';
+
+    public function nsfp()
+    {
+        return $this->belongsTo(NSFP::class, 'id_nsfp');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'id_customer');
+    }
 }

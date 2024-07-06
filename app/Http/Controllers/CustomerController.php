@@ -32,7 +32,6 @@ class CustomerController extends Controller
         // dd($request);
         $data = Customer::create($request->all());
         return redirect()->route('master.customer', $data);
-        
     }
 
     /**
@@ -65,9 +64,8 @@ class CustomerController extends Controller
         $data->alamat = $request->alamat;
         $data->alamat_npwp = $request->alamat_npwp;
         $data->save();
-        
-        return redirect()->route('master.customer');
 
+        return redirect()->route('master.customer');
     }
 
     /**
@@ -78,7 +76,6 @@ class CustomerController extends Controller
         // dd(request('id'));
         Customer::destroy(request('id'));
         return route('master.customer');
-
     }
 
 
@@ -87,14 +84,14 @@ class CustomerController extends Controller
         $data = Customer::query()->orderBy('id', 'desc');
 
         return DataTables::of($data)
-        ->addIndexColumn()
-        ->addColumn('aksi', function ($row) {
-            return '<div class="flex gap-3 mt-2">
-            <button onclick="getData(' . $row->id . ', \'' . addslashes($row->nama) . '\', \'' . addslashes($row->npwp) . '\', \'' . addslashes($row->email) . '\', \'' . addslashes($row->no_telp) . '\', \'' . addslashes($row->alamat) . '\', \'' . addslashes($row->alamat_npwp) . '\')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button> |
-            <button onclick="deleteData('. $row->id .')" id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end" ><i class="fa-solid fa-trash"></i></button>
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($row) {
+                return '<div class="flex gap-3 mt-2">
+            <button onclick="getData(' . $row->id . ', \'' . addslashes($row->nama) . '\', \'' . addslashes($row->npwp) . '\', \'' . addslashes($row->nama_npwp) . '\', \'' . addslashes($row->email) . '\', \'' . addslashes($row->no_telp) . '\', \'' . addslashes($row->alamat) . '\', \'' . addslashes($row->alamat_npwp) . '\')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button> |
+            <button onclick="deleteData(' . $row->id . ')" id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end" ><i class="fa-solid fa-trash"></i></button>
             </div>';
-        })
-        ->rawColumns(['aksi'])
-        ->make();
+            })
+            ->rawColumns(['aksi'])
+            ->make();
     }
 }

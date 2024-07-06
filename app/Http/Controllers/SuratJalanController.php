@@ -43,6 +43,7 @@ class SuratJalanController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         $data = SuratJalan::create($request->all());
         return redirect()->route('surat-jalan.cetak', $data);
     }
@@ -118,4 +119,6 @@ class SuratJalanController extends Controller
             ->rawColumns(['aksi'])
             ->make();
     }
+
+    
 }

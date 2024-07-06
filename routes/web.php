@@ -12,15 +12,22 @@ use App\Http\Controllers\PajakController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuratJalanController;
 use App\Http\Resources\DatatableResource;
+use App\Http\Resources\SuratJalanResource;
 use App\Models\Customer;
 use App\Models\NSFP as ModelsNSFP;
 use App\Models\SuratJalan;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', function () {
     return redirect('login');
 });
-
+Route::get('test', function () {
+    $data1 = SuratJalan::get();
+    $data = SuratJalanResource::collection($data1);
+    $res = $data->toArray(request());
+    return response($data);
+});
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -48,6 +55,7 @@ Route::prefix('pajak')->middleware('auth')->group(function () {
     Route::get('nsfp', [PajakController::class, 'index'])->name('pajak.nsfp');
     Route::get('laporan-ppn', [PajakController::class, 'lapPpn'])->name('pajak.laporan-ppn');
     Route::get('laporan-ppn-data', [PajakController::class, 'datatable'])->name('pajak.laporan-ppn.data');
+    // Route::get('data-ppn', [PajakController::class, 'datatable'])
 });
 
 Route::prefix('master')->controller(CustomerController::class)->middleware('auth')->group(function () {

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SuratJalanResource;
 use App\Models\NSFP;
 use App\Models\SuratJalan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Yajra\DataTables\DataTables;
+use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class PajakController extends Controller
 {
@@ -31,7 +33,7 @@ class PajakController extends Controller
 
     public function datatable()
     {
-       
+
         // dd($suratJalan);
         /**
          * Data yang dibutuhkan
@@ -42,6 +44,11 @@ class PajakController extends Controller
          * kemudian di passing ke databable
          */
 
-
+        $data1 = SuratJalan::get();
+        $data = SuratJalanResource::collection($data1);
+        $res = $data->toArray(request());
+        return DataTables::of($res)
+            ->addIndexColumn()
+            ->toJson();
     }
 }

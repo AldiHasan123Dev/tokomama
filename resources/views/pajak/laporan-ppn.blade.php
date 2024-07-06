@@ -51,13 +51,44 @@
           
     </x-pajak.card>
 
-    <form action="{{route('pajak.laporan-ppn.data')}}">
+    {{-- <form action="{{route('pajak.laporan-ppn.data')}}">
         <button type="submit" id="cekData">cek data</button>
-    </form>
+    </form> --}}
     
     <x-slot:script>
         <script>
-            
+            let table = $('#table-ppn').DataTable({
+              ajax:{
+                  url: "{{ route('pajak.laporan-ppn.data') }}",
+                  dataSrc: "data",
+                   // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+              },
+              columns: [
+                { data: 'DT_RowIndex', name: 'number'},
+                { data: 'invoice', name: 'invoice' },
+                { data: 'npwp', name: 'npwp' },
+                { data: 'nik', name: 'nik' },
+                { data: 'nama_customer', name: 'nama_customer' },
+                { data: 'nama_npwp', name: 'nama_npwp' },
+                { data: 'alamat_npwp', name: 'alamat_npwp' },
+                { data: 'tgl_invoice', name: 'tgl_faktur' },
+                { data: 'tujuan', name: 'tujuan' },
+                { data: 'keterangan', name: 'uraian' },
+                { data: 'nomor_nsfp', name: 'faktur' },
+                { data: 'total', name: 'total' },
+                { data: 'ppn', name: 'ppn' },
+                { data: 'total_all', name: 'total_all' },
+                { data: 'pph', name: 'pph' },
+                { data: 'job', name: 'job' },
+                { data: 'no_bupot', name: 'no_bupot' },
+                { data: 'masa_pajak', name: 'masa_pajak' },
+                { data: 'bupot', name: 'bupot' },
+                { data: 'tanggal_bupot', name: 'tanggal_bupot' },
+                { data: 'selisih_bupot', name: 'selisih_bupot' },
+                { data: 'jurnal_bupot', name: 'jurnal_bupot' },
+                { data: 'id', name: 'id', visible:false},  
+            ]
+          });
         </script>
     </x-slot:script>
 </x-Layout.layout>

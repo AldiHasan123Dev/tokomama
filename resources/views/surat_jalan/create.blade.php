@@ -62,7 +62,7 @@
                                 </div>
                                 <input type="number"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="jumlah" name="jumlah" />
+                                    id="jumlah" min="0" name="jumlah" />
                             </label>
                         </div>
                         <div>
@@ -72,7 +72,7 @@
                                 </div>
                                 <input type="number"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="jumlah_satuan" name="jumlah_satuan" />
+                                    id="jumlah_satuan" min="0" name="jumlah_satuan" />
                             </label>
                         </div>
                         <div>

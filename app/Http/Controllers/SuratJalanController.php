@@ -26,8 +26,8 @@ class SuratJalanController extends Controller
      */
     public function create()
     {
-        $barang = Barang::select('nama', 'value','id')->get();
-        $nopol = Nopol::pluck('nopol')->toArray();
+        $barang = Barang::select('nama', 'value', 'id')->get();
+        $nopol = Nopol::all();
         $customer = Customer::all();
         $no = SuratJalan::whereYear('created_at', date('Y'))->max('no') + 1;
         $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"); // daftar angka Romawi
@@ -43,8 +43,8 @@ class SuratJalanController extends Controller
     public function store(Request $request)
     {
         $data = SuratJalan::create($request->all());
-        for ($i=0; $i < 4; $i++) { 
-            if($request->barang[$i] != null && $request->id_barang[$i] != null){
+        for ($i = 0; $i < 4; $i++) {
+            if ($request->barang[$i] != null && $request->id_barang[$i] != null) {
                 Transaction::create([
                     'id_surat_jalan' => $data->id,
                     'id_barang' => $request->id_barang[$i],
@@ -123,6 +123,9 @@ class SuratJalanController extends Controller
         $data = SuratJalan::query()->orderBy('nomor_surat', 'desc');
         return DataTables::of($data)
             ->addIndexColumn()
+            ->addColumn('profit', function ($row) {
+                $total = ($row->harga_jual * $row->jumlah_jual) - ($row->harga_beli * $row->jumlah_beli);
+            })
             ->addColumn('aksi', function ($row) {
                 return '<div class="flex gap-3 mt-2">
                                 <a target="_blank" href="' . route('surat-jalan.cetak', $row) . '" class="text-green-500 font-semibold mb-3 self-end"><i class="fa-solid fa-print mt-2"></i></a>
@@ -130,9 +133,8 @@ class SuratJalanController extends Controller
                                 <button onclick="deleteData(' . $row->id . ')"  id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>
                             </div>';
             })
+            ->rawColumns(['profit'])
             ->rawColumns(['aksi'])
             ->make();
     }
-
-    
 }

@@ -19,7 +19,7 @@ class InvoiceController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
-                return '<form method=' . 'GET' . ' action = ' . route('keuangan.invoice.draf',$row) . '><button class="btn btn-xs btn-success" type=submit>Ambil</button></form>';
+                return '<form method=' . 'GET' . ' action = ' . route('keuangan.invoice.draf', $row) . '><button class="btn btn-xs btn-success" type=submit>Ambil</button></form>';
             })
             ->rawColumns(['aksi'])
             ->make(true);

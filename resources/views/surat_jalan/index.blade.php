@@ -20,6 +20,7 @@
                         <th>No. Seal</th>
                         <th>No. Pol</th>
                         <th>No. Job</th>
+                        <th>Profit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,6 +53,7 @@
                     { data: 'no_seal', name: 'no_seal' },
                     { data: 'no_pol', name: 'no_pol' },
                     { data: 'id', name: 'id', visible:false},
+                    { data: 'profit', name: 'profit'},
                     
                 ]
             });

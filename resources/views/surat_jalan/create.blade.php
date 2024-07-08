@@ -27,7 +27,7 @@
             }
         }
 
-        #table-barang td{
+        #table-barang td {
             padding: 0px;
         }
     </style>
@@ -59,7 +59,7 @@
                                     id="kepada" name="kepada" />
                             </label>
                         </div>
-                        <div>
+                        <!-- <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text">Jumlah</span>
@@ -76,9 +76,9 @@
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="satuan" name="satuan" />
+                                    id="satuan" name="satuan" placeholder="(ZAK, BALL, KARTON, DLL)" />
                             </label>
-                        </div>
+                        </div> -->
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -116,7 +116,23 @@
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="no_pol" name="no_pol" />
+                                    id="no_pol" name="no_pol" list="no_pol_list" />
+                                <input type="hidden" name="id_nopol" id="id_nopol">
+                                <datalist id="no_pol_list">
+                                    @foreach ($nopol as $np)
+                                    <option data-id="{{$np->id}}}" value="{{ $np->nopol }}">{{ $np->nopol }}</option>
+                                    @endforeach
+                                </datalist>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text">No. PO</span>
+                                </div>
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="no_po" name="no_po" value="-" />
                             </label>
                         </div>
                         <div>
@@ -137,12 +153,12 @@
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
                                     id="tujuan" name="tujuan" list="customer_list" />
-                                    <input type="hidden" name="id_customer" id="id_customer">
-                                    <datalist id="customer_list">
-                                        @foreach ($customer as $mb)
-                                        <option data-id="{{$mb->id}}" value="{{ $mb->nama }}">{{ $mb->nama }}</option>
-                                        @endforeach
-                                    </datalist>
+                                <input type="hidden" name="id_customer" id="id_customer">
+                                <datalist id="customer_list">
+                                    @foreach ($customer as $mb)
+                                    <option data-id="{{$mb->id}}" value="{{ $mb->nama }}">{{ $mb->nama }}</option>
+                                    @endforeach
+                                </datalist>
                             </label>
                         </div>
                         <div>
@@ -175,6 +191,16 @@
                                     id="nama_penerima" name="nama_penerima" value="IFAN" />
                             </label>
                         </div>
+                        <div>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text">Tanggal Surat Jalan</span>
+                                </div>
+                                <input type="date"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="tgl_sj" name="tgl_sj" value="{{ date('Y-m-d') }}" />
+                            </label>
+                        </div>
                     </div>
                     <input type="hidden" name="total" id="total">
                     <button type="submit" onclick="return confirm('Apakah anda yakin?')"
@@ -193,47 +219,53 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Barang</th>
-                                    <th>Jumlah</th>
-                                    <th>Harga Beli</th>
+                                    <th>Harsat Beli</th>
                                     <th>Jumlah Beli</th>
                                     <th>Satuan Beli</th>
-                                    <th>Harga Jual</th>
+                                    <th>Harsat Jual</th>
                                     <th>Jumlah Jual</th>
                                     <th>Satuan Jual</th>
                                     <th>Profit</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @for ($i = 1; $i < 5; $i++)
-                                <input type="hidden" name="id_barang[]" id="id_barang-{{ $i }}" />
+                                @for ($i = 1; $i
+                                < 5; $i++) <input type="hidden" name="id_barang[]" id="id_barang-{{ $i }}" />
                                 <tr>
                                     <td class="text-center">{{ $i }}</td>
                                     <td>
-                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}" class="form-control" list="barang_list">
+                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}"
+                                            class="form-control" list="barang_list">
                                     </td>
                                     <td>
-                                        <input type="text" onchange="inputBarang()" name="jumlah[]" id="jumlah-{{ $i }}" class="form-control" list="barang_list">
+                                        <input type="number" style="width:120px" onchange="inputBarang()"
+                                            name="harga_beli[]" id="harga_beli-{{ $i }}" class="form-control">
                                     </td>
                                     <td>
-                                        <input type="number" style="width:120px" onchange="inputBarang()" name="harga_beli[]" id="harga_beli-{{ $i }}" class="form-control">
+                                        <input type="number" style="width:120px" onchange="inputBarang()"
+                                            name="jumlah_beli[]" id="jumlah_beli-{{ $i }}" class="form-control">
                                     </td>
                                     <td>
-                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_beli[]" id="jumlah_beli-{{ $i }}" class="form-control">
+                                        <input type="text" style="width:120px" onchange="inputBarang()"
+                                            name="satuan_beli[]" id="satuan_beli-{{ $i }}" class="form-control"
+                                            placeholder="(ZAK, BALL, KARTON, DLL)">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_beli[]" id="satuan_beli-{{ $i }}" class="form-control">
+                                        <input type="number" style="width:120px" onchange="inputBarang()"
+                                            name="harga_jual[]" id="harga_jual-{{ $i }}" class="form-control">
                                     </td>
                                     <td>
-                                        <input type="number" style="width:120px" onchange="inputBarang()" name="harga_jual[]" id="harga_jual-{{ $i }}" class="form-control">
+                                        <input type="number" style="width:120px" onchange="inputBarang()"
+                                            name="jumlah_jual[]" id="jumlah_jual-{{ $i }}" class="form-control">
                                     </td>
                                     <td>
-                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_jual[]" id="jumlah_jual-{{ $i }}" class="form-control">
+                                        <input type="text" style="width:120px" onchange="inputBarang()"
+                                            name="satuan_jual[]" id="satuan_jual-{{ $i }}" class="form-control"
+                                            placeholder="(ZAK, BALL, KARTON, DLL)">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_jual[]" id="satuan_jual-{{ $i }}" class="form-control">
-                                    </td>
-                                    <td>
-                                        <input type="number" style="width:120px" onchange="inputBarang()" name="profit[]" id="profit-{{ $i }}" class="form-control">
+                                        <input type="number" style="width:120px" onchange="inputBarang()"
+                                            name="profit[]" id="profit-{{ $i }}" class="form-control">
                                     </td>
                                 </tr>
                                 @endfor
@@ -284,13 +316,25 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th class="text-center border border-black" rowspan="6">1</th>
-                            <td class="text-center border border-black" rowspan="6"><span id="txt_jumlah"></td>
-                            <td class="text-center border border-black" rowspan="6"><span id="txt_satuan"></td>
+                            <th class="text-center border border-black" rowspan="7"
+                                style="vertical-align: top; padding-top: 20px; line-height: 1.5rem">
+                                @for($i = 1; $i < 5; $i++) <span id="txt_nomor{{$i}}"></span><br>
+                                    @endfor
+                            </th>
+                            <td class="text-center border border-black" rowspan="7"
+                                style="vertical-align: top; padding-top: 20px; line-height: 1.5rem">
+                                @for($i = 1; $i < 5; $i++) <span id="txt_jumlah{{ $i }}"></span><br>
+                                    @endfor
+                            </td>
+                            <td class="text-center border border-black" rowspan="7"
+                                style="vertical-align: top; padding-top: 20px; line-height: 1.5rem">
+                                @for($i = 1; $i < 5; $i++) <span id="txt_satuan{{ $i }}"></span><br>
+                                    @endfor
+                            </td>
                             <td class="border border-black" id="barang-list">
 
                             </td>
-                            <td class="text-center border border-black" rowspan="6"><span id="txt_tujuan"></td>
+                            <td class="text-center border border-black" rowspan="7"><span id="txt_tujuan"></td>
                         </tr>
                         <tr>
                             <td class="border border-black py-1">
@@ -317,13 +361,18 @@
                                 No. Job: <span id="txt_no_job">
                             </td>
                         </tr>
+                        <tr>
+                            <td class="border border-black py-1">
+                                No. PO: <span id="txt_no_po">
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <p class="mb-5">Note: &nbsp; Barang yang diterima dalam keadaan baik dan lengkap</p>
                 <div class="grid grid-cols-2 justify-items-stretch mx-20 mb-3">
                     <div class="justify-self-start"></div>
                     <div class="justify-self-end">
-                        <p class="text-center"><span id="txt_kota_pengirim"></span>, {{ now()->format('d F Y') }}</p>
+                        <p class="text-center"><span id="txt_kota_pengirim"></span>, <span id="txt_tgl_sj"></span></p>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 justify-items-stretch mx-20">
@@ -341,70 +390,59 @@
     </form>
 
     <script>
-        $('#kepada').on('input', function() {
+        $('#kepada').on('input', function () {
             var inputValue = $(this).val();
             $('#txt_kepada').text(inputValue);
         });
-        
-        $('#jumlah').on('input', function() {
+
+        $('#no_po').on('input', function () {
             var inputValue = $(this).val();
-            $('#txt_jumlah').text(inputValue);
-            $('#txt_total').text(inputValue);
+            $('#txt_no_po').text(inputValue);
         });
-        
-        $('#jumlah_satuan').on('input', function() {
-            var inputValue = $(this).val();
-            $('#txt_total').text($('#jumlah').val() * inputValue);
-        });
-        
-        $('#satuan').on('input', function() {
-            var inputValue = $(this).val();
-            $('#txt_satuan').text(inputValue);
-        });
-        
-        $('#jenis_barang').on('input', function() {
+
+        $('#jenis_barang').on('input', function () {
             var inputValue = $(this).val();
             $('#txt_jenis_barang').text(inputValue);
-            var text = $("#jenis_barang_list option[value='"+inputValue+"']").data('text');
+            var text = $("#jenis_barang_list option[value='" + inputValue + "']").data('text');
             $('#txt_jenis_barang').text(inputValue);
             $('#txt_total').text($('#jumlah').val() * $('#jumlah_satuan').val() * text);
             $('#total').val($('#jumlah').val() * $('#jumlah_satuan').val() * text);
 
         });
-        
-        $('#nama_kapal').on('input', function() {
+
+        $('#nama_kapal').on('input', function () {
             var inputValue = $(this).val();
             $('#txt_nama_kapal').text(inputValue);
         });
-        
-        $('#no_cont').on('input', function() {
+
+        $('#no_cont').on('input', function () {
             var inputValue = $(this).val();
             $('#txt_no_cont').text(inputValue);
         });
-        
-        $('#no_seal').on('input', function() {
+
+        $('#no_seal').on('input', function () {
             var inputValue = $(this).val();
             $('#txt_no_seal').text(inputValue);
         });
-        
-        $('#no_pol').on('input', function() {
+
+        $('#no_pol').on('input', function () {
             var inputValue = $(this).val();
             $('#txt_no_pol').text(inputValue);
         });
-        
-        $('#no_job').on('input', function() {
+
+        $('#no_job').on('input', function () {
             var inputValue = $(this).val();
             $('#txt_no_job').text(inputValue);
         });
-        
-        $('#tujuan').on('input', function() {
+
+        $('#tujuan').on('input', function () {
             var inputValue = $(this).val();
-            var id = $("#customer_list option[value='"+inputValue+"']").data('id');
+            var id = $("#customer_list option[value='" + inputValue + "']").data('id');
             $('#id_customer').val(id);
             $('#txt_tujuan').text(inputValue);
         });
 
-        $('#harga_jual').on('click', function() {
+        $('#harga_jual').on('click', function () {
             var harga_jual = $('#harga_jual').val();
             var harga_beli = $('#harga_beli').val();
             var total = $('#txt_total').text();
@@ -413,68 +451,108 @@
         });
 
         //jquery ready function
-        $(document).ready( function(){
+        $(document).ready(function () {
             $('#txt_nomor_surat').text($('#nomor_surat').val());
             $('#txt_kota_pengirim').text($('#kota_pengirim').val());
             $('#txt_nama_pengirim').text($('#nama_pengirim').val());
             $('#txt_nama_penerima').text($('#nama_penerima').val());
         });
-        
+
         $("#kota_pengirim").on({
-            input: function(){
+            input: function () {
                 var inputValue = $(this).val();
                 $('#txt_kota_pengirim').text(inputValue);
             },
-            click: function(){
+            click: function () {
                 var inputValue = $(this).val();
                 $('#txt_kota_pengirim').text(inputValue);
             }
         });
-        
+
+        $("#tgl_sj").on({
+            input: function () {
+            var inputValue = $(this).val();
+            let newData = new Date(inputValue).toLocaleDateString('id-ID', {
+                year: 'numeric',
+                month: 'short',
+                day: '2-digit'
+            });
+            $('#txt_tgl_sj').text(newData);
+            console.log(newData); 
+        },
+            click: function () {
+            var inputValue = $(this).val();
+            let newData = new Date(inputValue).toLocaleDateString('id-ID', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit'
+            });
+            $('#txt_tgl_sj').text(newData);
+            console.log(newData);
+        }
+        });
+
         $("#nama_pengirim").on({
-            input: function(){
+            input: function () {
                 var inputValue = $(this).val();
                 $('#txt_nama_pengirim').text(inputValue);
             },
-            click: function(){
+            click: function () {
                 var inputValue = $(this).val();
                 $('#txt_nama_pengirim').text(inputValue);
             }
         });
-        
+
         $("#nama_penerima").on({
-            input: function(){
+            input: function () {
                 var inputValue = $(this).val();
                 $('#txt_nama_penerima').text(inputValue);
             },
-            click: function(){
+            click: function () {
                 var inputValue = $(this).val();
                 $('#txt_nama_penerima').text(inputValue);
             }
         });
 
-        function inputBarang()
-            {
-                let text = '';
-                for (let i = 1; i  < 5; i++) {
-                    const barang = $('#barang-' + i).val();
-                    const jumlah_jual = $('#jumlah_jual-' + i).val(); 
-                    const satuan_jual = $('#satuan_jual-' + i).val();
-                    if(barang!='' && typeof(barang) != undefined){
-                        var id_barang = $("#barang_list option[value='"+barang+"']").data('id');
-                        console.log(id_barang);
-                        console.log(barang);
-                        $("#id_barang-"+i).val(id_barang);
-                        text += `
+        function inputBarang() {
+            let text = '';
+            for (let i = 1; i < 5; i++) {
+                const barang = $('#barang-' + i).val();
+                const jumlah_beli = $('#jumlah_beli-' + i).val();
+                const satuan_beli = $('#satuan_beli-' + i).val();
+                const harga_beli = $('#harga_beli-' + i).val();
+                const jumlah_jual = $('#jumlah_jual-' + i).val();
+                const satuan_jual = $('#satuan_jual-' + i).val();
+                const harga_jual = $('#harga_jual-' + i).val();
+                if (barang != '' && typeof (barang) != undefined) {
+                    var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
+                    console.log(id_barang);
+                    console.log(barang);
+                    $("#id_barang-" + i).val(id_barang);
+                    text += `
                             <div class="flex justify-between mt-3">
                                 <span>${barang}</span>
                                 <span>(${jumlah_jual} ${satuan_jual})</span>
                             </div>`;
+                    
+                            $('#txt_nomor' + i).html(i);
 
-                        }
-                    }
-                    $('#barang-list').html(text);
+                            var test = $('#profit-' + i).val(jumlah_jual * harga_jual - jumlah_beli * harga_beli);
+                }
+
+                $('#jumlah_beli-' + i).on('input', function () {
+                    var inputValue = $(this).val();
+                    $('#txt_jumlah' + i).html(inputValue);
+                });
+
+                $('#satuan_beli-' + i).on('input', function () {
+                    var inputValue = $(this).val();
+                    $('#txt_satuan' + i).html(inputValue);
+                });
+
             }
+            $('#barang-list').html(text);
+        }
     </script>
 
 </x-Layout.layout>

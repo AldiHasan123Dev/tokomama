@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('no_seal')->nullable();
             $table->string('no_pol')->nullable();
             $table->string('no_job')->nullable();
+            $table->string('no_po')->nullable();
             $table->string('kota_pengirim')->default('surabaya')->nullable();
             $table->string('nama_pengirim')->default('FIRDA')->nullable();
             $table->string('nama_penerima')->default('IFAN')->nullable();
@@ -33,6 +34,7 @@ return new class extends Migration
             $table->integer('ppn')->nullable();
             $table->foreignId('id_customer')->nullable()->constrained('customer');
             $table->foreignId('id_nsfp')->nullable()->constrained('nsfp');
+            $table->date('tgl_sj')->nullable();
             $table->timestamps();
             $table->softDeletes('deleted_at', precision: 0);
             $table->foreignId('created_by')->nullable()->constrained('users');

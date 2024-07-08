@@ -88,8 +88,15 @@
                     </td>
                     <td class="text-center border border-black text-center" rowspan="6"> {{ $surat_jalan->satuan }}
                     </td>
-                    <td class="border border-black">{{ $surat_jalan->jenis_barang }} ({{ $surat_jalan->total }})</td>
-                    <td class="text-center border border-black text-center" rowspan="6"> {{ $surat_jalan->tujuan }}
+                    <td class="border border-black">
+                        @foreach ($surat_jalan->transactions as $item)
+                        <div class="flex justify-between mt-3">
+                            <span>{{ $item->barang->nama }}</span>
+                            <span>({{ $item->jumlah_jual}} {{$item->satuan_jual}})</span>
+                        </div>
+                        @endforeach
+                    </td>
+                    <td class="text-center border border-black text-center" rowspan="6"> {{ $surat_jalan->customer->alamat }} <br> {{ $surat_jalan->customer->nama }}
                     </td>
                 </tr>
                 <tr>

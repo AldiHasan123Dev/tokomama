@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\NSFPController;
 use App\Http\Controllers\Api\SuratJalanController;
 use App\Http\Controllers\CoaController;
+use App\Http\Controllers\KeuanganController;
 use App\Http\Resources\DatatableCollection;
 use App\Http\Resources\DatatableResource;
 use App\Http\Resources\PajakResource;
@@ -38,7 +39,7 @@ Route::post('/nsfp_delete', [NSFPController::class, 'deleteNSFP']) ->name('nsfp.
 Route::post('/nsfp_edit', [NSFPController::class, 'update'])->name('nsfp.edit');
 
 
-Route::post('/invoice', [SuratJalanController::class, 'dataTable'])->name('invoice.data');
+Route::post('/invoice', [KeuanganController::class, 'dataTable'])->name('invoice.data');
 
 Route::post('/coa', [CoaController::class, 'dataTable'])->name('coa.data');
 

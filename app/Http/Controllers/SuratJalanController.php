@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
-use App\Models\Container;
+use App\Models\Customer;
 use App\Models\Nopol;
-use App\Models\Seal;
 use App\Models\SuratJalan;
+use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -26,16 +26,15 @@ class SuratJalanController extends Controller
      */
     public function create()
     {
-        $barang = Barang::select('nama', 'value')->get();
-        $container = Container::pluck('nama')->toArray();
-        $seal = Seal::pluck('nama')->toArray();
+        $barang = Barang::select('nama', 'value','id')->get();
         $nopol = Nopol::pluck('nopol')->toArray();
+        $customer = Customer::all();
         $no = SuratJalan::whereYear('created_at', date('Y'))->max('no') + 1;
         $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"); // daftar angka Romawi
         $month_number = date("n", strtotime(date('Y-m-d'))); // mengambil nomor bulan dari tanggal
         $month_roman = $roman_numerals[$month_number];
         $nomor = sprintf('%03d', $no) . '/SJ/SB-' . $month_roman . '/' . date('Y');
-        return view('surat_jalan.create', compact('barang', 'container', 'seal', 'nopol', 'nomor', 'no'));
+        return view('surat_jalan.create', compact('barang', 'nopol', 'nomor', 'no', 'customer'));
     }
 
     /**
@@ -43,8 +42,22 @@ class SuratJalanController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
         $data = SuratJalan::create($request->all());
+        for ($i=0; $i < 4; $i++) { 
+            if($request->barang[$i] != null && $request->id_barang[$i] != null){
+                Transaction::create([
+                    'id_surat_jalan' => $data->id,
+                    'id_barang' => $request->id_barang[$i],
+                    'harga_beli' => $request->harga_beli[$i],
+                    'harga_jual' => $request->harga_jual[$i],
+                    'jumlah_beli' => $request->jumlah_beli[$i],
+                    'jumlah_jual' => $request->jumlah_jual[$i],
+                    'satuan_beli' => $request->satuan_beli[$i],
+                    'satuan_jual' => $request->satuan_jual[$i],
+                    'margin' => $request->profit[$i],
+                ]);
+            }
+        }
         return redirect()->route('surat-jalan.cetak', $data);
     }
 

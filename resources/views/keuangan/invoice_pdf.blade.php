@@ -43,7 +43,6 @@
 </head>
 
 <body>
-    @foreach ($surat_jalan as $sj)
     <main>
         <table>
             <thead>
@@ -60,7 +59,7 @@
                 </tr>
                 <tr>
                     <td>Telp: 031-7495507</td>
-                    <td style="text-align: center;">NO: {{ $sj->invoice }}</td>
+                    <td style="text-align: center;">NO: {{ $surat_jalan->invoice ?? '-' }}</td>
                 </tr>
                 <tr>
                     <td>Fax: 031-7495507</td>
@@ -70,9 +69,9 @@
                 <tr>
                     <td style="text-align: left; padding-left: 45px;" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
                         &nbsp;&nbsp;&nbsp;
-                        {{$sj->tujuan }}</td>
+                        {{$surat_jalan->customer->nama ?? '-' }}</td>
                     <td style="text-align: center;"><span style="font-weight: bold;">KAPAL: </span> &nbsp;&nbsp;&nbsp;
-                        {{ $sj->nama_kapal }}
+                        {{ $surat_jalan->nama_kapal }}
                     </td>
                 </tr>
             </thead>
@@ -91,15 +90,23 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $total = 0;
+                @endphp
+                @foreach ($surat_jalan->transactions as $item)
                 <tr>
                     <td class="text-center border border-black">{{ $loop->iteration }}</td>
-                    <td class="text-center border border-black">{{ $sj->tgl_invoice }}</td>
-                    <td class="text-center border border-black">{{ $sj->jenis_barang }}</td>
-                    <td class="text-center border border-black">{{ $sj->no_cont }}</td>
-                    <td class="text-center border border-black">{{ 0 }}</td>
-                    <td class="text-center border border-black">{{ 0 }}</td>
-                    <td class="text-center border border-black">{{ 0 }}</td>
+                    <td class="text-center border border-black"></td>
+                    <td class="text-center border border-black">{{ $item->barang->nama }}</td>
+                    <td class="text-center border border-black">{{ $surat_jalan->no_cont }}</td>
+                    <td class="text-center border border-black">{{ $item->jumlah_jual }}</td>
+                    <td class="text-center border border-black">{{ number_format($item->harga_jual / $item->jumlah_jual) }}</td>
+                    <td class="text-center border border-black">{{ number_format($item->harga_jual) }}</td>
                 </tr>
+                @php
+                    $total += $item->harga_jual;
+                @endphp
+                @endforeach
                 <tr>
                     <td class="text-center border border-black"></td>
                     <td class="text-center border border-black"></td>
@@ -112,7 +119,7 @@
                         PPN 11% (DIBEBASKAN)
                     </td>
                     <td class="border border-black">
-                        Rp 355.300.000
+                        Rp {{ number_format($total) }}
                         <br>
                         Rp
                     </td>
@@ -127,21 +134,24 @@
                         <b>TOTAL</b>
                     </td>
                     <td class="border border-black">
-                        <b>Rp 355.300.000</b>
+                        <b>Rp {{ number_format($total) }}</b>
                     </td>
                 </tr>
             </tbody>
         </table>
 
-        <p style="font-weight: bold;">Terbilang: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tiga Ratus Lima Puluh Lima Juta Tiga
-            Ratus Ribu Rupiah</p>
+        @php
+            $formatter = new NumberFormatter("id", NumberFormatter::SPELLOUT);
+            $terbilang = $formatter->format($total);
+        @endphp
+        <p style="font-weight: bold;">TERBILANG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ strtoupper($terbilang) }} RUPIAH</p>
 
         <br>
 
         <table>
             <tr>
                 <th style="text-align: left; padding-left: 50px;">Pembayaran ke rekening:</th>
-                <td style="text-align: center;">Surabaya, 27 Maret 2024</td>
+                <td style="text-align: center;">Surabaya, {{ date('d F Y') }}</td>
             </tr>
             <tr>
                 <th style="text-align: left; padding-left: 50px;">CV. Sarana Bahagia</th>
@@ -157,7 +167,6 @@
             </tr>
         </table>
     </main>
-    @endforeach
 </body>
 
 </html>

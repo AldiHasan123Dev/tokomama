@@ -26,12 +26,16 @@
                 all: unset !important;
             }
         }
+
+        #table-barang td{
+            padding: 0px;
+        }
     </style>
-    <div class="grid grid-cols-3 gap-3" id="reset">
+    <form action="{{ route('surat-jalan.store') }}" method="post" class="grid grid-cols-3 gap-3" id="reset">
         <div class="card w-fit bg-base-100 shadow-xl">
             <div class="card-body">
                 <h2 class="card-title">Form Surat Jalan</h2>
-                <form action="{{ route('surat-jalan.store') }}" method="post">
+                <div>
                     <input type="hidden" name="no" value="{{ $no }}">
                     @csrf
                     <div>
@@ -68,16 +72,6 @@
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">Jumlah per Satuan</span>
-                                </div>
-                                <input type="number"
-                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="jumlah_satuan" min="0" name="jumlah_satuan" />
-                            </label>
-                        </div>
-                        <div>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
                                     <span class="label-text">Satuan</span>
                                 </div>
                                 <input type="text"
@@ -85,27 +79,6 @@
                                     id="satuan" name="satuan" />
                             </label>
                         </div>
-                        <div class="text-container">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text">Jenis Barang</span>
-                                </div>
-                                <input type="text"
-                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="jenis_barang" name="jenis_barang" list="jenis_barang_list" autocomplete="off"
-                                    multiple />
-                                <datalist id="jenis_barang_list">
-                                    @foreach ($barang as $item)
-                                    <option value="{{ $item->nama }}" data-text="{{ $item->value }}">{{
-                                        $item->nama }}
-                                    </option>
-                                    @endforeach
-                                </datalist>
-                            </label>
-                        </div>
-                        <input type="hidden"
-                            class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                            id="value_barang" name="value_barang" />
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -163,37 +136,13 @@
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="tujuan" name="tujuan" />
-                            </label>
-                        </div>
-                        <div>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text">Harga Beli</span>
-                                </div>
-                                <input type="number"
-                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="harga_beli" name="harga_beli" />
-                            </label>
-                        </div>
-                        <div>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text">Harga Jual</span>
-                                </div>
-                                <input type="number"
-                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="harga_jual" name="harga_jual" />
-                            </label>
-                        </div>
-                        <div>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text">Profit</span>
-                                </div>
-                                <input type="text"
-                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="profit" name="profit" />
+                                    id="tujuan" name="tujuan" list="customer_list" />
+                                    <input type="hidden" name="id_customer" id="id_customer">
+                                    <datalist id="customer_list">
+                                        @foreach ($customer as $mb)
+                                        <option data-id="{{$mb->id}}" value="{{ $mb->nama }}">{{ $mb->nama }}</option>
+                                        @endforeach
+                                    </datalist>
                             </label>
                         </div>
                         <div>
@@ -232,10 +181,68 @@
                         class="btn btn-sm w-full bg-green-500 text-white rounded-lg mt-3">
                         Konfirmasi Surat Jalan
                     </button>
-                </form>
+                </div>
             </div>
         </div>
         <div class="col-span-2" id="print">
+            <div class="card bg-base-100 shadow-xl mb-5">
+                <div class="card-body">
+                    <div class="block overflow-x-auto w-full">
+                        <table class="table w-full border-collapse" id="table-barang" style="font-size: .7rem">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Barang</th>
+                                    <th>Harga Beli</th>
+                                    <th>Jumlah Beli</th>
+                                    <th>Satuan Beli</th>
+                                    <th>Harga Jual</th>
+                                    <th>Jumlah Jual</th>
+                                    <th>Satuan Jual</th>
+                                    <th>Profit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for ($i = 1; $i < 5; $i++)
+                                <input type="hidden" name="id_barang[]" id="id_barang-{{ $i }}" />
+                                <tr>
+                                    <td class="text-center">{{ $i }}</td>
+                                    <td>
+                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}" class="form-control" list="barang_list">
+                                    </td>
+                                    <td>
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="harga_beli[]" id="harga_beli-{{ $i }}" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_beli[]" id="jumlah_beli-{{ $i }}" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_beli[]" id="satuan_beli-{{ $i }}" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="harga_jual[]" id="harga_jual-{{ $i }}" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_jual[]" id="jumlah_jual-{{ $i }}" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_jual[]" id="satuan_jual-{{ $i }}" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="profit[]" id="profit-{{ $i }}" class="form-control">
+                                    </td>
+                                </tr>
+                                @endfor
+                            </tbody>
+                        </table>
+                        <datalist id="barang_list">
+                            @foreach ($barang as $mb)
+                            <option data-id="{{$mb->id}}" value="{{ $mb->nama }}">{{ $mb->nama }}</option>
+                            @endforeach
+                        </datalist>
+                    </div>
+                </div>
+            </div>
             <div class="grid grid-cols-2 justify-items-stretch">
                 <div class="grid grid-cols-3">
                     <div>
@@ -276,8 +283,8 @@
                             <th class="text-center border border-black" rowspan="6">1</th>
                             <td class="text-center border border-black" rowspan="6"><span id="txt_jumlah"></td>
                             <td class="text-center border border-black" rowspan="6"><span id="txt_satuan"></td>
-                            <td class="border border-black"><span id="txt_jenis_barang"></span> (<span
-                                    id="txt_total"></span>)
+                            <td class="border border-black" id="barang-list">
+
                             </td>
                             <td class="text-center border border-black" rowspan="6"><span id="txt_tujuan"></td>
                         </tr>
@@ -318,16 +325,16 @@
                 <div class="grid grid-cols-2 justify-items-stretch mx-20">
                     <div class="justify-self-start font-bold">
                         <p class="mb-20 text-center">Penerima</p>
-                        <p>(<span id="txt_nama_penerima"></span>)</p>
+                        <p>(<span id="txt_nama_penerima">IFAN</span>)</p>
                     </div>
                     <div class="justify-self-end font-bold">
                         <p class="mb-20 text-center">Pengirim</p>
-                        <p>(<span id="txt_nama_pengirim"></span>)</p>
+                        <p>(<span id="txt_nama_pengirim">FIRDA</span>)</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 
     <script>
         $('#kepada').on('input', function() {
@@ -388,6 +395,8 @@
         
         $('#tujuan').on('input', function() {
             var inputValue = $(this).val();
+            var id = $("#customer_list option[value='"+inputValue+"']").data('id');
+            $('#id_customer').val(id);
             $('#txt_tujuan').text(inputValue);
         });
 
@@ -439,5 +448,29 @@
                 $('#txt_nama_penerima').text(inputValue);
             }
         });
+
+        function inputBarang()
+            {
+                let text = '';
+                for (let i = 1; i  < 5; i++) {
+                    const barang = $('#barang-' + i).val();
+                    const jumlah_jual = $('#jumlah_jual-' + i).val(); 
+                    const satuan_jual = $('#satuan_jual-' + i).val();
+                    if(barang!='' && typeof(barang) != undefined){
+                        var id_barang = $("#barang_list option[value='"+barang+"']").data('id');
+                        console.log(id_barang);
+                        console.log(barang);
+                        $("#id_barang-"+i).val(id_barang);
+                        text += `
+                            <div class="flex justify-between mt-3">
+                                <span>${barang}</span>
+                                <span>(${jumlah_jual} ${satuan_jual})</span>
+                            </div>`;
+
+                        }
+                    }
+                    $('#barang-list').html(text);
+            }
     </script>
+
 </x-Layout.layout>

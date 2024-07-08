@@ -12,13 +12,11 @@
                         <th>Kepada</th>
                         <th>Jumlah</th>
                         <th>Satuan</th>
-                        <th>Jenis Barang</th>
                         <th>Nama Kapal</th>
                         <th>No. Count</th>
                         <th>No. Seal</th>
                         <th>No. Pol</th>
                         <th>No. Job</th>
-                        <th>No. Tujuan</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,12 +40,10 @@
                     { data: 'kepada', name: 'kepada' },
                     { data: 'jumlah', name: 'jumlah' },
                     { data: 'satuan', name: 'satuan' },
-                    { data: 'jenis_barang', name: 'jenis_barang' },
                     { data: 'nama_kapal', name: 'nama_kapal' },
                     { data: 'no_cont', name: 'no_cont' },
                     { data: 'no_seal', name: 'no_seal' },
                     { data: 'no_pol', name: 'no_pol' },
-                    { data: 'tujuan', name: 'tujuan' },
                     { data: 'id', name: 'id', visible:false},
                     
                 ]

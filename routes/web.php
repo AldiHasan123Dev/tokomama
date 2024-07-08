@@ -49,6 +49,9 @@ Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('au
     Route::post('surat-jalan', 'suratJalanStore')->name('keuangan.surat-jalan');
     Route::get('invoice', 'invoice')->name('keuangan.invoice');
     Route::get('pre-invoice', 'preInvoice')->name('keuangan.pre-invoice');
+    Route::post('draf-invoice/{surat_jalan}', 'submitInvoice')->name('keuangan.invoice.submit');
+    Route::get('draf-invoice/{surat_jalan}', 'invoiceDraf')->name('keuangan.invoice.draf');
+    Route::get('cetak-invoice/{surat_jalan}', 'cetakInvoice')->name('keuangan.invoice.cetak');
 });
 
 Route::prefix('pajak')->middleware('auth')->group(function () {

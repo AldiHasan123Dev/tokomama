@@ -21,4 +21,9 @@ class SuratJalan extends Model
     {
         return $this->belongsTo(Customer::class, 'id_customer');
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'id_surat_jalan');
+    }
 }

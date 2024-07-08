@@ -14,12 +14,12 @@ class InvoiceController extends Controller
 {
     public function dataTable()
     {
-        $data = SuratJalan::query()->where('status', 'pre');
+        $data = SuratJalan::query()->whereNull('invoice');
 
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
-                return '<form method=' . 'post' . ' action = ' . route('invoice.pre-invoice.ambil') . '><input type=hidden name=id value=' . $row->id . '><button type=submit>ambil</button></form>';
+                return '<form method=' . 'GET' . ' action = ' . route('keuangan.invoice.draf',$row) . '><button class="btn btn-xs btn-success" type=submit>Ambil</button></form>';
             })
             ->rawColumns(['aksi'])
             ->make(true);
@@ -29,30 +29,30 @@ class InvoiceController extends Controller
     {
 
         $suratJalan = SuratJalan::find($request->id);
-        $suratJalan->status = 'tarik';
+        // $suratJalan->status = 'tarik';
 
-        // mengubah nomor surat jalan menjadi nomor invoice
-        $nomor = str_replace(' ', '', $suratJalan->nomor_surat);
-        $noExplode = explode('/', $nomor);
-        $one = $noExplode[0];
-        $two = str_replace('SJ', 'INV', $noExplode[1]);
-        $three = str_replace('-', '/', $noExplode[2]);
-        $four = $noExplode[3];
-        $nomorInvoice = $one . '/' . $two . '/' . $three . '/' . $four;
-        $suratJalan->invoice = $nomorInvoice;
+        // // mengubah nomor surat jalan menjadi nomor invoice
+        // $nomor = str_replace(' ', '', $suratJalan->nomor_surat);
+        // $noExplode = explode('/', $nomor);
+        // $one = $noExplode[0];
+        // $two = str_replace('SJ', 'INV', $noExplode[1]);
+        // $three = str_replace('-', '/', $noExplode[2]);
+        // $four = $noExplode[3];
+        // $nomorInvoice = $one . '/' . $two . '/' . $three . '/' . $four;
+        // $suratJalan->invoice = $nomorInvoice;
 
-        //tanggal current
-        $suratJalan->tgl_invoice = Carbon::now();
+        // //tanggal current
+        // $suratJalan->tgl_invoice = Carbon::now();
 
-        // update table nsfp
-        $nsfp = NSFP::where('available', '1')->first();
-        $nsfp->invoice = $nomorInvoice;
-        $nsfp->available = 0;
-        // dd($nsfp);
+        // // update table nsfp
+        // $nsfp = NSFP::where('available', '1')->first();
+        // $nsfp->invoice = $nomorInvoice;
+        // $nsfp->available = 0;
+        // // dd($nsfp);
 
-        // save
-        $suratJalan->save();
-        $nsfp->save();
+        // // save
+        // $suratJalan->save();
+        // $nsfp->save();
 
         return redirect()->route('keuangan.invoice');
     }

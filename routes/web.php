@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\NSFPController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\NSFPController as nsfp;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\MasterController;
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/surat-jalan-edit', [SuratJalanController::class, 'update'])->name('surat-jalan.data.edit');
     Route::post('/surat-jalan-delete', [SuratJalanController::class, 'destroy'])->name('surat-jalan.data.delete');
     Route::resource('surat-jalan', SuratJalanController::class);
+    Route::post('ekspedisi-data', [EkspedisiController::class, 'dataTable'])->name('ekspedisi.data');
 });
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {
@@ -67,6 +69,7 @@ Route::prefix('master')->controller(CustomerController::class)->middleware('auth
     Route::post('customer', 'store')->name('master.customer.add');
     Route::post('customer_delete', 'destroy')->name('master.customer.delete');
     Route::post('costumer_edit', 'update')->name('master.customer.edit');
+    Route::resource('ekspedisi', EkspedisiController::class)->only(['index','store','update','destroy']);
 });
 
 Route::prefix('master')->controller(BarangController::class)->middleware('auth')->group(function () {

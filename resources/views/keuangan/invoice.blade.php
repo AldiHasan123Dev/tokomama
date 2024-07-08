@@ -17,8 +17,6 @@
                     <tr>
                         <th>Invoice</th>
                         <th>Kepada</th>
-                        <th>Jumlah</th>
-                        <th>Satuan</th>
                         <th>Nama Kapal</th>
                         <th>No. Cont</th>
                         <th>No. Seal</th>
@@ -47,8 +45,6 @@
                 columns: [
                     { data: 'invoice' },
                     { data: 'kepada' },
-                    { data: 'jumlah' },
-                    { data: 'satuan' },
                     { data: 'nama_kapal' },
                     { data: 'no_cont' },
                     { data: 'no_seal' },

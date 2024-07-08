@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('nama_penerima')->default('IFAN')->nullable();
             $table->integer('no')->default(0);
             $table->integer('ppn')->nullable();
+            $table->foreignId('id_ekspedisi')->nullable()->constrained('ekspedisi');
             $table->foreignId('id_customer')->nullable()->constrained('customer');
             $table->foreignId('id_nsfp')->nullable()->constrained('nsfp');
             $table->date('tgl_sj')->nullable();

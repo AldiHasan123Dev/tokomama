@@ -107,7 +107,7 @@
                         @endforeach
                     </td>
                     <td class="text-center border border-black text-center" rowspan="6"> {{
-                        $surat_jalan->customer->alamat }} <br> {{ $surat_jalan->customer->nama }}
+                        $surat_jalan->customer->alamat ?? '-' }} <br> {{ $surat_jalan->customer->nama ?? '-' }}
                     </td>
                 </tr>
                 <tr>

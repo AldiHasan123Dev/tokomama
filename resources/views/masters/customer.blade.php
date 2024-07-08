@@ -14,6 +14,7 @@
                     <th>Email</th>
                     <th>No.Telp</th>
                     <th>Alamat</th>
+                    <th>Kota</th>
                     <th>Alamat NPWP</th>
                     <th>Aksi</th>
                 </tr>
@@ -65,6 +66,12 @@
           </div>
           <input type="text" placeholder="Alamat" name="alamat" class="input input-bordered w-full max-w-xs rounded-md" />
         </label>
+        <label class="form-control w-full max-w-xs col-start-2">
+          <div class="label">
+            <span class="label-text">Kota</span>
+          </div>
+          <input type="text" placeholder="Kota" name="kota" class="input input-bordered w-full max-w-xs rounded-md" />
+        </label>
         <label class="form-control w-full max-w-xs col-start-3">
           <div class="label">
             <span class="label-text">Alamat NPWP</span>
@@ -93,13 +100,14 @@
                 { data: 'email', name: 'email' },
                 { data: 'no_telp', name: 'no_telp' },
                 { data: 'alamat', name: 'alamat' },
+                { data: 'kota', name: 'kota' },
                 { data: 'alamat_npwp', name: 'alamat_npwp' },
                 { data: 'aksi', name: 'aksi' },
                 { data: 'id', name: 'id', visible:false},
             ]
           })
 
-          function getData(id, nama, npwp, nama_npwp, email, no_telp, alamat, alamat_npwp ) 
+          function getData(id, nama, npwp, nama_npwp, email, no_telp, alamat, alamat_npwp, kota ) 
           {
             // alert(nama);
             $('#satu').html(`<dialog id="my_modal_5" class="modal">
@@ -134,6 +142,10 @@
                   <label class="input border flex items-center gap-2 mt-3">
                     Alamat :
                     <input type="text" name="alamat" value="${alamat}" class="border-none" />
+                  </label>
+                  <label class="input border flex items-center gap-2 mt-3">
+                    Kota :
+                    <input type="text" name="kota" value="${kota}" class="border-none" />
                   </label>
                   <label class="input border flex items-center gap-2 mt-3">
                     Alamat NPWP :

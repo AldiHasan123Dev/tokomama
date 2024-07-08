@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('npwp')->nullable();
             $table->string('nik')->nullable();
             $table->string('email')->nullable();
+            $table->string('kota')->nullable();
             $table->string('no_telp')->nullable();
             $table->string('alamat')->nullable();
             $table->string('alamat_npwp')->nullable();

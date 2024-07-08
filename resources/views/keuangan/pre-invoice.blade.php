@@ -10,8 +10,6 @@
                         <th>#</th>
                         <th>No. Surat</th>
                         <th>Kepada</th>
-                        <th>Jumlah</th>
-                        <th>Satuan</th>
                         <th>Nama Kapal</th>
                         <th>No. Count</th>
                         <th>No. Seal</th>
@@ -38,8 +36,6 @@
                     { data: 'DT_RowIndex', name: 'number'},
                     { data: 'nomor_surat', name: 'No. Surat' },
                     { data: 'kepada', name: 'kepada' },
-                    { data: 'jumlah', name: 'jumlah' },
-                    { data: 'satuan', name: 'satuan' },
                     { data: 'nama_kapal', name: 'nama_kapal' },
                     { data: 'no_cont', name: 'no_cont' },
                     { data: 'no_seal', name: 'no_seal' },

@@ -11,6 +11,7 @@
                     <th>#</th>
                     <th>Kode Objek</th>
                     <th>Nama</th>
+                    <th>Value</th>
                     <th>Aksi</th>
                 </tr>
               </thead>
@@ -36,6 +37,12 @@
             </div>
             <input type="text" placeholder="Nama Barang" name="nama" class="input input-bordered w-full max-w-xs rounded-md" />
           </label>
+          <label class="form-control w-full max-w-xs col-start-2">
+            <div class="label">
+              <span class="label-text">Value</span>
+            </div>
+            <input type="number" placeholder="10" name="value" class="input input-bordered w-full max-w-xs rounded-md" />
+          </label>
           <div class="col-start-3 mt-9">
             <button type="submit" class="btn text-semibold text-white bg-green-500">Simpan Data Customer</button>
           </div>
@@ -57,12 +64,13 @@
                 { data: 'DT_RowIndex', name: 'number'},
                 { data: 'kode_objek', name: 'kode objek' },
                 { data: 'nama', name: 'nama' },
+                { data: 'value', name: 'value' },
                 { data: 'aksi', name: 'aksi' },
                 { data: 'id', name: 'id', visible:false},
             ]
           })
 
-          function getData(id, kode_objek, nama) {
+          function getData(id, kode_objek, nama, value) {
             $('#dialog').html(`<dialog id="my_modal_6" class="modal">
               <div class="modal-box  w-11/12 max-w-2xl pl-10 py-9 ">
               <form method="dialog">
@@ -79,6 +87,10 @@
                   <label class="input border flex items-center gap-2 mt-4">
                     Nama :
                     <input type="text" name="nama" value="${nama}" class="border-none" />
+                  </label>
+                  <label class="input border flex items-center gap-2 mt-4">
+                    Value :
+                    <input type="number" name="value" value="${value}" class="border-none" />
                   </label>
                   <button type="submit" class="btn bg-green-400 text-white font-semibold w-72 mt-4">Edit</button>
                 </form>

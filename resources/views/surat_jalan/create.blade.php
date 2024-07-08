@@ -36,9 +36,8 @@
             <div class="card-body">
                 <h2 class="card-title">Form Surat Jalan</h2>
                 <div>
-                    <input type="hidden" name="no" value="{{ $no }}">
                     @csrf
-                    <div>
+                    {{-- <div>
                         <label class="form-control w-full max-w-xs">
                             <div class="label">
                                 <span class="label-text">No. Surat</span>
@@ -47,16 +46,22 @@
                                 class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
                                 id="nomor_surat" name="nomor_surat" readonly />
                         </label>
-                    </div>
+                    </div> --}}
                     <div class="grid grid-cols-2 gap-4">
                         <div>
+                            <input type="hidden" name="id_ekspedisi" id="id_ekspedisi">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text">Ekspedisi</span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="kepada" name="kepada" />
+                                    id="kepada" name="kepada" list="ekspedisi_list" />
+                                    <datalist id="ekspedisi_list">
+                                        @foreach ($ekspedisi as $item)
+                                        <option data-id="{{$item->id}}" data-alamat="{{$item->alamat}}" value="{{ $item->nama }}">{{ $item->nama }}</option>
+                                        @endforeach
+                                    </datalist>
                             </label>
                         </div>
                         <div>
@@ -300,14 +305,11 @@
                         <p>JL.Kalianak 55 BLOK G, SURABAYA</p>
                         <p>Telp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;031-123456
                         </p>
-                        <p>Fax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            031-123456</p>
                     </div>
                 </div>
                 <div class="justify-self-end font-bold font-serif">
                     <p>Kepada: <span id="txt_kepada"></span></p>
-                    <p>Ekspedisi RAS</p>
-                    <p>Jl.Kalianak 55 G, Surabaya</p>
+                    <p id="alamat_ekspedisi_txt"></p>
                     <p>Surabaya</p>
                 </div>
             </div>
@@ -382,7 +384,7 @@
                 <div class="grid grid-cols-2 justify-items-stretch mx-20 mb-3">
                     <div class="justify-self-start"></div>
                     <div class="justify-self-end">
-                        <p class="text-center"><span id="txt_kota_pengirim"></span>, <span id="txt_tgl_sj"></span></p>
+                        <p class="text-center"><span id="txt_kota_pengirim"></span>, <span id="txt_tgl_sj">{{ date('d F Y') }}</span></p>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 justify-items-stretch mx-20">
@@ -403,6 +405,11 @@
         $('#kepada').on('input', function () {
             var inputValue = $(this).val();
             $('#txt_kepada').text(inputValue);
+            var id = $("#ekspedisi_list option[value='" + inputValue + "']").data('id');
+            var alamat = $("#ekspedisi_list option[value='" + inputValue + "']").data('alamat');
+            $('#id_ekspedisi').val(id);
+            $('#alamat_ekspedisi').val(alamat);
+            $('#alamat_ekspedisi_txt').html(alamat);
         });
 
         // $('#kepada').on('input', function () {

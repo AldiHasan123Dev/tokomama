@@ -61,10 +61,6 @@
                     <td>Telp: 031-7495507</td>
                     <td style="text-align: center;">NO: {{ $surat_jalan->invoice ?? '-' }}</td>
                 </tr>
-                <tr>
-                    <td>Fax: 031-7495507</td>
-                    <td></td>
-                </tr>
                 <br>
                 <tr>
                     <td style="text-align: left; padding-left: 45px;" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
@@ -92,20 +88,71 @@
             <tbody>
                 @php
                 $total = 0;
+                function terbilang($angka) {
+                            $angka = (float)$angka;
+                            $bilangan = array(
+                                    '',
+                                    'satu',
+                                    'dua',
+                                    'tiga',
+                                    'empat',
+                                    'lima',
+                                    'enam',
+                                    'tujuh',
+                                    'delapan',
+                                    'sembilan',
+                                    'sepuluh',
+                                    'sebelas'
+                                );
+                                if ($angka < 12) {
+                                    return $bilangan[$angka];
+                                } else if ($angka < 20) {
+                                    return $bilangan[$angka - 10] . ' belas';
+                                } else if ($angka < 100) {
+                                    $hasil_bagi = (int)($angka / 10);
+                                    $hasil_mod = $angka % 10;
+                                    return trim(sprintf('%s puluh %s', $bilangan[$hasil_bagi], $bilangan[$hasil_mod]));
+                                } else if ($angka < 200) {
+                                    return 'seratus ' . terbilang($angka - 100);
+                                } else if ($angka < 1000) {
+                                    $hasil_bagi = (int)($angka / 100);
+                                    $hasil_mod = $angka % 100;
+                                    return trim(sprintf('%s ratus %s', $bilangan[$hasil_bagi], terbilang($hasil_mod)));
+                                } else if ($angka < 2000) {
+                                    return 'seribu ' . terbilang($angka - 1000);
+                                } else if ($angka < 1000000) {
+                                    $hasil_bagi = (int)($angka / 1000);
+                                    $hasil_mod = $angka % 1000;
+                                    return trim(sprintf('%s ribu %s', terbilang($hasil_bagi), terbilang($hasil_mod)));
+                                } else if ($angka < 1000000000) {
+                                    $hasil_bagi = (int)($angka / 1000000);
+                                    $hasil_mod = $angka % 1000000;
+                                    return trim(sprintf('%s juta %s', terbilang($hasil_bagi), terbilang($hasil_mod)));
+                                } else if ($angka < 1000000000000) {
+                                    $hasil_bagi = (int)($angka / 1000000000);
+                                    $hasil_mod = fmod($angka, 1000000000);
+                                    return trim(sprintf('%s miliar %s', terbilang($hasil_bagi), terbilang($hasil_mod)));
+                                } else {
+                                    return 'Angka terlalu besar';
+                                }
+                            }
                 @endphp
                 @foreach ($surat_jalan->transactions as $item)
                 <tr>
                     <td class="text-center border border-black">{{ $loop->iteration }}</td>
-                    <td class="text-center border border-black"></td>
-                    <td class="text-center border border-black">{{ $item->barang->nama }}</td>
+                    <td class="text-center border border-black">{{ date('d M Y',
+                        strtotime($surat_jalan->tgl_sj)) }}</td>
+                    <td class="text-center border border-black">
+                        {{ $item->barang->nama }} <br> (Total {{ number_format($item->jumlah_beli * $item->barang->value) }} Kg)
+                    </td>
                     <td class="text-center border border-black">{{ $surat_jalan->no_cont }}</td>
-                    <td class="text-center border border-black">{{ $item->jumlah_jual }}</td>
-                    <td class="text-center border border-black">{{ number_format($item->harga_jual / $item->jumlah_jual)
-                        }}</td>
-                    <td class="text-center border border-black">{{ number_format($item->harga_jual) }}</td>
+                    <td class="text-center border border-black">{{ $item->jumlah_jual }} {{ $item->satuan_jual }}</td>
+                    <td class="text-center border border-black">{{ number_format($item->harga_jual) }} / {{ $item->satuan_jual }}</td>
+                    <td class="text-center border border-black">{{ number_format($item->jumlah_jual *
+                        $item->harga_jual) }}</td>
                 </tr>
                 @php
-                $total += $item->harga_jual;
+                $total += $item->harga_jual * $item->jumlah_jual;
                 @endphp
                 @endforeach
                 <tr>
@@ -142,7 +189,7 @@
         </table>
 
        
-        <p style="font-weight: bold;">TERBILANG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  RUPIAH</p>
+        <p style="font-weight: bold;">TERBILANG: {{ strtoupper(terbilang($total)) }}  RUPIAH</p>
 
         <br>
 
@@ -157,7 +204,7 @@
             </tr>
             <tr>
                 <th style="text-align: left; padding-left: 50px;">Mandiri (Cab.Indrapura) : 14.000.45006.005</th>
-                <th style="padding: 50px 0px;"></th>
+                <th></th>
             </tr>
             <tr>
                 <th style="text-align: left; padding-left: 50px;"></th>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Barang;
 use App\Models\Customer;
+use App\Models\Ekspedisi;
 use App\Models\Nopol;
 use App\Models\SuratJalan;
 use App\Models\Transaction;
@@ -29,12 +30,8 @@ class SuratJalanController extends Controller
         $barang = Barang::select('nama', 'value', 'id')->get();
         $nopol = Nopol::all();
         $customer = Customer::all();
-        $no = SuratJalan::whereYear('created_at', date('Y'))->max('no') + 1;
-        $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"); // daftar angka Romawi
-        $month_number = date("n", strtotime(date('Y-m-d'))); // mengambil nomor bulan dari tanggal
-        $month_roman = $roman_numerals[$month_number];
-        $nomor = sprintf('%03d', $no) . '/SJ/SB-' . $month_roman . '/' . date('Y');
-        return view('surat_jalan.create', compact('barang', 'nopol', 'nomor', 'no', 'customer'));
+        $ekspedisi = Ekspedisi::all();
+        return view('surat_jalan.create', compact('barang', 'nopol', 'customer', 'ekspedisi'));
     }
 
     /**
@@ -42,11 +39,26 @@ class SuratJalanController extends Controller
      */
     public function store(Request $request)
     {
-        $data = SuratJalan::create($request->all());
+        $customer = Customer::find($request->id_customer);
+        if(!$customer){
+            return back()->with('error', 'Customer Tidak Ditemukan');
+        }
+        $data = $request->all();
+        if (SuratJalan::count() == 0) {
+            $no = 87;
+        }else{
+            $no = SuratJalan::whereYear('created_at', date('Y'))->max('no') + 1;
+        }
+        $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"); // daftar angka Romawi
+        $month_number = date("n", strtotime($request->tgl_sj)); // mengambil nomor bulan dari tanggal
+        $month_roman = $roman_numerals[$month_number];
+        $data['nomor_surat'] = sprintf('%03d', $no) . '/SJ/SB-' . $month_roman . '/' . date('Y', strtotime($request->tgl_sj));
+        $sj = SuratJalan::create($data);
+
         for ($i = 0; $i < 4; $i++) {
             if ($request->barang[$i] != null && $request->id_barang[$i] != null) {
                 Transaction::create([
-                    'id_surat_jalan' => $data->id,
+                    'id_surat_jalan' => $sj->id,
                     'id_barang' => $request->id_barang[$i],
                     'harga_beli' => $request->harga_beli[$i],
                     'harga_jual' => $request->harga_jual[$i],
@@ -58,7 +70,7 @@ class SuratJalanController extends Controller
                 ]);
             }
         }
-        return redirect()->route('surat-jalan.cetak', $data);
+        return redirect()->route('surat-jalan.cetak', $sj);
     }
 
     /**

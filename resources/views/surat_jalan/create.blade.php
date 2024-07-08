@@ -193,6 +193,7 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Barang</th>
+                                    <th>Jumlah</th>
                                     <th>Harga Beli</th>
                                     <th>Jumlah Beli</th>
                                     <th>Satuan Beli</th>
@@ -209,6 +210,9 @@
                                     <td class="text-center">{{ $i }}</td>
                                     <td>
                                         <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}" class="form-control" list="barang_list">
+                                    </td>
+                                    <td>
+                                        <input type="text" onchange="inputBarang()" name="jumlah[]" id="jumlah-{{ $i }}" class="form-control" list="barang_list">
                                     </td>
                                     <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()" name="harga_beli[]" id="harga_beli-{{ $i }}" class="form-control">

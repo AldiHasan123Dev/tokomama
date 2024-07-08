@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('nopol', function (Blueprint $table) {
             $table->id();
             $table->string('nopol');
+            $table->string('status')->default('tidak aktif')->nullable();
             $table->softDeletes('deleted_at', precision: 0);
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');

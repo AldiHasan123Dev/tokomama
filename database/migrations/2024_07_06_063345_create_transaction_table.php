@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('transaction', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_surat_jalan')->nullable()->constrained('surat_jalan');
-            $table->foreignId('id_barang')->nullable()->constrained('barang');
+            $table->foreignId('id_surat_jalan')->nullable()->constrained('surat_jalan')->onDelete('cascade');
+            $table->foreignId('id_barang')->nullable()->constrained('barang')->onDelete('cascade');
             $table->double('harga_jual')->default(0);
             $table->double('jumlah_jual')->default(0);
             $table->string('satuan_jual')->nullable();

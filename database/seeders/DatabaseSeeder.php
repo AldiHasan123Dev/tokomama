@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
             BarangSeeder::class,
             MenuSeeder::class,
             SubMenuSeeder::class,
-            CoaSeeder::class
+            CoaSeeder::class,
+            NopolSeeder::class
         ]);
     }
 }

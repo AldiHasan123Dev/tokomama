@@ -83,6 +83,7 @@ Route::prefix('master')->controller(NopolController::class)->middleware('auth')-
     Route::post('nopol_add', 'store')->name('master.nopol.add');
     Route::post('nopol_edit', 'update')->name('master.nopol.edit');
     Route::post('nopol_delete', 'destroy')->name('master.nopol.delete');
+    Route::post('set_status', 'setStatus')->name('master.nopol.editstatus');
 });
 
 Route::prefix('jurnal')->controller(CoaController::class)->middleware('auth')->group(function () {

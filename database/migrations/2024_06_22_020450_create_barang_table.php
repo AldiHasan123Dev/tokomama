@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('kode_objek');
             $table->string('nama');
-            $table->string('value');
+            $table->string('value')->nullable();
             $table->timestamps();
             $table->softDeletes('deleted_at', precision: 0);
             $table->unsignedBigInteger('created_by')->nullable();

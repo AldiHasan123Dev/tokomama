@@ -69,7 +69,7 @@
                     <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                 </form>
                 <h3 class="text-lg font-bold">Edit Data</h3>
-                <form action="{{route('master.nopol.edit')}}" method="post">
+                <form action="{{route('master.barang.edit')}}" method="post">
                   @csrf
                   <input type="hidden" name="id" value="${id}" class="border-none" />
                   <label class="input border flex items-center gap-2 mt-3">

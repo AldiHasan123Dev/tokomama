@@ -9,6 +9,7 @@
                 <tr>
                     <th>#</th>
                     <th>Nopol</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                 </tr>
               </thead>
@@ -48,10 +49,37 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'number'},
                 { data: 'nopol', name: 'nopol' },
+                { data: 'status', name: 'status' },
                 { data: 'aksi', name: 'aksi' },
                 { data: 'id', name: 'id', visible:false},
             ]
           })
+
+          function ubahStatus(id, status) {
+            if (confirm('Apakah anda ingin mengubah status data ini?')) 
+            {
+                $.ajax
+                ({
+                    method: 'post',
+                    url: "{{ route('master.nopol.editstatus') }}",
+                    data: {
+                      id: id,
+                      status: status
+                    },
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success: function(response) 
+                    {
+                        table.ajax.reload();
+                    },
+                    error: function(xhr, status, error) 
+                    {
+                        console.log('Error:', error);
+                        console.log('Status:', status);
+                        console.dir(xhr);
+                    }
+                })
+            }
+          }
 
           function getData(id, nopol) {
             $('#dialog').html(`<dialog id="my_modal_7" class="modal modal-bottom sm:modal-middle">

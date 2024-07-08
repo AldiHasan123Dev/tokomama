@@ -56,7 +56,7 @@
                 ]
             });
 
-            function getData(id, invoice, nomor_surat, kepada, jumlah, satuan, jenis_barang, nama_kapal, no_cont, no_seal, no_pol, no_job) {
+            function getData(id, invoice, nomor_surat, kepada, jumlah, satuan, nama_kapal, no_cont, no_seal, no_pol, no_job) {
                 $('#dialog').html(`<dialog id="my_modal_5" class="modal">
                 <div class="modal-box w-11/12 max-w-2xl pl-10">
                 <form method="dialog">
@@ -85,10 +85,6 @@
                     <label class="input border flex items-center gap-2 mt-3">
                         Satuan:
                         <input type="text" name="satuan" value="${satuan}" class="border-none" />
-                    </label>
-                    <label class="input border flex items-center gap-2 mt-3">
-                        Jenis Barang:
-                        <input type="text" name="jenis_barang" value="${jenis_barang}" class="border-none" />
                     </label>
                     <label class="input border flex items-center gap-2 mt-3">
                         Nama Kapal:

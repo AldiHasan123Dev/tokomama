@@ -52,15 +52,15 @@ class KeuanganController extends Controller
     public function submitInvoice(SuratJalan $surat_jalan)
     {
         $nsfp = NSFP::where('available', '1')->orderBy('nomor')->first();
-        if(!$nsfp){
+        if (!$nsfp) {
             return back()->with('error', 'NSFP Belum Tersedia');
         }
-        $data['invoice'] = str_replace('/SJ/','/INV/',$surat_jalan->nomor_surat);
+        $data['invoice'] = str_replace('/SJ/', '/INV/', $surat_jalan->nomor_surat);
         $data['tgl_invoice'] = date('Y-m-d');
         $data['id_nsfp'] = $nsfp->id;
         $surat_jalan->update($data);
         $nsfp->update(['available' => '0', 'invoice' => $data['invoice']]);
-        return redirect()->route('keuangan.invoice.cetak',$surat_jalan);
+        return redirect()->route('keuangan.invoice.cetak', $surat_jalan);
     }
 
     public function cetakInvoice(SuratJalan $surat_jalan)
@@ -79,10 +79,10 @@ class KeuanganController extends Controller
     public function dataTable()
     {
         $query = SuratJalan::query();
-        if(request('invoice')){
+        if (request('invoice')) {
             $query->whereNotNull('invoice');
         }
-        if(request('pre_invoice')){
+        if (request('pre_invoice')) {
             $query->whereNull('invoice');
         }
         $data = $query->orderBy('nomor_surat', 'desc');

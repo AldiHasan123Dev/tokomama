@@ -38,7 +38,8 @@
         <x-slot:button>
             <form action="{{ route('keuangan.invoice.submit',$surat_jalan) }}" method="post">
                 @csrf
-                <button type="submit" onclick="return confirm('Submit Invoice?')" class="btn btn-primary btn-sm text-black">Submit Invoice</button>
+                <button type="submit" onclick="return confirm('Submit Invoice?')"
+                    class="btn btn-primary btn-sm text-black">Submit Invoice</button>
             </form>
         </x-slot:button>
         <div class="overflow-x-auto">
@@ -69,13 +70,14 @@
                             <td style="text-align: left; padding-left: 45px;" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
                                 &nbsp;&nbsp;&nbsp;
                                 {{$surat_jalan->customer->nama ?? '-' }}</td>
-                            <td style="text-align: center;"><span style="font-weight: bold;">KAPAL: </span> &nbsp;&nbsp;&nbsp;
+                            <td style="text-align: center;"><span style="font-weight: bold;">KAPAL: </span>
+                                &nbsp;&nbsp;&nbsp;
                                 {{ $surat_jalan->nama_kapal }}
                             </td>
                         </tr>
                     </thead>
                 </table>
-        
+
                 <table class="table border border-black">
                     <thead>
                         <tr>
@@ -90,20 +92,22 @@
                     </thead>
                     <tbody>
                         @php
-                            $total = 0;
+                        $total = 0;
                         @endphp
                         @foreach ($surat_jalan->transactions as $item)
                         <tr>
                             <td class="text-center border border-black">{{ $loop->iteration }}</td>
-                            <td class="text-center border border-black"></td>
+                            <td class="text-center border border-black">{{ date('d M Y',
+                                strtotime($surat_jalan->tgl_sj)) }}</td>
                             <td class="text-center border border-black">{{ $item->barang->nama }}</td>
                             <td class="text-center border border-black">{{ $surat_jalan->no_cont }}</td>
                             <td class="text-center border border-black">{{ $item->jumlah_jual }}</td>
                             <td class="text-center border border-black">{{ number_format($item->harga_jual) }}</td>
-                            <td class="text-center border border-black">{{ number_format($item->jumlah_jual * $item->harga_jual) }}</td>
+                            <td class="text-center border border-black">{{ number_format($item->jumlah_jual *
+                                $item->harga_jual) }}</td>
                         </tr>
                         @php
-                            $total += ($item->jumlah_jual * $item->harga_jual);
+                        $total += ($item->jumlah_jual * $item->harga_jual);
                         @endphp
                         @endforeach
                         <tr>
@@ -138,26 +142,24 @@
                         </tr>
                     </tbody>
                 </table>
-        
-                @php
-                    $formatter = new NumberFormatter("id", NumberFormatter::SPELLOUT);
-                    $terbilang = $formatter->format($total);
-                @endphp
-                <p style="font-weight: bold;">TERBILANG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ strtoupper($terbilang) }} RUPIAH</p>
-        
+
+                <p style="font-weight: bold;">Terbilang: Sebelas Juta</p>
+
                 <br>
-        
+
                 <table>
                     <tr>
                         <th style="text-align: left; padding-left: 50px;">Pembayaran ke rekening:</th>
-                        <td style="text-align: center;">Surabaya, {{ date('d F Y') }}</td>
+                        <td style="text-align: center;">Surabaya, @for($i = 1; $i <= 1; $i++){{ date('d M Y',
+                                strtotime($surat_jalan->tgl_sj)) }}@endfor</td>
                     </tr>
                     <tr>
                         <th style="text-align: left; padding-left: 50px;">CV. Sarana Bahagia</th>
                         <td style="text-align: center;">Hormat Kami</td>
                     </tr>
                     <tr>
-                        <th style="text-align: left; padding-left: 50px;">Mandiri (Cab.Indrapura) : 14.000.45006.005</th>
+                        <th style="text-align: left; padding-left: 50px;">Mandiri (Cab.Indrapura) : 14.000.45006.005
+                        </th>
                         <th style="padding: 50px 0px;"></th>
                     </tr>
                     <tr>

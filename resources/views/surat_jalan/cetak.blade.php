@@ -83,10 +83,20 @@
             </thead>
             <tbody>
                 <tr>
-                    <th class="text-center border border-black" rowspan="6">1</th>
-                    <td class="text-center border border-black text-center" rowspan="6"> {{ $surat_jalan->jumlah }}
+                    <th class="text-center border border-black" rowspan="6" style="vertical-align: top;">
+                        @foreach($surat_jalan->transactions as $item)
+                        <span>{{$loop->iteration}}</span><br>
+                        @endforeach
+                    </th>
+                    <td class="text-center border border-black" rowspan="6" style="vertical-align: top;">
+                        @foreach($surat_jalan->transactions as $item)
+                        <span>{{$item->jumlah_beli}}</span><br>
+                        @endforeach
                     </td>
-                    <td class="text-center border border-black text-center" rowspan="6"> {{ $surat_jalan->satuan }}
+                    <td class="text-center border border-black" rowspan="6" style="vertical-align: top;">
+                        @foreach($surat_jalan->transactions as $item)
+                        <span>{{$item->satuan_beli}}</span><br>
+                        @endforeach
                     </td>
                     <td class="border border-black">
                         @foreach ($surat_jalan->transactions as $item)
@@ -96,7 +106,8 @@
                         </div>
                         @endforeach
                     </td>
-                    <td class="text-center border border-black text-center" rowspan="6"> {{ $surat_jalan->customer->alamat }} <br> {{ $surat_jalan->customer->nama }}
+                    <td class="text-center border border-black text-center" rowspan="6"> {{
+                        $surat_jalan->customer->alamat }} <br> {{ $surat_jalan->customer->nama }}
                     </td>
                 </tr>
                 <tr>
@@ -127,8 +138,7 @@
                 <tr>
                     <th style="width: 50%;"></th>
                     <th style="width: 50%; text-align: right; font-weight: normal !important; padding-right:20px">{{
-                        $surat_jalan->kota_pengirim }}, {{
-                        date('d F Y') }}</th>
+                        $surat_jalan->kota_pengirim }}, {{ date('d M Y', strtotime($surat_jalan->tgl_sj)) }}</th>
                 </tr>
                 <tr>
                     <td style="height: 30px"></td>

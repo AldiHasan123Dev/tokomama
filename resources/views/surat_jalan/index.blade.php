@@ -20,6 +20,7 @@
                         <th>No. Seal</th>
                         <th>No. Pol</th>
                         <th>No. Job</th>
+                        <th>Profit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,6 +53,7 @@
                     { data: 'no_seal', name: 'no_seal' },
                     { data: 'no_pol', name: 'no_pol' },
                     { data: 'id', name: 'id', visible:false},
+                    { data: 'profit', name: 'profit'},
                     
                 ]
             });
@@ -85,10 +87,6 @@
                     <label class="input border flex items-center gap-2 mt-3">
                         Satuan:
                         <input type="text" name="satuan" value="${satuan}" class="border-none" />
-                    </label>
-                    <label class="input border flex items-center gap-2 mt-3">
-                        Jenis Barang:
-                        <input type="text" name="jenis_barang" value="${jenis_barang}" class="border-none" />
                     </label>
                     <label class="input border flex items-center gap-2 mt-3">
                         Nama Kapal:

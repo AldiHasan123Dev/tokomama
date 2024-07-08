@@ -91,7 +91,7 @@
             </thead>
             <tbody>
                 @php
-                    $total = 0;
+                $total = 0;
                 @endphp
                 @foreach ($surat_jalan->transactions as $item)
                 <tr>
@@ -100,11 +100,12 @@
                     <td class="text-center border border-black">{{ $item->barang->nama }}</td>
                     <td class="text-center border border-black">{{ $surat_jalan->no_cont }}</td>
                     <td class="text-center border border-black">{{ $item->jumlah_jual }}</td>
-                    <td class="text-center border border-black">{{ number_format($item->harga_jual / $item->jumlah_jual) }}</td>
+                    <td class="text-center border border-black">{{ number_format($item->harga_jual / $item->jumlah_jual)
+                        }}</td>
                     <td class="text-center border border-black">{{ number_format($item->harga_jual) }}</td>
                 </tr>
                 @php
-                    $total += $item->harga_jual;
+                $total += $item->harga_jual;
                 @endphp
                 @endforeach
                 <tr>
@@ -141,8 +142,9 @@
         </table>
 
         @php
-            $formatter = new NumberFormatter("id", NumberFormatter::SPELLOUT);
-            $terbilang = $formatter->format($total);
+        use Formatter\NumberFormatter;
+        $formatter = new NumberFormatter("id", NumberFormatter::SPELLOUT);
+        $terbilang = $formatter->format($total);
         @endphp
         <p style="font-weight: bold;">TERBILANG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ strtoupper($terbilang) }} RUPIAH</p>
 

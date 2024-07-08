@@ -45,18 +45,28 @@
                             </div>
                             <input type="text"
                                 class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                id="nomor_surat" name="nomor_surat" readonly value="{{ $nomor }}" />
+                                id="nomor_surat" name="nomor_surat" readonly />
                         </label>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">Kepada</span>
+                                    <span class="label-text">Ekspedisi</span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
                                     id="kepada" name="kepada" />
+                            </label>
+                        </div>
+                        <div>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text">Alamat Ekspedisi</span>
+                                </div>
+                                <input type="text"
+                                    class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
+                                    id="alamat_ekspedisi" name="alamat_ekspedisi" />
                             </label>
                         </div>
                         <!-- <div>
@@ -394,6 +404,11 @@
             var inputValue = $(this).val();
             $('#txt_kepada').text(inputValue);
         });
+
+        // $('#kepada').on('input', function () {
+        //     var inputValue = $(this).val();
+        //     $('#txt_kepada').text(inputValue);
+        // });
 
         $('#no_po').on('input', function () {
             var inputValue = $(this).val();

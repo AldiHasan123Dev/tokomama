@@ -141,12 +141,8 @@
             </tbody>
         </table>
 
-        @php
-        use Formatter\NumberFormatter;
-        $formatter = new NumberFormatter("id", NumberFormatter::SPELLOUT);
-        $terbilang = $formatter->format($total);
-        @endphp
-        <p style="font-weight: bold;">TERBILANG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ strtoupper($terbilang) }} RUPIAH</p>
+       
+        <p style="font-weight: bold;">TERBILANG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  RUPIAH</p>
 
         <br>
 

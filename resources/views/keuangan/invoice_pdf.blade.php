@@ -143,7 +143,10 @@
                     <td class="text-center border border-black">{{ date('d M Y',
                         strtotime($surat_jalan->tgl_sj)) }}</td>
                     <td class="text-center border border-black">
-                        {{ $item->barang->nama }} <br> (Total {{ number_format($item->jumlah_beli * $item->barang->value) }} Kg)
+                        {{ $item->barang->nama }} <br>
+                        @if (str_contains($item->barang->nama, '@'))
+                            (Total {{ number_format($item->jumlah_beli * $item->barang->value) }} Kg)
+                        @endif
                     </td>
                     <td class="text-center border border-black">{{ $surat_jalan->no_cont }}</td>
                     <td class="text-center border border-black">{{ $item->jumlah_jual }} {{ $item->satuan_jual }}</td>

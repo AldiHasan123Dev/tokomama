@@ -31,7 +31,9 @@ return new class extends Migration
             $table->string('nama_pengirim')->default('FIRDA')->nullable();
             $table->string('nama_penerima')->default('IFAN')->nullable();
             $table->integer('no')->default(0);
-            $table->integer('ppn')->nullable();
+            $table->double('ppn')->default(0);
+            $table->double('subtotal')->default(0);
+            $table->double('total')->default(0);
             $table->foreignId('id_ekspedisi')->nullable()->constrained('ekspedisi');
             $table->foreignId('id_customer')->nullable()->constrained('customer');
             $table->foreignId('id_nsfp')->nullable()->constrained('nsfp');

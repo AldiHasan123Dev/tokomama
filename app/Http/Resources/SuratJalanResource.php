@@ -49,8 +49,8 @@ class SuratJalanResource extends JsonResource
             'alamat_npwp' => $this->customer->alamat_npwp ?? '-',
             'nomor_nsfp' => $this->nsfp->nomor ?? '-',
             'keterangan' => $this->nsfp->keterangan ?? '-',
-            'ppn' => '11%',
-            'total_all' => '-',
+            'ppn' => $this->ppn,
+            'total_all' => $this->total,
             'pph' => '-',
             'job' => '-',
             'no_bupot' => '-',
@@ -59,7 +59,7 @@ class SuratJalanResource extends JsonResource
             'tanggal_bupot' => '-',
             'selisih_bupot' => '-',
             'jurnal_bupot' => '-',
-            'sub_total' => '-'
+            'sub_total' => $this->subtotal
 
         ];
     }

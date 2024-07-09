@@ -58,6 +58,9 @@ class KeuanganController extends Controller
         $data['invoice'] = str_replace('/SJ/', '/INV/', $surat_jalan->nomor_surat);
         $data['tgl_invoice'] = date('Y-m-d');
         $data['id_nsfp'] = $nsfp->id;
+        $data['ppn'] = floatval(request('total')) * 0.1;
+        $data['subtotal'] = floatval(request('total'));
+        $data['total'] = floatval(request('total')) + $data['ppn'];
         $surat_jalan->update($data);
         $nsfp->update(['available' => '0', 'invoice' => $data['invoice']]);
         return redirect()->route('keuangan.invoice.cetak', $surat_jalan);

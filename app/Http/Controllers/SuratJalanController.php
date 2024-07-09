@@ -133,14 +133,14 @@ class SuratJalanController extends Controller
 
     public function dataTable()
     {
-        // $data = SuratJalan::query()->orderBy('nomor_surat', 'desc');
-        $data = SuratJalan::query()->join('ekspedisi', 'ekspedisi.id', '=', 'surat_jalan.id_ekspedisi')->join('transaction', 'transaction.id_surat_jalan', '=', 'surat_jalan.id')->select('surat_jalan.*', 'ekspedisi.nama', 'transaction.id_surat_jalan', 'transaction.harga_jual', 'transaction.jumlah_jual', 'transaction.harga_beli', 'transaction.jumlah_beli');
+        $data = SuratJalan::query()->orderBy('nomor_surat', 'desc');
+        // $data = SuratJalan::query()->join('ekspedisi', 'ekspedisi.id', '=', 'surat_jalan.id_ekspedisi')->join('transaction', 'transaction.id_surat_jalan', '=', 'surat_jalan.id')->select('surat_jalan.*', 'ekspedisi.nama', 'transaction.id_surat_jalan', 'transaction.harga_jual', 'transaction.jumlah_jual', 'transaction.harga_beli', 'transaction.jumlah_beli');
 
 
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('profit', function ($row) {
-                $total = ($row->harga_jual * $row->jumlah_jual) - ($row->harga_beli * $row->jumlah_beli);
+                $total = $row->transactions->sum('margin');
                 return $total;
             })
             ->addColumn('aksi', function ($row) {

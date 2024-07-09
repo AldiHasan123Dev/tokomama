@@ -38,6 +38,7 @@
         <x-slot:button>
             <form action="{{ route('keuangan.invoice.submit',$surat_jalan) }}" method="post">
                 @csrf
+                <input type="hidden" name="total" id="total">
                 <button type="submit" onclick="return confirm('Submit Invoice?')"
                     class="btn btn-primary btn-sm text-black">Submit Invoice</button>
             </form>
@@ -144,7 +145,10 @@
                             <td class="text-center border border-black">{{ date('d M Y',
                                 strtotime($surat_jalan->tgl_sj)) }}</td>
                             <td class="text-center border border-black">
-                                {{ $item->barang->nama }} <br> (Total {{ number_format($item->jumlah_beli * $item->barang->value) }} Kg)
+                                {{ $item->barang->nama }} <br> 
+                                @if (str_contains($item->barang->nama, '@'))
+                                    (Total {{ number_format($item->jumlah_beli * $item->barang->value) }} Kg)
+                                @endif
                             </td>
                             <td class="text-center border border-black">{{ $surat_jalan->no_cont }}</td>
                             <td class="text-center border border-black">{{ $item->jumlah_jual }} {{ $item->satuan_jual }}</td>
@@ -216,4 +220,7 @@
             </main>
         </div>
     </x-keuangan.card-keuangan>
+    <script>
+        $('#total').val(@json($total));
+    </script>
 </x-Layout.layout>

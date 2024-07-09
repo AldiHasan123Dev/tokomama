@@ -1,73 +1,91 @@
 <x-Layout.layout>
 
-    <div id="dialog"></div>
+  <div id="dialog"></div>
 
-    <x-master.card-master>
-        <x-slot:tittle>Data Ekspedisi</x-slot:tittle>
-        <div class="overflow-x-auto">
-            <table class="table" id="table-ekspedisi">
-              <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>No Telp</th>
-                    <th>Alamat</th>
-                    <th>Kota</th>
-                    <th>Aksi</th>
-                    <th>ID</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+  @if(session('error'))
+  <div role="alert" class="alert alert-error mb-5">
+    <i class="fa-regular fa-circle-xmark"></i>
+    <span class="font-medium">{{ session('error') }}</span>
+  </div>
+  @elseif(session('success'))
+  <div role="alert" class="alert alert-success mb-5">
+    <i class="fa-regular fa-circle-check text-xl"></i>
+    <span class="font-medium">{{ session('success') }}</span>
+  </div>
+  @endif
+
+  <x-master.card-master>
+    <x-slot:tittle>Data Ekspedisi</x-slot:tittle>
+    <div class="overflow-x-auto">
+      <table class="table" id="table-ekspedisi">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nama</th>
+            <th>Email</th>
+            <th>No Telp</th>
+            <th>Alamat</th>
+            <th>Kota</th>
+            <th>Aksi</th>
+            <th>ID</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </x-master.card-master>
+
+  <x-master.card-master>
+    <x-slot:tittle>Menambah Data Ekspedisi</x-slot:tittle>
+    <form action="{{route('ekspedisi.store')}}" method="post" class="grid grid-cols-3 gap-5">
+      @csrf
+      <label class="form-control w-full max-w-xs col-start-1">
+        <div class="label">
+          <span class="label-text">Nama <span class="text-red-500">*</span></span>
         </div>
-    </x-master.card-master>
+        <input type="text" placeholder="Nama Barang" name="nama" class="input input-bordered w-full max-w-xs rounded-md"
+          required />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-2">
+        <div class="label">
+          <span class="label-text">Alamat <span class="text-red-500">*</span></span>
+        </div>
+        <input type="text" placeholder="Alamat" name="alamat" class="input input-bordered w-full max-w-xs rounded-md"
+          required />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-3">
+        <div class="label">
+          <span class="label-text">Kota <span class="text-red-500">*</span></span>
+        </div>
+        <input type="text" placeholder="Kota" name="kota" class="input input-bordered w-full max-w-xs rounded-md"
+          required />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-1">
+        <div class="label">
+          <span class="label-text">Email <span class="text-red-500">*</span></span>
+        </div>
+        <input type="text" placeholder="Email" name="email" class="input input-bordered w-full max-w-xs rounded-md"
+          required />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-2">
+        <div class="label">
+          <span class="label-text">No Telp <span class="text-red-500">*</span></span>
+        </div>
+        <input type="text" placeholder="No telp" name="no_telp" class="input input-bordered w-full max-w-xs rounded-md"
+          required />
+      </label>
+      <div class="col-start-3 mt-9">
+        <button type="submit" class="btn text-semibold text-white bg-green-500 w-full max-w-xs">Simpan Data
+          Ekspedisi</button>
+      </div>
 
-    <x-master.card-master>
-        <x-slot:tittle>Menambah Data Ekspedisi</x-slot:tittle>
-        <form action="{{route('ekspedisi.store')}}" method="post" class="grid grid-cols-3 gap-5">
-          @csrf
-          <label class="form-control w-full max-w-xs col-start-1">
-            <div class="label">
-              <span class="label-text">Nama</span>
-            </div>
-            <input type="text" placeholder="Nama Barang" name="nama" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <label class="form-control w-full max-w-xs col-start-2">
-            <div class="label">
-              <span class="label-text">Alamat</span>
-            </div>
-            <input type="text" placeholder="Alamat" name="alamat" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <label class="form-control w-full max-w-xs col-start-3">
-            <div class="label">
-              <span class="label-text">Kota</span>
-            </div>
-            <input type="text" placeholder="Kota" name="kota" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <label class="form-control w-full max-w-xs col-start-1">
-            <div class="label">
-              <span class="label-text">Email</span>
-            </div>
-            <input type="text" placeholder="Email" name="email" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <label class="form-control w-full max-w-xs col-start-2">
-            <div class="label">
-              <span class="label-text">No Telp</span>
-            </div>
-            <input type="text" placeholder="No telp" name="no_telp" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <div class="col-start-3 mt-9">
-            <button type="submit" class="btn text-semibold text-white bg-green-500">Simpan Data Ekspedisi</button>
-          </div>
-          
-        </form>
-    </x-master.card-master>
+    </form>
+  </x-master.card-master>
 
-    <x-slot:script>
-        <script>
-            let table = $('#table-ekspedisi').DataTable({
+  <x-slot:script>
+    <script>
+      let table = $('#table-ekspedisi').DataTable({
             ajax: {
               url: "{{route('ekspedisi.data')}}",
               method: 'POST',
@@ -146,6 +164,7 @@
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success: function(response) 
                     {
+                        alert('Data Master Ekspedisi berhasil dihapus!');
                         table.ajax.reload();
                     },
                     error: function(xhr, status, error) 
@@ -157,6 +176,6 @@
                 })
             }
           }
-        </script>
-    </x-slot:script>
+    </script>
+  </x-slot:script>
 </x-Layout.layout>

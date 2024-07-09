@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use PHPUnit\Event\Code\Throwable;
 use Yajra\DataTables\DataTables;
 
 class CustomerController extends Controller
@@ -29,9 +30,13 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $data = Customer::create($request->all());
-        return redirect()->route('master.customer', $data);
+
+        if ($data) {
+            return redirect()->route('master.customer', $data)->with('success', 'Data Master Customer berhasil ditambahkan!');
+        } else {
+            return redirect()->route('master.customer', $data)->with('error', 'Data Master Customer gagal ditambahkan!');
+        }
     }
 
     /**
@@ -64,7 +69,12 @@ class CustomerController extends Controller
         $data->alamat = $request->alamat;
         $data->kota = $request->kota;
         $data->alamat_npwp = $request->alamat_npwp;
-        $data->save();
+
+        if ($data->save()) {
+            return redirect()->route('master.customer', $data)->with('success', 'Data Master Customer berhasil diubah!');
+        } else {
+            return redirect()->route('master.customer', $data)->with('error', 'Data Master Customer berhasil diubah!');
+        }
 
         return redirect()->route('master.customer');
     }
@@ -74,9 +84,13 @@ class CustomerController extends Controller
      */
     public function destroy()
     {
-        // dd(request('id'));
-        Customer::destroy(request('id'));
-        return route('master.customer');
+        $data = Customer::destroy(request('id'));
+
+        if ($data) {
+            return redirect()->route('master.customer')->with('success', 'Data Master Customer berhasil dihapus!');
+        } else {
+            return redirect()->route('master.customer')->with('error', 'Data Master Customer gagal dihapus!');
+        }
     }
 
 

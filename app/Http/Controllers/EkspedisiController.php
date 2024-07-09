@@ -31,7 +31,12 @@ class EkspedisiController extends Controller
     {
         $data = $request->all();
         $ekspedisi = Ekspedisi::create($data);
-        return redirect()->route('ekspedisi.index');
+
+        if ($ekspedisi) {
+            return redirect()->route('ekspedisi.index')->with('success', 'Data Master Ekspedisi berhasil ditambahkan!');
+        } else {
+            return redirect()->route('ekspedisi.index')->with('error', 'Data Master Ekspedisi gagal ditambahkan!');
+        }
     }
 
     /**
@@ -57,7 +62,12 @@ class EkspedisiController extends Controller
     {
         $data = $request->all();
         $ekspedisi->update($data);
-        return redirect()->route('ekspedisi.index');
+
+        if ($ekspedisi->update($data)) {
+            return redirect()->route('ekspedisi.index')->with('success', 'Data Master Ekspedisi berhasil diubah!');
+        } else {
+            return redirect()->route('ekspedisi.index')->with('error', 'Data Master Ekspedisi gagal diubah!');
+        }
     }
 
     /**

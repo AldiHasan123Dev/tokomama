@@ -52,28 +52,31 @@
                             <input type="hidden" name="id_ekspedisi" id="id_ekspedisi">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">Ekspedisi</span>
+                                    <span class="label-text">Ekspedisi <span class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="kepada" name="kepada" list="ekspedisi_list" />
-                                    <datalist id="ekspedisi_list">
-                                        @foreach ($ekspedisi as $item)
-                                        <option data-id="{{$item->id}}" data-alamat="{{$item->alamat}}" value="{{ $item->nama }}">{{ $item->nama }}</option>
-                                        @endforeach
-                                    </datalist>
+                                    id="kepada" name="kepada" list="ekspedisi_list" required />
+                                <datalist id="ekspedisi_list">
+                                    @foreach ($ekspedisi as $item)
+                                    <option data-id="{{$item->id}}" data-alamat="{{$item->alamat}}"
+                                        data-kota="{{ $item->kota }}" value="{{ $item->nama }}">{{ $item->nama }}
+                                    </option>
+                                    @endforeach
+                                </datalist>
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">Alamat Ekspedisi</span>
+                                    <span class="label-text">Alamat Ekspedisi <span class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="alamat_ekspedisi" name="alamat_ekspedisi" />
+                                    id="alamat_ekspedisi" name="alamat_ekspedisi" required />
                             </label>
                         </div>
+                        <input type="hidden" name="kota_ekspedisi" id="kota_ekspedisi">
                         <!-- <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -97,41 +100,41 @@
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">Nama Kapal</span>
+                                    <span class="label-text">Nama Kapal <span class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="nama_kapal" name="nama_kapal" />
+                                    id="nama_kapal" name="nama_kapal" required />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">No. Cont</span>
+                                    <span class="label-text">No. Cont <span class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="no_cont" name="no_cont" />
+                                    id="no_cont" name="no_cont" required />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">No. Seal</span>
+                                    <span class="label-text">No. Seal <span class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="no_seal" name="no_seal" />
+                                    id="no_seal" name="no_seal" required />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">No. Pol</span>
+                                    <span class="label-text">No. Pol <span class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="no_pol" name="no_pol" list="no_pol_list" />
+                                    id="no_pol" name="no_pol" list="no_pol_list" required />
                                 <input type="hidden" name="id_nopol" id="id_nopol">
                                 <datalist id="no_pol_list">
                                     @foreach ($nopol as $np)
@@ -143,31 +146,32 @@
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">No. PO</span>
+                                    <span class="label-text">No. PO <span class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="no_po" name="no_po" value="-" />
+                                    id="no_po" name="no_po" value="-" required />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">No. Job</span>
+                                    <span class="label-text">No. Job <span class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="no_job" name="no_job" />
+                                    id="no_job" name="no_job" required />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">Tujuan/Nama Customer</span>
+                                    <span class="label-text">Tujuan/NamaCustomer <span
+                                            class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="tujuan" name="tujuan" list="customer_list" />
+                                    id="tujuan" name="tujuan" list="customer_list" required />
                                 <input type="hidden" name="id_customer" id="id_customer">
                                 <datalist id="customer_list">
                                     @foreach ($customer as $mb)
@@ -179,41 +183,42 @@
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">Kota Pengirim</span>
+                                    <span class="label-text">Kota Pengirim <span class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="kota_pengirim" name="kota_pengirim" value="Surabaya" />
+                                    id="kota_pengirim" name="kota_pengirim" value="Surabaya" required />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">Nama Pengirim</span>
+                                    <span class="label-text">Nama Pengirim <span class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="nama_pengirim" name="nama_pengirim" value="FIRDA" />
+                                    id="nama_pengirim" name="nama_pengirim" value="FIRDA" required />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">Nama Penerima</span>
+                                    <span class="label-text">Nama Penerima <span class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="nama_penerima" name="nama_penerima" value="IFAN" />
+                                    id="nama_penerima" name="nama_penerima" value="IFAN" required />
                             </label>
                         </div>
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">Tanggal Surat Jalan</span>
+                                    <span class="label-text">Tanggal Surat Jalan <span
+                                            class="text-red-500">*</span></span>
                                 </div>
                                 <input type="date"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="tgl_sj" name="tgl_sj" value="{{ date('Y-m-d') }}" />
+                                    id="tgl_sj" name="tgl_sj" value="{{ date('Y-m-d') }}" required />
                             </label>
                         </div>
                     </div>
@@ -308,9 +313,10 @@
                     </div>
                 </div>
                 <div class="justify-self-end font-bold font-serif">
-                    <p>Kepada: <span id="txt_kepada"></span></p>
+                    <p>Kepada: </p>
+                    <p id="txt_kepada"></p>
                     <p id="alamat_ekspedisi_txt"></p>
-                    <p>Surabaya</p>
+                    <p id="kota_ekspedisi_txt"></p>
                 </div>
             </div>
             <p class="font-bold font-serif mb-5">SURAT JALAN No.: &nbsp; <span id="txt_nomor_surat"></span></p>
@@ -384,7 +390,8 @@
                 <div class="grid grid-cols-2 justify-items-stretch mx-20 mb-3">
                     <div class="justify-self-start"></div>
                     <div class="justify-self-end">
-                        <p class="text-center"><span id="txt_kota_pengirim"></span>, <span id="txt_tgl_sj">{{ date('d F Y') }}</span></p>
+                        <p class="text-center"><span id="txt_kota_pengirim"></span>, <span id="txt_tgl_sj">{{ date('d F
+                                Y') }}</span></p>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 justify-items-stretch mx-20">
@@ -404,12 +411,14 @@
     <script>
         $('#kepada').on('input', function () {
             var inputValue = $(this).val();
-            $('#txt_kepada').text(inputValue);
             var id = $("#ekspedisi_list option[value='" + inputValue + "']").data('id');
             var alamat = $("#ekspedisi_list option[value='" + inputValue + "']").data('alamat');
-            $('#id_ekspedisi').val(id);
+            var kota = $('#ekspedisi_list option[value="' + inputValue + '"]').data('kota');
+            $('#txt_kepada').text(inputValue);
+            $('#alamat_ekspedisi_txt').text(alamat);
+            $('#kota_ekspedisi_txt').text(kota);
             $('#alamat_ekspedisi').val(alamat);
-            $('#alamat_ekspedisi_txt').html(alamat);
+            $('#id_ekspedisi').val(id);
         });
 
         // $('#kepada').on('input', function () {
@@ -478,6 +487,7 @@
             $('#txt_kota_pengirim').text($('#kota_pengirim').val());
             $('#txt_nama_pengirim').text($('#nama_pengirim').val());
             $('#txt_nama_penerima').text($('#nama_penerima').val());
+            $('#txt_no_po').text($('#no_po').val());
         });
 
         $("#kota_pengirim").on({

@@ -1,44 +1,57 @@
 <x-Layout.layout>
-    <div id="dialog"></div>
+  <div id="dialog"></div>
 
-    <x-master.card-master>
-        <x-slot:tittle>Data Nomor Polisi</x-slot:tittle>
-        <div class="overflow-x-auto">
-            <table class="table" id="table-nopol">
-              <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nopol</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+  @if(session('error'))
+  <div role="alert" class="alert alert-error mb-5">
+    <i class="fa-regular fa-circle-xmark"></i>
+    <span class="font-medium">{{ session('error') }}</span>
+  </div>
+  @elseif(session('success'))
+  <div role="alert" class="alert alert-success mb-5">
+    <i class="fa-regular fa-circle-check text-xl"></i>
+    <span class="font-medium">{{ session('success') }}</span>
+  </div>
+  @endif
+
+  <x-master.card-master>
+    <x-slot:tittle>Data Nomor Polisi</x-slot:tittle>
+    <div class="overflow-x-auto">
+      <table class="table" id="table-nopol">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nopol</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </x-master.card-master>
+
+  <x-master.card-master>
+    <x-slot:tittle>Menambah Data Nomor Polisi</x-slot:tittle>
+    <form action="{{route('master.nopol.add')}}" method="post" class="grid grid-cols-3 ">
+      @csrf
+      <label class="form-control w-full max-w-xs col-start-1">
+        <div class="label">
+          <span class="label-text">nopol <span class="text-red-500">*</span></span>
         </div>
-    </x-master.card-master>
+        <input type="text" placeholder="Nomor Polisi" name="nopol"
+          class="input input-bordered w-full max-w-xs rounded-md" required />
+      </label>
+      <div class="mt-9">
+        <button type="submit" class="btn text-semibold text-white bg-green-500">Simpan Data Customer</button>
+      </div>
 
-    <x-master.card-master>
-        <x-slot:tittle>Menambah Data Nomor Polisi</x-slot:tittle>
-        <form action="{{route('master.nopol.add')}}" method="post" class="grid grid-cols-3 ">
-          @csrf
-          <label class="form-control w-full max-w-xs col-start-1">
-            <div class="label">
-              <span class="label-text">nopol</span>
-            </div>
-            <input type="text" placeholder="Nomor Polisi" name="nopol" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <div class=" mt-9">
-            <button type="submit" class="btn text-semibold text-white bg-green-500">Simpan Data Customer</button>
-          </div>
-          
-        </form>
-    </x-master.card-master>
+    </form>
+  </x-master.card-master>
 
-    <x-slot:script>
-        <script>
-            let table = $('#table-nopol').DataTable({
+  <x-slot:script>
+    <script>
+      let table = $('#table-nopol').DataTable({
             ajax: {
               url: "{{route('master.nopol.list')}}",
               
@@ -69,6 +82,7 @@
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success: function(response) 
                     {
+                        alert("Status Data Master Nomor Polisi berhasil diubah!");
                         table.ajax.reload();
                     },
                     error: function(xhr, status, error) 
@@ -113,6 +127,7 @@
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success: function(response) 
                     {
+                        alert("Status Data Master Nomor Polisi berhasil dihapus!");
                         table.ajax.reload();
                     },
                     error: function(xhr, status, error) 
@@ -124,6 +139,6 @@
                 })
             }
           }
-        </script>
-    </x-slot:script>
+    </script>
+  </x-slot:script>
 </x-Layout.layout>

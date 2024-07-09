@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LaporanPpnExport;
 use App\Http\Resources\SuratJalanResource;
 use App\Models\NSFP;
 use App\Models\SuratJalan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Svg\Tag\Rect;
 use Yajra\DataTables\DataTables;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
@@ -31,9 +34,22 @@ class PajakController extends Controller
         return $data;
     }
 
-    public function datatable()
+    public function PPNExportExcel(Request $request)
+    {
+        // dd($request->start);
+        return Excel::download(new LaporanPpnExport($request->start, $request->end), 'laporan-ppn.xlsx');
+    }
+
+    public function PPNExportCsv(Request $request)
+    {
+        // dd($request->start);
+        return Excel::download(new LaporanPpnExport($request->start, $request->end), 'laporan-ppn.csv');
+    }
+
+    public function datatable(Request $request)
     {
 
+        // dd($request);
         // dd($suratJalan);
         /**
          * Data yang dibutuhkan

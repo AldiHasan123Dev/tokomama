@@ -9,11 +9,13 @@ class Ekspedisi extends Model
 {
     use HasFactory;
     protected $table = 'ekspedisi';
-    protected $fillable = [
-        'nama',
-        'email',
-        'alamat',
-        'kota',
-        'no_telp',
-    ];
+    // protected $fillable = [
+    //     'nama',
+    //     'email',
+    //     'alamat',
+    //     'kota',
+    //     'no_telp',
+    // ];
+
+    protected $guarded = ['id'];
 }

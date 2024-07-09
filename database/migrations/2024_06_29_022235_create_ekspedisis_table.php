@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('ekspedisi', function (Blueprint $table) {
             $table->id();
             $table->string('nama')->nullable();
+            $table->string('pic')->nullable();
             $table->string('email')->nullable();
             $table->string('alamat')->nullable();
             $table->string('kota')->nullable();
             $table->string('no_telp')->nullable();
+            $table->string('fax')->nullable();
             $table->timestamps();
         });
     }

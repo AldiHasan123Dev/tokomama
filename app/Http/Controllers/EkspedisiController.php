@@ -71,12 +71,12 @@ class EkspedisiController extends Controller
 
     public function dataTable()
     {
-        $data = Ekspedisi::query();
+        $data = Ekspedisi::query()->orderBy('id', 'desc');
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
                 return '<div class="flex gap-3 mt-2">
-                            <button onclick="getData(' . $row->id . ', \'' . addslashes($row->nama) . '\', \'' . addslashes($row->email) . '\', \'' . addslashes($row->no_telp) . '\', \'' . addslashes($row->alamat) . '\', \'' . addslashes($row->kota) . '\')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button>
+                            <button onclick="getData(' . $row->id . ', \'' . addslashes($row->nama) . '\', \'' . addslashes($row->email) . '\', \'' . addslashes($row->no_telp) . '\', \'' . addslashes($row->alamat) . '\', \'' . addslashes($row->kota) . '\', \'' . addslashes($row->pic) . '\', \'' . addslashes($row->fax) . '\')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button>
                             <button onclick="deleteData(' . $row->id . ')"  id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>
                         </div>';
             })

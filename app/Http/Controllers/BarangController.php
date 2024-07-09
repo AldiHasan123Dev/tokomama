@@ -29,9 +29,12 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $data = Barang::create($request->all());
-        return redirect()->route('master.barang', $data);
+        if ($data) {
+            return redirect()->route('master.barang', $data)->with('success', 'Data Master Barang berhasil ditambahkan!');
+        } else {
+            return redirect()->route('master.barang', $data)->with('error', "Data Master Barang gagal ditambahkan!");
+        }
     }
 
     /**
@@ -59,7 +62,14 @@ class BarangController extends Controller
         $data->kode_objek = $request->kode_objek;
         $data->nama = $request->nama;
         $data->value = $request->value;
-        $data->save();
+
+        if ($data->save()) {
+            return redirect()->route('master.barang')->with('success', 'Data Master Barang berhasil diubah!');
+        } else {
+            return redirect()->route('master.barang')->with('success', 'Data Master Barang gagal diubah!');
+        }
+
+
         return redirect()->route('master.barang');
     }
 
@@ -77,14 +87,14 @@ class BarangController extends Controller
         $data = Barang::query()->orderBy('id', 'desc');
 
         return DataTables::of($data)
-        ->addIndexColumn()
-        ->addColumn('aksi', function ($row) {
-            return '<div class="flex gap-3 mt-2">
-            <button onclick="getData(' . $row->id . ', \'' . addslashes($row->kode_objek) . '\', \'' . addslashes($row->nama) . '\','.$row->value.')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button> |
-            <button onclick="deleteData('. $row->id .')" id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end" ><i class="fa-solid fa-trash"></i></button>
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($row) {
+                return '<div class="flex gap-3 mt-2">
+            <button onclick="getData(' . $row->id . ', \'' . addslashes($row->kode_objek) . '\', \'' . addslashes($row->nama) . '\',' . $row->value . ')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button> |
+            <button onclick="deleteData(' . $row->id . ')" id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end" ><i class="fa-solid fa-trash"></i></button>
             </div>';
-        })
-        ->rawColumns(['aksi'])
-        ->make();
+            })
+            ->rawColumns(['aksi'])
+            ->make();
     }
 }

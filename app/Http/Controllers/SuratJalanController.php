@@ -40,13 +40,13 @@ class SuratJalanController extends Controller
     public function store(Request $request)
     {
         $customer = Customer::find($request->id_customer);
-        if(!$customer){
+        if (!$customer) {
             return back()->with('error', 'Customer Tidak Ditemukan');
         }
         $data = $request->all();
         if (SuratJalan::count() == 0) {
             $no = 87;
-        }else{
+        } else {
             $no = SuratJalan::whereYear('created_at', date('Y'))->max('no') + 1;
         }
         $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"); // daftar angka Romawi
@@ -125,18 +125,23 @@ class SuratJalanController extends Controller
     public function cetak(SuratJalan $surat_jalan)
     {
         // PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
-        $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan'));
+        $ekspedisi = Ekspedisi::find($surat_jalan->id_ekspedisi);
+        $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
         return $pdf->stream('surat_jalan.pdf');
-        return view('surat_jalan.cetak', compact('surat_jalan'));
+        return view('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
     }
 
     public function dataTable()
     {
-        $data = SuratJalan::query()->orderBy('nomor_surat', 'desc');
+        // $data = SuratJalan::query()->orderBy('nomor_surat', 'desc');
+        $data = SuratJalan::query()->join('ekspedisi', 'ekspedisi.id', '=', 'surat_jalan.id_ekspedisi')->join('transaction', 'transaction.id_surat_jalan', '=', 'surat_jalan.id')->select('surat_jalan.*', 'ekspedisi.nama', 'transaction.id_surat_jalan', 'transaction.harga_jual', 'transaction.jumlah_jual', 'transaction.harga_beli', 'transaction.jumlah_beli');
+
+
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('profit', function ($row) {
                 $total = ($row->harga_jual * $row->jumlah_jual) - ($row->harga_beli * $row->jumlah_beli);
+                return $total;
             })
             ->addColumn('aksi', function ($row) {
                 return '<div class="flex gap-3 mt-2">

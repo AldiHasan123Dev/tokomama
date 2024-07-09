@@ -13,8 +13,6 @@
                         <th>Invoice</th>
                         <th>No. Surat</th>
                         <th>Kepada</th>
-                        <th>Jumlah</th>
-                        <th>Satuan</th>
                         <th>Nama Kapal</th>
                         <th>No. Count</th>
                         <th>No. Seal</th>
@@ -46,8 +44,6 @@
                     { data: 'invoice', name: 'No. Invoice' },
                     { data: 'nomor_surat', name: 'No. Surat' },
                     { data: 'kepada', name: 'kepada' },
-                    { data: 'jumlah', name: 'jumlah' },
-                    { data: 'satuan', name: 'satuan' },
                     { data: 'nama_kapal', name: 'nama_kapal' },
                     { data: 'no_cont', name: 'no_cont' },
                     { data: 'no_seal', name: 'no_seal' },
@@ -79,14 +75,6 @@
                     <label class="input border flex items-center gap-2 mt-3">
                         Kepada :
                         <input type="text" name="kepada" value="${kepada}" class="border-none" />
-                    </label>
-                    <label class="input border flex items-center gap-2 mt-3">
-                        Jumlah :
-                        <input type="text" name="jumlah" value="${jumlah}" class="border-none" />
-                    </label>
-                    <label class="input border flex items-center gap-2 mt-3">
-                        Satuan:
-                        <input type="text" name="satuan" value="${satuan}" class="border-none" />
                     </label>
                     <label class="input border flex items-center gap-2 mt-3">
                         Nama Kapal:
@@ -126,7 +114,8 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(response) 
                 {
-                  table.ajax.reload();
+                    alert("Data Surat Jalan berhasil dihapus!");
+                    table.ajax.reload();
                 },
                 error: function(xhr, status, error) 
                 {

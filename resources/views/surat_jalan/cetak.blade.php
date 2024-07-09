@@ -59,11 +59,11 @@
                 </tr>
                 <tr>
                     <td>Telp: 031-123456</td>
-                    <td>Jl. Kalianak 55 Blok G, Surabaya</td>
+                    <td>{{ $ekspedisi->alamat }}</td>
                 </tr>
                 <tr>
-                    <td>Fax: 031-123456</td>
-                    <td>Surabaya</td>
+                    <td></td>
+                    <td>{{ $ekspedisi->kota }}</td>
                 </tr>
                 <tr>
                     <th>SURAT JALAN</th>

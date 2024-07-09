@@ -1,6 +1,18 @@
 <x-Layout.layout>
 
-    <div id="dialog"></div>
+  <div id="dialog"></div>
+
+  @if(session('error'))
+  <div role="alert" class="alert alert-error mb-5">
+    <i class="fa-regular fa-circle-xmark"></i>
+    <span class="font-medium">{{ session('error') }}</span>
+  </div>
+  @elseif(session('success'))
+  <div role="alert" class="alert alert-success mb-5">
+    <i class="fa-regular fa-circle-check text-xl"></i>
+    <span class="font-medium">{{ session('success') }}</span>
+  </div>
+  @endif
 
     <x-master.card-master>
         <x-slot:tittle>Data Ekspedisi</x-slot:tittle>
@@ -79,9 +91,9 @@
         </form>
     </x-master.card-master>
 
-    <x-slot:script>
-        <script>
-            let table = $('#table-ekspedisi').DataTable({
+  <x-slot:script>
+    <script>
+      let table = $('#table-ekspedisi').DataTable({
             ajax: {
               url: "{{route('ekspedisi.data')}}",
               method: 'POST',
@@ -174,6 +186,7 @@
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success: function(response) 
                     {
+                        alert('Data Master Ekspedisi berhasil dihapus!');
                         table.ajax.reload();
                     },
                     error: function(xhr, status, error) 
@@ -185,6 +198,6 @@
                 })
             }
           }
-        </script>
-    </x-slot:script>
+    </script>
+  </x-slot:script>
 </x-Layout.layout>

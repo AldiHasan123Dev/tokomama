@@ -18,35 +18,35 @@ class BarangSeeder extends Seeder
             [
                 'kode_objek' => 'AQ5',
                 'nama' => "AQUA 1500 ML",
-                'value' => "1500",
+                'value' => "1",
                 'created_at' => now()
             ],
 
             [
                 'kode_objek' => 'AQ4',
                 'nama' => "AQUA 220 ML",
-                'value' => "220",
+                'value' => "1",
                 'created_at' => now()
             ],
 
             [
                 'kode_objek' => 'AQ1',
                 'nama' => "AQUA 240 ML",
-                'value' => "240",
+                'value' => "1",
                 'created_at' => now()
             ],
 
             [
                 'kode_objek' => 'AQ2',
                 'nama' => "AQUA 330 ML",
-                'value' => "330",
+                'value' => "1",
                 'created_at' => now()
             ],
 
             [
                 'kode_objek' => 'AQ3',
                 'nama' => "AQUA 600 ML",
-                'value' => "600",
+                'value' => "1",
                 'created_at' => now()
             ],
 

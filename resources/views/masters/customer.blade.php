@@ -1,91 +1,112 @@
 <x-Layout.layout>
 
-    <div id="satu"></div>
-    
-    <x-master.card-master>
-        <x-slot:tittle>Table Customer</x-slot:tittle>
-        <div class="overflow-x-auto">
-            <table class="table" id="table-customer">
-              <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nama</th>
-                    <th>NPWP</th>
-                    <th>Email</th>
-                    <th>No.Telp</th>
-                    <th>Alamat</th>
-                    <th>Kota</th>
-                    <th>Alamat NPWP</th>
-                    <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+  <div id="satu"></div>
+
+  @if(session('error'))
+  <div role="alert" class="alert alert-error mb-5">
+    <i class="fa-regular fa-circle-xmark"></i>
+    <span class="font-medium">{{ session('error') }}</span>
+  </div>
+  @elseif(session('success'))
+  <div role="alert" class="alert alert-success mb-5">
+    <i class="fa-regular fa-circle-check text-xl"></i>
+    <span class="font-medium">{{ session('success') }}</span>
+  </div>
+  @endif
+
+  <x-master.card-master>
+    <x-slot:tittle>Table Customer</x-slot:tittle>
+    <div class="overflow-x-auto">
+      <table class="table" id="table-customer">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nama</th>
+            <th>NPWP</th>
+            <th>Email</th>
+            <th>No.Telp</th>
+            <th>Alamat</th>
+            <th>Kota</th>
+            <th>Alamat NPWP</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </x-master.card-master>
+
+  <x-master.card-master>
+    <x-slot:tittle>Menambah Data Customer</x-slot:tittle>
+    <form action="{{route('master.customer.add')}}" method="post" class="grid grid-cols-4 gap-5">
+      @csrf
+      <label class="form-control w-full max-w-xs col-start-1">
+        <div class="label">
+          <span class="label-text">Nama Customer <span class="text-red-500">*</span></span>
         </div>
-    </x-master.card-master>
+        <input type="text" placeholder="Nama" name="nama" class="input input-bordered w-full max-w-xs rounded-md"
+          required />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-2">
+        <div class="label">
+          <span class="label-text">NPWP <span class="text-red-500">*</span></span>
+        </div>
+        <input type="text" placeholder="NPWP" name="npwp" class="input input-bordered w-full max-w-xs rounded-md"
+          required />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-3">
+        <div class="label">
+          <span class="label-text">Nama NPWP <span class="text-red-500">*</span></span>
+        </div>
+        <input type="text" placeholder="Nama NPWP" name="nama_npwp"
+          class="input input-bordered w-full max-w-xs rounded-md" required />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-4">
+        <div class="label">
+          <span class="label-text">Email <span class="text-red-500">*</span></span>
+        </div>
+        <input type="email" placeholder="Email" name="email" class="input input-bordered w-full max-w-xs rounded-md"
+          required />
+      </label>
 
-    <x-master.card-master>
-      <x-slot:tittle>Menambah Data Customer</x-slot:tittle>
-      <form action="{{route('master.customer.add')}}" method="post" class="grid grid-cols-4 gap-5">
-        @csrf
-        <label class="form-control w-full max-w-xs col-start-1">
-          <div class="label">
-            <span class="label-text">Nama Customer</span>
-          </div>
-          <input type="text" placeholder="Nama" name="nama" class="input input-bordered w-full max-w-xs rounded-md" />
-        </label>
-        <label class="form-control w-full max-w-xs col-start-2">
-          <div class="label">
-            <span class="label-text">NPWP</span>
-          </div>
-          <input type="text" placeholder="NPWP" name="npwp" class="input input-bordered w-full max-w-xs rounded-md" />
-        </label>
-        <label class="form-control w-full max-w-xs col-start-3">
-          <div class="label">
-            <span class="label-text">Nama NPWP</span>
-          </div>
-          <input type="text" placeholder="Nama NPWP" name="nama_npwp" class="input input-bordered w-full max-w-xs rounded-md" />
-        </label>
-        <label class="form-control w-full max-w-xs col-start-4">
-          <div class="label">
-            <span class="label-text">Email</span>
-          </div>
-          <input type="email" placeholder="Email" name="email" class="input input-bordered w-full max-w-xs rounded-md" />
-        </label>
-
-        <label class="form-control w-full max-w-xs col-start-1">
-          <div class="label">
-            <span class="label-text">No Telp</span>
-          </div>
-          <input type="text" placeholder="Nomor Telepon" name="no_telp" class="input input-bordered w-full max-w-xs rounded-md" />
-        </label>
-        <label class="form-control w-full max-w-xs col-start-2">
-          <div class="label">
-            <span class="label-text">Alamat</span>
-          </div>
-          <input type="text" placeholder="Alamat" name="alamat" class="input input-bordered w-full max-w-xs rounded-md" />
-        </label>
-        <label class="form-control w-full max-w-xs col-start-2">
-          <div class="label">
-            <span class="label-text">Kota</span>
-          </div>
-          <input type="text" placeholder="Kota" name="kota" class="input input-bordered w-full max-w-xs rounded-md" />
-        </label>
-        <label class="form-control w-full max-w-xs col-start-3">
-          <div class="label">
-            <span class="label-text">Alamat NPWP</span>
-          </div>
-          <input type="text" placeholder="Alamat NPWP" name="alamat_npwp" class="input input-bordered w-full max-w-xs rounded-md" />
-        </label>
-        <button type="submit" class="btn p-4 mt-9 text-semibold text-white bg-green-500">Simpan Data Customer</button>
-      </form>
+      <label class="form-control w-full max-w-xs col-start-1">
+        <div class="label">
+          <span class="label-text">No Telp <span class="text-red-500">*</span></span>
+        </div>
+        <input type="text" placeholder="Nomor Telepon" name="no_telp"
+          class="input input-bordered w-full max-w-xs rounded-md" required />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-2">
+        <div class="label">
+          <span class="label-text">Alamat <span class="text-red-500">*</span></span>
+        </div>
+        <input type="text" placeholder="Alamat" name="alamat" class="input input-bordered w-full max-w-xs rounded-md"
+          required />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-3">
+        <div class="label">
+          <span class="label-text">Kota <span class="text-red-500">*</span></span>
+        </div>
+        <input type="text" placeholder="Kota" name="kota" class="input input-bordered w-full max-w-xs rounded-md"
+          required />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-4">
+        <div class="label">
+          <span class="label-text">Alamat NPWP <span class="text-red-500">*</span></span>
+        </div>
+        <input type="text" placeholder="Alamat NPWP" name="alamat_npwp"
+          class="input input-bordered w-full max-w-xs rounded-md" required />
+      </label>
+      <button type="submit" class="btn p-4 mt-3 text-semibold text-white bg-green-500 col-span-4">Simpan Data
+        Customer</button>
+    </form>
   </x-master.card-master>
 
 
-    <x-slot:script>
-       <script>
-          let table = $('#table-customer').DataTable({
+  <x-slot:script>
+    <script>
+      let table = $('#table-customer').DataTable({
             ajax: {
               url: "{{route('master.customer.list')}}",
               
@@ -171,6 +192,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(response) 
                 {
+                  alert("Data Master Customer berhasil dihapus!")
                   table.ajax.reload();
                 },
                 error: function(xhr, status, error) 
@@ -184,6 +206,6 @@
           }
 
 
-       </script> 
-    </x-slot:script>
+    </script>
+  </x-slot:script>
 </x-Layout.layout>

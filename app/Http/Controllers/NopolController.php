@@ -30,7 +30,11 @@ class NopolController extends Controller
     public function store(Request $request)
     {
         $data = Nopol::create($request->all());
-        return redirect()->route('master.nopol', $data);
+        if ($data) {
+            return redirect()->route('master.nopol', $data)->with('success', 'Data Master Nomor Polisi berhasil ditambahkan!');
+        } else {
+            return redirect()->route('master.nopol', $data)->with('error', 'Data Master Nomor Polisi gagal ditambahkan!');
+        }
     }
 
     /**
@@ -56,8 +60,12 @@ class NopolController extends Controller
     {
         $data = Nopol::find($request->id);
         $data->nopol = $request->nopol;
-        $data->save();
-        return redirect()->route('master.nopol');
+
+        if ($data->save()) {
+            return redirect()->route('master.nopol')->with('success', 'Data Master Nomor Polisi berhasil diubah!');
+        } else {
+            return redirect()->route('master.nopol')->with('error', 'Data Master Nomor Polisi gagal diubah!');
+        }
     }
 
     /**
@@ -69,16 +77,16 @@ class NopolController extends Controller
         return route('master.nopol');
     }
 
-    public function setStatus(Request $request) 
+    public function setStatus(Request $request)
     {
         $data = Nopol::find($request->id);
-        
-        if($request->status == 'tidak aktif') {
+
+        if ($request->status == 'tidak aktif') {
             $data->status = 'aktif';
         } else {
             $data->status = 'tidak aktif';
         }
-       
+
         $data->save();
         return redirect()->route('master.nopol');
     }
@@ -88,15 +96,15 @@ class NopolController extends Controller
         $data = Nopol::query()->orderBy('id', 'desc');
 
         return DataTables::of($data)
-        ->addIndexColumn()
-        ->addColumn('aksi', function ($row) {
-            return '<div class="flex gap-3 mt-2">
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($row) {
+                return '<div class="flex gap-3 mt-2">
             <button onclick="getData(' . $row->id . ', \'' . addslashes($row->nopol) . '\')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button> |
-            <button onclick="deleteData('. $row->id .')" id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end" ><i class="fa-solid fa-trash"></i></button> |
+            <button onclick="deleteData(' . $row->id . ')" id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end" ><i class="fa-solid fa-trash"></i></button> |
             <button onclick="ubahStatus(' . $row->id . ', \'' . addslashes($row->status) . '\')" id="delete-faktur-all" class="text-green-600 font-semibold mb-3 self-end" ><i class="fa-solid fa-power-off"></i></button>
             </div>';
-        })
-        ->rawColumns(['aksi'])
-        ->make();
+            })
+            ->rawColumns(['aksi'])
+            ->make();
     }
 }

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('kepada')->nullable();
             $table->integer('jumlah')->nullable();
             $table->string('satuan')->nullable();
-            $table->integer('total')->nullable();
+            // $table->integer('total')->nullable();
             $table->string('nama_kapal')->nullable();
             $table->string('no_cont')->nullable();
             $table->string('no_seal')->nullable();
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->integer('no')->default(0);
             $table->double('ppn')->default(0);
             $table->double('subtotal')->default(0);
-            $table->double('total')->default(0);
+            $table->double('total')->default(0)->nullable();
             $table->foreignId('id_ekspedisi')->nullable()->constrained('ekspedisi');
             $table->foreignId('id_customer')->nullable()->constrained('customer');
             $table->foreignId('id_nsfp')->nullable()->constrained('nsfp');

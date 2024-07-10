@@ -48,7 +48,7 @@
             <thead>
                 <tr>
                     <th rowspan="4" style="width: 20%">
-                        <img src="{{ public_path('logo-sb.jpg') }}" class="logo">
+                        <img src="{{ public_path('logo_sb.svg') }}" class="logo">
                     </th>
                     <td style="font-weight: bold; font-size: 1.3rem;">CV. SARANA BAHAGIA</td>
                     <td></td>

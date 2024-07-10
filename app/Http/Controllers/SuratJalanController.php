@@ -28,7 +28,7 @@ class SuratJalanController extends Controller
     public function create()
     {
         $barang = Barang::select('nama', 'value', 'id')->get();
-        $nopol = Nopol::all();
+        $nopol = Nopol::where('status', 'aktif')->get();
         $customer = Customer::all();
         $ekspedisi = Ekspedisi::all();
         return view('surat_jalan.create', compact('barang', 'nopol', 'customer', 'ekspedisi'));

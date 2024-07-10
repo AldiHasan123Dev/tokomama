@@ -14,82 +14,84 @@
   </div>
   @endif
 
-    <x-master.card-master>
-        <x-slot:tittle>Data Ekspedisi</x-slot:tittle>
-        <div class="overflow-x-auto">
-            <table class="table" id="table-ekspedisi">
-              <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nama</th>
-                    <th>PIC</th>
-                    <th>Email</th>
-                    <th>No Telp</th>
-                    <th>Alamat</th>
-                    <th>Kota</th>
-                    <th>FAX</th>
-                    <th>Aksi</th>
-                    <th>ID</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
-        </div>
-    </x-master.card-master>
+  <x-master.card-master>
+    <x-slot:tittle>Data Ekspedisi</x-slot:tittle>
+    <div class="overflow-x-auto">
+      <table class="table" id="table-ekspedisi">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nama</th>
+            <th>PIC</th>
+            <th>Email</th>
+            <th>No Telp</th>
+            <th>Alamat</th>
+            <th>Kota</th>
+            <th>FAX</th>
+            <th>Aksi</th>
+            <th>ID</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </x-master.card-master>
 
-    <x-master.card-master>
-        <x-slot:tittle>Menambah Data Ekspedisi</x-slot:tittle>
-        <form action="{{route('ekspedisi.store')}}" method="post" class="grid grid-cols-6 gap-5">
-          @csrf
-          <label class="form-control w-full max-w-xs col-start-1">
-            <div class="label">
-              <span class="label-text">Nama</span>
-            </div>
-            <input type="text" placeholder="Nama Expedisi" name="nama" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <label class="form-control w-full max-w-xs col-start-1">
-            <div class="label">
-              <span class="label-text">PIC</span>
-            </div>
-            <input type="text" placeholder="PIC" name="pic" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <label class="form-control w-full max-w-xs col-start-2">
-            <div class="label">
-              <span class="label-text">Alamat</span>
-            </div>
-            <input type="text" placeholder="Alamat" name="alamat" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <label class="form-control w-full max-w-xs col-start-1">
-            <div class="label">
-              <span class="label-text">Kota</span>
-            </div>
-            <input type="text" placeholder="Kota" name="kota" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <label class="form-control w-full max-w-xs col-start-2">
-            <div class="label">
-              <span class="label-text">Email</span>
-            </div>
-            <input type="text" placeholder="Email" name="email" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <label class="form-control w-full max-w-xs col-start-1">
-            <div class="label">
-              <span class="label-text">No Telp</span>
-            </div>
-            <input type="text" placeholder="No telp" name="no_telp" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <label class="form-control w-full max-w-xs col-start-2">
-            <div class="label">
-              <span class="label-text">FAX</span>
-            </div>
-            <input type="text" placeholder="FAX" name="fax" class="input input-bordered w-full max-w-xs rounded-md" />
-          </label>
-          <div class="col-start-3 mt-9">
-            <button type="submit" class="btn text-semibold text-white bg-green-500">Simpan Data Ekspedisi</button>
-          </div>
-          
-        </form>
-    </x-master.card-master>
+  <x-master.card-master>
+    <x-slot:tittle>Menambah Data Ekspedisi</x-slot:tittle>
+    <form action="{{route('ekspedisi.store')}}" method="post" class="grid grid-cols-4 gap-5">
+      @csrf
+      <label class="form-control w-full max-w-xs col-start-1">
+        <div class="label">
+          <span class="label-text">Nama</span>
+        </div>
+        <input type="text" placeholder="Nama Expedisi" name="nama"
+          class="input input-bordered w-full max-w-xs rounded-md" />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-2">
+        <div class="label">
+          <span class="label-text">PIC</span>
+        </div>
+        <input type="text" placeholder="PIC" name="pic" class="input input-bordered w-full max-w-xs rounded-md" />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-3">
+        <div class="label">
+          <span class="label-text">Alamat</span>
+        </div>
+        <input type="text" placeholder="Alamat" name="alamat" class="input input-bordered w-full max-w-xs rounded-md" />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-4">
+        <div class="label">
+          <span class="label-text">Kota</span>
+        </div>
+        <input type="text" placeholder="Kota" name="kota" class="input input-bordered w-full max-w-xs rounded-md" />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-1">
+        <div class="label">
+          <span class="label-text">Email</span>
+        </div>
+        <input type="text" placeholder="Email" name="email" class="input input-bordered w-full max-w-xs rounded-md" />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-2">
+        <div class="label">
+          <span class="label-text">No Telp</span>
+        </div>
+        <input type="text" placeholder="No telp" name="no_telp"
+          class="input input-bordered w-full max-w-xs rounded-md" />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-3">
+        <div class="label">
+          <span class="label-text">FAX</span>
+        </div>
+        <input type="text" placeholder="FAX" name="fax" class="input input-bordered w-full max-w-xs rounded-md" />
+      </label>
+      <div class="col-start-4 mt-9">
+        <button type="submit" class="btn text-semibold text-white bg-green-500 w-full">Simpan Data Ekspedisi</button>
+      </div>
+
+    </form>
+  </x-master.card-master>
 
   <x-slot:script>
     <script>

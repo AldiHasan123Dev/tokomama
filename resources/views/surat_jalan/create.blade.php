@@ -302,8 +302,7 @@
             <div class="grid grid-cols-2 justify-items-stretch">
                 <div class="grid grid-cols-3">
                     <div>
-                        <img src="https://cdn.dribbble.com/users/1814782/screenshots/8500787/media/43acdb907462e9c7055110773f9d683f.jpg"
-                            alt="company_logo" class="w-32">
+                        <img src="{{ asset('/assets/img/logo_sb.svg') }}" alt="Logo SB" class="w-20 mx-auto">
                     </div>
                     <div class="font-bold font-serif col-span-2">
                         <p>CV.SARANA BAHAGIA</p>

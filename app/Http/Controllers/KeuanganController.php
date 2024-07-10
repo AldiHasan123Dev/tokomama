@@ -53,7 +53,7 @@ class KeuanganController extends Controller
     {
         $nsfp = NSFP::where('available', '1')->orderBy('nomor')->first();
         if (!$nsfp) {
-            return back()->with('error', 'NSFP Belum Tersedia');
+            return back()->with('error', 'NSFP Belum Tersedia, pastikan nomor NSFP tersedia.');
         }
         $data['invoice'] = str_replace('/SJ/', '/INV/', $surat_jalan->nomor_surat);
         $data['tgl_invoice'] = date('Y-m-d');

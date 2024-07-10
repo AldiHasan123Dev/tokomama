@@ -64,6 +64,7 @@ class SuratJalanController extends Controller
                     'harga_jual' => $request->harga_jual[$i],
                     'jumlah_beli' => $request->jumlah_beli[$i],
                     'jumlah_jual' => $request->jumlah_jual[$i],
+                    'sisa' => $request->jumlah_jual[$i],
                     'satuan_beli' => $request->satuan_beli[$i],
                     'satuan_jual' => $request->satuan_jual[$i],
                     'margin' => $request->profit[$i],

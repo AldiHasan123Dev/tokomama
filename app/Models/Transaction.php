@@ -9,7 +9,7 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $table = 'transaction';
+    protected $table = 'transaksi';
 
     protected $fillable = [
         'id_surat_jalan',
@@ -19,6 +19,7 @@ class Transaction extends Model
         'satuan_beli',
         'harga_jual',
         'jumlah_jual',
+        'sisa',
         'satuan_jual',
         'margin',
     ];

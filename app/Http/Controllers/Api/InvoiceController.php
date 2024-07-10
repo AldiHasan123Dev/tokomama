@@ -17,17 +17,20 @@ class InvoiceController extends Controller
     public function dataTable()
     {
         // $data = SuratJalan::query()->whereNull('invoice');
-        $query = Transaction::get();
-        $data = TransactionResource::collection($query)->whereNull('invoice');
+        $query = Transaction::query()->where('sisa','>','0')->get();
+        $data = TransactionResource::collection($query);
         $res =  $data->toArray(request());
 
 
         return DataTables::of($res)
             ->addIndexColumn()
+            ->addColumn('checkbox', function ($row) {
+                return '<input type="checkbox" name="id_transaksi[]" id="id" value="' . $row['id'] . '">';
+            })
             ->addColumn('aksi', function ($row) {
                 return '<form method=' . 'GET' . ' action = ""><button class="btn btn-xs btn-success" type=submit>Ambil</button></form>';
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['aksi','checkbox'])
             ->make(true);
     }
 

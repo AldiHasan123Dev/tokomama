@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TransactionResource;
 use App\Models\Barang;
 use App\Models\NSFP;
 use App\Models\SuratJalan;
+use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -81,6 +83,9 @@ class KeuanganController extends Controller
 
     public function dataTable()
     {
+        // $query = Transaction::get();
+        // $data = TransactionResource::collection($data);
+
         $query = SuratJalan::query();
         if (request('invoice')) {
             $query->whereNotNull('invoice');

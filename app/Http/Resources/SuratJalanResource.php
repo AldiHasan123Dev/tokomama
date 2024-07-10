@@ -60,7 +60,6 @@ class SuratJalanResource extends JsonResource
             'selisih_bupot' => '-',
             'jurnal_bupot' => '-',
             'sub_total' => $this->subtotal
-
         ];
     }
 }

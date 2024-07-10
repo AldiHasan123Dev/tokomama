@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TransactionResource;
 use App\Models\NSFP;
 use App\Models\SuratJalan;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -14,12 +16,16 @@ class InvoiceController extends Controller
 {
     public function dataTable()
     {
-        $data = SuratJalan::query()->whereNull('invoice');
+        // $data = SuratJalan::query()->whereNull('invoice');
+        $query = Transaction::get();
+        $data = TransactionResource::collection($query)->whereNull('invoice');
+        $res =  $data->toArray(request());
 
-        return DataTables::of($data)
+
+        return DataTables::of($res)
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
-                return '<form method=' . 'GET' . ' action = ' . route('keuangan.invoice.draf', $row) . '><button class="btn btn-xs btn-success" type=submit>Ambil</button></form>';
+                return '<form method=' . 'GET' . ' action = ""><button class="btn btn-xs btn-success" type=submit>Ambil</button></form>';
             })
             ->rawColumns(['aksi'])
             ->make(true);

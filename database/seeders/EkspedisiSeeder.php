@@ -19,6 +19,9 @@ class EkspedisiSeeder extends Seeder
                 'pic' => 'ANDI PANGERAN',
                 'alamat' => 'JL. BUDI UTOMO',
                 'kota' => 'TIMIKA',
+                'no_telp' => null,
+                'fax' => null,
+                'email' => null,
                 'created_at' => now()
             ],
             [
@@ -28,6 +31,7 @@ class EkspedisiSeeder extends Seeder
                 'kota' => 'SURABAYA',
                 'no_telp' => '031 3574524',
                 'fax' => '031 3536146',
+                'email' => null,
                 'created_at' => now()
             ],
             [
@@ -36,6 +40,8 @@ class EkspedisiSeeder extends Seeder
                 'alamat' => 'JL. IKAN MUNGSING GANG 5 NO. 97',
                 'kota' => 'SURABAYA',
                 'no_telp' => '031 3571531',
+                'fax' => null,
+                'email' => null,
                 'created_at' => now()
             ],
             [
@@ -50,6 +56,7 @@ class EkspedisiSeeder extends Seeder
             ],
             [
                 'nama' => 'KI TRANS SURABAYA',
+                'pic' => null,
                 'alamat' => 'JL. KALIANGET NO.80, TJ. PERAK',
                 'kota' => 'SURABAYA',
                 'no_telp' => '031 3281133',
@@ -64,6 +71,7 @@ class EkspedisiSeeder extends Seeder
                 'kota' => 'SIDOARJO',
                 'no_telp' => '031 8670776; 70347676; 71700709',
                 'fax' => '0318671576',
+                'email' => null,
                 'created_at' => now()
             ],
             [
@@ -72,13 +80,18 @@ class EkspedisiSeeder extends Seeder
                 'alamat' => 'JL.KREMBANGAN MAKAM NO.23',
                 'kota' => 'SURABAYA',
                 'no_telp' => '031 3522887',
+                'fax' => null,
+                'email' => null,
                 'created_at' => now()
             ],
             [
                 'nama' => 'PERMATA SAMUDERA JAYA, PT.',
+                'pic' => null,
                 'alamat' => 'JL. IKAN MUNGSING NO.89',
                 'kota' => 'SURABAYA',
                 'no_telp' => '031 571531 - 3532862',
+                'fax' => null,
+                'email' => null,
                 'created_at' => now()
             ],
             [
@@ -87,6 +100,8 @@ class EkspedisiSeeder extends Seeder
                 'alamat' => 'JL. KALIMAS BARU NO.71',
                 'kota' => 'SURABAYA',
                 'no_telp' => '031 3291985',
+                'fax' => null,
+                'email' => null,
                 'created_at' => now()
             ],
             [
@@ -95,13 +110,18 @@ class EkspedisiSeeder extends Seeder
                 'alamat' => 'JL. INDRAPURA BARU 351 C',
                 'kota' => 'SURABAYA',
                 'no_telp' => '031 8586180',
+                'fax' => null,
+                'email' => null,
                 'created_at' => now()
             ],
             [
                 'nama' => 'TRI DELTA MUTIARA',
+                'pic' => null,
                 'alamat' => 'JL. KALIMAS BARU NO.89',
                 'kota' => 'SURABAYA',
                 'no_telp' => '031 3282707/3294287/3291627',
+                'fax' => null,
+                'email' => null,
                 'created_at' => now()
             ],
             [
@@ -110,6 +130,8 @@ class EkspedisiSeeder extends Seeder
                 'alamat' => 'Jl. Kalianak 55 G',
                 'kota' => 'SURABAYA',
                 'no_telp' => '031 7495507',
+                'fax' => null,
+                'email' => null,
                 'created_at' => now()
             ],
 

@@ -9,6 +9,7 @@
                         <th>Aksi</th>
                         <th>#</th>
                         <th>No. Surat</th>
+                        <th>Invoice</th>
                         <th>Kepada</th>
                         <th>Nama Kapal</th>
                         <th>No. Count</th>
@@ -35,6 +36,7 @@
                     { data: 'aksi', name: 'aksi' },
                     { data: 'DT_RowIndex', name: 'number'},
                     { data: 'nomor_surat', name: 'No. Surat' },
+                    { data: 'invoice', name: 'invoice' },
                     { data: 'kepada', name: 'kepada' },
                     { data: 'nama_kapal', name: 'nama_kapal' },
                     { data: 'no_cont', name: 'no_cont' },

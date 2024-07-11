@@ -85,7 +85,7 @@
                         <td>${price}</td>
                         <td id="total-${id}-${idx}"></td>
                     </tr>`;
-            $('#tbody-' + id).append(html);
+           
 
             let valueNow = $(`#qty-${id}-${idx}`).val();
 
@@ -99,6 +99,7 @@
             
             if(sum == max || sum > max) {
                 alert("Kuantitas melebihi batas");
+                idx--;
                 return
             }
 
@@ -113,6 +114,9 @@
                     }
                 }
             });
+
+            $('#tbody-' + id).append(html);
+
             invoice_counts();
         }
 

@@ -67,8 +67,8 @@ class InvoiceController extends Controller
 
                     Invoice::create([
                         'id_transaksi' => $id_transaksi,
-                        'id_nsfp' => $array_invoice[$i]['id_nsfp'],
-                        'invoice' => $array_invoice[$i]['invoice'],
+                        'id_nsfp' => $array_invoice[(int)$array_data['invoice'] - 1]['id_nsfp'],
+                        'invoice' => $array_invoice[(int)$array_data['invoice'] - 1]['invoice'],
                         'harga' => $trx->harga_jual,
                         'jumlah' => $array_data['jumlah'][$i],
                         'subtotal' => $array_data['jumlah'][$i] * $trx->harga_jual

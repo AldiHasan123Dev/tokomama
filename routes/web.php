@@ -12,6 +12,7 @@ use App\Http\Controllers\MasterController;
 use App\Http\Controllers\NopolController;
 use App\Http\Controllers\PajakController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\SuratJalanController;
 use App\Http\Resources\DatatableResource;
 use App\Http\Resources\SuratJalanResource;
@@ -90,6 +91,11 @@ Route::prefix('master')->controller(NopolController::class)->middleware('auth')-
     Route::post('nopol_edit', 'update')->name('master.nopol.edit');
     Route::post('nopol_delete', 'destroy')->name('master.nopol.delete');
     Route::post('set_status', 'setStatus')->name('master.nopol.editstatus');
+});
+
+Route::prefix('master')->controller(SatuanController::class)->middleware('auth')->group(function () {
+    Route::resource('satuan', SatuanController::class)->only(['index','store','update','destroy']);
+    Route::get('stauan-data', 'dataTable')->name('master.satuan.data');
 });
 
 Route::prefix('jurnal')->controller(CoaController::class)->middleware('auth')->group(function () {

@@ -45,7 +45,11 @@ class InvoiceController extends Controller
                 'id_nsfp' => $nsfp->id,
                 'invoice' => $inv,
             ]);
+            $nsfp->available = 0;
+            $nsfp->save();
         }
+
+        // dd($array_invoice);
         foreach ($request->invoice as $id_transaksi => $invoice) {
             foreach ($invoice as $idx => $item) {
                 $data[$id_transaksi]['invoice'][$idx] = $item; 
@@ -60,9 +64,10 @@ class InvoiceController extends Controller
             for ($i=0; $i < count($array_data['invoice']); $i++) {
                 if ((int)$array_data['jumlah'][$i] > 0) {
                     $trx = Transaction::find($id_transaksi); 
+
                     Invoice::create([
                         'id_transaksi' => $id_transaksi,
-                        // 'id_nsfp' => $array_invoice[$i]['id_nsfp'],
+                        'id_nsfp' => $array_invoice[$i]['id_nsfp'],
                         'invoice' => $array_invoice[$i]['invoice'],
                         'harga' => $trx->harga_jual,
                         'jumlah' => $array_data['jumlah'][$i],

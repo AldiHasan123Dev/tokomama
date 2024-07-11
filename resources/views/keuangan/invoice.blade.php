@@ -15,12 +15,12 @@
                 <!-- head -->
                 <thead>
                     <tr>
+                        <th>Id NSFP</th>
+                        <th>Id Transaksi</th>
                         <th>Invoice</th>
-                        <th>Kepada</th>
-                        <th>Nama Kapal</th>
-                        <th>No. Cont</th>
-                        <th>No. Seal</th>
-                        <th>No. Pol</th>
+                        <th>Harga</th>
+                        <th>Jumlah</th>
+                        <th>Sub Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,12 +43,13 @@
                     }
                 },
                 columns: [
+                    { data: 'id_nsfp' },
+                    { data: 'id_transaksi' },
                     { data: 'invoice' },
-                    { data: 'kepada' },
-                    { data: 'nama_kapal' },
-                    { data: 'no_cont' },
-                    { data: 'no_seal' },
-                    { data: 'no_pol' },
+                    { data: 'harga' },
+                    { data: 'jumlah' },
+                    { data: 'subtotal' },
+                    {data: 'id', visible:false}
                 ]
             });
 

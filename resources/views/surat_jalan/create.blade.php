@@ -239,13 +239,13 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Barang</th>
-                                    <th>Harsat Beli</th>
+                                    {{-- <th>Harsat Beli</th> --}}
                                     <th>Jumlah Beli</th>
                                     <th>Satuan Beli</th>
-                                    <th>Harsat Jual</th>
+                                    {{-- <th>Harsat Jual</th> --}}
                                     <th>Jumlah Jual</th>
                                     <th>Satuan Jual</th>
-                                    <th>Profit</th>
+                                    {{-- <th>Profit</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -257,10 +257,10 @@
                                         <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}"
                                             class="form-control" list="barang_list">
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()"
                                             name="harga_beli[]" id="harga_beli-{{ $i }}" class="form-control">
-                                    </td>
+                                    </td> --}}
                                     <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()"
                                             name="jumlah_beli[]" id="jumlah_beli-{{ $i }}" class="form-control">
@@ -270,10 +270,10 @@
                                             name="satuan_beli[]" id="satuan_beli-{{ $i }}" class="form-control"
                                             placeholder="(ZAK, BALL, KARTON, DLL)">
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()"
                                             name="harga_jual[]" id="harga_jual-{{ $i }}" class="form-control">
-                                    </td>
+                                    </td> --}}
                                     <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()"
                                             name="jumlah_jual[]" id="jumlah_jual-{{ $i }}" class="form-control">
@@ -283,17 +283,17 @@
                                             name="satuan_jual[]" id="satuan_jual-{{ $i }}" class="form-control"
                                             placeholder="(ZAK, BALL, KARTON, DLL)">
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()"
                                             name="profit[]" id="profit-{{ $i }}" class="form-control">
-                                    </td>
+                                    </td> --}}
                                 </tr>
                                 @endfor
                             </tbody>
                         </table>
                         <datalist id="barang_list">
                             @foreach ($barang as $mb)
-                            <option data-id="{{$mb->id}}" value="{{ $mb->nama }}">{{ $mb->nama }}</option>
+                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" value="{{ $mb->nama }}">{{ $mb->nama }}</option>
                             @endforeach
                         </datalist>
                     </div>
@@ -472,13 +472,12 @@
             $('#txt_tujuan').text(inputValue);
         });
 
-        $('#harga_jual').on('click', function () {
-            var harga_jual = $('#harga_jual').val();
-            var harga_beli = $('#harga_beli').val();
-            var total = $('#txt_total').text();
-
-            $('#profit').val((harga_jual * total) - (harga_beli * total));
-        });
+        //$('#harga_jual').on('click', function () {
+        //    var harga_jual = $('#harga_jual').val();
+        //    var harga_beli = $('#harga_beli').val();
+        //    var total = $('#txt_total').text();
+        //    $('#profit').val((harga_jual * total) - (harga_beli * total));
+        //});
 
         //jquery ready function
         $(document).ready(function () {
@@ -509,7 +508,6 @@
                 day: '2-digit'
             });
             $('#txt_tgl_sj').text(newData);
-            console.log(newData); 
         },
             click: function () {
             var inputValue = $(this).val();
@@ -519,7 +517,6 @@
             day: '2-digit'
             });
             $('#txt_tgl_sj').text(newData);
-            console.log(newData);
         }
         });
 
@@ -551,24 +548,29 @@
                 const barang = $('#barang-' + i).val();
                 const jumlah_beli = $('#jumlah_beli-' + i).val();
                 const satuan_beli = $('#satuan_beli-' + i).val();
-                const harga_beli = $('#harga_beli-' + i).val();
+                // const harga_beli = $('#harga_beli-' + i).val();
                 const jumlah_jual = $('#jumlah_jual-' + i).val();
                 const satuan_jual = $('#satuan_jual-' + i).val();
-                const harga_jual = $('#harga_jual-' + i).val();
+                // const harga_jual = $('#harga_jual-' + i).val();
                 if (barang != '' && typeof (barang) != undefined) {
                     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
-                    console.log(id_barang);
-                    console.log(barang);
+                    var value_barang = $("#barang_list option[value='" + barang + "']").data('value');
                     $("#id_barang-" + i).val(id_barang);
+                    var total_jumlah = parseInt(value_barang) * parseInt(jumlah_jual);
+                    var txt_total = '';
+                    if(barang.includes("@")){
+                        txt_total += `<p>(Total: ${total_jumlah} Kg)</p>`;
+                    }
                     text += `
                             <div class="flex justify-between mt-3">
                                 <span>${barang}</span>
                                 <span>(${jumlah_jual} ${satuan_jual})</span>
-                            </div>`;
-                    
+                            </div>
+                            ${txt_total}
+                            `;
                             $('#txt_nomor' + i).html(i);
 
-                            var test = $('#profit-' + i).val(jumlah_jual * harga_jual - jumlah_beli * harga_beli);
+                            // var test = $('#profit-' + i).val(jumlah_jual * harga_jual - jumlah_beli * harga_beli);
                 }
 
                 $('#jumlah_beli-' + i).on('input', function () {

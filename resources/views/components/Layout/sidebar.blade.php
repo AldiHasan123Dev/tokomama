@@ -39,7 +39,7 @@
                                 </li>
                             </ul>
                         </li>
-        
+
                         <li>
                             <a href="javascript: void(0);" aria-expanded="false" class="block :rtl:pr-10 py-2.5 px-6 text-sm font-medium text-gray-950 transition-all duration-150 ease-linear nav-menu hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
                                 <i class="fa-solid fa-person-walking-luggage"></i>
@@ -51,6 +51,9 @@
                                 </li>
                                 <li>
                                     <a href="{{ route('surat-jalan.index') }}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">List Surat Jalan (SJ)</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('surat-jalan.barang') }}" class="pl-[52.8px] pr-6 py-[6.4px] block text-[13.5px] font-medium text-gray-950 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">Harga Barang</a>
                                 </li>
                             </ul>
                         </li>
@@ -68,7 +71,7 @@
                                 </li>
                             </ul>
                         </li>
-        
+
                         <li>
                             <a href="javascript: void(0);" aria-expanded="false" class="block py-2.5 px-6 text-sm font-medium text-gray-950 transition-all duration-150 ease-linear nav-menu hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
                                 <i class="fa-solid fa-circle-dollar-to-slot"></i><span data-key="t-pages"> &nbsp; Pajak</span>

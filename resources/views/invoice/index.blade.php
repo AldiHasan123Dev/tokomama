@@ -8,18 +8,17 @@
         <x-slot:tittle>Pengambilan Nomor Faktur Untuk Invoice</x-slot:tittle>
         <form action="{{ route('invoice-transaksi.store') }}" method="post">
             @csrf
-            <label for="invoice_count">Masukan Jumlah Invoice</label>
-            <input type="number" onchange="invoice_counts()" onkeyup="invoice_counts()" name="invoice_count" id="invoice_count" min="1" value="1" class="form-control w-full text-center rounded-sm">
+            <input type="hidden" name="invoice_count" value="{{ $invoice_count }}">
+            {{-- <label for="invoice_count">Masukan Jumlah Invoice</label>
+            <input type="number" onchange="invoice_counts()" onkeyup="invoice_counts()" name="invoice_count" id="invoice_count" min="1" value="1" class="form-control w-full text-center rounded-sm"> --}}
             @foreach ($transaksi as $item)
             <div class="overflow-x-auto mt-5 shadow-lg">
                 <table class="table" id="table-getfaktur">
                     <!-- head -->
                     <thead>
                         <tr>
-                            <th colspan="5">{{ $item->barang->nama ?? '-' }}</th>
-                        </tr>
-                        <tr>
                             <th>#</th>
+                            <th>Nama Barang</th>
                             <th>Invoice</th>
                             <th>Jumlah Barang ({{ $item->jumlah_jual }})</th>
                             <th>Harga Satuan</th>
@@ -29,10 +28,17 @@
                     <tbody id="tbody-{{ $item->id }}">
                         <tr>
                             <td>1</td>
-                            <td class="invoice-{{ $item->id }}">-</td>
+                            <td>{{ $item->barang->nama }}</td>
+                            <td class="invoice-{{ $item->id }}">
+                                <select name="invoice[{{ $item->id }}][]" class="select w-full" id="">
+                                    @for ($i = 0; $i < $invoice_count; $i++)
+                                        <option value="{{ $i }}" {{ $i == 0 ? 'selected' : '' }}>Invoice Ke - {{ $i + 1 }}</option>
+                                    @endfor
+                                </select>
+                            </td>
 
                             <!-- inputan quantity invoice -->
-                            <td><input id="qty-{{ $item->id }}-1" type="number" class="rounded-sm" onkeyup="inputBarang({{ $item->id }}, this.value,{{ $item->harga_jual }}, {{ $item->jumlah_jual }})" onchange="inputBarang({{ $item->id }}, this.value,{{ $item->harga_jual }}, {{ $item->jumlah_jual }})" name="jumlah[{{ $item->id }}][]" id="jumlah" value="{{ $item->jumlah_jual }}"></td>
+                            <td><input id="qty-{{ $item->id }}-1" class="qty-{{ $item->id }}" type="number" class="rounded-sm" onchange="inputBarang({{ $item->id }}, this.value,{{ $item->harga_jual }}, {{ $item->jumlah_jual }})" name="jumlah[{{ $item->id }}][]" id="jumlah" value="{{ $item->jumlah_jual }}"></td>
 
                             <!-- harga satuan -->
                             <td>{{ number_format($item->harga_jual) }}</td>
@@ -43,8 +49,8 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="5">
-                                <button onclick="addRow({{ $item->id }}, {{ $item->harga_jual }}, {{$item->jumlah_jual}})" type="button" class="btn bg-yellow-400 btn-sm w-full">Tambah Kolom</button>
+                            <td colspan="6">
+                                <button onclick="addRow({{ $item->id }}, {{ $item->harga_jual }}, {{$item->jumlah_jual}},'{{ $item->barang->nama }}')" type="button" class="btn bg-yellow-400 btn-sm w-full">Tambah Kolom</button>
                             </td>
                         </tr>
                     </tfoot>
@@ -60,32 +66,45 @@
     <script>
         let idx = 1;
         let ids = @json($ids);
+        let array_jumlah = @json($array_jumlah);
+        array_jumlah = JSON.parse(array_jumlah);
         function inputBarang(id, value, price, max) {
-            // console.log(value);
-            if (value > max) {
+            var $j_object = $(".qty-" + id);
+            let sum = 0;
+            $j_object.each( function(){
+                sum+=parseInt($(this).val());
+            });
+
+            if (sum > max) {
                 alert('Jumlah melebihi batas');
-                $('#qty-' + id + '-'+idx).val(max);
                 return
             }
             let total = parseFloat(value) * parseInt(price);
-  
+
             $('#total-' + id + '-'+idx ).html(total);
         }
 
-        function addRow(id, price, max){
+        function addRow(id, price, max, barang){
             idx++;
             let html = `<tr>
                         <td>${idx}</td>
-                        <td class="invoice-${id}"></td>
+                        <td>${barang}</td>
+                        <td class="invoice-${id}">
+                            <select name="invoice[${id}][]" class="select w-full" id="">
+                                @for ($i = 0; $i < $invoice_count; $i++)
+                                    <option value="{{ $i }}" {{ $i == 0 ? 'selected' : '' }}>Invoice Ke - {{ $i + 1 }}</option>
+                                @endfor
+                            </select>
+                        </td>
 
                         <td>
-                            <input id="qty-${id}-${idx}" type="number" onkeyup="inputBarang(${id}, this.value,${price}, ${max})" onchange="inputBarang(${id}, this.value,${price}, ${max})" name="jumlah[${id}][]" id="jumlah" value="0">
+                            <input id="qty-${id}-${idx}" type="number" class="qty-${id}" onkeyup="inputBarang(${id}, this.value,${price}, ${max})" onchange="inputBarang(${id}, this.value,${price}, ${max})" name="jumlah[${id}][]" id="jumlah" value="0">
                         </td>
 
                         <td>${price}</td>
                         <td id="total-${id}-${idx}"></td>
                     </tr>`;
-           
+
 
             let valueNow = $(`#qty-${id}-${idx}`).val();
 
@@ -96,7 +115,7 @@
             }
 
             let sum = data.slice(1).reduce((accumulator, currentValue) => parseInt(accumulator) + parseInt(currentValue), 0);
-            
+
             if(sum == max || sum > max) {
                 alert("Kuantitas melebihi batas");
                 idx--;
@@ -117,12 +136,11 @@
 
             $('#tbody-' + id).append(html);
 
-            invoice_counts();
         }
 
         function invoice_counts(){
             let val = $('#invoice_count').val();
-            $.each(ids, function (indexInArray, item) { 
+            $.each(ids, function (indexInArray, item) {
                 let options = '<option selected>Pilih Invoice</option>';
                 for(let i = 1; i <= val; i++){
                     options += `<option value="${i}">Invoice Ke - ${i}</option>`;

@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Models\NSFP;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
@@ -16,7 +17,13 @@ class InvoiceController extends Controller
     {
         $ids = explode(',', request('id_transaksi'));
         $transaksi = Transaction::whereIn('id', $ids)->get();
-        return view('invoice.index', compact('transaksi','ids'));
+        $array_jumlah = [];
+        foreach ($transaksi as $item) {
+            $array_jumlah[$item->id] = $item->jumlah_jual;
+        }
+        $array_jumlah = json_encode($array_jumlah);
+        $invoice_count = request('invoice_count');
+        return view('invoice.index', compact('transaksi','ids','invoice_count','array_jumlah'));
     }
 
     /**
@@ -34,53 +41,66 @@ class InvoiceController extends Controller
     {
         $data = array();
         $array_invoice = array();
-        $invoice_count = (int)$request->invoice_count;
-        for ($i=0; $i < $invoice_count; $i++) { 
-            $nsfp = NSFP::where('available', '1')->orderBy('nomor')->first();
-            if(!$nsfp) {
-                return back()->with('error', 'NSFP Belum Tersedia, pastikan nomor NSFP tersedia.');
-            }
-            $inv = 'INV/' . date('Y') . '/' . sprintf('%03d', $i);
-            array_push($array_invoice, [
-                'id_nsfp' => $nsfp->id,
-                'invoice' => $inv,
-            ]);
-            $nsfp->available = 0;
-            $nsfp->save();
+        $invoice_count = $request->invoice_count;
+        $nsfp = NSFP::where('available', '1')->orderBy('nomor')->take($invoice_count)->get();
+        if($nsfp->count() < $invoice_count) {
+            return back()->with('error', 'NSFP Belum Tersedia, pastikan nomor NSFP tersedia.');
         }
 
-        // dd($array_invoice);
+        $no = Invoice::whereYear('created_at', date('Y'))->max('no') + 1;
+        foreach ($nsfp as $item) {
+            $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
+            $month_number = date("n");
+            $month_roman = $roman_numerals[$month_number];
+            $inv= sprintf('%03d', $no) . '/INV/SB-' . $month_roman . '/' . date('Y');
+            array_push($array_invoice, [
+                'id_nsfp' => $item->id,
+                'invoice' => $inv,
+                'no' => $no
+            ]);
+            $no++;
+        }
+
+
         foreach ($request->invoice as $id_transaksi => $invoice) {
             foreach ($invoice as $idx => $item) {
-                $data[$id_transaksi]['invoice'][$idx] = $item; 
+                $data[$id_transaksi]['invoice'][$idx] = $item;
             }
         }
         foreach ($request->jumlah as $id_transaksi => $jumlah) {
             foreach ($jumlah as $idx => $item) {
-                $data[$id_transaksi]['jumlah'][$idx] = $item; 
+                $data[$id_transaksi]['jumlah'][$idx] = $item;
             }
         }
-        foreach ($data as $id_transaksi => $array_data) {
-            for ($i=0; $i < count($array_data['invoice']); $i++) {
-                if ((int)$array_data['jumlah'][$i] > 0) {
-                    $trx = Transaction::find($id_transaksi); 
 
-                    Invoice::create([
-                        'id_transaksi' => $id_transaksi,
-                        'id_nsfp' => $array_invoice[(int)$array_data['invoice'] - 1]['id_nsfp'],
-                        'invoice' => $array_invoice[(int)$array_data['invoice'] - 1]['invoice'],
-                        'harga' => $trx->harga_jual,
-                        'jumlah' => $array_data['jumlah'][$i],
-                        'subtotal' => $array_data['jumlah'][$i] * $trx->harga_jual
-                    ]);
-                    $trx->update([
-                        'sisa' => $trx->sisa - $array_data['jumlah'][$i]
-                    ]);
+        DB::transaction(function () use($data, $array_invoice) {
+            foreach ($data as $id_transaksi => $array_data) {
+                for ($i=0; $i < count($array_data['invoice']); $i++) {
+                    if ((int)$array_data['jumlah'][$i] > 0) {
+                        $trx = Transaction::find($id_transaksi);
+
+                        Invoice::create([
+                            'id_transaksi' => $id_transaksi,
+                            'id_nsfp' => $array_invoice[(int)$array_data['invoice'][$i]]['id_nsfp'],
+                            'invoice' => $array_invoice[(int)$array_data['invoice'][$i]]['invoice'],
+                            'harga' => $trx->harga_jual,
+                            'jumlah' => $array_data['jumlah'][$i],
+                            'subtotal' => $array_data['jumlah'][$i] * $trx->harga_jual,
+                            'no' => $array_invoice[(int)$array_data['invoice'][$i]]['no']
+                        ]);
+                        $trx->update([
+                            'sisa' => $trx->sisa - $array_data['jumlah'][$i]
+                        ]);
+                        NSFP::find($array_invoice[(int)$array_data['invoice'][$i]]['id_nsfp'])->update([
+                            'available' => 0,
+                            'invoice' => $array_invoice[(int)$array_data['invoice'][$i]]['invoice'],
+                        ]);
+                    }
                 }
             }
-        }
+        });
 
-        return back();
+        return to_route('keuangan.invoice')->with('success', 'Invoice Created Successfully');
     }
 
     /**

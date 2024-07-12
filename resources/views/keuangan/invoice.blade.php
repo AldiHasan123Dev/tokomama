@@ -15,11 +15,9 @@
                 <!-- head -->
                 <thead>
                     <tr>
-                        <th>Id NSFP</th>
-                        <th>Id Transaksi</th>
+                        <th>No.</th>
+                        <th>NSFP</th>
                         <th>Invoice</th>
-                        <th>Harga</th>
-                        <th>Jumlah</th>
                         <th>Sub Total</th>
                     </tr>
                 </thead>
@@ -43,20 +41,17 @@
                     }
                 },
                 columns: [
-                    { data: 'id_nsfp' },
-                    { data: 'id_transaksi' },
+                    { data: 'DT_RowIndex', name: 'number'},
+                    { data: 'nsfp' },
                     { data: 'invoice' },
-                    { data: 'harga' },
-                    { data: 'jumlah' },
                     { data: 'subtotal' },
-                    {data: 'id', visible:false}
                 ]
             });
 
             $('#surat_jalan_table tbody').on( 'click', 'tr', function () {
                 let row =  table.row( this ).data();
                 $('.btn').removeClass('hidden');
-                $('#print').attr('href', "{{ url('keuangan/cetak-invoice') }}"+'/'+row.id);
+                $('#print').attr('href', "{{ url('keuangan/cetak-invoice') }}"+'/?invoice='+row.invoice);
             });
         });
     </script>

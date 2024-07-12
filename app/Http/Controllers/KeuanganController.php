@@ -69,9 +69,11 @@ class KeuanganController extends Controller
         return redirect()->route('keuangan.invoice.cetak', $surat_jalan);
     }
 
-    public function cetakInvoice(SuratJalan $surat_jalan)
+    public function cetakInvoice()
     {
-        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('surat_jalan'))->setPaper('a4', 'landscape');
+        $invoice = request('invoice');
+        $data = Invoice::where('invoice', request('invoice'))->get();
+        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data','invoice'))->setPaper('a4', 'landscape');
         return $pdf->stream('invoice_pdf.pdf');
     }
 
@@ -86,9 +88,18 @@ class KeuanganController extends Controller
     {
         // $query = Transaction::get();
         // $data = TransactionResource::collection($data);
-        $data  = Invoice::query();
+        $data  = Invoice::get()->groupBy('invoice');
         return DataTables::of($data)
             ->addIndexColumn()
+            ->addColumn('nsfp', function ($row) {
+                return $row->first()->nsfp->nomor ?? '-';
+            })
+            ->addColumn('invoice', function ($row) {
+                return $row->first()->invoice ?? '-';
+            })
+            ->addColumn('subtotal', function ($row) {
+                return number_format($row->sum('subtotal'));
+            })
             ->make();
 
         // $query = SuratJalan::query();

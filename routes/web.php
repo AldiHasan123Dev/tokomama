@@ -14,6 +14,7 @@ use App\Http\Controllers\PajakController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\SuratJalanController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Resources\DatatableResource;
 use App\Http\Resources\SuratJalanResource;
 use App\Models\Customer;
@@ -40,12 +41,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/surat-jalan-cetak/{surat_jalan}', [SuratJalanController::class, 'cetak'])->name('surat-jalan.cetak');
+    Route::get('/surat-jalan-tarif-barang', [SuratJalanController::class, 'tarif'])->name('surat-jalan.barang');
     Route::post('/surat-jalan-data', [SuratJalanController::class, 'dataTable'])->name('surat-jalan.data');
     Route::post('/surat-jalan-edit', [SuratJalanController::class, 'update'])->name('surat-jalan.data.edit');
     Route::post('/surat-jalan-delete', [SuratJalanController::class, 'destroy'])->name('surat-jalan.data.delete');
     Route::resource('surat-jalan', SuratJalanController::class);
     Route::resource('invoice-transaksi', InvoiceController::class);
     Route::post('ekspedisi-data', [EkspedisiController::class, 'dataTable'])->name('ekspedisi.data');
+    Route::post('transaction-data', [TransactionController::class, 'dataTable'])->name('transaksi.data');
+    Route::put('transaction-update', [TransactionController::class, 'update'])->name('transaksi.update');
 });
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {
@@ -56,7 +60,7 @@ Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('au
     Route::get('pre-invoice', 'preInvoice')->name('keuangan.pre-invoice');
     Route::post('draf-invoice/{surat_jalan}', 'submitInvoice')->name('keuangan.invoice.submit');
     Route::get('draf-invoice/{surat_jalan}', 'invoiceDraf')->name('keuangan.invoice.draf');
-    Route::get('cetak-invoice/{surat_jalan}', 'cetakInvoice')->name('keuangan.invoice.cetak');
+    Route::get('cetak-invoice', 'cetakInvoice')->name('keuangan.invoice.cetak');
 });
 
 Route::prefix('pajak')->middleware('auth')->group(function () {

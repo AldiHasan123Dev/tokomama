@@ -39,6 +39,7 @@ class SuratJalanController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $customer = Customer::find($request->id_customer);
         if (!$customer) {
             return back()->with('error', 'Customer Tidak Ditemukan');
@@ -53,6 +54,7 @@ class SuratJalanController extends Controller
         $month_number = date("n", strtotime($request->tgl_sj)); // mengambil nomor bulan dari tanggal
         $month_roman = $roman_numerals[$month_number];
         $data['nomor_surat'] = sprintf('%03d', $no) . '/SJ/SB-' . $month_roman . '/' . date('Y', strtotime($request->tgl_sj));
+        $data['no'] = $no;
         $sj = SuratJalan::create($data);
 
         for ($i = 0; $i < 4; $i++) {
@@ -60,14 +62,11 @@ class SuratJalanController extends Controller
                 Transaction::create([
                     'id_surat_jalan' => $sj->id,
                     'id_barang' => $request->id_barang[$i],
-                    'harga_beli' => $request->harga_beli[$i],
-                    'harga_jual' => $request->harga_jual[$i],
                     'jumlah_beli' => $request->jumlah_beli[$i],
                     'jumlah_jual' => $request->jumlah_jual[$i],
                     'sisa' => $request->jumlah_jual[$i],
                     'satuan_beli' => $request->satuan_beli[$i],
                     'satuan_jual' => $request->satuan_jual[$i],
-                    'margin' => $request->profit[$i],
                 ]);
             }
         }
@@ -130,6 +129,11 @@ class SuratJalanController extends Controller
         $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
         return $pdf->stream('surat_jalan.pdf');
         return view('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
+    }
+
+    public function tarif()
+    {
+        return view('surat_jalan.tarif');
     }
 
     public function dataTable()

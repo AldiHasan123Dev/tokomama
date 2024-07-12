@@ -7,6 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $surat_jalan->nomor_surat }}</title>
     <style>
+        *{
+            font-size: 1rem;
+        }
         table {
             border-collapse: collapse;
             width: 100%;
@@ -104,6 +107,9 @@
                             <span>{{ $item->barang->nama }}</span>
                             <span>({{ $item->jumlah_jual}} {{$item->satuan_jual}})</span>
                         </div>
+                        @if (str_contains($item->barang->nama, '@'))
+                            (Total {{ number_format($item->jumlah_beli * $item->barang->value) }} Kg)
+                        @endif
                         @endforeach
                     </td>
                     <td class="text-center border border-black text-center" rowspan="6"> {{

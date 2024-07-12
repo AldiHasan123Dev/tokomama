@@ -9,8 +9,13 @@
         <x-slot:button>
             <form action="{{ route('invoice-transaksi.index') }}" method="get" id="form">
                 <input type="hidden" name="id_transaksi" id="id_transaksi">
-                <button type="submit" onclick="return confirm('Submit Invoice?')"
-                    class="btn btn-success btn-sm text-black">Buat Draf Invoice</button>
+                <div class="flex gap-2">
+                    <div class="flex-gap-2">
+                        <label for="count">Jumlah Invoice</label>
+                        <input type="number" name="invoice_count" id="count" value="1" class="form-control text-center" min="1" style="height: 28px">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm text-black mt-4">Buat Draf Invoice</button>
+                </div>
             </form>
         </x-slot:button>
         <div class="overflow-x-auto">
@@ -66,7 +71,7 @@
                 ]
             });
 
-            $('#form').submit(function (e) { 
+            $('#form').submit(function (e) {
                 e.preventDefault();
                 var ids = $("#table-getfaktur input:checkbox:checked").map(function(){
                     return $(this).val();

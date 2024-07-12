@@ -50,7 +50,7 @@
                     { data: 'no_pol', name: 'no_pol' },
                     { data: 'id', name: 'id', visible:false},
                     { data: 'profit', name: 'profit'},
-                    
+
                 ]
             });
 
@@ -112,21 +112,21 @@
                 url: "{{ route('surat-jalan.data.delete') }}",
                 data: {id: id},
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                success: function(response) 
+                success: function(response)
                 {
                     alert("Data Surat Jalan berhasil dihapus!");
                     table.ajax.reload();
                 },
-                error: function(xhr, status, error) 
+                error: function(xhr, status, error)
                 {
                   console.log('Error:', error);
                   console.log('Status:', status);
                   console.dir(xhr);
                 }
               })
-            }  
             }
-            
+            }
+
         </script>
     </x-slot:script>
 </x-Layout.layout>

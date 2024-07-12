@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_surat_jalan')->nullable()->constrained('surat_jalan')->onDelete('cascade');
             $table->foreignId('id_barang')->nullable()->constrained('barang')->onDelete('cascade');
-            $table->date('tgl_invoice')->nullable();
-            $table->string('invoice')->nullable();
             $table->double('harga_jual')->default(0);
             $table->double('jumlah_jual')->default(0);
             $table->string('satuan_jual')->nullable();

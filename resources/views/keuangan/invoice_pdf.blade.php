@@ -59,15 +59,15 @@
                 </tr>
                 <tr>
                     <td>Telp: 031-7495507</td>
-                    <td style="text-align: center;">NO: {{ $surat_jalan->invoice ?? '-' }}</td>
+                    <td style="text-align: center;">NO: {{ $invoice ?? '-' }}</td>
                 </tr>
                 <br>
                 <tr>
                     <td style="text-align: left; padding-left: 45px;" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
                         &nbsp;&nbsp;&nbsp;
-                        {{$surat_jalan->customer->nama ?? '-' }}</td>
+                        {{$data->first()->transaksi->suratJalan->customer->nama ?? '-' }}</td>
                     <td style="text-align: center;"><span style="font-weight: bold;">KAPAL: </span> &nbsp;&nbsp;&nbsp;
-                        {{ $surat_jalan->nama_kapal }}
+                        {{ $data->first()->transaksi->suratJalan->nama_kapal }}
                     </td>
                 </tr>
             </thead>
@@ -137,25 +137,25 @@
                                 }
                             }
                 @endphp
-                @foreach ($surat_jalan->transactions as $item)
+                @foreach ($data as $item)
                 <tr>
                     <td class="text-center border border-black">{{ $loop->iteration }}</td>
                     <td class="text-center border border-black">{{ date('d M Y',
-                        strtotime($surat_jalan->tgl_sj)) }}</td>
+                        strtotime($item->transaksi->suratJalan->tgl_sj)) }}</td>
                     <td class="text-center border border-black">
-                        {{ $item->barang->nama }} <br>
-                        @if (str_contains($item->barang->nama, '@'))
-                            (Total {{ number_format($item->jumlah_beli * $item->barang->value) }} Kg)
+                        {{ $item->transaksi->barang->nama }} <br>
+                        @if (str_contains($item->transaksi->barang->nama, '@'))
+                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} Kg)
                         @endif
                     </td>
-                    <td class="text-center border border-black">{{ $surat_jalan->no_cont }}</td>
-                    <td class="text-center border border-black">{{ $item->jumlah_jual }} {{ $item->satuan_jual }}</td>
-                    <td class="text-center border border-black">{{ number_format($item->harga_jual) }} / {{ $item->satuan_jual }}</td>
-                    <td class="text-center border border-black">{{ number_format($item->jumlah_jual *
-                        $item->harga_jual) }}</td>
+                    <td class="text-center border border-black">{{ $item->transaksi->suratJalan->no_cont }}</td>
+                    <td class="text-center border border-black">{{ $item->jumlah }} {{ $item->transaksi->satuan_jual }}</td>
+                    <td class="text-center border border-black">{{ number_format($item->harga) }} / {{ $item->transaksi->satuan_jual }}</td>
+                    <td class="text-center border border-black">{{ number_format($item->jumlah *
+                        $item->harga) }}</td>
                 </tr>
                 @php
-                $total += $item->harga_jual * $item->jumlah_jual;
+                $total += $item->harga * $item->jumlah;
                 @endphp
                 @endforeach
                 <tr>
@@ -191,7 +191,7 @@
             </tbody>
         </table>
 
-       
+
         <p style="font-weight: bold;">TERBILANG: {{ strtoupper(terbilang($total)) }}  RUPIAH</p>
 
         <br>

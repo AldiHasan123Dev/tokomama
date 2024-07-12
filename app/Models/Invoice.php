@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     use HasFactory;
-    protected $table = 'invoice';   
+    protected $table = 'invoice';
     protected $fillable = [
         'id_transaksi',
         'id_nsfp',
@@ -16,5 +16,16 @@ class Invoice extends Model
         'harga',
         'jumlah',
         'subtotal',
+        'no',
     ];
+
+    public function nsfp()
+    {
+        return $this->belongsTo(NSFP::class, 'id_nsfp', 'id');
+    }
+
+    public function transaksi()
+    {
+        return $this->belongsTo(Transaction::class, 'id_transaksi', 'id');
+    }
 }

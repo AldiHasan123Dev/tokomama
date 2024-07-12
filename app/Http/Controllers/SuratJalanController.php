@@ -41,21 +41,21 @@ class SuratJalanController extends Controller
     public function store(Request $request)
     {
 
-        for($i = 0; $i < count($request->satuan_jual); $i++) {
-                $satuanJual = Satuan::where('nama_satuan', $request->satuan_jual[$i])->exists();
-                if(!$satuanJual) {
-                    if($request->satuan_jual[$i] != null) {
-                        $satuan = new Satuan;
-                        $satuan->nama_satuan = $request->satuan_jual[$i];
-                        $satuan->save();
-                    }
+        for ($i = 0; $i < count($request->satuan_jual); $i++) {
+            $satuanJual = Satuan::where('nama_satuan', $request->satuan_jual[$i])->exists();
+            if (!$satuanJual) {
+                if ($request->satuan_jual[$i] != null) {
+                    $satuan = new Satuan;
+                    $satuan->nama_satuan = $request->satuan_jual[$i];
+                    $satuan->save();
                 }
+            }
         }
 
-        for($i = 0; $i < count($request->satuan_beli); $i++) {
+        for ($i = 0; $i < count($request->satuan_beli); $i++) {
             $satuanBeli = Satuan::where('nama_satuan', $request->satuan_beli[$i])->exists();
-            if(!$satuanBeli) {
-                if($request->satuan_beli[$i] != null) {
+            if (!$satuanBeli) {
+                if ($request->satuan_beli[$i] != null) {
                     $satuan = new Satuan;
                     $satuan->nama_satuan = $request->satuan_beli[$i];
                     $satuan->save();
@@ -69,13 +69,15 @@ class SuratJalanController extends Controller
         }
         $data = $request->all();
         if (SuratJalan::count() == 0) {
-            $no = 87;
+            $no = 86;
+            
         } else {
             $no = SuratJalan::whereYear('created_at', date('Y'))->max('no') + 1;
         }
         $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"); // daftar angka Romawi
         $month_number = date("n", strtotime($request->tgl_sj)); // mengambil nomor bulan dari tanggal
         $month_roman = $roman_numerals[$month_number];
+        $data['no'] = $no;
         $data['nomor_surat'] = sprintf('%03d', $no) . '/SJ/SB-' . $month_roman . '/' . date('Y', strtotime($request->tgl_sj));
         $sj = SuratJalan::create($data);
 
@@ -151,7 +153,7 @@ class SuratJalanController extends Controller
     {
         // PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
         $ekspedisi = Ekspedisi::find($surat_jalan->id_ekspedisi);
-        $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
+        $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'))->setPaper('a5', 'landscape');
         return $pdf->stream('surat_jalan.pdf');
         return view('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
     }

@@ -9,12 +9,15 @@
     <style>
         table {
             border-collapse: collapse;
-            width: 100%;
+            width: 90%;
+        }
+
+         body, table, th, td, p {
+            font-size: 8pt !important;
         }
 
         .logo {
-            max-width: 100%;
-            height: 100px;
+            width: 70px;
         }
 
         body {
@@ -45,23 +48,27 @@
 <body>
     <main>
         <table>
-            <thead>
+            <thead >
                 <tr>
                     <th rowspan="4" style="width: 20%">
                         <img src="{{ public_path('logo_sb.svg') }}" class="logo">
                     </th>
                     <td>CV. SARANA BAHAGIA</td>
+                    <td></td>
                     <td>Kepada:</td>
                 </tr>
                 <tr>
                     <td>Jl. Kalianak 55 Blok G, Surabaya</td>
+                    <td></td>
                     <td>{{ $surat_jalan->kepada }}</td>
                 </tr>
                 <tr>
                     <td>Telp: 031-123456</td>
+                    <td></td>
                     <td>{{ $ekspedisi->alamat }}</td>
                 </tr>
                 <tr>
+                    <td></td>
                     <td></td>
                     <td>{{ $ekspedisi->kota }}</td>
                 </tr>
@@ -106,7 +113,7 @@
                         </div>
                         @endforeach
                     </td>
-                    <td class="text-center border border-black text-center" rowspan="6"> {{
+                    <td class="border border-black text-center" rowspan="6"> {{
                         $surat_jalan->customer->alamat ?? '-' }} <br> {{ $surat_jalan->customer->nama ?? '-' }}
                     </td>
                 </tr>
@@ -148,8 +155,8 @@
                     <th><b>PENERIMA</b></th>
                     <th><b>PENGIRIM</b></th>
                 </tr>
-                <tr style="height: 200px !important">
-                    <th style="height: 100px"> </th>
+                <tr style="height: 100px !important">
+                    <th style="height: 50px"> </th>
                     <th></th>
                 </tr>
                 <tr>

@@ -17,6 +17,15 @@ class InvoiceController extends Controller
     {
         $ids = explode(',', request('id_transaksi'));
         $transaksi = Transaction::whereIn('id', $ids)->get();
+        $count = $transaksi->groupBy('suratJalan.id_customer');
+        if($count->count()>1){
+            return back()->with('error', 'Invoice hanya bisa dibuat untuk 1 customer');
+        }
+        $invoice_count = request('invoice_count');
+        $nsfp = NSFP::where('available', '1')->orderBy('nomor')->take($invoice_count)->get();
+        if($nsfp->count() < $invoice_count) {
+            return back()->with('error', 'NSFP Belum Tersedia, pastikan nomor NSFP tersedia.');
+        }
         $array_jumlah = [];
         foreach ($transaksi as $item) {
             $array_jumlah[$item->id] = $item->jumlah_jual;

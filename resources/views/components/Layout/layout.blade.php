@@ -47,6 +47,19 @@
 
     <div class="main-content group-data-[sidebar-size=sm]:ml-[70px]">
         <div class="page-content">
+            <div class="my-5">
+                @if(session('error'))
+                <div role="alert" class="alert alert-error mb-5">
+                    <i class="fa-regular fa-circle-xmark"></i>
+                    <span class="font-medium">{{ session('error') }}</span>
+                </div>
+                @elseif(session('success'))
+                <div role="alert" class="alert alert-success mb-5">
+                    <i class="fa-regular fa-circle-check text-xl"></i>
+                    <span class="font-medium">{{ session('success') }}</span>
+                </div>
+                @endif
+            </div>
             {{ $slot }}
         </div>
     </div>

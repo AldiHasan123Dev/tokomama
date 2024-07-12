@@ -27,6 +27,7 @@
                         <th>No</th>
                         <th>Invoice</th>
                         <th>No. Surat</th>
+                        <th>Customer</th>
                         <th>Barang</th>
                         <th>Jumlah</th>
                         <th>Harga Satuan</th>
@@ -59,6 +60,7 @@
                     { data: 'DT_RowIndex', name: 'number'},
                     { data: 'invoice', name: 'No. Surat' },
                     { data: 'nomor_surat', name: 'No. Surat' },
+                    { data: 'customer', name: 'No. Surat' },
                     { data: 'nama_barang', name: 'nama_barang' },
                     { data: 'sisa', name: 'sisa' },
                     { data: 'harga_jual', name: 'harga_jual' },

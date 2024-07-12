@@ -100,6 +100,12 @@ class KeuanganController extends Controller
             ->addColumn('subtotal', function ($row) {
                 return number_format($row->sum('subtotal'));
             })
+            ->addColumn('ppn', function ($row) {
+                return number_format($row->sum('subtotal') * 0.11);
+            })
+            ->addColumn('total', function ($row) {
+                return number_format(($row->sum('subtotal') * 0.11) + $row->sum('subtotal'));
+            })
             ->make();
 
         // $query = SuratJalan::query();

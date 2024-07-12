@@ -19,6 +19,7 @@ return new class extends Migration
             $table->double('harga')->default(0);
             $table->double('jumlah')->default(0);
             $table->double('subtotal')->default(0);
+            $table->integer('no')->default(0);
             $table->timestamps();
         });
     }

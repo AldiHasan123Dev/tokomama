@@ -51,6 +51,7 @@ class TransactionResource extends JsonResource
             'kode_objek' => $this->Barang->kode_objek ?? '-',
             'nama_barang' => $this->Barang->nama ?? '-',
             'value' => $this->Barang->value ?? '-',
+            'customer' => $this->SuratJalan->customer->nama ?? '-',
         ];
     }
 }

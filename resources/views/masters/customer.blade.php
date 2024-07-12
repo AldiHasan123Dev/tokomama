@@ -2,18 +2,6 @@
 
   <div id="satu"></div>
 
-  @if(session('error'))
-  <div role="alert" class="alert alert-error mb-5">
-    <i class="fa-regular fa-circle-xmark"></i>
-    <span class="font-medium">{{ session('error') }}</span>
-  </div>
-  @elseif(session('success'))
-  <div role="alert" class="alert alert-success mb-5">
-    <i class="fa-regular fa-circle-check text-xl"></i>
-    <span class="font-medium">{{ session('success') }}</span>
-  </div>
-  @endif
-
   <x-master.card-master>
     <x-slot:tittle>Table Customer</x-slot:tittle>
     <div class="overflow-x-auto">

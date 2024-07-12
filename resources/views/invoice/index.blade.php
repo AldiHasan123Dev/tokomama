@@ -6,7 +6,7 @@
     </style>
     <x-keuangan.card-keuangan>
         <x-slot:tittle>Pengambilan Nomor Faktur Untuk Invoice</x-slot:tittle>
-        <form action="{{ route('invoice-transaksi.store') }}" method="post">
+        <form action="{{ route('invoice-transaksi.store') }}" method="post" id="form">
             @csrf
             <input type="hidden" name="invoice_count" value="{{ $invoice_count }}">
             {{-- <label for="invoice_count">Masukan Jumlah Invoice</label>
@@ -38,7 +38,7 @@
                             </td>
 
                             <!-- inputan quantity invoice -->
-                            <td><input id="qty-{{ $item->id }}-1" class="qty-{{ $item->id }}" type="number" class="rounded-sm" onchange="inputBarang({{ $item->id }}, this.value,{{ $item->harga_jual }}, {{ $item->jumlah_jual }})" name="jumlah[{{ $item->id }}][]" id="jumlah" value="{{ $item->jumlah_jual }}"></td>
+                            <td><input onclick="this.select()" id="qty-{{ $item->id }}-1" class="qty-{{ $item->id }}" type="number" class="rounded-sm" onchange="inputBarang({{ $item->id }}, this.value,{{ $item->harga_jual }}, {{ $item->jumlah_jual }})" name="jumlah[{{ $item->id }}][]" id="jumlah" value="{{ $item->jumlah_jual }}"></td>
 
                             <!-- harga satuan -->
                             <td>{{ number_format($item->harga_jual) }}</td>
@@ -98,7 +98,7 @@
                         </td>
 
                         <td>
-                            <input id="qty-${id}-${idx}" type="number" class="qty-${id}" onkeyup="inputBarang(${id}, this.value,${price}, ${max})" onchange="inputBarang(${id}, this.value,${price}, ${max})" name="jumlah[${id}][]" id="jumlah" value="0">
+                            <input onclick="this.select()" id="qty-${id}-${idx}" type="number" class="qty-${id}" onchange="inputBarang(${id}, this.value,${price}, ${max})" name="jumlah[${id}][]" id="jumlah" value="0">
                         </td>
 
                         <td>${price}</td>
@@ -149,6 +149,25 @@
                 $('.invoice-' + item).html(html);
             });
         }
+
+        $('#form').submit(function (e) { 
+            e.preventDefault();
+            for (let i = 0; i < ids.length; i++) {
+                const id = ids[i];
+                var $j_object = $(".qty-" + id);
+                let sum = 0;
+                $j_object.each( function(){
+                    sum+=parseInt($(this).val());
+                });
+
+                if (sum > array_jumlah[id]) {
+                    alert('Jumlah melebihi batas');
+                    return
+                }else{
+                    this.submit();
+                }
+            }
+        });
     </script>
     </x-slot:script>
 </x-Layout.layout>

@@ -19,6 +19,8 @@
                         <th>NSFP</th>
                         <th>Invoice</th>
                         <th>Sub Total</th>
+                        <th>PPN</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,6 +47,8 @@
                     { data: 'nsfp' },
                     { data: 'invoice' },
                     { data: 'subtotal' },
+                    { data: 'ppn' },
+                    { data: 'total' },
                 ]
             });
 

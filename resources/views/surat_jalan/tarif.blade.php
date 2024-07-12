@@ -40,7 +40,9 @@
                         <th>No. Surat</th>
                         <th>Barang</th>
                         <th>Jumlah Jual</th>
+                        <th>Satuan Jual</th>
                         <th>Jumlah Beli</th>
+                        <th>Satuan Beli</th>
                         <th>Harga Jual</th>
                         <th>Harga Beli</th>
                         <th>Profit</th>
@@ -68,7 +70,9 @@
                         <th>No. Surat</th>
                         <th>Barang</th>
                         <th>Jumlah Jual</th>
+                        <th>Satuan Jual</th>
                         <th>Jumlah Beli</th>
+                        <th>Satuan Beli</th>
                         <th>Harga Jual</th>
                         <th>Harga Beli</th>
                         <th>Profit</th>
@@ -102,7 +106,9 @@
                     { data: 'nomor_surat', name: 'No. Surat' },
                     { data: 'barang', name: 'barang' },
                     { data: 'jumlah_jual', name: 'jumlah_jual' },
+                    { data: 'satuan_jual', name: 'satuan_jual' },
                     { data: 'jumlah_beli', name: 'jumlah_beli' },
+                    { data: 'satuan_beli', name: 'satuan_jual' },
                     { data: 'harga_jual', name: 'harga_jual' },
                     { data: 'harga_beli', name: 'harga_beli' },
                     { data: 'profit', name: 'profit' },
@@ -127,7 +133,9 @@
                     { data: 'nomor_surat', name: 'No. Surat' },
                     { data: 'barang', name: 'barang' },
                     { data: 'jumlah_jual', name: 'jumlah_jual' },
+                    { data: 'satuan_jual', name: 'jumlah_jual' },
                     { data: 'jumlah_beli', name: 'jumlah_beli' },
+                    { data: 'satuan_beli', name: 'jumlah_jual' },
                     { data: 'harga_jual', name: 'harga_jual' },
                     { data: 'harga_beli', name: 'harga_beli' },
                     { data: 'profit', name: 'profit' },

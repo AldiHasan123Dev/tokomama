@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\Customer;
 use App\Models\Ekspedisi;
 use App\Models\Nopol;
+use App\Models\Satuan;
 use App\Models\SuratJalan;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -39,6 +40,29 @@ class SuratJalanController extends Controller
      */
     public function store(Request $request)
     {
+
+        for($i = 0; $i < count($request->satuan_jual); $i++) {
+                $satuanJual = Satuan::where('nama_satuan', $request->satuan_jual[$i])->exists();
+                if(!$satuanJual) {
+                    if($request->satuan_jual[$i] != null) {
+                        $satuan = new Satuan;
+                        $satuan->nama_satuan = $request->satuan_jual[$i];
+                        $satuan->save();
+                    }
+                }
+        }
+
+        for($i = 0; $i < count($request->satuan_beli); $i++) {
+            $satuanBeli = Satuan::where('nama_satuan', $request->satuan_beli[$i])->exists();
+            if(!$satuanBeli) {
+                if($request->satuan_beli[$i] != null) {
+                    $satuan = new Satuan;
+                    $satuan->nama_satuan = $request->satuan_beli[$i];
+                    $satuan->save();
+                }
+            }
+        }
+
         $customer = Customer::find($request->id_customer);
         if (!$customer) {
             return back()->with('error', 'Customer Tidak Ditemukan');

@@ -6,12 +6,14 @@ use App\Http\Controllers\CoaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\JurnalManualController;
 use App\Http\Controllers\NSFPController as nsfp;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\NopolController;
 use App\Http\Controllers\PajakController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\SuratJalanController;
 use App\Http\Controllers\TransactionController;
@@ -102,9 +104,17 @@ Route::prefix('master')->controller(SatuanController::class)->middleware('auth')
     Route::get('stauan-data', 'dataTable')->name('master.satuan.data');
 });
 
+Route::prefix('master')->controller(RoleController::class)->middleware('auth')->group(function () {
+    Route::resource('role', RoleController::class);
+});
+
 Route::prefix('jurnal')->controller(CoaController::class)->middleware('auth')->group(function () {
     Route::get('coa', 'index')->name('jurnal.coa');
     Route::post('coa', 'statusCoa')->name('jurnal.coa');
+
+    Route::controller(JurnalManualController::class)->group(function () {
+        Route::get('jurnal-manual', 'index')->name('jurnal.jurnal-manual');
+    });
 });
 
 Route::get('/invoice', function () {

@@ -15,12 +15,9 @@ class CoaController extends Controller
 
     function dataTable()
     {
-        $data = Coa::query();
-        return DataTables::of($data)
+        return DataTables::of(Coa::query())
             ->addIndexColumn()
-            ->addColumn('#', function ($row) {
-                return '<input type="checkbox" name="id' . $row->id . '" id="id" value="' . $row->id . '">';
-            })
+            ->addColumn('#', '<input type="checkbox" name="id" id="id" value="">')
             ->rawColumns(['#'])
             ->make(true);
     }

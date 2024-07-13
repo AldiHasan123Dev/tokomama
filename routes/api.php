@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\NSFPController;
 use App\Http\Controllers\Api\SuratJalanController;
 use App\Http\Controllers\CoaController;
+use App\Http\Controllers\JurnalManualController;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Resources\DatatableCollection;
 use App\Http\Resources\DatatableResource;

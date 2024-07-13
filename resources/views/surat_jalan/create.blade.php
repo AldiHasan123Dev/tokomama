@@ -266,9 +266,7 @@
                                             name="jumlah_beli[]" id="jumlah_beli-{{ $i }}" class="form-control">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()"
-                                            name="satuan_beli[]" id="satuan_beli-{{ $i }}" class="form-control"
-                                            placeholder="(ZAK, BALL, KARTON, DLL)">
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_beli[]" id="satuan_beli-{{ $i }}" class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_beli_list" autocomplete="off">
                                     </td>
                                     {{-- <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()"
@@ -281,7 +279,7 @@
                                     <td>
                                         <input type="text" style="width:120px" onchange="inputBarang()"
                                             name="satuan_jual[]" id="satuan_jual-{{ $i }}" class="form-control"
-                                            placeholder="(ZAK, BALL, KARTON, DLL)">
+                                            placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off">
                                     </td>
                                     {{-- <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()"
@@ -294,6 +292,16 @@
                         <datalist id="barang_list">
                             @foreach ($barang as $mb)
                             <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" value="{{ $mb->nama }}">{{ $mb->nama }}</option>
+                            @endforeach
+                        </datalist>
+                        <datalist id="satuan_beli_list">
+                            @foreach ($satuan as $st)
+                            <option data-id="{{$st->id}}" value="{{ $st->nama_satuan }}">{{ $st->nama_satuan }}</option>
+                            @endforeach
+                        </datalist>
+                        <datalist id="satuan_jual_list">
+                            @foreach ($satuan as $st)
+                            <option data-id="{{$st->id}}" value="{{ $st->nama_satuan }}">{{ $st->nama_satuan }}</option>
                             @endforeach
                         </datalist>
                     </div>

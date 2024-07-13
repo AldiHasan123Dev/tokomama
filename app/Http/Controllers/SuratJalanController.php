@@ -80,7 +80,6 @@ class SuratJalanController extends Controller
         $month_roman = $roman_numerals[$month_number];
         $data['no'] = $no;
         $data['nomor_surat'] = sprintf('%03d', $no) . '/SJ/SB-' . $month_roman . '/' . date('Y', strtotime($request->tgl_sj));
-        $data['no'] = $no;
         $sj = SuratJalan::create($data);
 
         for ($i = 0; $i < 4; $i++) {

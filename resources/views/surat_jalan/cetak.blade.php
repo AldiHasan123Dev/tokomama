@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $surat_jalan->nomor_surat }}</title>
     <style>
+        
         table {
             border-collapse: collapse;
             width: 90%;
@@ -158,6 +159,8 @@
                     <th><b>PENERIMA</b></th>
                     <th><b>PENGIRIM</b></th>
                 </tr>
+                <tr>
+                   <td style="height: 80px;"></td>
                 <tr >
                     <th style="height: 55px"> </th>
                     <th></th>

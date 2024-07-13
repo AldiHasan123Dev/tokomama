@@ -12,9 +12,9 @@
                 <div class="flex gap-2">
                     <div class="flex-gap-2">
                         <label for="count">Jumlah Invoice</label>
-                        <input type="number" name="invoice_count" id="count" value="1" class="form-control text-center" min="1" style="height: 28px">
+                        <input type="number" name="invoice_count" id="count" value="1" class=" rounded-md form-control text-center" min="1" style="height: 28px">
                     </div>
-                    <button type="submit" class="btn btn-success btn-sm text-black mt-4">Buat Draf Invoice</button>
+                    <button type="submit" class="btn font-semibold bg-green-500 btn-sm text-white mt-4">Buat Draf Invoice</button>
                 </div>
             </form>
         </x-slot:button>

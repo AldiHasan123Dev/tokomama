@@ -15,6 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\SuratJalanController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserController;
 use App\Http\Resources\DatatableResource;
 use App\Http\Resources\SuratJalanResource;
 use App\Models\Customer;
@@ -95,6 +96,11 @@ Route::prefix('master')->controller(NopolController::class)->middleware('auth')-
     Route::post('nopol_edit', 'update')->name('master.nopol.edit');
     Route::post('nopol_delete', 'destroy')->name('master.nopol.delete');
     Route::post('set_status', 'setStatus')->name('master.nopol.editstatus');
+});
+
+Route::prefix('master')->controller(UserController::class)->middleware('auth')->group(function () {
+    Route::resource('user', UserController::class)->only(['index','store','update','destroy']);
+    ROute::get('data_user_with_role', 'datatable')->name('master.user.data');
 });
 
 Route::prefix('master')->controller(SatuanController::class)->middleware('auth')->group(function () {

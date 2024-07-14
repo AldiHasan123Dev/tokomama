@@ -16,7 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('masters.user');
+        $roles = Role::all();
+        return view('masters.user', compact('roles'));
     }
 
     /**
@@ -32,17 +33,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
-        $roleExists = Role::where('name', $request->role)->exists();
-        
-        if(!$roleExists) {
-            return back()->with('error', 'Role tidak ada pada database.');
-        }
-
-        $data_role = Role::where('name', $request->role)->get();
-        // dd($data_role[0]->id);
         $result = User::create([
-            'role_id' => $data_role[0]->id,
+            'role_id' => $request->role_id,
             'name' => $request->nama_user,
             'email' => $request->email,
             'phone' => $request->telp,

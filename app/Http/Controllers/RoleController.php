@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
+use App\Models\RoleMenu;
+use App\Models\SubMenu;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -27,15 +30,17 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Role::create($request->all());
+        return back()->with('success', 'Data role berhasil ditambahkan');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Role $role)
     {
-        //
+        $sub_menu = SubMenu::all()->groupBy('menu_id');
+        return view('masters.role', compact('role','sub_menu'));
     }
 
     /**
@@ -49,9 +54,20 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        $role->update([
+            'name' => $request->name
+        ]);
+        $sub_menu_id = explode(',', $request->sub_menu_id);
+        RoleMenu::where('role_id', $role->id)->delete();
+        foreach ($sub_menu_id as $key => $value) {
+            RoleMenu::create([
+                'role_id' => $role->id,
+                'menu_id' => $value
+            ]);
+        }
+        return back()->with('success', 'Data role berhasil diubah');
     }
 
     /**

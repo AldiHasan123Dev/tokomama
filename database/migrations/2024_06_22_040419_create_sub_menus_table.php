@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_menus', function (Blueprint $table) {
+        Schema::create('sub_menu', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('menu_id');
-            $table->foreign('menu_id')->references('id')->on('menus');
+            $table->foreign('menu_id')->references('id')->on('menu');
             $table->string('title');
             $table->string('name');
+            $table->string('icon')->nullable();
             $table->string('url');
             $table->integer('order');
             $table->timestamps();

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('role', function (Blueprint $table) {
+        Schema::create('role_menu', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->collation('utf8mb4_unicode_ci');
+            $table->foreignId('menu_id')->constrained('sub_menu');
+            $table->foreignId('role_id')->constrained('role');
             $table->timestamps();
-            $table->softDeletes('deleted_at', precision: 0);
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('role_menus');
     }
 };

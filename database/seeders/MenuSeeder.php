@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Menu;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -13,49 +14,14 @@ class MenuSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('menus')->insert([
-            'title' => "Dashboard",
-            'icon' => '<i class="fa-solid fa-house"></i>',
-            'name' => "dashboard",
-            'url' => "#",
-            'order' => 1,
-            'created_at' => now()
-        ]);
+        $data = [
+            ['title'=>'Master','name'=>'master','icon'=>'fa-database','url'=>'#','order'=>1],
+            ['title'=>'Surat Jalan','name'=>'surat-jalan','icon'=>'fa-person-walking-luggage','url'=>'#','order'=>2],
+            ['title'=>'Keuangan','name'=>'keuangan','icon'=>'fa-money-check-dollar','url'=>'#','order'=>3],
+            ['title'=>'Pajak','name'=>'pajak','icon'=>'fa-circle-dollar-to-slot','url'=>'#','order'=>4],
+            ['title'=>'Jurnal Keuangan','name'=>'jurnal-keuangan','icon'=>'fa-book','url'=>'#','order'=>5],
+        ];
 
-        DB::table('menus')->insert([
-            'title' => "Master",
-            'icon' => '<i class="fa-solid fa-database"></i>',
-            'name' => "master",
-            'url' => "#",
-            'order' => 2,
-            'created_at' => now()
-        ]);
-
-        DB::table('menus')->insert([
-            'title' => "Keuangan",
-            'icon' => '<i class="fa-solid fa-money-check-dollar"></i>',
-            'name' => "keuangan",
-            'url' => "#",
-            'order' => 3,
-            'created_at' => now()
-        ]);
-
-        DB::table('menus')->insert([
-            'title' => "Pajak",
-            'icon' => '<i class="fa-solid fa-circle-dollar-to-slot"></i>',
-            'name' => "pajak",
-            'url' => "#",
-            'order' => 4,
-            'created_at' => now()
-        ]);
-
-        DB::table('menus')->insert([
-            'title' => "Jurnal Keuangan",
-            'icon' => '<i class="fa-solid fa-book"></i>',
-            'name' => "jurnal_keuangan",
-            'url' => "#",
-            'order' => 5,
-            'created_at' => now()
-        ]);
+        Menu::insert($data);
     }
 }

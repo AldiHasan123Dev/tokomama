@@ -10,6 +10,7 @@ use App\Http\Controllers\JurnalManualController;
 use App\Http\Controllers\NSFPController as nsfp;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NopolController;
 use App\Http\Controllers\PajakController;
 use App\Http\Controllers\ProfileController;
@@ -76,6 +77,7 @@ Route::prefix('pajak')->middleware('auth')->group(function () {
 
 Route::prefix('master')->controller(CustomerController::class)->middleware('auth')->group(function () {
     Route::get('customer', 'index')->name('master.customer');
+    Route::get('role-menu', [MenuController::class,'index'])->name('menu.index');
     Route::get('customer_list', 'datatable')->name('master.customer.list');
     Route::post('customer', 'store')->name('master.customer.add');
     Route::post('customer_delete', 'destroy')->name('master.customer.delete');

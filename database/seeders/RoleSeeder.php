@@ -14,85 +14,8 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('roles')->insert([
+        DB::table('role')->insert([
             'name' => 'SUPER ADMIN',
-            'deleted_at' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => null,
-        ]);
-
-        DB::table('roles')->insert([
-            'name' => 'COMM',
-            'deleted_at' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => null,
-        ]);
-        
-        DB::table('roles')->insert([
-            'name' => 'FA',
-            'deleted_at' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => null,
-        ]);
-
-        DB::table('roles')->insert([
-            'name' => 'TRUCK',
-            'deleted_at' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => null,
-        ]);
-
-        DB::table('roles')->insert([
-            'name' => 'TRUCK, FA, TAX',
-            'deleted_at' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => null,
-        ]);
-
-        DB::table('roles')->insert([
-            'name' => 'COMM1',
-            'deleted_at' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => null,
-        ]);
-
-        DB::table('roles')->insert([
-            'name' => 'MELLA',
-            'deleted_at' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => null,
-        ]);
-
-        DB::table('roles')->insert([
-            'name' => 'KOSONG',
-            'deleted_at' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => null,
-        ]);
-
-        DB::table('roles')->insert([
-            'name' => 'MARKETING',
-            'deleted_at' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => null,
-        ]);
-
-        DB::table('roles')->insert([
-            'name' => 'FA1',
-            'deleted_at' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => null,
-        ]);
-
-        DB::table('roles')->insert([
-            'name' => 'ROS1',
-            'deleted_at' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => null,
-        ]);
-
-        DB::table('roles')->insert([
-            'name' => 'ADMIN BL',
             'deleted_at' => null,
             'created_at' => Carbon::now(),
             'updated_at' => null,

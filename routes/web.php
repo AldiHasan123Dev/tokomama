@@ -6,6 +6,7 @@ use App\Http\Controllers\CoaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\JurnalManualController;
 use App\Http\Controllers\NSFPController as nsfp;
 use App\Http\Controllers\KeuanganController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Resources\DatatableResource;
 use App\Http\Resources\SuratJalanResource;
 use App\Models\Customer;
+use App\Models\Jurnal;
 use App\Models\NSFP as ModelsNSFP;
 use App\Models\SuratJalan;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/surat-jalan-delete', [SuratJalanController::class, 'destroy'])->name('surat-jalan.data.delete');
     Route::resource('surat-jalan', SuratJalanController::class);
     Route::resource('invoice-transaksi', InvoiceController::class);
+    Route::resource('jurnal', JurnalController::class);
     Route::post('ekspedisi-data', [EkspedisiController::class, 'dataTable'])->name('ekspedisi.data');
     Route::post('transaction-data', [TransactionController::class, 'dataTable'])->name('transaksi.data');
     Route::put('transaction-update', [TransactionController::class, 'update'])->name('transaksi.update');
@@ -120,10 +123,6 @@ Route::prefix('master')->controller(RoleController::class)->middleware('auth')->
 Route::prefix('jurnal')->controller(CoaController::class)->middleware('auth')->group(function () {
     Route::get('coa', 'index')->name('jurnal.coa');
     Route::post('coa', 'statusCoa')->name('jurnal.coa');
-
-    Route::controller(JurnalManualController::class)->group(function () {
-        Route::get('jurnal-manual', 'index')->name('jurnal.jurnal-manual');
-    });
 });
 
 Route::prefix('jurnal')->controller(TemplateJurnalController::class)->middleware('auth')->group(function () {

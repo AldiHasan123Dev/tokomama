@@ -160,9 +160,9 @@
                     <th><b>PENGIRIM</b></th>
                 </tr>
                 <tr>
-                   <td style="height: 80px;"></td>
+                   <td style="height: 20px;"></td>
                 <tr >
-                    <th style="height: 55px"> </th>
+                    <th style="height: 35px"> </th>
                     <th></th>
                 </tr>
                 <tr>

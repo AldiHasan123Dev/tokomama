@@ -32,7 +32,7 @@ class SubMenuSeeder extends Seeder
             ['menu_id'=>4,'title'=>'Laporan PPN','name'=>'laporan-ppn','icon'=>'#','url'=>'/pajak/laporan-ppn','order'=>2],
             ['menu_id'=>5,'title'=>'COA','name'=>'coa','icon'=>'#','url'=>'/jurnal/coa','order'=>1],
             ['menu_id'=>5,'title'=>'Jurnal','name'=>'jurnal','icon'=>'#','url'=>'/jurnal','order'=>2],
-            ['menu_id'=>5,'title'=>'Template Jurnal','name'=>'jurnal-template','icon'=>'#','url'=>'#','order'=>3],
+            ['menu_id'=>5,'title'=>'Template Jurnal','name'=>'jurnal-template','icon'=>'#','url'=>'/jurnal/template-jurnal','order'=>3],
             ['menu_id'=>5,'title'=>'Laporan Neraca','name'=>'jurnal-neraca','icon'=>'#','url'=>'#','order'=>4],
             ['menu_id'=>5,'title'=>'Laporan Laba/Rugi','name'=>'jurnal-lr','icon'=>'#','url'=>'#','order'=>5],
             ['menu_id'=>5,'title'=>'Laporan Buku Besar','name'=>'jurnal-buku-besar','icon'=>'#','url'=>'#','order'=>6],

@@ -17,6 +17,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\SuratJalanController;
+use App\Http\Controllers\TemplateJurnalController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\DatatableResource;
@@ -123,6 +124,11 @@ Route::prefix('jurnal')->controller(CoaController::class)->middleware('auth')->g
     Route::controller(JurnalManualController::class)->group(function () {
         Route::get('jurnal-manual', 'index')->name('jurnal.jurnal-manual');
     });
+});
+
+Route::prefix('jurnal')->controller(TemplateJurnalController::class)->middleware('auth')->group(function () {
+    Route::get('template-jurnal', 'index')->name('jurnal.template-jurnal');
+    Route::get('template-jurnal-create', 'create')->name('jurnal.template-jurnal.create');
 });
 
 Route::get('/invoice', function () {

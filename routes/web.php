@@ -58,6 +58,10 @@ Route::middleware('auth')->group(function () {
     Route::post('ekspedisi-data', [EkspedisiController::class, 'dataTable'])->name('ekspedisi.data');
     Route::post('transaction-data', [TransactionController::class, 'dataTable'])->name('transaksi.data');
     Route::put('transaction-update', [TransactionController::class, 'update'])->name('transaksi.update');
+    Route::get('coa', [CoaController::class,'index'])->name('jurnal.coa');
+    Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
+    Route::get('template-jurnal', [TemplateJurnalController::class,'index'])->name('jurnal.template-jurnal');
+    Route::get('template-jurnal-create', [TemplateJurnalController::class,'create'])->name('jurnal.template-jurnal.create');
 });
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {
@@ -120,15 +124,15 @@ Route::prefix('master')->controller(RoleController::class)->middleware('auth')->
     Route::resource('role', RoleController::class);
 });
 
-Route::prefix('jurnal')->controller(CoaController::class)->middleware('auth')->group(function () {
-    Route::get('coa', 'index')->name('jurnal.coa');
-    Route::post('coa', 'statusCoa')->name('jurnal.coa');
-});
+// Route::prefix('jurnal')->controller(CoaController::class)->middleware('auth')->group(function () {
+//     Route::get('coa', 'index')->name('jurnal.coa');
+//     Route::post('coa', 'statusCoa')->name('jurnal.coa');
+// });
 
-Route::prefix('jurnal')->controller(TemplateJurnalController::class)->middleware('auth')->group(function () {
-    Route::get('template-jurnal', 'index')->name('jurnal.template-jurnal');
-    Route::get('template-jurnal-create', 'create')->name('jurnal.template-jurnal.create');
-});
+// Route::prefix('jurnal')->controller(TemplateJurnalController::class)->middleware('auth')->group(function () {
+//     Route::get('template-jurnal', 'index')->name('jurnal.template-jurnal');
+//     Route::get('template-jurnal-create', 'create')->name('jurnal.template-jurnal.create');
+// });
 
 Route::get('/invoice', function () {
     $surat_jalan = SuratJalan::all();

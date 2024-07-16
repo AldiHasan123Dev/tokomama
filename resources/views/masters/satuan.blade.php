@@ -17,6 +17,22 @@
           </table>
         </div>
       </x-master.card-master>
+    
+    <x-master.card-master>
+        <x-slot:tittle>Tambah Satuan</x-slot:tittle>
+        <form action="{{ route('satuan.store') }}" method="post" class="grid grid-cols-2">
+          @csrf
+          <label class="form-control w-full max-w-xs col-start-1">
+            <div class="label">
+              <span class="label-text">Nama Satuan <span class="text-red-500">*</span></span>
+            </div>
+            <input type="text" placeholder="Nama" name="nama_satuan" class="input input-bordered w-full max-w-xs rounded-md"
+              required />  
+          </label>
+          <button type="submit" class="btn w-56 p-4 mt-8 text-semibold text-white bg-green-500 col-start-2 ">Simpan Data
+            Customer</button>
+        </form>
+      </x-master.card-master>
 
       <x-slot:script>
         <script>
@@ -40,7 +56,7 @@
                     <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                 </form>
                 <h3 class="text-lg font-bold">Edit Data</h3>
-                <form action="{{url('master/satuan')}}/${id}" method="post">
+                <form action="{{url('/master/satuan')}}/${id}" method="post">
                   @csrf
                   @method('put')
                   <input type="hidden" name="id" value="${id}" class="border-none" />

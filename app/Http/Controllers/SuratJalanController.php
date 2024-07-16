@@ -70,8 +70,7 @@ class SuratJalanController extends Controller
         }
         $data = $request->all();
         if (SuratJalan::count() == 0) {
-            $no = 86;
-            
+            $no = 87;
         } else {
             $no = SuratJalan::whereYear('created_at', date('Y'))->max('no') + 1;
         }

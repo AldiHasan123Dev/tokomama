@@ -23,6 +23,7 @@ class SubMenuSeeder extends Seeder
             ['menu_id'=>1,'title'=>'Satuan','name'=>'satuan','icon'=>'#','url'=>'/master/satuan','order'=>5],
             ['menu_id'=>1,'title'=>'User','name'=>'user','icon'=>'#','url'=>'/master/user','order'=>6],
             ['menu_id'=>1,'title'=>'Role Menu','name'=>'role-menu','icon'=>'#','url'=>'/master/role-menu','order'=>7],
+            ['menu_id'=>1,'title'=>'Supplier','name'=>'supplier','icon'=>'#','url'=>'/master/supplier','order'=>8],
             ['menu_id'=>2,'title'=>'Buat Surat Jalan (SJ)','name'=>'surat-jalan-create','icon'=>'#','url'=>'/surat-jalan/create','order'=>1],
             ['menu_id'=>2,'title'=>'List Surat Jalan (SJ)','name'=>'surat-jalan-index','icon'=>'#','url'=>'/surat-jalan','order'=>2],
             ['menu_id'=>2,'title'=>'Harga Barang','name'=>'harga-barang','icon'=>'#','url'=>'/surat-jalan-tarif-barang','order'=>3],

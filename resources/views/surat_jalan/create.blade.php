@@ -249,8 +249,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for ($i = 1; $i
-                                < 5; $i++) <input type="hidden" name="id_barang[]" id="id_barang-{{ $i }}" />
+                                @for ($i = 1; $i < 5; $i++) <input type="hidden" name="id_barang[]" id="id_barang-{{ $i }}" />
+                                <input type="hidden" name="nama_satuan[]" id="nama_satuan-{{ $i }}" />
                                 <tr>
                                     <td class="text-center">{{ $i }}</td>
                                     <td>
@@ -283,7 +283,7 @@
                         </table>
                         <datalist id="barang_list">
                             @foreach ($barang as $mb)
-                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" value="{{ $mb->nama }}">{{ $mb->nama }}</option>
+                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" data-satuan="{{ $mb->nama_satuan }}" value="{{ $mb->nama }}">{{ $mb->nama }}</option>
                             @endforeach
                         </datalist>
                         <datalist id="satuan_beli_list">
@@ -561,8 +561,9 @@
                 if (barang != '' && typeof (barang) != undefined) {
                     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
                     var value_barang = $("#barang_list option[value='" + barang + "']").data('value');
+                    var nama_satuan = $("#barang_list option[value='" + barang + "']").data('satuan');
                     $("#id_barang-" + i).val(id_barang);
-                    if (satuan_jual.includes(barang.slice(-2))){
+                    if (satuan_jual.includes(nama_satuan)){
                         var total_jumlah = parseInt(jumlah_jual);
                     } else {
                         var total_jumlah = parseInt(value_barang) * parseInt(jumlah_jual);

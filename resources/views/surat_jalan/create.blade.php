@@ -166,8 +166,7 @@
                         <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text">Tujuan/NamaCustomer <span
-                                            class="text-red-500">*</span></span>
+                                    <span class="label-text">Tujuan/NamaCustomer <span class="text-red-500">*</span></span>
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
@@ -245,6 +244,7 @@
                                     {{-- <th>Harsat Jual</th> --}}
                                     <th>Jumlah Jual</th>
                                     <th>Satuan Jual</th>
+                                    <th>Supplier</th>
                                     {{-- <th>Profit</th> --}}
                                 </tr>
                             </thead>
@@ -281,6 +281,9 @@
                                             name="satuan_jual[]" id="satuan_jual-{{ $i }}" class="form-control"
                                             placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off">
                                     </td>
+                                    <td>
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-{{ $i }}" class="form-control" list="supplier_list" autocomplete="off">
+                                    </td>
                                     {{-- <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()"
                                             name="profit[]" id="profit-{{ $i }}" class="form-control">
@@ -300,6 +303,11 @@
                             @endforeach
                         </datalist>
                         <datalist id="satuan_jual_list">
+                            @foreach ($satuan as $st)
+                            <option data-id="{{$st->id}}" value="{{ $st->nama_satuan }}">{{ $st->nama_satuan }}</option>
+                            @endforeach
+                        </datalist>
+                        <datalist id="supplier_list">
                             @foreach ($satuan as $st)
                             <option data-id="{{$st->id}}" value="{{ $st->nama_satuan }}">{{ $st->nama_satuan }}</option>
                             @endforeach
@@ -554,6 +562,7 @@
             let text = '';
             for (let i = 1; i < 5; i++) {
                 const barang = $('#barang-' + i).val();
+                console.log(barang);
                 const jumlah_beli = $('#jumlah_beli-' + i).val();
                 const satuan_beli = $('#satuan_beli-' + i).val();
                 // const harga_beli = $('#harga_beli-' + i).val();
@@ -564,7 +573,11 @@
                     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
                     var value_barang = $("#barang_list option[value='" + barang + "']").data('value');
                     $("#id_barang-" + i).val(id_barang);
-                    var total_jumlah = parseInt(value_barang) * parseInt(jumlah_jual);
+                    if (satuan_jual.includes(barang.slice(-2))){
+                        var total_jumlah = parseInt(jumlah_jual);
+                    } else {
+                        var total_jumlah = parseInt(value_barang) * parseInt(jumlah_jual);
+                    }
                     var txt_total = '';
                     if(barang.includes("@")){
                         txt_total += `<p>(Total: ${total_jumlah} Kg)</p>`;

@@ -66,7 +66,7 @@
                                 </datalist>
                             </label>
                         </div>
-                        <div>
+                        {{-- <div>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text">Alamat Ekspedisi <span class="text-red-500">*</span></span>
@@ -75,7 +75,7 @@
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
                                     id="alamat_ekspedisi" name="alamat_ekspedisi" required />
                             </label>
-                        </div>
+                        </div> --}}
                         <input type="hidden" name="kota_ekspedisi" id="kota_ekspedisi">
                         <!-- <div>
                             <label class="form-control w-full max-w-xs">
@@ -134,7 +134,7 @@
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="no_pol" name="no_pol" list="no_pol_list" required />
+                                    id="no_pol" name="no_pol" list="no_pol_list" />
                                 <input type="hidden" name="id_nopol" id="id_nopol">
                                 <datalist id="no_pol_list">
                                     @foreach ($nopol as $np)

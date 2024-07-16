@@ -34,7 +34,7 @@
           <span class="label-text">Nama Customer <span class="text-red-500">*</span></span>
         </div>
         <input type="text" placeholder="Nama" name="nama" class="input input-bordered w-full max-w-xs rounded-md"
-          required />
+          required />  
       </label>
       <label class="form-control w-full max-w-xs col-start-2">
         <div class="label">
@@ -54,8 +54,8 @@
         <div class="label">
           <span class="label-text">Email <span class="text-red-500">*</span></span>
         </div>
-        <input type="email" placeholder="Email" name="email" class="input input-bordered w-full max-w-xs rounded-md"
-          required />
+        <input type="text" placeholder="Email" name="email" class="input input-bordered w-full max-w-xs rounded-md"
+          />
       </label>
 
       <label class="form-control w-full max-w-xs col-start-1">
@@ -72,6 +72,7 @@
         <input type="text" placeholder="Alamat" name="alamat" class="input input-bordered w-full max-w-xs rounded-md"
           required />
       </label>
+      
       <label class="form-control w-full max-w-xs col-start-3">
         <div class="label">
           <span class="label-text">Kota <span class="text-red-500">*</span></span>
@@ -86,6 +87,7 @@
         <input type="text" placeholder="Alamat NPWP" name="alamat_npwp"
           class="input input-bordered w-full max-w-xs rounded-md" required />
       </label>
+      <span class="mt-1"><span class="text-red-500">*</span>) Jika tidak ada silahkan isi "-"</span>
       <button type="submit" class="btn p-4 mt-3 text-semibold text-white bg-green-500 col-span-4">Simpan Data
         Customer</button>
     </form>

@@ -17,6 +17,7 @@ use App\Http\Controllers\PajakController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SatuanController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SuratJalanController;
 use App\Http\Controllers\TemplateJurnalController;
 use App\Http\Controllers\TransactionController;
@@ -122,6 +123,14 @@ Route::prefix('master')->controller(SatuanController::class)->middleware('auth')
 
 Route::prefix('master')->controller(RoleController::class)->middleware('auth')->group(function () {
     Route::resource('role', RoleController::class);
+});
+
+Route::prefix('master')->controller(SupplierController::class)->middleware('auth')->group(function () {
+    Route::get('supplier', 'index')->name('master.supplier');
+    Route::get('supplier-list', 'datatable')->name('master.supplier.datatable');
+    Route::post('supplier-add', 'store')->name('master.supplier.add');
+    Route::post('supplier-edit', 'update')->name('master.supplier.edit');
+    Route::post('supplier-delete', 'destroy')->name('master.supplier.delete');
 });
 
 // Route::prefix('jurnal')->controller(CoaController::class)->middleware('auth')->group(function () {

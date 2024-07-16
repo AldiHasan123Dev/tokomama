@@ -2,18 +2,6 @@
 
   <div id="dialog"></div>
 
-  @if(session('error'))
-  <div role="alert" class="alert alert-error mb-5">
-    <i class="fa-regular fa-circle-xmark"></i>
-    <span class="font-medium">{{ session('error') }}</span>
-  </div>
-  @elseif(session('success'))
-  <div role="alert" class="alert alert-success mb-5">
-    <i class="fa-regular fa-circle-check text-xl"></i>
-    <span class="font-medium">{{ session('success') }}</span>
-  </div>
-  @endif
-
   <x-master.card-master>
     <x-slot:tittle>Data Barang</x-slot:tittle>
     <div class="overflow-x-auto">
@@ -24,6 +12,7 @@
             <th>Kode Objek</th>
             <th>Nama</th>
             <th>Value</th>
+            <th>Nama Satuan</th>
             <th>Aksi</th>
           </tr>
         </thead>
@@ -81,12 +70,13 @@
                 { data: 'kode_objek', name: 'kode objek' },
                 { data: 'nama', name: 'nama' },
                 { data: 'value', name: 'value' },
+                { data: 'nama_satuan', name: 'nama_satuan' },
                 { data: 'aksi', name: 'aksi' },
                 { data: 'id', name: 'id', visible:false},
             ]
           })
 
-          function getData(id, kode_objek, nama, value) {
+          function getData(id, kode_objek, nama, value, nama_satuan) {
             $('#dialog').html(`<dialog id="my_modal_6" class="modal">
               <div class="modal-box  w-11/12 max-w-2xl pl-10 py-9 ">
               <form method="dialog">
@@ -106,7 +96,16 @@
                   </label>
                   <label class="input border flex items-center gap-2 mt-4">
                     Value :
-                    <input type="number" name="value" value="${value}" class="border-none" />
+                    <input type="number" name="value" value="${value}" class="border-none text-slate-400" />
+                  </label>
+                  <label class="input border flex items-center gap-2 mt-4">
+                    Nama Satuan :
+                  <select name="id_satuan" class="select select-sm select-bordered w-full max-w-xs">
+                    @foreach($satuan as $satu)
+                    <option disabled selected>Satuan</option>
+                    <option value="{{ $satu->id }}"> {{ $satu->nama_satuan }}</option>
+                    @endforeach
+                  </select>
                   </label>
                   <button type="submit" class="btn bg-green-400 text-white font-semibold w-72 mt-4">Edit</button>
                 </form>

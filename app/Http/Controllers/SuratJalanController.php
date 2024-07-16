@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Ekspedisi;
 use App\Models\Nopol;
 use App\Models\Satuan;
+use App\Models\Supplier;
 use App\Models\SuratJalan;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -33,7 +34,8 @@ class SuratJalanController extends Controller
         $customer = Customer::all();
         $ekspedisi = Ekspedisi::all();
         $satuan = Satuan::all();
-        return view('surat_jalan.create', compact('barang', 'nopol', 'customer', 'ekspedisi', 'satuan'));
+        $supplier = Supplier::all();
+        return view('surat_jalan.create', compact('barang', 'nopol', 'customer', 'ekspedisi', 'satuan', 'supplier'));
     }
 
     /**

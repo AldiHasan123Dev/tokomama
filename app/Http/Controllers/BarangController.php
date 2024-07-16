@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Satuan;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -13,7 +14,8 @@ class BarangController extends Controller
      */
     public function index()
     {
-        return view('masters.barang');
+        $satuan = Satuan::all();
+        return view('masters.barang', compact('satuan'));
     }
 
     /**
@@ -62,6 +64,7 @@ class BarangController extends Controller
         $data->kode_objek = $request->kode_objek;
         $data->nama = $request->nama;
         $data->value = $request->value;
+        $data->id_satuan = $request->id_satuan;
 
         if ($data->save()) {
             return redirect()->route('master.barang')->with('success', 'Data Master Barang berhasil diubah!');
@@ -86,8 +89,14 @@ class BarangController extends Controller
     {
         $data = Barang::query()->orderBy('id', 'desc');
 
+        $data->with(['satuan']);
+
         return DataTables::of($data)
             ->addIndexColumn()
+            ->addColumn('nama_satuan', function ($row) {
+                return $row->satuan->nama_satuan ?? '-';
+            })
+            ->rawColumns(['nama_satuan'])
             ->addColumn('aksi', function ($row) {
                 return '<div class="flex gap-3 mt-2">
             <button onclick="getData(' . $row->id . ', \'' . addslashes($row->kode_objek) . '\', \'' . addslashes($row->nama) . '\',' . $row->value . ')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button> |

@@ -257,10 +257,6 @@
                                         <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}"
                                             class="form-control" list="barang_list">
                                     </td>
-                                    {{-- <td>
-                                        <input type="number" style="width:120px" onchange="inputBarang()"
-                                            name="harga_beli[]" id="harga_beli-{{ $i }}" class="form-control">
-                                    </td> --}}
                                     <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()"
                                             name="jumlah_beli[]" id="jumlah_beli-{{ $i }}" class="form-control">
@@ -268,10 +264,6 @@
                                     <td>
                                         <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_beli[]" id="satuan_beli-{{ $i }}" class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_beli_list" autocomplete="off">
                                     </td>
-                                    {{-- <td>
-                                        <input type="number" style="width:120px" onchange="inputBarang()"
-                                            name="harga_jual[]" id="harga_jual-{{ $i }}" class="form-control">
-                                    </td> --}}
                                     <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()"
                                             name="jumlah_jual[]" id="jumlah_jual-{{ $i }}" class="form-control">
@@ -282,12 +274,9 @@
                                             placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-{{ $i }}" class="form-control" list="supplier_list" autocomplete="off">
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-{{ $i }}"
+                                            class="form-control" list="supplier_list" autocomplete="off">
                                     </td>
-                                    {{-- <td>
-                                        <input type="number" style="width:120px" onchange="inputBarang()"
-                                            name="profit[]" id="profit-{{ $i }}" class="form-control">
-                                    </td> --}}
                                 </tr>
                                 @endfor
                             </tbody>
@@ -308,8 +297,8 @@
                             @endforeach
                         </datalist>
                         <datalist id="supplier_list">
-                            @foreach ($satuan as $st)
-                            <option data-id="{{$st->id}}" value="{{ $st->nama_satuan }}">{{ $st->nama_satuan }}</option>
+                            @foreach ($supplier as $sp)
+                            <option data-id="{{$sp->id}}" value="{{ $sp->nama }}">{{ $sp->nama }}</option>
                             @endforeach
                         </datalist>
                     </div>

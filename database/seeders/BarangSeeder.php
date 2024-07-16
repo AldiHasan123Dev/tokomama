@@ -52,7 +52,7 @@ class BarangSeeder extends Seeder
 
             [
                 'kode_objek' => 'BERAS99-2',
-                'nama' => "BERAS 99 @ 10 KG",
+                'nama' => "BERAS 99 @10 KG",
                 'value' => "10",
                 'created_at' => now()
             ],

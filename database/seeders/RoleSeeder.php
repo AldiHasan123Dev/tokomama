@@ -20,5 +20,14 @@ class RoleSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => null,
         ]);
+        
+        DB::table('role')->insert([
+            'name' => 'ADMIN SJ',
+            'deleted_at' => null,
+            'created_at' => Carbon::now(),
+            'updated_at' => null,
+        ]);
+
+        
     }
 }

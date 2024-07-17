@@ -26,7 +26,7 @@ class SubMenuSeeder extends Seeder
             ['menu_id'=>1,'title'=>'Supplier','name'=>'supplier','icon'=>'#','url'=>'/master/supplier','order'=>8],
             ['menu_id'=>2,'title'=>'Buat Surat Jalan (SJ)','name'=>'surat-jalan-create','icon'=>'#','url'=>'/surat-jalan/create','order'=>1],
             ['menu_id'=>2,'title'=>'List Surat Jalan (SJ)','name'=>'surat-jalan-index','icon'=>'#','url'=>'/surat-jalan','order'=>2],
-            ['menu_id'=>2,'title'=>'Harga Barang','name'=>'harga-barang','icon'=>'#','url'=>'/surat-jalan-tarif-barang','order'=>3],
+            ['menu_id'=>2,'title'=>'Harga Beli & Jual','name'=>'harga-barang','icon'=>'#','url'=>'/surat-jalan-tarif-barang','order'=>3],
             ['menu_id'=>3,'title'=>'Pre Invoice','name'=>'pre-invoice','icon'=>'#','url'=>'/keuangan/pre-invoice','order'=>1],
             ['menu_id'=>3,'title'=>'Invoice','name'=>'invoice','icon'=>'#','url'=>'/keuangan/invoice','order'=>2],
             ['menu_id'=>4,'title'=>'Nomor Seri (NSFP)','name'=>'nsfp','icon'=>'#','url'=>'/pajak/nsfp','order'=>1],

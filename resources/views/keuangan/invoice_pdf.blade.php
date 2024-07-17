@@ -85,7 +85,7 @@
                     <th class="border border-black">No. Cont</th>
                     <th class="border border-black">Quantity</th>
                     <th class="border border-black">Harga Satuan</th>
-                    <th class="border border-black">Total</th>
+                    <th class="border border-black">Total (Rp)</th>
                 </tr>
             </thead>
             <tbody>
@@ -147,6 +147,7 @@
                         strtotime($item->transaksi->suratJalan->tgl_sj)) }}</td>
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
+                        {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
                         @if (str_contains($item->transaksi->barang->nama, '@'))
                             (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} Kg)
                         @endif
@@ -154,8 +155,7 @@
                     <td class="text-center border border-black">{{ $item->transaksi->suratJalan->no_cont }}</td>
                     <td class="text-center border border-black">{{ $item->jumlah }} {{ $item->transaksi->satuan_jual }}</td>
                     <td class="text-center border border-black">{{ number_format($item->harga) }} / {{ $item->transaksi->satuan_jual }}</td>
-                    <td class="text-center border border-black">{{ number_format($item->jumlah *
-                        $item->harga) }}</td>
+                    <td class="text-center border border-black">{{ number_format($item->jumlah * $item->harga) }}</td>
                 </tr>
                 @php
                 $total += $item->harga * $item->jumlah;
@@ -173,9 +173,9 @@
                         PPN 11% (DIBEBASKAN)
                     </td>
                     <td class="border border-black">
-                        Rp {{ number_format($total) }}
+                        {{ number_format($total) }}
                         <br>
-                        Rp
+                        
                     </td>
                 </tr>
                 <tr>
@@ -258,7 +258,7 @@
                     <th class="border border-black">No. Cont</th>
                     <th class="border border-black">Quantity</th>
                     <th class="border border-black">Harga Satuan</th>
-                    <th class="border border-black">Total</th>
+                    <th class="border border-black">Total (Rp)</th>
                 </tr>
             </thead>
             <tbody>
@@ -295,9 +295,9 @@
                         PPN 11% (DIBEBASKAN)
                     </td>
                     <td class="border border-black">
-                        Rp {{ number_format($total) }}
+                        {{ number_format($total) }}
                         <br>
-                        Rp
+                        
                     </td>
                 </tr>
                 <tr>
@@ -310,7 +310,7 @@
                         <b>TOTAL</b>
                     </td>
                     <td class="border border-black">
-                        <b>Rp {{ number_format($total) }}</b>
+                        <b>{{ number_format($total) }}</b>
                     </td>
                 </tr>
             </tbody>

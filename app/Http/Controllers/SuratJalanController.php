@@ -30,6 +30,7 @@ class SuratJalanController extends Controller
     public function create()
     {
         $barang = Barang::join('satuan', 'barang.id_satuan', '=', 'satuan.id')->select('barang.*', 'satuan.nama_satuan')->get();
+        // dd($barang);
         $nopol = Nopol::where('status', 'aktif')->get();
         $customer = Customer::all();
         $ekspedisi = Ekspedisi::all();
@@ -150,7 +151,7 @@ class SuratJalanController extends Controller
 
     public function cetak(SuratJalan $surat_jalan)
     {
-        // PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+        // PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']); 
         $ekspedisi = Ekspedisi::find($surat_jalan->id_ekspedisi);
         $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'))->setPaper('a5', 'landscape');
         return $pdf->stream('surat_jalan.pdf');

@@ -9,15 +9,15 @@
             <h3 class="text-lg font-bold">Input Harga</h3>
             <label class="form-control w-full max-w">
                 <div class="label">
-                    <span class="label-text">Harga Jual</span>
-                </div>
-                <input type="number" class="form-control input-bordered w-full max-w" onclick="this.select()" id="harga_jual" />
-            </label>
-            <label class="form-control w-full max-w">
-                <div class="label">
                     <span class="label-text">Harga Beli</span>
                 </div>
                 <input type="number" class="form-control input-bordered w-full max-w" onclick="this.select()" id="harga_beli" />
+            </label>
+            <label class="form-control w-full max-w">
+                <div class="label">
+                    <span class="label-text">Harga Jual</span>
+                </div>
+                <input type="number" class="form-control input-bordered w-full max-w" onclick="this.select()" id="harga_jual" />
             </label>
             <label class="form-control w-full max-w">
                 <div class="label">

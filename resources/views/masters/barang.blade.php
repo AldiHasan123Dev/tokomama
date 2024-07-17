@@ -12,7 +12,7 @@
             <th>Kode Objek</th>
             <th>Nama</th>
             <th>Value</th>
-            <th>Nama Satuan</th>
+            <th>Satuan Standart</th>
             <th>Aksi</th>
           </tr>
         </thead>
@@ -101,8 +101,8 @@
                   <label class="input border flex items-center gap-2 mt-4">
                     Nama Satuan :
                   <select name="id_satuan" class="select select-sm select-bordered w-full max-w-xs">
-                    @foreach($satuan as $satu)
                     <option disabled selected>Satuan</option>
+                    @foreach($satuan as $satu)
                     <option value="{{ $satu->id }}"> {{ $satu->nama_satuan }}</option>
                     @endforeach
                   </select>

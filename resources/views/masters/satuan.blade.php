@@ -30,7 +30,7 @@
               required />  
           </label>
           <button type="submit" class="btn w-56 p-4 mt-8 text-semibold text-white bg-green-500 col-start-2 ">Simpan Data
-            Customer</button>
+            Satuan</button>
         </form>
       </x-master.card-master>
 

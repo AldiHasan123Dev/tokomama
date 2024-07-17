@@ -112,8 +112,11 @@
                             <span>{{ $item->barang->nama }}</span>
                             <span>({{ $item->jumlah_jual}} {{$item->satuan_jual}})</span>
                         </div>
-                        @if (str_contains($item->barang->nama, '@'))
+                        {{-- @if (str_contains($item->barang->nama, '@')) --}}
+                        @if($item->satuan_beli != $item->satuan_jual)
                             (Total {{ number_format($item->jumlah_beli * $item->barang->value) }} Kg)
+                        @else
+                            (Total {{ number_format($item->jumlah_beli) }} {{$item->satuan_beli}})
                         @endif
                         @endforeach
                     </td>
@@ -172,6 +175,9 @@
             </table>
         </div>
     </main>
-</body>
+    
+    <script>
 
+    </script>
+</body>
 </html>

@@ -29,7 +29,7 @@
 
     <x-pajak.card>
         <x-slot:tittle>Nomor Faktur Tersedia</x-slot:tittle>
-          <button id="delete-nsfp-all" class="btn btn-error w-56 text-white font-semibold mb-3 self-end">Hapus Semua NSFP</button>
+          <button id="delete-nsfp-all" class="btn bg-red-500 w-56 text-white font-semibold mb-3 self-end">Hapus Semua NSFP</button>
         <div class="overflow-x-auto">
             <table class="table" id="table-available">
               <!-- head -->

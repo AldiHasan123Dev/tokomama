@@ -13,6 +13,7 @@
             <th>Nama</th>
             <th>Value</th>
             <th>Satuan Standart</th>
+            <th>Status PPN</th>
             <th>Aksi</th>
           </tr>
         </thead>
@@ -71,12 +72,13 @@
                 { data: 'nama', name: 'nama' },
                 { data: 'value', name: 'value' },
                 { data: 'nama_satuan', name: 'nama_satuan' },
+                { data: 'status_ppn', name: 'status_ppn' },
                 { data: 'aksi', name: 'aksi' },
                 { data: 'id', name: 'id', visible:false},
             ]
           })
 
-          function getData(id, kode_objek, nama, value, nama_satuan) {
+          function getData(id, kode_objek, nama, value, status_ppn) {
             $('#dialog').html(`<dialog id="my_modal_6" class="modal">
               <div class="modal-box  w-11/12 max-w-2xl pl-10 py-9 ">
               <form method="dialog">
@@ -106,6 +108,10 @@
                     <option value="{{ $satu->id }}"> {{ $satu->nama_satuan }}</option>
                     @endforeach
                   </select>
+                  </label>
+                  <label class="input border flex items-center gap-2 mt-4">
+                    Status PPN :
+                    <input type="text" name="status_ppn" value="${status_ppn}" class="border-none text-slate-400" />
                   </label>
                   <button type="submit" class="btn bg-green-400 text-white font-semibold w-72 mt-4">Edit</button>
                 </form>

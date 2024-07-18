@@ -245,6 +245,7 @@
                                     <th>Jumlah Jual</th>
                                     <th>Satuan Jual</th>
                                     <th>Supplier</th>
+                                    <th>Keterangan</th>
                                     {{-- <th>Profit</th> --}}
                                 </tr>
                             </thead>
@@ -276,6 +277,10 @@
                                     <td>
                                         <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-{{ $i }}"
                                             class="form-control" list="supplier_list" autocomplete="off">
+                                    </td>
+                                    <td>
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="keterangan[]" id="keterangan-{{ $i }}"
+                                            class="form-control">
                                     </td>
                                 </tr>
                                 @endfor
@@ -551,12 +556,12 @@
             let text = '';
             for (let i = 1; i < 5; i++) {
                 const barang = $('#barang-' + i).val();
-                console.log(barang);
                 const jumlah_beli = $('#jumlah_beli-' + i).val();
                 const satuan_beli = $('#satuan_beli-' + i).val();
                 // const harga_beli = $('#harga_beli-' + i).val();
                 const jumlah_jual = $('#jumlah_jual-' + i).val();
                 const satuan_jual = $('#satuan_jual-' + i).val();
+                const keterangan = $('#keterangan-' + i).val();
                 // const harga_jual = $('#harga_jual-' + i).val();
                 if (barang != '' && typeof (barang) != undefined) {
                     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
@@ -570,7 +575,7 @@
                     }
                     var txt_total = '';
                     if(barang.includes("@")){
-                        txt_total += `<p>(Total: ${total_jumlah} Kg)</p>`;
+                        txt_total += `<p>(Total: ${total_jumlah} ${nama_satuan}) ${keterangan!=''?' ~'+keterangan:''}</p>`;
                     }
                     text += `
                             <div class="flex justify-between mt-3">

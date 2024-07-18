@@ -41,7 +41,7 @@
                         <form action="{{ route('role.destroy', $item) }}" method="post">
                           @csrf
                           @method('delete')
-                          <button type="submit" class="btn bg-red-500 text-white btn-sm">Delete</button>
+                          <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn bg-red-500 text-white btn-sm">Delete</button>
                         </form>
                       </div>
                     </td>

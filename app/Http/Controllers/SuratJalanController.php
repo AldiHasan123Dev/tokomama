@@ -94,6 +94,7 @@ class SuratJalanController extends Controller
                     'sisa' => $request->jumlah_jual[$i],
                     'satuan_beli' => $request->satuan_beli[$i],
                     'satuan_jual' => $request->satuan_jual[$i],
+                    'keterangan' => $request->keterangan[$i],
                 ]);
             }
         }
@@ -173,13 +174,28 @@ class SuratJalanController extends Controller
             ->addIndexColumn()
             ->addColumn('profit', function ($row) {
                 $total = $row->transactions->sum('margin');
-                return $total;
+                return number_format($total);
+            })
+            ->addColumn('invoice', function ($row) {
+                $inv = array();
+                foreach ($row->transactions as $key => $item) {
+                    foreach ($item->invoices as $in) {
+                        array_push($inv, $in->invoice);
+                    }
+                }
+                $inv = array_unique($inv);
+                return implode(', ', $inv);
             })
             ->addColumn('aksi', function ($row) {
+                $action = '';
+                $sisa = $row->transactions->sum('sisa');
+                if ($sisa > 0) {
+                    $action = '<button onclick="getData(' . $row->id . ', \'' . addslashes($row->invoice) . '\', \'' . addslashes($row->nomor_surat) . '\', \'' . addslashes($row->kepada) . '\', \'' . addslashes($row->jumlah) . '\', \'' . addslashes($row->satuan) . '\', \'' . addslashes($row->nama_kapal) . '\', \'' . addslashes($row->no_cont) . '\', \'' . addslashes($row->no_seal) . '\', \'' . addslashes($row->no_pol) . '\', \'' . addslashes($row->no_job) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>
+                                <button onclick="deleteData(' . $row->id . ')"  id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>';
+                }
                 return '<div class="flex gap-3 mt-2">
                                 <a target="_blank" href="' . route('surat-jalan.cetak', $row) . '" class="text-green-500 font-semibold mb-3 self-end"><i class="fa-solid fa-print mt-2"></i></a>
-                                <button onclick="getData(' . $row->id . ', \'' . addslashes($row->invoice) . '\', \'' . addslashes($row->nomor_surat) . '\', \'' . addslashes($row->kepada) . '\', \'' . addslashes($row->jumlah) . '\', \'' . addslashes($row->satuan) . '\', \'' . addslashes($row->nama_kapal) . '\', \'' . addslashes($row->no_cont) . '\', \'' . addslashes($row->no_seal) . '\', \'' . addslashes($row->no_pol) . '\', \'' . addslashes($row->no_job) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>
-                                <button onclick="deleteData(' . $row->id . ')"  id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>
+                                '.$action.'
                             </div>';
             })
             ->rawColumns(['profit'])

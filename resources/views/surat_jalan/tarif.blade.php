@@ -66,7 +66,6 @@
                 <!-- head -->
                 <thead>
                     <tr>
-                        <th>Aksi</th>
                         <th>No. Surat</th>
                         <th>Barang</th>
                         <th>Jumlah Jual</th>
@@ -102,7 +101,6 @@
                     }
                 },
                 columns: [
-                    { data: 'aksi', name: 'aksi' },
                     { data: 'nomor_surat', name: 'No. Surat' },
                     { data: 'barang', name: 'barang' },
                     { data: 'jumlah_jual', name: 'jumlah_jual' },

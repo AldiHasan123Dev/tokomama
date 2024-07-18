@@ -17,6 +17,7 @@ class Invoice extends Model
         'jumlah',
         'subtotal',
         'no',
+        'tgl_invoice',
     ];
 
     public function nsfp()
@@ -28,4 +29,6 @@ class Invoice extends Model
     {
         return $this->belongsTo(Transaction::class, 'id_transaksi', 'id');
     }
+
+    
 }

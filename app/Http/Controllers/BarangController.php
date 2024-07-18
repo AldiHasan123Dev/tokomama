@@ -61,10 +61,13 @@ class BarangController extends Controller
     public function update(Request $request)
     {
         $data = Barang::find($request->id);
+        // dd($request->all());
         $data->kode_objek = $request->kode_objek;
         $data->nama = $request->nama;
         $data->value = $request->value;
         $data->id_satuan = $request->id_satuan;
+        $data->status_ppn = $request->status_ppn;
+        $data->value_ppn = $request->value_ppn;
 
         if ($data->save()) {
             return redirect()->route('master.barang')->with('success', 'Data Master Barang berhasil diubah!');
@@ -94,16 +97,15 @@ class BarangController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('nama_satuan', function ($row) {
+                
                 return $row->satuan->nama_satuan ?? '-';
             })
             ->rawColumns(['nama_satuan'])
-            ->addColumn('status_ppn', function ($row) {
-                return $row->status_ppn ?? '-';
-            })
-            ->rawColumns(['status_ppn'])
             ->addColumn('aksi', function ($row) {
+                $satuan = Satuan::where('id', $row->id_satuan)->first();
+                // dd($satuan->nama_satuan);
                 return '<div class="flex gap-3 mt-2">
-            <button onclick="getData(' . $row->id . ', \'' . addslashes($row->kode_objek) . '\', \'' . addslashes($row->nama) . '\',' . $row->value . ', \'' . addslashes($row->status_ppn) . '\')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button> |
+            <button onclick="getData(' . $row->id . ', \'' . addslashes($row->kode_objek) . '\', \'' . addslashes($row->nama) . '\',' . $row->value . ', \'' . addslashes($row->status_ppn) . '\', \'' . addslashes($row->value_ppn) . '\', \'' . addslashes($satuan->nama_satuan ?? '-') . '\', \'' . addslashes($satuan->id ?? '-') . '\')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button> |
             <button onclick="deleteData(' . $row->id . ')" id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end" ><i class="fa-solid fa-trash"></i></button>
             </div>';
             })

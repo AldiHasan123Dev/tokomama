@@ -566,7 +566,7 @@
                     if (satuan_jual.includes(nama_satuan)){
                         var total_jumlah = parseInt(jumlah_jual);
                     } else {
-                        var total_jumlah = parseInt(value_barang) * parseInt(jumlah_jual);
+                        var total_jumlah = parseFloat(value_barang) * parseInt(jumlah_jual);
                     }
                     var txt_total = '';
                     if(barang.includes("@")){

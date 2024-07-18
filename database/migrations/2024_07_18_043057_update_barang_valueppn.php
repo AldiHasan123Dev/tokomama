@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('barang', function (Blueprint $table) {
-            $table->string('status_ppn')->default('tidak')->nullable()->after('value');
+            $table->integer('value_ppn')->default('11')->nullable()->after('status_ppn');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('barang', function (Blueprint $table) {
-            $table->dropColumn('status_ppn');
+            $table->dropColumn('value_ppn');
         }); 
     }
 };

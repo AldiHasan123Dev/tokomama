@@ -14,6 +14,7 @@
             <th>Value</th>
             <th>Satuan Standart</th>
             <th>Status PPN</th>
+            <th>(%)PPN</th>
             <th>Aksi</th>
           </tr>
         </thead>
@@ -45,10 +46,34 @@
         <div class="label">
           <span class="label-text">Value <span class="text-red-500">*</span></span>
         </div>
-        <input type="number" placeholder="10" name="value" class="input input-bordered w-full max-w-xs rounded-md"
+        <input type="text" placeholder="10" name="value" class="input input-bordered w-full max-w-xs rounded-md"
           required />
       </label>
-      <div class="col-span-3 mt-3">
+      <label class="form-control w-full max-w-xs col-start-1">
+        <div class="label">
+          <span class="label-text">Value PPN<span class="text-red-500">*</span></span>
+        </div>
+        <input type="number" placeholder="11" name="value_ppn" class="input input-bordered w-full max-w-xs rounded-md"
+          required />
+      </label>
+      <label class="input border flex items-center gap-2 mt-5">
+          Nama Satuan :
+        <select name="id_satuan" class="select select-sm select-bordered w-full max-w-xs">
+          <option disabled selected>Satuan</option>
+          @foreach($satuan as $satu)
+          <option value="{{ $satu->id }}"> {{ $satu->nama_satuan }}</option>
+          @endforeach
+        </select>
+        </label>
+        <label class="input border flex items-center gap-2 mt-5">
+            Status PPN :
+          <select name="status_ppn" class="select select-sm select-bordered w-full max-w-xs">
+            <option disabled selected>status</option>
+            <option value="ya">YA</option>
+            <option value="tidak">TIDAK</option>
+          </select>
+        </label>
+      <div class="col-start-2 col-span-1 mt-8">
         <button type="submit" class="btn text-semibold text-white bg-green-500 w-full">Simpan Data
           Barang</button>
       </div>
@@ -73,12 +98,14 @@
                 { data: 'value', name: 'value' },
                 { data: 'nama_satuan', name: 'nama_satuan' },
                 { data: 'status_ppn', name: 'status_ppn' },
+                { data: 'value_ppn', name: 'value_ppn' },
                 { data: 'aksi', name: 'aksi' },
                 { data: 'id', name: 'id', visible:false},
             ]
           })
 
-          function getData(id, kode_objek, nama, value, status_ppn) {
+          function getData(id, kode_objek, nama, value, status_ppn, value_ppn, nama_satuan, id_satuan) {
+            console.log(nama_satuan)
             $('#dialog').html(`<dialog id="my_modal_6" class="modal">
               <div class="modal-box  w-11/12 max-w-2xl pl-10 py-9 ">
               <form method="dialog">
@@ -98,20 +125,28 @@
                   </label>
                   <label class="input border flex items-center gap-2 mt-4">
                     Value :
-                    <input type="number" name="value" value="${value}" class="border-none text-slate-400" />
+                    <input type="text" name="value" value="${value}" class="border-none text-slate-400" />
+                  </label>
+                  <label class="input border flex items-center gap-2 mt-4">
+                      Status PPN :
+                    <select name="status_ppn" class="select select-sm select-bordered w-full max-w-xs">
+                      <option selected>${status_ppn}</option>
+                      <option value="ya">YA</option>
+                      <option value="tidak">TIDAK</option>
+                    </select>
                   </label>
                   <label class="input border flex items-center gap-2 mt-4">
                     Nama Satuan :
                   <select name="id_satuan" class="select select-sm select-bordered w-full max-w-xs">
-                    <option disabled selected>Satuan</option>
+                    <option readonly value="${id_satuan}" selected>${nama_satuan}</option>
                     @foreach($satuan as $satu)
                     <option value="{{ $satu->id }}"> {{ $satu->nama_satuan }}</option>
                     @endforeach
                   </select>
                   </label>
                   <label class="input border flex items-center gap-2 mt-4">
-                    Status PPN :
-                    <input type="text" name="status_ppn" value="${status_ppn}" class="border-none text-slate-400" />
+                    Nilai (%)PPN:
+                    <input type="number" name="value_ppn" value="${value_ppn}" class="border-none text-slate-400" />
                   </label>
                   <button type="submit" class="btn bg-green-400 text-white font-semibold w-72 mt-4">Edit</button>
                 </form>

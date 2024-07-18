@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('barang', function (Blueprint $table) {
-            $table->string('status_ppn')->default('tidak')->nullable()->after('value');
+        Schema::table('invoice', function (Blueprint $table) {
+            $table->date('tgl_invoice')->nullable()->after('no');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('barang', function (Blueprint $table) {
-            $table->dropColumn('status_ppn');
-        }); 
+        Schema::table('invoice', function (Blueprint $table) {
+            $table->dropColumn('tgl_invoice');
+        });
     }
 };

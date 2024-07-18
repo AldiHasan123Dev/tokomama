@@ -9,6 +9,7 @@ use App\Models\NSFP;
 use App\Models\SuratJalan;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
+use DateTime;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -73,7 +74,13 @@ class KeuanganController extends Controller
     {
         $invoice = request('invoice');
         $data = Invoice::where('invoice', request('invoice'))->get();
-        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data','invoice'))->setPaper('a4', 'landscape');
+        $dateTime = new DateTime($data[0]->tgl_invoice);
+        $formattedDate = $dateTime->format('d F Y');
+        $id_transaksi = $data[0]->transaksi->id;
+        $transaksi = Transaction::where('id', $id_transaksi)->get();
+        $id_barang = $transaksi[0]->id_barang;
+        $barang = Barang::where('id', $id_barang)->first();
+        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data','invoice', 'barang', 'formattedDate'))->setPaper('a4', 'landscape');
         return $pdf->stream('invoice_pdf.pdf');
     }
 
@@ -101,10 +108,27 @@ class KeuanganController extends Controller
                 return number_format($row->sum('subtotal'));
             })
             ->addColumn('ppn', function ($row) {
-                return number_format($row->sum('subtotal') * 0.11);
+                $id_transaksi = $row->first()->transaksi->id;
+                $transaksi = Transaction::where('id', $id_transaksi)->get();
+                $id_barang = $transaksi[0]->id_barang;
+                $barang = Barang::where('id', $id_barang)->first();
+                if($barang->status_ppn == 'ya'){
+                    return number_format($row->sum('subtotal') * ($barang->value_ppn / 100));
+                }else{
+                    return 0;
+                }
+                
             })
             ->addColumn('total', function ($row) {
-                return number_format(($row->sum('subtotal') * 0.11) + $row->sum('subtotal'));
+                $id_transaksi = $row->first()->transaksi->id;
+                $transaksi = Transaction::where('id', $id_transaksi)->get();
+                $id_barang = $transaksi[0]->id_barang;
+                $barang = Barang::where('id', $id_barang)->first();
+                if($barang->status_ppn == 'ya'){
+                    return number_format($row->sum('subtotal') * ($barang->value_ppn / 100) + $row->sum('subtotal'));
+                }else{
+                    return number_format($row->sum('subtotal'));
+                } 
             })
             ->make();
 

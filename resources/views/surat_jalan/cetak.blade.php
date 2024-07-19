@@ -119,7 +119,7 @@
                         @if($item->satuan_beli != $item->satuan_jual)
                             (Total {{ number_format($t) }} {{ $item->barang->satuan->nama_satuan }}) {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '~'.$item->keterangan:'' }} 
                         @else
-                            (Total {{ number_format($t) }} {{$item->satuan_beli}}) {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '~'.$item->keterangan:'' }}
+                            (Total {{ number_format($t) }} {{$item->barang->satuan->nama_satuan}}) {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '~'.$item->keterangan:'' }}
                         @endif
                     </td>
                     @if ($loop->first)

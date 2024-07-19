@@ -574,9 +574,9 @@
                         var total_jumlah = parseFloat(value_barang) * parseInt(jumlah_jual);
                     }
                     var txt_total = '';
-                    if(barang.includes("@")){
-                        txt_total += `<p>(Total: ${total_jumlah} ${nama_satuan}) ${keterangan!=''?' ~'+keterangan:''}</p>`;
-                    }
+                    // if(barang.includes("@")){
+                        txt_total += `<p>(Total: ${total_jumlah} ${nama_satuan} ${keterangan!=''?' = '+keterangan:''})</p>`;
+                    // }
                     text += `
                             <div class="flex justify-between mt-3">
                                 <span>${barang}</span>

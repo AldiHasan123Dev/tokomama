@@ -6,6 +6,7 @@ use App\Http\Resources\TransactionResource;
 use App\Models\Barang;
 use App\Models\Invoice;
 use App\Models\NSFP;
+use App\Models\Satuan;
 use App\Models\SuratJalan;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -77,10 +78,14 @@ class KeuanganController extends Controller
         $dateTime = new DateTime($data[0]->tgl_invoice);
         $formattedDate = $dateTime->format('d F Y');
         $id_transaksi = $data[0]->transaksi->id;
-        $transaksi = Transaction::where('id', $id_transaksi)->get();
+        $transaksi = Transaction::where('id', $id_transaksi)->first(); //keteran
+        // dd($transaksi);
         $id_barang = $transaksi[0]->id_barang;
         $barang = Barang::where('id', $id_barang)->first();
-        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data','invoice', 'barang', 'formattedDate'))->setPaper('a4', 'landscape');
+        // dd($barang->id_satuan);
+        $satuan = Satuan::where('id', $barang->id_satuan)->first();
+        // dd($satuan->nama_satuan);
+        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi'))->setPaper('a4', 'landscape');
         return $pdf->stream('invoice_pdf.pdf');
     }
 

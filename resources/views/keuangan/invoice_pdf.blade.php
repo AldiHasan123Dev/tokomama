@@ -148,14 +148,13 @@
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
                         {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
-                        @if (str_contains($item->transaksi->barang->nama, '@'))
-                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} Kg)
-                        @endif
+                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} Kg indonesia)
+                        {{-- @endif --}}
                     </td>
                     <td class="text-center border border-black">{{ $item->transaksi->suratJalan->no_cont }}</td>
                     <td class="text-center border border-black">{{ number_format($item->jumlah) }} {{ $item->transaksi->satuan_jual }}</td>
                     <td class="text-center border border-black">{{ number_format($item->harga) }} / {{ $item->transaksi->satuan_jual }}</td>
-                    <td class="text-center border border-black">{{ number_format($item->jumlah * $item->harga) }}</td>
+                    <td class="border border-black" style="text-align: right;">{{ number_format($item->jumlah * $item->harga) }}</td>
                 </tr>
                 @php
                 $total += $item->harga * $item->jumlah;
@@ -176,7 +175,7 @@
                             PPN 11% (DIBEBASKAN)
                         @endif
                     </td>
-                    <td class="border border-black">
+                    <td class="border border-black" style="text-align: right;">
                          {{ number_format($total)  }}
                         <br>
                         @if($barang->status_ppn == 'ya')
@@ -195,7 +194,7 @@
                     <td class="border border-black">
                         <b>TOTAL</b>
                     </td>
-                    <td class="border border-black">
+                    <td class="border border-black" style="text-align: right;">
                         @if($barang->status_ppn == 'ya')
                             <b>{{ number_format(($total * 0.11) + ($total)) }}</b>
                         @else
@@ -208,7 +207,13 @@
         </table>
 
 
-        <p style="font-weight: bold;">TERBILANG: {{ strtoupper(terbilang($total)) }}  RUPIAH</p>
+        <p style="font-weight: bold;">TERBILANG :
+        @if($barang->status_ppn == 'ya')
+            {{ strtoupper(terbilang(($total * 0.11) + ($total))) }}
+        @else
+         {{ strtoupper(terbilang($total)) }} 
+        @endif 
+         RUPIAH</p>
 
         <br>
 
@@ -282,14 +287,14 @@
                         strtotime($item->transaksi->suratJalan->tgl_sj)) }}</td>
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
-                        @if (str_contains($item->transaksi->barang->nama, '@'))
+                        {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
                             (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} Kg)
-                        @endif
+                        {{-- @endif --}}
                     </td>
                     <td class="text-center border border-black">{{ $item->transaksi->suratJalan->no_cont }}</td>
                     <td class="text-center border border-black">{{ number_format($item->jumlah) }} {{ $item->transaksi->satuan_jual }}</td>
                     <td class="text-center border border-black">{{ number_format($item->harga) }} / {{ $item->transaksi->satuan_jual }}</td>
-                    <td class="text-center border border-black">{{ number_format($item->jumlah *
+                    <td class="border border-black" style="text-align: right;">{{ number_format($item->jumlah *
                         $item->harga) }}</td>
                 </tr>
                 @php
@@ -311,8 +316,8 @@
                             PPN 11% (DIBEBASKAN)
                         @endif
                     </td>
-                    <td class="border border-black">
-                        {{ number_format($total) }}
+                    <td class="border border-black" style="text-align: right;">
+                        <p>{{ number_format($total) }}</p>
                         <br>
                         @if($barang->status_ppn == 'ya')
                             {{ number_format(($barang->value_ppn / 100) * $total) }}
@@ -331,7 +336,7 @@
                     <td class="border border-black">
                         <b>TOTAL</b>
                     </td>
-                    <td class="border border-black">
+                    <td class="border border-black" style="text-align: right;">
                          @if($barang->status_ppn == 'ya')
                             <b>{{ number_format(($total * 0.11) + ($total)) }}</b>
                         @else
@@ -343,7 +348,13 @@
         </table>
 
 
-        <p style="font-weight: bold;">TERBILANG: {{ strtoupper(terbilang($total)) }}  RUPIAH</p>
+        <p style="font-weight: bold;">TERBILANG :
+        @if($barang->status_ppn == 'ya')
+            {{ strtoupper(terbilang(($total * 0.11) + ($total))) }}
+        @else
+         {{ strtoupper(terbilang($total)) }} 
+        @endif 
+         RUPIAH</p>
 
         <br>
 

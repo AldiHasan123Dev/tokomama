@@ -288,7 +288,7 @@
                         </table>
                         <datalist id="barang_list">
                             @foreach ($barang as $mb)
-                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" data-satuan="{{ $mb->nama_satuan }}" value="{{ $mb->nama }}">{{ $mb->nama }}</option>
+                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" data-satuan="{{ $mb->nama_satuan }}" value="{{ $mb->nama }}">{{ $mb->nama }} {{ $mb->nama_satuan }}</option>
                             @endforeach
                         </datalist>
                         <datalist id="satuan_beli_list">
@@ -553,16 +553,23 @@
         });
 
         function inputBarang() {
+            for(let i = 1; i < 5; i++) {
+                const jumlah_beli = $('#jumlah_beli-' + i).val();
+                const satuan_beli = $('#satuan_beli-' + i).val();
+                const jumlah_jual =  $('#jumlah_jual-' + i).val(jumlah_beli);
+                const satuan_jual = $('#satuan_jual-' + i).val(satuan_beli);
+            }
             let text = '';
             for (let i = 1; i < 5; i++) {
                 const barang = $('#barang-' + i).val();
                 const jumlah_beli = $('#jumlah_beli-' + i).val();
                 const satuan_beli = $('#satuan_beli-' + i).val();
                 // const harga_beli = $('#harga_beli-' + i).val();
-                const jumlah_jual = $('#jumlah_jual-' + i).val();
+                const jumlah_jual =  $('#jumlah_jual-' + i).val();
                 const satuan_jual = $('#satuan_jual-' + i).val();
                 const keterangan = $('#keterangan-' + i).val();
                 // const harga_jual = $('#harga_jual-' + i).val();
+
                 if (barang != '' && typeof (barang) != undefined) {
                     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
                     var value_barang = $("#barang_list option[value='" + barang + "']").data('value');
@@ -575,7 +582,11 @@
                     }
                     var txt_total = '';
                     // if(barang.includes("@")){
-                        txt_total += `<p>(Total: ${total_jumlah} ${nama_satuan} ${keterangan!=''?' = '+keterangan:''})</p>`;
+                        if(satuan_jual.includes(nama_satuan)) {
+                            txt_total += `<p>${keterangan!=''?' = '+keterangan:''}</p>`;
+                        } else {
+                            txt_total += `<p>(Total: ${total_jumlah} ${nama_satuan} ${keterangan!=''?' = '+keterangan:''})</p>`;
+                        }
                     // }
                     text += `
                             <div class="flex justify-between mt-3">

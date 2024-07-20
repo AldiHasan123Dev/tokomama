@@ -80,7 +80,7 @@ class KeuanganController extends Controller
         $id_transaksi = $data[0]->transaksi->id;
         $transaksi = Transaction::where('id', $id_transaksi)->first(); //keteran
         // dd($transaksi);
-        $id_barang = $transaksi[0]->id_barang;
+        $id_barang = $transaksi->id_barang;
         $barang = Barang::where('id', $id_barang)->first();
         // dd($barang->id_satuan);
         $satuan = Satuan::where('id', $barang->id_satuan)->first();

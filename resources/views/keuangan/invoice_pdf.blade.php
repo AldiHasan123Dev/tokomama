@@ -148,7 +148,7 @@
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
                         {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
-                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} Kg indonesia)
+                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} Kg )
                         {{-- @endif --}}
                     </td>
                     <td class="text-center border border-black">{{ $item->transaksi->suratJalan->no_cont }}</td>

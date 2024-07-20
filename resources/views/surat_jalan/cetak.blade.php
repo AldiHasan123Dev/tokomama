@@ -116,10 +116,10 @@
                                 $t = (double)$item->barang->value * (int)$item->jumlah_jual;
                             @endphp
                         @endif
-                        @if($item->satuan_beli != $item->satuan_jual)
+                        @if($item->satuan_jual != $item->barang->satuan->nama_satuan )
                             (Total {{ number_format($t) }} {{ $item->barang->satuan->nama_satuan }} {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }}) 
                         @else
-                            (Total {{ number_format($t) }} {{$item->barang->satuan->nama_satuan}} {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }})
+                            {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }}
                         @endif
                     </td>
                     @if ($loop->first)

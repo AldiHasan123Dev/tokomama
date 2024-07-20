@@ -27,8 +27,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- data table -->
-    {{--
-    <link rel="stylesheet" href="https:///cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css"> --}}
+    <link rel="stylesheet" type="text/css" href="https:///cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -79,7 +78,7 @@
     <script src="{{ asset('/assets/js/app.js') }}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.tailwindcss.js"></script>
+    {{-- <script src="https://cdn.datatables.net/2.0.8/js/dataTables.tailwindcss.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     {{ $script ?? '' }}
 </body>

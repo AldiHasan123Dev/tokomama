@@ -170,7 +170,7 @@
                                 </div>
                                 <input type="text"
                                     class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                    id="tujuan" name="tujuan" list="customer_list" required />
+                                    id="tujuan" name="tujuan" list="customer_list" required autocomplete="off" />
                                 <input type="hidden" name="id_customer" id="id_customer">
                                 <datalist id="customer_list">
                                     @foreach ($customer as $mb)

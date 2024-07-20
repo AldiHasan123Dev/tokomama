@@ -5,7 +5,7 @@
   <x-master.card-master>
     <x-slot:tittle>Data Barang</x-slot:tittle>
     <div class="overflow-x-auto">
-      <table class="table" id="table-barang">
+      <table id="table-barang" class="display compact" style="width:100%">
         <thead>
           <tr>
             <th>#</th>
@@ -83,10 +83,9 @@
 
   <x-slot:script>
     <script>
-      let table = $('#table-barang').DataTable({
+      let table = new DataTable('#table-barang', {
             ajax: {
               url: "{{route('master.barang.list')}}",
-              
               data:{
                 _token: "{{csrf_token()}}"
               }
@@ -102,7 +101,7 @@
                 { data: 'aksi', name: 'aksi' },
                 { data: 'id', name: 'id', visible:false},
             ]
-          })
+          });
 
           function getData(id, kode_objek, nama, value, status_ppn, value_ppn, nama_satuan, id_satuan) {
             console.log(nama_satuan)

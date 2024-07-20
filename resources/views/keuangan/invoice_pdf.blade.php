@@ -148,7 +148,12 @@
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
                         {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
-                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} Kg )
+                        @if ($satuan->nama_satuan != $transaksi->satuan_jual)
+                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ $satuan->nama_satuan }})
+                            (@if($transaksi->keterangan == null) {{ "kosong" }} @else {{ $transaksi->keterangan }} @endif)
+                        @else
+                            @if($transaksi->keterangan == null) {{ "kosong" }} @else {{"= " . $transaksi->keterangan }} @endif
+                        @endif
                         {{-- @endif --}}
                     </td>
                     <td class="text-center border border-black">{{ $item->transaksi->suratJalan->no_cont }}</td>

@@ -103,7 +103,7 @@
                     </td>
                     <td class="px-2" style="padding: 0px 5px">
                         <div class="flex justify-between mt-3">
-                            <span>{{ $item->barang->nama }}</span>
+                            <span>{{ $item->barang->nama_singkat }}</span>
                             <span>({{ $item->jumlah_jual}} {{$item->satuan_jual}})</span>
                         </div>
                         {{-- @if (str_contains($item->barang->nama, '@')) --}}

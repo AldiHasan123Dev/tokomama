@@ -288,7 +288,7 @@
                         </table>
                         <datalist id="barang_list">
                             @foreach ($barang as $mb)
-                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" data-satuan="{{ $mb->nama_satuan }}" value="{{ $mb->nama }}">{{ $mb->nama }} {{ $mb->nama_satuan }}</option>
+                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" data-satuan="{{ $mb->nama_satuan }}" value="{{ $mb->nama_singkat }}" >{{ $mb->nama_singkat }} ({{ $mb->nama_satuan }})</option>
                             @endforeach
                         </datalist>
                         <datalist id="satuan_beli_list">
@@ -558,7 +558,7 @@
                 const satuan_beli = $('#satuan_beli-' + i).val();
                 const jumlah_jual =  $('#jumlah_jual-' + i).val(jumlah_beli);
                 const satuan_jual = $('#satuan_jual-' + i).val(satuan_beli);
-            }
+            }
             let text = '';
             for (let i = 1; i < 5; i++) {
                 const barang = $('#barang-' + i).val();
@@ -572,6 +572,7 @@
 
                 if (barang != '' && typeof (barang) != undefined) {
                     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
+                    console.log(id_barang)
                     var value_barang = $("#barang_list option[value='" + barang + "']").data('value');
                     var nama_satuan = $("#barang_list option[value='" + barang + "']").data('satuan');
                     $("#id_barang-" + i).val(id_barang);

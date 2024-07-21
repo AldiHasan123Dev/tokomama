@@ -44,19 +44,26 @@
       </label>
       <label class="form-control w-full max-w-xs col-start-3">
         <div class="label">
+          <span class="label-text">Nama Singkat<span class="text-red-500">*</span></span>
+        </div>
+        <input type="text" placeholder="BERAS" name="nama_singkat" class="input input-bordered w-full max-w-xs rounded-md"
+          required />
+      </label>
+      <label class="form-control w-full max-w-xs col-start-1">
+        <div class="label">
           <span class="label-text">Value <span class="text-red-500">*</span></span>
         </div>
         <input type="text" placeholder="10" name="value" class="input input-bordered w-full max-w-xs rounded-md"
           required />
       </label>
-      <label class="form-control w-full max-w-xs col-start-1">
+      <label class="form-control w-full max-w-xs col-start-2">
         <div class="label">
           <span class="label-text">Value PPN<span class="text-red-500">*</span></span>
         </div>
         <input type="number" placeholder="11" name="value_ppn" class="input input-bordered w-full max-w-xs rounded-md"
           required />
       </label>
-      <label class="input border flex items-center gap-2 mt-5">
+      <label class="input border flex items-center gap-2 mt-3">
           Nama Satuan :
         <select name="id_satuan" class="select select-sm select-bordered w-full max-w-xs">
           <option disabled selected>Satuan</option>
@@ -65,7 +72,7 @@
           @endforeach
         </select>
         </label>
-        <label class="input border flex items-center gap-2 mt-5">
+        <label class="input border flex items-center gap-2 mt-1">
             Status PPN :
           <select name="status_ppn" class="select select-sm select-bordered w-full max-w-xs">
             <option disabled selected>status</option>

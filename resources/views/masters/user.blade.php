@@ -44,7 +44,7 @@
               </form>
             </div>
           </dialog>
-          <button class="btn btn-success p-3 font-semibold w-40 text-white" onclick="my_modal_6.showModal();">Tambah User +</button>
+          <button class="btn bg-green-500 mb-2 p-3 font-semibold w-40 text-white" onclick="my_modal_6.showModal();">Tambah User +</button>
         </x-slot:button>
         <x-slot:tittle>Data User and Role</x-slot:tittle>
         <div class="overflow-x-auto">

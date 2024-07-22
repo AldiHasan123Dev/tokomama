@@ -70,7 +70,7 @@
                     </label>
                     <label class="input border flex items-center gap-2 mt-3">
                         Nomor Surat :
-                        <input type="text" name="nomor_surat" value="${nomor_surat}" class="border-none" />
+                        <input type="text" name="nomor_surat" value="${nomor_surat}" class="border-none" readonly />
                     </label>
                     <label class="input border flex items-center gap-2 mt-3">
                         Kepada :

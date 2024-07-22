@@ -29,7 +29,13 @@ class SatuanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = Satuan::create($request->all());
+
+        if ($data) {
+            return redirect()->route('satuan.index', $data)->with('success', 'Data Master Satuan berhasil ditambahkan!');
+        } else {
+            return redirect()->route('satuan.index', $data)->with('error', 'Data Master Satuan gagal ditambahkan!');
+        }
     }
 
     /**

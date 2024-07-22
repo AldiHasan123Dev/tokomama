@@ -146,11 +146,6 @@ class NopolSeeder extends Seeder
                 'status' => "aktif",
                 'created_at' => now()
             ],
-            [
-                'nopol' => 'W 8850 UQ',
-                'status' => "aktif",
-                'created_at' => now()
-            ],
         ];
 
         Nopol::insert($data);

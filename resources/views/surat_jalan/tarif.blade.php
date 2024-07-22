@@ -9,15 +9,15 @@
             <h3 class="text-lg font-bold">Input Harga</h3>
             <label class="form-control w-full max-w">
                 <div class="label">
-                    <span class="label-text">Harga Jual</span>
-                </div>
-                <input type="number" class="form-control input-bordered w-full max-w" onclick="this.select()" id="harga_jual" />
-            </label>
-            <label class="form-control w-full max-w">
-                <div class="label">
                     <span class="label-text">Harga Beli</span>
                 </div>
                 <input type="number" class="form-control input-bordered w-full max-w" onclick="this.select()" id="harga_beli" />
+            </label>
+            <label class="form-control w-full max-w">
+                <div class="label">
+                    <span class="label-text">Harga Jual</span>
+                </div>
+                <input type="number" class="form-control input-bordered w-full max-w" onclick="this.select()" id="harga_jual" />
             </label>
             <label class="form-control w-full max-w">
                 <div class="label">
@@ -66,7 +66,6 @@
                 <!-- head -->
                 <thead>
                     <tr>
-                        <th>Aksi</th>
                         <th>No. Surat</th>
                         <th>Barang</th>
                         <th>Jumlah Jual</th>
@@ -102,7 +101,6 @@
                     }
                 },
                 columns: [
-                    { data: 'aksi', name: 'aksi' },
                     { data: 'nomor_surat', name: 'No. Surat' },
                     { data: 'barang', name: 'barang' },
                     { data: 'jumlah_jual', name: 'jumlah_jual' },

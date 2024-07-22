@@ -10,12 +10,12 @@
                             <div class="label">
                                 <span class="label-text">Template Jurnal</span>
                             </div>
-                            <input type="text" class="input input-sm input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white" id="template_jurnal" name="template_jurnal" list="template_jurnal_list" autocomplete="off" />
-                            <datalist id="template_jurnal_list">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus, nam!">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus, nam!</option>
-                            </datalist>
+                            <select name="tipe" id="tipe" class="select select-bordered w-full max-w-xs">
+                                <option disabled selected></option>
+                                @foreach ($templates as $item)
+                                    <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                @endforeach
+                            </select>
                         </label>
                     </div>
 
@@ -31,12 +31,14 @@
                             <div class="label">
                                 <span class="label-text">Tipe Jurnal</span>
                             </div>
-                            <input type="text" class="input input-sm input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white" id="tipe_jurnal" name="tipe_jurnal" list="tipe_jurnal_list" autocomplete="off" />
-                            <datalist id="tipe_jurnal_list">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus, nam!">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus, nam!</option>
-                            </datalist>
+                            <select name="tipe" id="tipe" class="select select-bordered w-full max-w-xs">
+                                <option disabled selected></option>
+                                <option value="JNL">JNL</option>
+                                <option value="BBK">BBK</option>
+                                <option value="BKK">BKK</option>
+                                <option value="BBM">BBM</option>
+                                <option value="BKM">BKM</option>
+                            </select>
                         </label>
                     </div>
                 
@@ -78,22 +80,25 @@
                             <td>
                                 <select class="select select-bordered w-full max-w-xs" name="nopol" id="nopol">
                                     <option disabled selected></option>
-                                    <option>Han Solo</option>
-                                    <option>Greedo</option>
+                                    @foreach ($nopol as $item)
+                                        <option value="{{ $item->nopol }}">{{ $item->nopol }}</option>
+                                    @endforeach
                                 </select>
                             </td>
                             <td>
                                 <select class="select select-bordered w-full max-w-xs" name="akun_debet" id="akun_debet">
                                     <option disabled selected></option>
-                                    <option>Han Solo</option>
-                                    <option>Greedo</option>
+                                    @foreach ($coa as $item)
+                                        <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
+                                    @endforeach
                                 </select>
                             </td>
                             <td>
                                 <select class="select select-bordered w-full max-w-xs" name="akun_kredit" id="akun_kredit">
                                     <option disabled selected></option>
-                                    <option>Han Solo</option>
-                                    <option>Greedo</option>
+                                    @foreach ($coa as $item)
+                                        <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
+                                    @endforeach
                                 </select>
                             </td>
                             <td>

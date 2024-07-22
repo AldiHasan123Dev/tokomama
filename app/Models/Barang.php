@@ -10,4 +10,8 @@ class Barang extends Model
     use HasFactory;
     protected $table = 'barang';
     protected $guarded = ['id'];
+
+    public function satuan() {
+        return $this->belongsTo(Satuan::class, 'id_satuan');
+    }
 }

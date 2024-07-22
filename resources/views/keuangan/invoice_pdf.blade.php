@@ -62,14 +62,14 @@
                 </tr>
                 <tr>
                     <td>Telp: 031-7495507</td>
-                    <td style="text-align: center;">NO: {{ $invoice ?? '-' }}</td>
+                    <td style="text-align: center;">NO : {{ $invoice ?? '-' }}</td>
                 </tr>
                 <br>
                 <tr>
                     <td style="text-align: left; padding-left: 45px;" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
                         &nbsp;&nbsp;&nbsp;
                         {{$data->first()->transaksi->suratJalan->customer->nama ?? '-' }}</td>
-                    <td style="text-align: center;"><span style="font-weight: bold;">KAPAL: </span> &nbsp;&nbsp;&nbsp;
+                    <td style="text-align: center;"><span style="font-weight: bold;">KAPAL : </span> 
                         {{ $data->first()->transaksi->suratJalan->nama_kapal }}
                     </td>
                 </tr>
@@ -85,7 +85,7 @@
                     <th class="border border-black">No. Cont</th>
                     <th class="border border-black">Quantity</th>
                     <th class="border border-black">Harga Satuan</th>
-                    <th class="border border-black">Total</th>
+                    <th class="border border-black">Total (Rp)</th>
                 </tr>
             </thead>
             <tbody>
@@ -147,15 +147,19 @@
                         strtotime($item->transaksi->suratJalan->tgl_sj)) }}</td>
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
-                        @if (str_contains($item->transaksi->barang->nama, '@'))
-                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} Kg)
+                        {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
+                        @if ($satuan->nama_satuan != $transaksi->satuan_jual)
+                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ $satuan->nama_satuan }})
+                            @if($transaksi->keterangan == null) {{ "" }} @else {{ $transaksi->keterangan }} @endif
+                        @else
+                            @if($transaksi->keterangan == null) {{ "" }} @else {{"= " . $transaksi->keterangan }} @endif
                         @endif
+                        {{-- @endif --}}
                     </td>
                     <td class="text-center border border-black">{{ $item->transaksi->suratJalan->no_cont }}</td>
-                    <td class="text-center border border-black">{{ $item->jumlah }} {{ $item->transaksi->satuan_jual }}</td>
+                    <td class="text-center border border-black">{{ number_format($item->jumlah) }} {{ $item->transaksi->satuan_jual }}</td>
                     <td class="text-center border border-black">{{ number_format($item->harga) }} / {{ $item->transaksi->satuan_jual }}</td>
-                    <td class="text-center border border-black">{{ number_format($item->jumlah *
-                        $item->harga) }}</td>
+                    <td class="border border-black" style="text-align: right;">{{ number_format($item->jumlah * $item->harga) }}</td>
                 </tr>
                 @php
                 $total += $item->harga * $item->jumlah;
@@ -170,12 +174,20 @@
                     <td class="border border-black">
                         DPP
                         <br>
-                        PPN 11% (DIBEBASKAN)
+                        @if($barang->status_ppn == 'ya')
+                            PPN 11%
+                        @else
+                            PPN 11% (DIBEBASKAN)
+                        @endif
                     </td>
-                    <td class="border border-black">
-                        Rp {{ number_format($total) }}
+                    <td class="border border-black" style="text-align: right;">
+                         {{ number_format($total)  }}
                         <br>
-                        Rp
+                        @if($barang->status_ppn == 'ya')
+                            {{ number_format(($barang->value_ppn / 100) * $total) }}
+                        @else
+                            -
+                        @endif
                     </td>
                 </tr>
                 <tr>
@@ -187,38 +199,52 @@
                     <td class="border border-black">
                         <b>TOTAL</b>
                     </td>
-                    <td class="border border-black">
-                        <b>Rp {{ number_format($total) }}</b>
+                    <td class="border border-black" style="text-align: right;">
+                        @if($barang->status_ppn == 'ya')
+                            <b>{{ number_format(($total * 0.11) + ($total)) }}</b>
+                        @else
+                            <b>{{ number_format($total) }}</b>
+                        @endif
+                        
                     </td>
                 </tr>
             </tbody>
         </table>
 
 
-        <p style="font-weight: bold;">TERBILANG: {{ strtoupper(terbilang($total)) }}  RUPIAH</p>
+        <p style="font-weight: bold;">TERBILANG :
+        @if($barang->status_ppn == 'ya')
+            {{ strtoupper(terbilang(($total * 0.11) + ($total))) }}
+        @else
+         {{ strtoupper(terbilang($total)) }} 
+        @endif 
+         RUPIAH </p>
 
         <br>
 
         <table>
             <tr>
-                <th style="text-align: left; padding-left: 50px;">Pembayaran ke rekening:</th>
-                <td style="text-align: center;">Surabaya, {{ date('d F Y') }}</td>
+                <th style="text-align: left; padding-left: 50px; font-style: italic;">Pembayaran ke rekening:</th>
+                <td style="text-align: center;">Surabaya, {{ $formattedDate }}</td>
             </tr>
             <tr>
-                <th style="text-align: left; padding-left: 50px;">CV. Sarana Bahagia</th>
+                <th style="text-align: left; padding-left: 50px; font-style: italic;">CV. Sarana Bahagia</th>
                 <td style="text-align: center;">Hormat Kami</td>
             </tr>
             <tr>
-                <th style="text-align: left; padding-left: 50px;">Mandiri (Cab.Indrapura) : 14.000.45006.005</th>
+                <th style="text-align: left; padding-left: 50px; font-style: italic;">Mandiri (Cab.Indrapura) : 14.000.45006.005</th>
                 <th></th>
             </tr>
             <tr>
                 <th style="text-align: left; padding-left: 50px;"></th>
-                <th>(Dwi Satria Wardana)</th>
+                <th><br><br><br><br><br>(Dwi Satria Wardana)</th>
             </tr>
         </table>
     </main>
+
     <div class="pagebreak"></div>
+
+    {{-- Surat Penerimaan --}}
     <main>
         <table>
             <thead>
@@ -235,14 +261,14 @@
                 </tr>
                 <tr>
                     <td>Telp: 031-7495507</td>
-                    <td style="text-align: center;">NO: {{ $invoice ?? '-' }}</td>
+                    <td style="text-align: center;">Lamp. INV : {{ $invoice ?? '-' }}</td>
                 </tr>
                 <br>
                 <tr>
                     <td style="text-align: left; padding-left: 45px;" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
                         &nbsp;&nbsp;&nbsp;
                         {{$data->first()->transaksi->suratJalan->customer->nama ?? '-' }}</td>
-                    <td style="text-align: center;"><span style="font-weight: bold;">KAPAL: </span> &nbsp;&nbsp;&nbsp;
+                    <td style="text-align: center;"><span style="font-weight: bold;">KAPAL : </span> 
                         {{ $data->first()->transaksi->suratJalan->nama_kapal }}
                     </td>
                 </tr>
@@ -258,7 +284,7 @@
                     <th class="border border-black">No. Cont</th>
                     <th class="border border-black">Quantity</th>
                     <th class="border border-black">Harga Satuan</th>
-                    <th class="border border-black">Total</th>
+                    <th class="border border-black">Total (Rp)</th>
                 </tr>
             </thead>
             <tbody>
@@ -266,22 +292,25 @@
                 <tr>
                     <td class="text-center border border-black">{{ $loop->iteration }}</td>
                     <td class="text-center border border-black">{{ date('d M Y',
-                        strtotime($item->transaksi->suratJalan->tgl_sj)) }}</td>
+                                        strtotime($item->transaksi->suratJalan->tgl_sj)) }}</td>
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
-                        @if (str_contains($item->transaksi->barang->nama, '@'))
-                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} Kg)
+                        {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
+                        @if ($satuan->nama_satuan != $transaksi->satuan_jual)
+                        (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ $satuan->nama_satuan }} )
+                        @if($transaksi->keterangan == null) {{ "" }} @else {{ $transaksi->keterangan }} @endif
+                        @else
+                        @if($transaksi->keterangan == null) {{ "" }} @else {{"= " . $transaksi->keterangan }} @endif
                         @endif
+                        {{-- @endif --}}
                     </td>
                     <td class="text-center border border-black">{{ $item->transaksi->suratJalan->no_cont }}</td>
-                    <td class="text-center border border-black">{{ $item->jumlah }} {{ $item->transaksi->satuan_jual }}</td>
-                    <td class="text-center border border-black">{{ number_format($item->harga) }} / {{ $item->transaksi->satuan_jual }}</td>
-                    <td class="text-center border border-black">{{ number_format($item->jumlah *
-                        $item->harga) }}</td>
+                    <td class="text-center border border-black">{{ number_format($item->jumlah) }} {{ $item->transaksi->satuan_jual }}
+                    </td>
+                    <td class="text-center border border-black">{{ number_format($item->harga) }} / {{ $item->transaksi->satuan_jual }}
+                    </td>
+                    <td class="border border-black" style="text-align: right;">{{ number_format($item->jumlah * $item->harga) }}</td>
                 </tr>
-                @php
-                $total += $item->harga * $item->jumlah;
-                @endphp
                 @endforeach
                 <tr>
                     <td class="text-center border border-black"></td>
@@ -292,12 +321,20 @@
                     <td class="border border-black">
                         DPP
                         <br>
+                        @if($barang->status_ppn == 'ya')
+                        PPN 11%
+                        @else
                         PPN 11% (DIBEBASKAN)
+                        @endif
                     </td>
-                    <td class="border border-black">
-                        Rp {{ number_format($total) }}
+                    <td class="border border-black" style="text-align: right;">
+                        {{ number_format($total)  }}
                         <br>
-                        Rp
+                        @if($barang->status_ppn == 'ya')
+                        {{ number_format(($barang->value_ppn / 100) * $total) }}
+                        @else
+                        -
+                        @endif
                     </td>
                 </tr>
                 <tr>
@@ -309,34 +346,44 @@
                     <td class="border border-black">
                         <b>TOTAL</b>
                     </td>
-                    <td class="border border-black">
-                        <b>Rp {{ number_format($total) }}</b>
+                    <td class="border border-black" style="text-align: right;">
+                        @if($barang->status_ppn == 'ya')
+                        <b>{{ number_format(($total * 0.11) ($total)) }}</b>
+                        @else
+                        <b>{{ number_format($total) }}</b>
+                        @endif
                     </td>
                 </tr>
             </tbody>
         </table>
 
 
-        <p style="font-weight: bold;">TERBILANG: {{ strtoupper(terbilang($total)) }}  RUPIAH</p>
+        <p style="font-weight: bold;">TERBILANG :
+        @if($barang->status_ppn == 'ya')
+            {{ strtoupper(terbilang(($total * 0.11) + ($total))) }}
+        @else
+         {{ strtoupper(terbilang($total)) }} 
+        @endif 
+         RUPIAH</p>
 
         <br>
 
         <table>
             <tr>
-                <th style="text-align: left; padding-left: 50px;">Pembayaran ke rekening:</th>
-                <td style="text-align: center;">Surabaya, {{ date('d F Y') }}</td>
+                <th style="text-align: left; padding-left: 50px; font-style: italic;">Pembayaran ke rekening:</th>
+                <td style="text-align: center;">Surabaya, {{ $formattedDate }}</td>
             </tr>
             <tr>
-                <th style="text-align: left; padding-left: 50px;">CV. Sarana Bahagia</th>
+                <th style="text-align: left; padding-left: 50px; font-style: italic;">CV. Sarana Bahagia</th>
                 <td style="text-align: center;">Hormat Kami</td>
             </tr>
             <tr>
-                <th style="text-align: left; padding-left: 50px;">Mandiri (Cab.Indrapura) : 14.000.45006.005</th>
+                <th style="text-align: left; padding-left: 50px; font-style: italic;">Mandiri (Cab.Indrapura) : 14.000.45006.005</th>
                 <th></th>
             </tr>
             <tr>
                 <th style="text-align: left; padding-left: 50px;"></th>
-                <th>(Dwi Satria Wardana)</th>
+                <th><br><br><br><br><br>(Dwi Satria Wardana)</th>
             </tr>
         </table>
     </main>

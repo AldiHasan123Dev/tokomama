@@ -22,6 +22,7 @@ class Transaction extends Model
         'sisa',
         'satuan_jual',
         'margin',
+        'keterangan',
     ];
 
     public function suratJalan()
@@ -32,5 +33,10 @@ class Transaction extends Model
     public function barang()
     {
         return $this->belongsTo(Barang::class, 'id_barang');
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, 'id_transaksi');
     }
 }

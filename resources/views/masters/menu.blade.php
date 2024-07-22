@@ -9,7 +9,7 @@
         <form action="{{ route('role.store') }}" method="post" class="flex gap-2">
           @csrf
           <input type="text" name="name" id="name" class="form-control" placeholder="Nama Role" required>
-          <button type="submit" class="btn btn-success p-3 font-semibold w-40">Tambah Role</button>
+          <button type="submit" class="btn bg-green-500 text-white p-3 font-semibold w-40">Tambah Role</button>
         </form>
       </x-slot:button>
         <x-slot:tittle>Data Role & Menu</x-slot:tittle>
@@ -37,11 +37,11 @@
                     </td>
                     <td>
                       <div class="flex gap-2">
-                        <a href="{{ route('role.show', $item) }}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{{ route('role.show', $item) }}" class="btn bg-blue-400 text-white btn-sm">Edit</a>
                         <form action="{{ route('role.destroy', $item) }}" method="post">
                           @csrf
                           @method('delete')
-                          <button type="submit" class="btn btn-error btn-sm">Delete</button>
+                          <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn bg-red-500 text-white btn-sm">Delete</button>
                         </form>
                       </div>
                     </td>

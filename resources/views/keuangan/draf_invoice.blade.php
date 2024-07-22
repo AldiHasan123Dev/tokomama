@@ -91,7 +91,7 @@
                             <th class="border border-black">No. Cont</th>
                             <th class="border border-black">Quantity</th>
                             <th class="border border-black">Harga Satuan</th>
-                            <th class="border border-black">Total</th>
+                            <th class="border border-black">Total (Rp)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -153,8 +153,11 @@
                                 strtotime($surat_jalan->tgl_sj)) }}</td>
                             <td class="text-center border border-black">
                                 {{ $item->barang->nama }} <br> 
-                                @if (str_contains($item->barang->nama, '@'))
+                                {{-- @if (str_contains($item->barang->nama, '@')) --}}
+                                @if($item->satuan_jual != $item->satuan_beli)
                                     (Total {{ number_format($item->jumlah_beli * $item->barang->value) }} Kg)
+                                @else
+                                    (Total {{ number_format($item->jumlah_beli) }} {{$item->satuan_beli}})
                                 @endif
                             </td>
                             <td class="text-center border border-black">{{ $surat_jalan->no_cont }}</td>
@@ -179,9 +182,9 @@
                                 PPN 11% (DIBEBASKAN)
                             </td>
                             <td class="border border-black">
-                                Rp {{ number_format($total) }}
+                                {{ number_format($total) }}
                                 <br>
-                                Rp
+                                
                             </td>
                         </tr>
                         <tr>
@@ -194,7 +197,7 @@
                                 <b>TOTAL</b>
                             </td>
                             <td class="border border-black">
-                                <b>Rp {{ number_format($total) }}</b>
+                                <b>{{ number_format($total) }}</b>
                             </td>
                         </tr>
                     </tbody>

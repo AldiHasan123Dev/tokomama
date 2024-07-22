@@ -6,18 +6,18 @@
         <form method="dialog">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
-            <h3 class="text-lg font-bold">Input Harga</h3>
-            <label class="form-control w-full max-w">
-                <div class="label">
-                    <span class="label-text">Harga Jual</span>
-                </div>
-                <input type="number" class="form-control input-bordered w-full max-w" onclick="this.select()" id="harga_jual" />
-            </label>
+            <h3 class="text-lg font-bold">Input Harga: <span id="barang"></span></h3>
             <label class="form-control w-full max-w">
                 <div class="label">
                     <span class="label-text">Harga Beli</span>
                 </div>
                 <input type="number" class="form-control input-bordered w-full max-w" onclick="this.select()" id="harga_beli" />
+            </label>
+            <label class="form-control w-full max-w">
+                <div class="label">
+                    <span class="label-text">Harga Jual</span>
+                </div>
+                <input type="number" class="form-control input-bordered w-full max-w" onclick="this.select()" id="harga_jual" />
             </label>
             <label class="form-control w-full max-w">
                 <div class="label">
@@ -147,12 +147,13 @@
                 ]
             });
 
-            function inputTarif(id_transaksi, jual, beli, margin, qty){
+            function inputTarif(id_transaksi, jual, beli, margin, qty, nama_barang){
                 id = id_transaksi;
                 jumlah = qty;
                 $('#harga_jual').val(jual);
                 $('#harga_beli').val(beli);
                 $('#profit').val(margin);
+                document.getElementById('barang').innerHTML = nama_barang;
                 my_modal_5.showModal();
             }
 

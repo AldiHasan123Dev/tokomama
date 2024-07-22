@@ -48,6 +48,11 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+        // dd(date("n"));
+        $tgl_inv = $request->tgl_invoice;
+        $monthNumber = (int) substr($tgl_inv, 5, 2);
+        // dd($monthNumber);
         $data = array();
         $array_invoice = array();
         $invoice_count = $request->invoice_count;
@@ -59,7 +64,7 @@ class InvoiceController extends Controller
         $no = Invoice::whereYear('created_at', date('Y'))->max('no') + 1;
         foreach ($nsfp as $item) {
             $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
-            $month_number = date("n");
+            $month_number = $monthNumber;
             $month_roman = $roman_numerals[$month_number];
             $inv= sprintf('%03d', $no) . '/INV/SB-' . $month_roman . '/' . date('Y');
             array_push($array_invoice, [
@@ -82,8 +87,11 @@ class InvoiceController extends Controller
             }
         }
 
-        DB::transaction(function () use($data, $array_invoice) {
+        
+
+        DB::transaction(function () use($data, $array_invoice, $request) {
             foreach ($data as $id_transaksi => $array_data) {
+                // dd($request->tgl_invoice);
                 for ($i=0; $i < count($array_data['invoice']); $i++) {
                     if ((int)$array_data['jumlah'][$i] > 0) {
                         $trx = Transaction::find($id_transaksi);
@@ -95,7 +103,8 @@ class InvoiceController extends Controller
                             'harga' => $trx->harga_jual,
                             'jumlah' => $array_data['jumlah'][$i],
                             'subtotal' => $array_data['jumlah'][$i] * $trx->harga_jual,
-                            'no' => $array_invoice[(int)$array_data['invoice'][$i]]['no']
+                            'no' => $array_invoice[(int)$array_data['invoice'][$i]]['no'],
+                            'tgl_invoice' => $request->tgl_invoice,
                         ]);
                         $trx->update([
                             'sisa' => $trx->sisa - $array_data['jumlah'][$i]

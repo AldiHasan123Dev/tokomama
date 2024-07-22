@@ -90,38 +90,49 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($surat_jalan->transactions as $item)
                 <tr>
-                    <th class="text-center border border-black" rowspan="6" style="vertical-align: top;">
-                        @foreach($surat_jalan->transactions as $item)
+                    <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
                         <span>{{$loop->iteration}}</span><br>
-                        @endforeach
-                    </th>
-                    <td class="text-center border border-black" rowspan="6" style="vertical-align: top;">
-                        @foreach($surat_jalan->transactions as $item)
-                        <span>{{$item->jumlah_beli}}</span><br>
-                        @endforeach
                     </td>
-                    <td class="text-center border border-black" rowspan="6" style="vertical-align: top;">
-                        @foreach($surat_jalan->transactions as $item)
+                    <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
+                        <span>{{number_format($item->jumlah_beli)}}</span>
+                    </td>
+                    <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
                         <span>{{$item->satuan_beli}}</span><br>
-                        @endforeach
                     </td>
-                    <td class="border border-black">
-                        @foreach ($surat_jalan->transactions as $item)
+                    <td class="px-2" style="padding: 0px 5px">
                         <div class="flex justify-between mt-3">
-                            <span>{{ $item->barang->nama }}</span>
-                            <span>({{ $item->jumlah_jual}} {{$item->satuan_jual}})</span>
+                            <span>{{ $item->barang->nama_singkat }}</span>
+                            <span>({{ number_format($item->jumlah_jual)}} {{$item->satuan_jual}})</span>
                         </div>
-                        @if (str_contains($item->barang->nama, '@'))
-                            (Total {{ number_format($item->jumlah_beli * $item->barang->value) }} Kg)
+                        {{-- @if (str_contains($item->barang->nama, '@')) --}}
+                        @if (str_contains($item->satuan_jual,$item->barang->satuan->nama_satuan))
+                            @php
+                                $t = (int)$item->jumlah_jual;
+                            @endphp
+                        @else
+                            @php
+                                $t = (double)$item->barang->value * (int)$item->jumlah_jual;
+                            @endphp
                         @endif
-                        @endforeach
+                        @if($item->satuan_jual != $item->barang->satuan->nama_satuan )
+                            (Total {{ number_format($t) }} {{ $item->barang->satuan->nama_satuan }} {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }}) 
+                        @else
+                            {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }}
+                        @endif
                     </td>
-                    <td class="border border-black text-center" rowspan="6"> {{
-                        $surat_jalan->customer->alamat ?? '-' }} <br> {{ $surat_jalan->customer->nama ?? '-' }}
-                    </td>
+                    @if ($loop->first)
+                        <td class="border border-black text-center" rowspan="{{ 5 + $surat_jalan->transactions->count() }}"> {{
+                            $surat_jalan->customer->alamat ?? '-' }} <br> {{ $surat_jalan->customer->nama ?? '-' }}
+                        </td>
+                    @endif
                 </tr>
+                @endforeach
                 <tr>
+                    <td style="vertical-align: top; border-right: 1px solid black" rowspan="5"></td>
+                    <td style="vertical-align: top; border-right: 1px solid black" rowspan="5"></td>
+                    <td style="vertical-align: top; border-right: 1px solid black" rowspan="5"></td>
                     <td class="border border-black py-1">
                         Nama Kapal: {{ $surat_jalan->nama_kapal }} </td>
                 </tr>
@@ -143,7 +154,7 @@
                 </tr>
             </tbody>
         </table>
-        <p>Note: &nbsp; Barang yang diterima dalam keadaan baik dan lengkap</p>
+        <p>Note &nbsp; : &nbsp; Barang yang diterima dalam keadaan baik dan lengkap</p>
         <div style="text-align: center">
             <table>
                 <tr>
@@ -160,9 +171,9 @@
                     <th><b>PENGIRIM</b></th>
                 </tr>
                 <tr>
-                   <td style="height: 80px;"></td>
+                   <td style="height: 20px;"></td>
                 <tr >
-                    <th style="height: 55px"> </th>
+                    <th style="height: 35px"> </th>
                     <th></th>
                 </tr>
                 <tr>
@@ -172,6 +183,9 @@
             </table>
         </div>
     </main>
-</body>
+    
+    <script>
 
+    </script>
+</body>
 </html>

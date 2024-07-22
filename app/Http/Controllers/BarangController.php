@@ -31,6 +31,14 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
+        // $cek = Barang::where('nama_singkat', '=', $request->nama_singkat)->get();
+
+        // if ($cek === "[]") {
+        //     dump($request->nama_singkat);
+        // } else {
+        //     dump("ada");
+        // }
+
         $data = Barang::create($request->all());
         if ($data) {
             return redirect()->route('master.barang', $data)->with('success', 'Data Master Barang berhasil ditambahkan!');

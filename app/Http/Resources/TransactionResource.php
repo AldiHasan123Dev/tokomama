@@ -29,7 +29,7 @@ class TransactionResource extends JsonResource
             'margin' => $this->margin ?? '-',
             'subtotal' => $this->jumlah_jual * $this->harga_jual ?? '-',
             'tgl_invoice' => $this->SuratJalan->tgl_invoice ?? '-',
-            'invoice' => $this->SuratJalan->invoice ?? '-',
+            'invoice' => $this->Invoice->invoice ?? '-',
             'nomor_surat' => $this->SuratJalan->nomor_surat ?? '-',
             'kepada' => $this->SuratJalan->kepada ?? '-',
             'jumlah' => $this->SuratJalan->jumlah ?? '-',

@@ -125,7 +125,7 @@ class EkspedisiSeeder extends Seeder
                 'created_at' => now()
             ],
             [
-                'nama' => 'Ekspedisi RAS',
+                'nama' => 'EKSPEDISI RAS',
                 'pic' => 'Dwi, Bpk',
                 'alamat' => 'Jl. Kalianak 55 G',
                 'kota' => 'SURABAYA',

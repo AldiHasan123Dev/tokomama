@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -82,7 +83,11 @@ class TransactionController extends Controller
         return DataTables::of($query->get())
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
-                return '<button type="button" class="modal-toggle btn-sm btn text-semibold text-white bg-green-500 col-span-4" onclick="inputTarif(' . $row->id . ','.$row->harga_jual.','.$row->harga_beli.','.$row->margin.','.$row->jumlah_jual.')">Edit Harga</button>';
+                if (Invoice::where('id_transaksi', $row->id)->get() == "[]") {
+                    return '<button type="button" class="modal-toggle btn-sm btn text-semibold text-white bg-green-500 col-span-4" onclick="inputTarif(' . $row->id . ',' . $row->harga_jual . ',' . $row->harga_beli . ',' . $row->margin . ',' . $row->jumlah_jual . ', \'' . addslashes($row->barang->nama) . '\')">Edit Harga</button>';
+                } else {
+                    return "-";
+                }
             })
             ->addColumn('barang', function ($row) {
                 return $row->barang->nama;

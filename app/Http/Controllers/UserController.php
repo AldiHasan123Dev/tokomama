@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Models\Role;
+use App\Models\Satuan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +18,8 @@ class UserController extends Controller
     public function index()
     {
         $roles = Role::all();
-        return view('masters.user', compact('roles'));
+        $satuan = Satuan::all();
+        return view('masters.user', compact('roles', 'satuan'));
     }
 
     /**
@@ -89,7 +91,7 @@ class UserController extends Controller
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
                 return '<div class="flex gap-3 mt-2">
-            <button id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button> |
+            <button onclick="getData(' . $row["id_user"] . ', \'' . addslashes($row["name_user"]) . '\', \'' . addslashes($row["email"]) . '\', \'' . addslashes($row["phone"]) . '\', \'' . addslashes($row["address"]) . '\', ' . $row["id_role"] . ', \'' . addslashes($row["name_role"]) . '\')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button> |
             <button id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end" ><i class="fa-solid fa-trash"></i></button>
             </div>';
             })

@@ -1,5 +1,6 @@
 <x-Layout.layout>
   <div id="modal_user"></div>
+  <div id="dialog"></div>
 
     <x-master.card-master>
         <x-slot:button>
@@ -131,8 +132,51 @@
             my_modal_6.showModal();
           });
 
-          function getData(id, address) {
-            console.log(id);
+          function getData(id_user, name, email, phone, address, role_id, role_name) {
+            $('#dialog').html(`<dialog id="my_modal_6" class="modal">
+              <div class="modal-box  w-11/12 max-w-2xl pl-10 py-9 ">
+                <form method="dialog">
+                  <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <h3 class="text-lg font-bold">Edit Data</h3>
+                <form action="{{url('master/ekspedisi')}}/${id_user}" method="post">
+                  @csrf
+                  @method('put')
+                  <input type="hidden" name="id" value="${id_user}" class="border-none" />
+                  <label class="form-control w-full max-w-xs col-start-2">
+                    <div class="label">
+                      <span class="label-text">Nama</span>
+                    </div>
+                    <input type="text" placeholder="Nama" value="${name}" name="name"
+                      class="input input-bordered w-full max-w-xs rounded-md" />
+                  </label>
+                  <label class="form-control w-full max-w-xs col-start-1">
+                    <div class="label">
+                      <span class="label-text">Email</span>
+                    </div>
+                    <input type="email" placeholder="Email" value="${email}" name="email"
+                      class="input input-bordered w-full max-w-xs rounded-md" />
+                  </label>
+                  <label class="form-control w-full max-w-xs col-start-1">
+                    <div class="label">
+                      <span class="label-text">Nomor Telepon</span>
+                    </div>
+                    <input type="text" placeholder="Nomor Telepon" value="${phone}" name="phone"
+                      class="input input-bordered w-full max-w-xs rounded-md" />
+                  </label>
+                  <label class="form-control w-full max-w-xs col-start-1">
+                    <div class="label">
+                      <span class="label-text">Alamat</span>
+                    </div>
+                    <input type="text" placeholder="Alamat" value="${address}" name="address"
+                      class="input input-bordered w-full max-w-xs rounded-md" />
+                  </label>
+                  
+                  <button type="submit" class="btn bg-green-400 text-white font-semibold w-72 mt-4">Edit</button>
+                </form>
+              </div>
+            </dialog>`);
+            my_modal_6.showModal();
           }
         </script>
     </x-slot:script>

@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
     Route::get('template-jurnal', [TemplateJurnalController::class,'index'])->name('jurnal.template-jurnal');
     Route::get('template-jurnal-create', [TemplateJurnalController::class,'create'])->name('jurnal.template-jurnal.create');
+    Route::post('/omzet-data', [KeuanganController::class, 'dataTableOmzet'])->name('keuangan.omzet.data');
 });
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {
@@ -74,6 +75,7 @@ Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('au
     Route::post('draf-invoice/{surat_jalan}', 'submitInvoice')->name('keuangan.invoice.submit');
     Route::get('draf-invoice/{surat_jalan}', 'invoiceDraf')->name('keuangan.invoice.draf');
     Route::get('cetak-invoice', 'cetakInvoice')->name('keuangan.invoice.cetak');
+    Route::get('omzet', 'omzet')->name('keuangan.omzet');
 });
 
 Route::prefix('pajak')->middleware('auth')->group(function () {

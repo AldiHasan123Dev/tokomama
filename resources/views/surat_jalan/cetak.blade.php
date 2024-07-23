@@ -123,10 +123,11 @@
                         @endif
                     </td>
                     @if ($loop->first)
-                        <td class="border border-black text-center" rowspan="{{ 5 + $surat_jalan->transactions->count() }}"> {{
-                            $surat_jalan->customer->alamat ?? '-' }} <br> {{ $surat_jalan->customer->nama ?? '-' }}
-                        </td>
-                    @endif
+                <td class="border border-black text-center" rowspan="{{ 5 + $surat_jalan->transactions->count() }}">
+                    {{ $surat_jalan->customer->alamat && $surat_jalan->customer->alamat !== '-' ? $surat_jalan->customer->alamat : '' }}<br>
+                    {{ $surat_jalan->customer->nama && $surat_jalan->customer->nama !== '-' ? $surat_jalan->customer->nama : '-' }}
+                </td>
+            @endif
                 </tr>
                 @endforeach
                 <tr>

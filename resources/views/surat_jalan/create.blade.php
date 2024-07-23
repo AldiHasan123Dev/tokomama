@@ -303,7 +303,7 @@
                         </datalist>
                         <datalist id="supplier_list">
                             @foreach ($supplier as $sp)
-                            <option data-id="{{$sp->id}}" value="{{ $sp->nama }}">{{ $sp->nama }}</option>
+                            <option data-id="{{$sp->id}}" value="{{ $sp->id }}">{{ $sp->nama }}</option>
                             @endforeach
                         </datalist>
                     </div>

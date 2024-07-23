@@ -18,7 +18,7 @@
                         <th>No.</th>
                         <th>NSFP</th>
                         <th>Invoice</th>
-                        <th>Sub Total</th>
+                        <th>DPP</th>
                         <th>PPN</th>
                         <th>Total</th>
                     </tr>

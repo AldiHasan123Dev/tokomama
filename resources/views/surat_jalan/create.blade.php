@@ -558,7 +558,7 @@
                 const satuan_beli = $('#satuan_beli-' + i).val();
                 const jumlah_jual =  $('#jumlah_jual-' + i).val(jumlah_beli);
                 const satuan_jual = $('#satuan_jual-' + i).val(satuan_beli);
-            }
+            }
             let text = '';
             for (let i = 1; i < 5; i++) {
                 const barang = $('#barang-' + i).val();
@@ -582,6 +582,8 @@
                         var total_jumlah = parseFloat(value_barang) * parseInt(jumlah_jual);
                     }
                     var txt_total = '';
+                    console.log("Satuan jual = " + satuan_jual);
+                    console.log("Nama Satuan = " + nama_satuan);
                     // if(barang.includes("@")){
                         if(satuan_jual.includes(nama_satuan)) {
                             txt_total += `<p>${keterangan!=''?' = '+keterangan:''}</p>`;

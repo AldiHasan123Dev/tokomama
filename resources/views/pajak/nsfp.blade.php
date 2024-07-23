@@ -22,7 +22,7 @@
                 <div class="label">
                     <span class="label-text text-white">_</span>
                 </div>
-                <button class="btn btn-success text-white font-semibold" id="generate">Generate</button>
+                <button class="btn bg-green-500 text-white font-semibold" id="generate">Generate</button>
             </div>
         </div>
     </x-pajak.card>

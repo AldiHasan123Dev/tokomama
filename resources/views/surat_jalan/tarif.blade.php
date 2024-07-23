@@ -6,7 +6,7 @@
         <form method="dialog">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
-            <h3 class="text-lg font-bold">Input Harga</h3>
+            <h3 class="text-lg font-bold">Input Harga: <span id="barang"></span></h3>
             <label class="form-control w-full max-w">
                 <div class="label">
                     <span class="label-text">Harga Beli</span>
@@ -66,6 +66,7 @@
                 <!-- head -->
                 <thead>
                     <tr>
+                        <th>Aksi</th>
                         <th>No. Surat</th>
                         <th>Barang</th>
                         <th>Jumlah Jual</th>
@@ -101,6 +102,7 @@
                     }
                 },
                 columns: [
+                    { data: 'aksi', name: 'aksi' },
                     { data: 'nomor_surat', name: 'No. Surat' },
                     { data: 'barang', name: 'barang' },
                     { data: 'jumlah_jual', name: 'jumlah_jual' },
@@ -145,12 +147,13 @@
                 ]
             });
 
-            function inputTarif(id_transaksi, jual, beli, margin, qty){
+            function inputTarif(id_transaksi, jual, beli, margin, qty, nama_barang){
                 id = id_transaksi;
                 jumlah = qty;
                 $('#harga_jual').val(jual);
                 $('#harga_beli').val(beli);
                 $('#profit').val(margin);
+                document.getElementById('barang').innerHTML = nama_barang;
                 my_modal_5.showModal();
             }
 

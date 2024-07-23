@@ -96,7 +96,7 @@
                         <span>{{$loop->iteration}}</span><br>
                     </td>
                     <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
-                        <span>{{$item->jumlah_beli}}</span>
+                        <span>{{number_format($item->jumlah_beli)}}</span>
                     </td>
                     <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
                         <span>{{$item->satuan_beli}}</span><br>
@@ -104,7 +104,7 @@
                     <td class="px-2" style="padding: 0px 5px">
                         <div class="flex justify-between mt-3">
                             <span>{{ $item->barang->nama_singkat }}</span>
-                            <span>({{ $item->jumlah_jual}} {{$item->satuan_jual}})</span>
+                            <span>({{ number_format($item->jumlah_jual)}} {{$item->satuan_jual}})</span>
                         </div>
                         {{-- @if (str_contains($item->barang->nama, '@')) --}}
                         @if (str_contains($item->satuan_jual,$item->barang->satuan->nama_satuan))
@@ -154,7 +154,7 @@
                 </tr>
             </tbody>
         </table>
-        <p>Note: &nbsp; Barang yang diterima dalam keadaan baik dan lengkap</p>
+        <p>Note &nbsp; : &nbsp; Barang yang diterima dalam keadaan baik dan lengkap</p>
         <div style="text-align: center">
             <table>
                 <tr>

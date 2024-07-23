@@ -20,7 +20,8 @@ class BarangSeeder extends Seeder
                 'nama' => "AQUA 1500 ML",
                 'value' => "1",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'AQUA 1500'
             ],
 
             [
@@ -28,7 +29,8 @@ class BarangSeeder extends Seeder
                 'nama' => "AQUA 220 ML",
                 'value' => "1",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'AQUA 220'
             ],
 
             [
@@ -36,7 +38,8 @@ class BarangSeeder extends Seeder
                 'nama' => "AQUA 240 ML",
                 'value' => "1",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'AQUA 240'
             ],
 
             [
@@ -44,7 +47,8 @@ class BarangSeeder extends Seeder
                 'nama' => "AQUA 330 ML",
                 'value' => "1",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'AQUA 330'
             ],
 
             [
@@ -52,7 +56,8 @@ class BarangSeeder extends Seeder
                 'nama' => "AQUA 600 ML",
                 'value' => "1",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'AQUA 600'
             ],
 
             [
@@ -60,7 +65,8 @@ class BarangSeeder extends Seeder
                 'nama' => "BERAS 99 @10 KG",
                 'value' => "10",
                 // 'status_ppn' => 'Tidak',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'BERAS 99 @10'
             ],
 
             [
@@ -68,7 +74,8 @@ class BarangSeeder extends Seeder
                 'nama' => "BERAS 99 @20 KG",
                 'value' => "20",
                 // 'status_ppn' => 'Tidak',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'BERAS 99 @20'
             ],
 
             [
@@ -76,7 +83,8 @@ class BarangSeeder extends Seeder
                 'nama' => "BERAS 99 @25 KG",
                 'value' => "25",
                 // 'status_ppn' => 'Tidak',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'BERAS 99 @25'
             ],
 
             [
@@ -84,7 +92,8 @@ class BarangSeeder extends Seeder
                 'nama' => "BERAS 99 @5 KG",
                 'value' => "5",
                 // 'status_ppn' => 'Tidak',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'BERAS 99 @5'
             ],
 
             [
@@ -92,7 +101,8 @@ class BarangSeeder extends Seeder
                 'nama' => "BERAS MAWAR @10 KG",
                 'value' => "10",
                 // 'status_ppn' => 'Tidak',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'BERAS MAWAR @10'
             ],
 
             [
@@ -100,7 +110,8 @@ class BarangSeeder extends Seeder
                 'nama' => "BERAS MAWAR @20 KG",
                 'value' => "20",
                 // 'status_ppn' => 'Tidak',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'BERAS MAWAR @20'
             ],
 
             [
@@ -108,7 +119,8 @@ class BarangSeeder extends Seeder
                 'nama' => "BERAS MAWAR @40 KG",
                 'value' => "40",
                 // 'status_ppn' => 'Tidak',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'BERAS MAWAR @40'
             ],
 
             [
@@ -116,7 +128,8 @@ class BarangSeeder extends Seeder
                 'nama' => "BERAS RAJA ANGSA @10 KG",
                 'value' => "10",
                 // 'status_ppn' => 'Tidak',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'BERAS RAJA ANGSA @10'
             ],
 
             [
@@ -124,7 +137,8 @@ class BarangSeeder extends Seeder
                 'nama' => "BERAS RAJA ANGSA @20 KG",
                 'value' => "20",
                 // 'status_ppn' => 'Tidak',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'BERAS RAJA ANGSA @20'
             ],
 
             [
@@ -132,7 +146,8 @@ class BarangSeeder extends Seeder
                 'nama' => "BERAS RAJA ANGSA @25 KG",
                 'value' => "25",
                 // 'status_ppn' => 'Tidak',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'BERAS RAJA ANGSA @25'
             ],
 
             [
@@ -140,7 +155,8 @@ class BarangSeeder extends Seeder
                 'nama' => "BIHUN JAGUNG PADAMU",
                 'value' => "1",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'BIHUN JAGUNG PADAMU'
             ],
 
             [
@@ -148,7 +164,8 @@ class BarangSeeder extends Seeder
                 'nama' => "GULA KBA @50 KG",
                 'value' => "50",
                 // 'status_ppn' => 'Tidak',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'GULA KBA @50'
             ],
 
             [
@@ -156,7 +173,8 @@ class BarangSeeder extends Seeder
                 'nama' => "GULA KTM @50 KG",
                 'value' => "50",
                 // 'status_ppn' => 'Tidak',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'GULA KTM @50'
             ],
 
             [
@@ -164,7 +182,8 @@ class BarangSeeder extends Seeder
                 'nama' => "MIE ATOM BULAN",
                 'value' => "1",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'MIE ATOM BULAN'
             ],
 
             [
@@ -172,7 +191,8 @@ class BarangSeeder extends Seeder
                 'nama' => "MIE GULUNG KUDA MENJANGAN ISI 12 BKS",
                 'value' => "12",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'MIE GULUNG KUDA MENJANGAN ISI 12'
             ],
 
             [
@@ -180,7 +200,8 @@ class BarangSeeder extends Seeder
                 'nama' => "MIE SEDAP GORENG 90 GR",
                 'value' => "90",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'MIE SEDAP GORENG 90'
             ],
 
             [
@@ -188,7 +209,8 @@ class BarangSeeder extends Seeder
                 'nama' => "MIE TELOR ASLI KUDA MENJANGAN ISI 20 BKS ( KECIL )",
                 'value' => "20",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'MIE TELOR ASLI KUDA MENJANGAN KECIL'
             ],
 
             [
@@ -196,7 +218,8 @@ class BarangSeeder extends Seeder
                 'nama' => "MIE TELOR ASLI KUDA MENJANGAN ISI 20 BKS ( LEBAR )",
                 'value' => "20",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'MIE TELOR ASLI KUDA MENJANGAN LEBAR'
             ],
 
             [
@@ -204,7 +227,8 @@ class BarangSeeder extends Seeder
                 'nama' => "MIE TELOR KERIITNG KUDA MENJANGAN ISI 20 BKS",
                 'value' => "20",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'MIE TELOR KERIITNG KUDA MENJANGAN ISI 20'
             ],
 
             [
@@ -212,7 +236,8 @@ class BarangSeeder extends Seeder
                 'nama' => "TAS SPOUNBOND",
                 'value' => "1",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'TAS SPOUNBOND'
             ],
 
             [
@@ -220,7 +245,8 @@ class BarangSeeder extends Seeder
                 'nama' => "TEPUNG MILA @1 KG",
                 'value' => "1",
                 // 'status_ppn' => 'Ya',
-                'created_at' => now()
+                'created_at' => now(),
+                'nama_singkat' => 'TEPUNG MILA @1'
             ],
         ];
 

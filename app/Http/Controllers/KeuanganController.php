@@ -176,7 +176,9 @@ class KeuanganController extends Controller
 
     public function OmzetExportExcel(Request $request)
     {
-        // dd($request);
+        if($request->start == null || $request->end == null){
+            return back()->with('error', 'Silahkan atur nilai rentang data.');
+        }
         return Excel::download(new OmzetExport($request->start, $request->end), 'laporan-omzet.xlsx');
     }
 }

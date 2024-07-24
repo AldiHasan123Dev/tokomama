@@ -20,10 +20,10 @@ class OmzetExport implements FromView
     public function view(): View
     {
         $omzet = Invoice::whereBetween('tgl_invoice', [$this->start, $this->end])->get();
-        // dd($omzet);
+        // dd($omzet[0]);
         // $surat_jalan = SuratJalan::whereBetween('tgl_invoice', [$this->start, $this->end])->orderBy('tgl_invoice')->get();
         // dd($surat_jalan);
-        return view('export.laporan-ppn', compact('surat_jalan'));
+        return view('export.laporan-omzet', compact('omzet'));
         // return SuratJalan::all();
     }
 }

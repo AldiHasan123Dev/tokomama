@@ -40,7 +40,7 @@
             justify-content: center;
         }
         .pagebreak{
-            page-break-before: always;
+            page-break-before: avoid;
         }
     </style>
 </head>
@@ -50,8 +50,8 @@
         <table>
             <thead>
                 <tr>
-                    <th rowspan="4" style="width: 15%; white-space: nowrap;">
-                        <img src="{{ public_path('logo_sb.svg') }}" class="logo" style="width: 45%; height: 10%;">
+                    <th rowspan="4" style="width: 15%; height: 0%;">
+                        <img src="{{ public_path('logo_sb.svg') }}" class="logo" style="width: 70%; height: 7%;">
                     </th>
                     <td style="font-weight: bold; font-size: 1rem;">CV. SARANA BAHAGIA</td>
                     <td></td>
@@ -240,15 +240,13 @@
         </table>
     </main>
 
-    <div class="pagebreak"></div>
-
     {{-- Surat Penerimaan --}}
     <main>
         <table>
             <thead>
                 <tr>
-                    <th rowspan="4" style="width: 15%; white-space: nowrap;">
-                        <img src="{{ public_path('logo_sb.svg') }}" class="logo" style="width: 45%; height: 10%;">
+                    <th rowspan="4" style="width: 15%; height: 0%;">
+                        <img src="{{ public_path('logo_sb.svg') }}" class="logo" style="width: 70%; height: 12%;">
                     </th>
                     <td style="font-weight: bold; font-size: 1rem;">CV. SARANA BAHAGIA</td>
                     <td></td>

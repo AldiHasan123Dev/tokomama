@@ -81,7 +81,6 @@ class SuratJalanController extends Controller
         $month_roman = $roman_numerals[$month_number];
         $data['no'] = $no;
         $data['nomor_surat'] = sprintf('%03d', $no) . '/SJ/SB-' . $month_roman . '/' . date('Y', strtotime($request->tgl_sj));
-        $data['id_supplier'] = $request->supplier[0];
         $sj = SuratJalan::create($data);
 
         for ($i = 0; $i < 4; $i++) {
@@ -95,6 +94,7 @@ class SuratJalanController extends Controller
                     'satuan_beli' => $request->satuan_beli[$i],
                     'satuan_jual' => $request->satuan_jual[$i],
                     'keterangan' => $request->keterangan[$i],
+                    'id_supplier' => $request->supplier[$i],
                 ]);
             }
         }
@@ -154,7 +154,7 @@ class SuratJalanController extends Controller
     {
         // PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']); 
         $ekspedisi = Ekspedisi::find($surat_jalan->id_ekspedisi);
-        $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'))->setPaper('a5', 'landscape');
+        $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'))->setPaper('a4', 'potrait');
         return $pdf->stream('surat_jalan.pdf');
         return view('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
     }

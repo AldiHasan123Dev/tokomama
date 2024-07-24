@@ -38,6 +38,7 @@ class KeuanganController extends Controller
 
     function suratJalanStore(Request $request): RedirectResponse
     {
+        dd($request->all());
         SuratJalan::create($request->all());
         return redirect()->route('keuangan.pre-invoice');
     }
@@ -89,14 +90,14 @@ class KeuanganController extends Controller
         $satuan = Satuan::where('id', $barang->id_satuan)->first();
         // dd($satuan->nama_satuan);
         // dd($data, $invoice, $barang, $formattedDate, $transaksi, $satuan->nama_satuan, $transaksi->satuan_jual, $transaksi->keterangan);
-        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a5', 'landscape');
+        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
         return $pdf->stream('invoice_pdf.pdf');
     }
 
     function generatePDF($id)
     {
         $surat_jalan = SuratJalan::where('id', $id)->get();
-        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('surat_jalan'))->setPaper('a5', 'landscape');
+        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('surat_jalan'))->setPaper('a4', 'potrait');
         return $pdf->stream('invoice_pdf.pdf');
     }
 

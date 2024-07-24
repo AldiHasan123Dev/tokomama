@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OmzetExport;
+use App\Http\Resources\OmzetResurce;
 use App\Http\Resources\TransactionResource;
 use App\Models\Barang;
 use App\Models\Invoice;
@@ -13,6 +15,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use DateTime;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class KeuanganController extends Controller
@@ -161,6 +164,18 @@ class KeuanganController extends Controller
     }
 
     public function dataTableOmzet() {
-        return "omzet";
+
+        $query = Invoice::get();
+        $data = OmzetResurce::collection($query);
+        $res = $data->toArray(request());
+        return DataTables::of($res)
+            ->addIndexColumn()
+            ->toJson();
+    }
+
+    public function OmzetExportExcel(Request $request)
+    {
+        // dd($request);
+        return Excel::download(new OmzetExport($request->start, $request->end), 'laporan-omzet.xlsx');
     }
 }

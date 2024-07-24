@@ -76,6 +76,8 @@ Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('au
     Route::get('draf-invoice/{surat_jalan}', 'invoiceDraf')->name('keuangan.invoice.draf');
     Route::get('cetak-invoice', 'cetakInvoice')->name('keuangan.invoice.cetak');
     Route::get('omzet', 'omzet')->name('keuangan.omzet');
+    Route::get('omzet-list', 'dataTableOmzet')->name('keuangan.omzet.datatable');
+    Route::post('omzet-export', 'OmzetExportExcel')->name('keuangan.omzet.exportexcel');
 });
 
 Route::prefix('pajak')->middleware('auth')->group(function () {

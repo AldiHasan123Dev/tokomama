@@ -20,4 +20,9 @@ class Supplier extends Model
         'alamat',
         'alamat_npwp',
     ];
+
+    public function transactions()
+    {
+        return $this->belongsTo(Transaction::class, 'id_supplier');
+    }
 }

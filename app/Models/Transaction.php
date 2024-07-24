@@ -40,4 +40,9 @@ class Transaction extends Model
     {
         return $this->hasMany(Invoice::class, 'id_transaksi');
     }
+
+    public function suppliers()
+    {
+        return $this->belongsTo(Supplier::class, 'id_supplier');
+    }
 }

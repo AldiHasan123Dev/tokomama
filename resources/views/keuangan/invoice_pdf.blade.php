@@ -148,8 +148,8 @@
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
                         {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
-                        @if ($satuan->nama_satuan != $transaksi->satuan_jual)
-                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ $satuan->nama_satuan }})
+                        @if ($item->transaksi->barang->satuan->nama_satuan != $item->transaksi->satuan_jual)
+                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ $item->transaksi->barang->satuan->nama_satuan }})
                             @if($transaksi->keterangan == null) {{ "" }} @else {{ $transaksi->keterangan }} @endif
                         @else
                             @if($transaksi->keterangan == null) {{ "" }} @else {{"= " . $transaksi->keterangan }} @endif
@@ -240,13 +240,21 @@
         </table>
     </main>
 
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
     {{-- Surat Penerimaan --}}
     <main>
         <table>
             <thead>
                 <tr>
                     <th rowspan="4" style="width: 15%; height: 0%;">
-                        <img src="{{ public_path('logo_sb.svg') }}" class="logo" style="width: 70%; height: 12%;">
+                        <img src="{{ public_path('logo_sb.svg') }}" class="logo" style="width: 70%; height: 15%;">
                     </th>
                     <td style="font-weight: bold; font-size: 1rem;">CV. SARANA BAHAGIA</td>
                     <td></td>
@@ -292,8 +300,8 @@
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
                         {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
-                        @if ($satuan->nama_satuan != $transaksi->satuan_jual)
-                        (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ $satuan->nama_satuan }})
+                        @if ($item->transaksi->barang->satuan->nama_satuan != $item->transaksi->satuan_jual)
+                        (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ $item->transaksi->barang->satuan->nama_satuan }})
                         @if($transaksi->keterangan == null) {{ "" }} @else {{ $transaksi->keterangan }} @endif
                         @else
                         @if($transaksi->keterangan == null) {{ "" }} @else {{"= " . $transaksi->keterangan }} @endif

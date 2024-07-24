@@ -23,6 +23,7 @@ class Transaction extends Model
         'satuan_jual',
         'margin',
         'keterangan',
+        'id_supplier'
     ];
 
     public function suratJalan()

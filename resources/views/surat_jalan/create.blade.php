@@ -222,7 +222,7 @@
                         </div>
                     </div>
                     <input type="hidden" name="total" id="total">
-                    <button type="submit" onclick="return confirm('Apakah anda yakin?')"
+                    <button id="submit" type="submit" onclick="return confirm('Apakah anda yakin?')"
                         class="btn btn-sm w-full bg-green-500 text-white rounded-lg mt-3">
                         Konfirmasi Surat Jalan
                     </button>
@@ -256,7 +256,7 @@
                                     <td class="text-center">{{ $i }}</td>
                                     <td>
                                         <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}"
-                                            class="form-control" list="barang_list">
+                                            class="form-control" list="barang_list" autocomplete="off">
                                     </td>
                                     <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()"
@@ -276,7 +276,7 @@
                                     </td>
                                     <td>
                                         <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-{{ $i }}"
-                                            class="form-control" list="supplier_list" autocomplete="off">
+                                            class="form-control" list="supplier_list" autocomplete="off" placeholder="">
                                     </td>
                                     <td>
                                         <input type="text" style="width:120px" onchange="inputBarang()" name="keterangan[]" id="keterangan-{{ $i }}"
@@ -288,7 +288,7 @@
                         </table>
                         <datalist id="barang_list">
                             @foreach ($barang as $mb)
-                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" data-satuan="{{ $mb->nama_satuan }}" value="{{ $mb->nama }}{{ $mb->id }}" >{{ $mb->nama }} ({{ $mb->nama_satuan }})</option>
+                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" data-satuan="{{ $mb->nama_satuan }}" value="{{ $mb->nama_singkat }}" >{{ $mb->nama_singkat }} ({{ $mb->nama_satuan }})</option>
                             @endforeach
                         </datalist>
                         <datalist id="satuan_beli_list">
@@ -303,7 +303,7 @@
                         </datalist>
                         <datalist id="supplier_list">
                             @foreach ($supplier as $sp)
-                            <option data-id="{{$sp->id}}" value="{{ $sp->id }}">{{ $sp->nama }}</option>
+                            <option data-id="{{$sp->id}}" data-nama="{{ $sp->nama }}" value="{{$sp->nama}}">{{$sp->nama}}</option>
                             @endforeach
                         </datalist>
                     </div>
@@ -552,6 +552,21 @@
             }
         });
 
+         $('#submit').on('click', function() {
+            for(let i = 1; i < 5; i++) {
+                const supplier = $('#supplier-' + i).val();
+                    if(supplier != '' && typeof (supplier) != undefined) {
+                    var id_supplier = $("#supplier_list option[value='" + supplier + "']").data('id');
+                    $('#supplier-' + i).val(id_supplier);
+                }
+                const barang = $('#barang-' + i).val();
+                    if(barang != '' && typeof (barang) != undefined) {
+                    var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
+                    $('#barang-' + i).val(id_barang);
+                }
+            }
+            })
+
         function inputBarang() {
             for(let i = 1; i < 5; i++) {
                 const jumlah_beli = $('#jumlah_beli-' + i).val();
@@ -572,7 +587,7 @@
 
                 if (barang != '' && typeof (barang) != undefined) {
                     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
-                    console.log(id_barang)
+                    // console.log(id_barang)
                     var value_barang = $("#barang_list option[value='" + barang + "']").data('value');
                     var nama_satuan = $("#barang_list option[value='" + barang + "']").data('satuan');
                     $("#id_barang-" + i).val(id_barang);

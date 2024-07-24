@@ -44,7 +44,7 @@ class SuratJalanController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
+        dd($request);
         for ($i = 0; $i < count($request->satuan_jual); $i++) {
             $satuanJual = Satuan::where('nama_satuan', $request->satuan_jual[$i])->exists();
             if (!$satuanJual) {

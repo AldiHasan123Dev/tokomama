@@ -27,7 +27,7 @@
         }
 
         table.table {
-            margin-top: 10px;
+            /* margin-top: 10px; */
         }
 
         .border.border-black {
@@ -36,7 +36,7 @@
         }
 
         .py-1 {
-            padding: 5px 0;
+            /* padding: 5px 0; */
         }
 
         .text-center {
@@ -134,23 +134,23 @@
                     <td style="vertical-align: top; border-right: 1px solid black" rowspan="5"></td>
                     <td style="vertical-align: top; border-right: 1px solid black" rowspan="5"></td>
                     <td style="vertical-align: top; border-right: 1px solid black" rowspan="5"></td>
-                    <td class="border border-black py-1">
+                    <td class="border border-black py-1" style="padding: 0 5px;">
                         Nama Kapal: {{ $surat_jalan->nama_kapal }} </td>
                 </tr>
                 <tr>
-                    <td class="border border-black py-1">
+                    <td class="border border-black py-1" style="padding : 0 5px;">
                         No. Cont: {{ $surat_jalan->no_cont }} </td>
                 </tr>
                 <tr>
-                    <td class="border border-black py-1">
+                    <td class="border border-black py-1" style="padding : 0 5px;">
                         No. Seal: {{ $surat_jalan->no_seal }} </td>
                 </tr>
                 <tr>
-                    <td class="border border-black py-1">
+                    <td class="border border-black py-1" style="padding : 0 5px;">
                         No. Pol: {{ $surat_jalan->no_pol }} </td>
                 </tr>
                 <tr>
-                    <td class="border border-black py-1">
+                    <td class="border border-black py-1" style="padding : 0 5px;">
                         No. Job: {{ $surat_jalan->no_job }} </td>
                 </tr>
             </tbody>
@@ -172,9 +172,9 @@
                     <th><b>PENGIRIM</b></th>
                 </tr>
                 <tr>
-                   <td style="height: 20px;"></td>
+                   <td style="height: 15px;"></td>
                 <tr >
-                    <th style="height: 35px"> </th>
+                    <th style="height: 30px"> </th>
                     <th></th>
                 </tr>
                 <tr>

@@ -44,7 +44,6 @@ class SuratJalanController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
         for ($i = 0; $i < count($request->satuan_jual); $i++) {
             $satuanJual = Satuan::where('nama_satuan', $request->satuan_jual[$i])->exists();
             if (!$satuanJual) {
@@ -84,7 +83,7 @@ class SuratJalanController extends Controller
         $data['no'] = $no;
         $data['nomor_surat'] = sprintf('%03d', $no) . '/SJ/SB-' . $month_roman . '/' . date('Y', strtotime($request->tgl_sj));
         $sj = SuratJalan::create($data);
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < count($request->id_barang); $i++) {
             if ($request->barang[$i] != null && $request->id_barang[$i] != null && $request->supplier[$i] != null) {
                 Transaction::create([
                     'id_surat_jalan' => $sj->id,
@@ -153,7 +152,7 @@ class SuratJalanController extends Controller
 
     public function cetak(SuratJalan $surat_jalan)
     {
-        // PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']); 
+        // PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
         $ekspedisi = Ekspedisi::find($surat_jalan->id_ekspedisi);
         $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'))->setPaper('a4', 'potrait');
         return $pdf->stream('surat_jalan.pdf');

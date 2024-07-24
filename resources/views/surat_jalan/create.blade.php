@@ -249,7 +249,7 @@
                                     {{-- <th>Profit</th> --}}
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tbody-list-barang">
                                 @php
                                 $q = 5;
                                 @endphp
@@ -286,7 +286,6 @@
                                         <input type="text" style="width:120px" onchange="inputBarang()" name="keterangan[]" id="keterangan-{{ $i }}" class="form-control">
                                     </td>
                                 </tr>
-                                <div id="append"></div>
                                 @endfor
                             </tbody>
                         </table>
@@ -311,7 +310,7 @@
                             @endforeach
                         </datalist>
                     </div>
-                    <button id="btn_tambah" type="button" class="btn bg-blue-500 text-white">Tambah Barang Baru</button>
+                    <button id="btn_tambah" type="button" class="btn bg-blue-500 text-white">Tambah Baris</button>
                 </div>
             </div>
             <div class="grid grid-cols-2 justify-items-stretch">
@@ -576,39 +575,39 @@
 
             $('#btn_tambah').click(function() {
                 q++;
-                $('#append').append(`
-                    <input type="hidden" name="id_barang[]" id="id_barang-{{ $i }}" />
-                                <input type="hidden" name="nama_satuan[]" id="nama_satuan-{{ $i }}" />
+                var html = `
                                 <tr>
-                                    <td class="text-center">{{ $i }}</td>
+                                    <input type="hidden" name="id_barang[]" id="id_barang-${q}" />
+                                    <input type="hidden" name="nama_satuan[]" id="nama_satuan-${q}" />
+                                    <td class="text-center">${q}</td>
                                     <td>
-                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}" class="form-control" list="barang_list" autocomplete="off">
+                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-${q}" class="form-control" list="barang_list" autocomplete="off">
                                     </td>
                                     <td>
-                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_beli[]" id="jumlah_beli-{{ $i }}"
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_beli[]" id="jumlah_beli-${q}"
                                             class="form-control">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_beli[]" id="satuan_beli-{{ $i }}"
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_beli[]" id="satuan_beli-${q}"
                                             class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_beli_list" autocomplete="off">
                                     </td>
                                     <td>
-                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_jual[]" id="jumlah_jual-{{ $i }}"
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_jual[]" id="jumlah_jual-${q}"
                                             class="form-control">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_jual[]" id="satuan_jual-{{ $i }}"
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_jual[]" id="satuan_jual-${q}"
                                             class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-{{ $i }}"
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-${q}"
                                             class="form-control" list="supplier_list" autocomplete="off" placeholder="">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="keterangan[]" id="keterangan-{{ $i }}" class="form-control">
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="keterangan[]" id="keterangan-${q}" class="form-control">
                                     </td>
-                                </tr>
-                `)
+                                </tr>`;
+                $('#tbody-list-barang').append(html);
             });
 
         function inputBarang() {

@@ -556,8 +556,10 @@
             }
         });
 
+        let q = 5;
+
          $('#submit').on('click', function() {
-            for(let i = 1; i < 5; i++) {
+            for(let i = 1; i <= q; i++) {
                 const supplier = $('#supplier-' + i).val();
                     if(supplier != '' && typeof (supplier) != undefined) {
                     var id_supplier = $("#supplier_list option[value='" + supplier + "']").data('id');
@@ -570,8 +572,6 @@
                 }
             }
             })
-
-            let q = 5;
 
             $('#btn_tambah').click(function() {
                 q++;

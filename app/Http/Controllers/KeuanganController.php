@@ -35,6 +35,7 @@ class KeuanganController extends Controller
 
     function suratJalanStore(Request $request): RedirectResponse
     {
+        dd($request->all());
         SuratJalan::create($request->all());
         return redirect()->route('keuangan.pre-invoice');
     }

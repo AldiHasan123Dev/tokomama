@@ -84,7 +84,7 @@ class SuratJalanController extends Controller
         $data['nomor_surat'] = sprintf('%03d', $no) . '/SJ/SB-' . $month_roman . '/' . date('Y', strtotime($request->tgl_sj));
         $sj = SuratJalan::create($data);
         for ($i = 0; $i < count($request->barang); $i++) {
-            if ($request->barang[$i] != null && $request->barang[$i] != null && $request->supplier[$i] != null) {
+            if ($request->barang[$i] != null && $request->supplier[$i] != null) {
                 Transaction::create([
                     'id_surat_jalan' => $sj->id,
                     'id_barang' => $request->barang[$i],

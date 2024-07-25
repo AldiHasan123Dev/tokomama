@@ -261,7 +261,7 @@
                                 <tr>
                                     <td class="text-center">{{ $i }}</td>
                                     <td>
-                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}" class="form-control" list="barang_id" autocomplete="off">
+                                        <input type="text" onchange="inputBarang()" name="id_barang[]" id="id_barangs-{{ $i }}" class="form-control" list="barang_id" autocomplete="off">
                                     </td>
                                     <td>
                                         <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}" class="form-control" list="barang_list" autocomplete="off">
@@ -295,7 +295,7 @@
                         </table>
                         <datalist id="barang_id">
                             @foreach ($barang as $mb)
-                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" data-satuan="{{ $mb->nama_satuan }}" value="{{ $mb->id }}" >{{ $mb->id }} - {{ $mb->nama_singkat }} ({{ $mb->nama_satuan }})</option>
+                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" data-satuan="{{ $mb->nama_satuan }}" data-nama="{{ $mb->nama_singkat }}" value="{{ $mb->id }}" >{{ $mb->id }} - {{ $mb->nama_singkat }} ({{ $mb->nama_satuan }})</option>
                             @endforeach
                         </datalist>
                         <datalist id="barang_list">
@@ -625,9 +625,17 @@
                 const satuan_beli = $('#satuan_beli-' + i).val();
                 const jumlah_jual =  $('#jumlah_jual-' + i).val(jumlah_beli);
                 const satuan_jual = $('#satuan_jual-' + i).val(satuan_beli);
+                const idbarang = $('#id_barangs-' + i).val();
+                // console.log(idbarang);
+                if(idbarang != '' && typeof (idbarang) != undefined) {
+                    var id_barang = $("#barang_id option[value='" + idbarang + "']").data('nama');
+                    const barang = $('#barang-' + i).val(id_barang);
+                    console.log(idbarang);
+                }
             }
             let text = '';
             for (let i = 1; i <= q; i++) {
+                const idbarang = $('#id_barangs-' + i).val();
                 const barang = $('#barang-' + i).val();
                 const jumlah_beli = $('#jumlah_beli-' + i).val();
                 const satuan_beli = $('#satuan_beli-' + i).val();
@@ -636,7 +644,10 @@
                 const satuan_jual = $('#satuan_jual-' + i).val();
                 const keterangan = $('#keterangan-' + i).val();
                 // const harga_jual = $('#harga_jual-' + i).val();
-
+                // if(idbarang != '' && typeof (idbarang) != undefined) {
+                //     var id_barang = $("#barangs_id option[value='" + idbarang + "']").data('nama');
+                //     const barang = $('#barang-' + i).val(id_barang);
+                // }
                 if (barang != '' && typeof (barang) != undefined) {
                     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
                     // console.log(id_barang)
@@ -649,8 +660,8 @@
                         var total_jumlah = parseFloat(value_barang) * parseInt(jumlah_jual);
                     }
                     var txt_total = '';
-                    console.log("Satuan jual = " + satuan_jual);
-                    console.log("Nama Satuan = " + nama_satuan);
+                    //console.log("Satuan jual = " + satuan_jual);
+                    //console.log("Nama Satuan = " + nama_satuan);
                     // if(barang.includes("@")){
                         if(satuan_jual.includes(nama_satuan)) {
                             txt_total += `<p>${keterangan!=''?' = '+keterangan:''}</p>`;

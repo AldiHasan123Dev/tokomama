@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\NSFPController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\BukuBesarController;
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EkspedisiController;
@@ -64,6 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::get('template-jurnal', [TemplateJurnalController::class,'index'])->name('jurnal.template-jurnal');
     Route::get('template-jurnal-create', [TemplateJurnalController::class,'create'])->name('jurnal.template-jurnal.create');
     Route::post('/omzet-data', [KeuanganController::class, 'dataTableOmzet'])->name('keuangan.omzet.data');
+    Route::resource('buku-besar', BukuBesarController::class);
 });
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {

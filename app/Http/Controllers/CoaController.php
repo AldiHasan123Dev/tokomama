@@ -10,14 +10,17 @@ class CoaController extends Controller
 {
     function index()
     {
-        return view('jurnal.coa');
+        $coa = Coa::all();
+        return view('jurnal.coa', compact('coa'));
     }
 
     function dataTable()
     {
         return DataTables::of(Coa::query())
             ->addIndexColumn()
-            ->addColumn('#', '<input type="checkbox" name="id" id="id" value="">')
+            ->addColumn('#', function ($row) {
+                return '<input type="checkbox" name="id' . $row->id . '" id="id" value="' . $row->id . '">';
+            })
             ->rawColumns(['#'])
             ->make(true);
     }
@@ -26,7 +29,8 @@ class CoaController extends Controller
     {
         $newArrayV = array_values($request->all());
 
-        for ($i = 2; $i < count($request->all()); $i++) {
+
+        for ($i = 3; $i < count($request->all()); $i++) {
             $getStatusById = Coa::where('id', $newArrayV[$i])->first();
 
             if ($getStatusById->status == "non-aktif") {

@@ -1,4 +1,5 @@
 <x-Layout.layout>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <x-jurnal.card-jurnal>
         <x-slot:tittle>Template Jurnal</x-slot:tittle>
 
@@ -36,37 +37,34 @@
                 <h3 class="font-semibold">Akun Kredit</h3>
                 <h3 class="font-semibold">Keterangan</h3>
                 <hr class="col-span-4">
-                <input type="text" class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white" id="kepada" name="kepada" list="coa_list" autocomplete="off" required />
-                <datalist id="coa_list">
-                    <option data-id="1" data-alamat="surabaya" data-kota="surabaya" value="galeh">galeh</option>
-                    <option data-id="2" data-alamat="jugja" data-kota="surabaya" value="2"></option>
-                    <option data-id="3" data-alamat="data" data-kota="surabaya" value="3"></option>
-                    <option data-id="4" data-alamat="malang" data-kota="surabaya" value="4"></option>
-                </datalist>
-                <input type="text" class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white" id="kepada" name="kepada" list="coa_list" autocomplete="off" required />
-                <datalist id="coa_list">
-                    <option data-id="1" data-alamat="surabaya" data-kota="surabaya" value="galeh">galeh</option>
-                    <option data-id="2" data-alamat="jugja" data-kota="surabaya" value="2"></option>
-                    <option data-id="3" data-alamat="data" data-kota="surabaya" value="3"></option>
-                    <option data-id="4" data-alamat="malang" data-kota="surabaya" value="4"></option>
-                </datalist>
-                <input type="text" class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white" id="kepada" name="kepada" list="coa_list" autocomplete="off" required />
-                <datalist id="coa_list">
-                    <option data-id="1" data-alamat="surabaya" data-kota="surabaya" value="galeh">galeh</option>
-                    <option data-id="2" data-alamat="jugja" data-kota="surabaya" value="2"></option>
-                    <option data-id="3" data-alamat="data" data-kota="surabaya" value="3"></option>
-                    <option data-id="4" data-alamat="malang" data-kota="surabaya" value="4"></option>
-                </datalist>
+                <select class="select select-bordered w-full max-w-xs" name="akun_debet" id="akun_debet">
+                    @foreach ($coa as $item)
+                    <option disabled selected></option>
+                    <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
+                    @endforeach
+                </select>
+                <select class="select select-bordered w-full max-w-xs" name="akun_kredit" id="akun_kredit">
+                    @foreach ($coa as $item)
+                    <option disabled selected></option>
+                    <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
+                    @endforeach
+                </select>
+                <input type="text" placeholder="" class="input input-bordered w-full max-w-xs" name="keterangan" id="keterangan" />
                 <button id="tambah" class="btn btn-success font-semibold text-white">Tambah Baris</button>
 
 
             </form>
         </div>
 
-        <x-slot:script>
+    </x-jurnal.card-jurnal>
+
+    <x-slot:script>
+            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
             <script>
-                
+                $(document).ready(function () {
+                    $('#akun_debet').select2();
+                    $('#akun_kredit').select2();
+                });
             </script>
         </x-slot:script>
-    </x-jurnal.card-jurnal>
 </x-Layout.layout>

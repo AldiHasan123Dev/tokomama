@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BukuBesarPembantu;
 use App\Models\Coa;
+use App\Models\Nopol;
 use App\Models\TemplateJurnal;
 use Illuminate\Http\Request;
 
-class TemplateJurnalController extends Controller
+class BukuBesarPembantuController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('jurnal.template-jurnal');
+        $templates = TemplateJurnal::all();
+        $nopol = Nopol::where('status', 'aktif')->get();
+        $coa = Coa::where('status', 'aktif')->get();
+        return view('jurnal.buku-besar-pembantu', compact('templates', 'nopol', 'coa'));
     }
 
     /**
@@ -21,8 +26,7 @@ class TemplateJurnalController extends Controller
      */
     public function create()
     {
-        $coa = Coa::where('status', 'aktif')->get();
-        return view('jurnal.create-jurnal-template', compact('coa'));
+        //
     }
 
     /**
@@ -36,7 +40,7 @@ class TemplateJurnalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TemplateJurnal $templateJurnal)
+    public function show(BukuBesarPembantu $bukuBesarPembantu)
     {
         //
     }
@@ -44,7 +48,7 @@ class TemplateJurnalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TemplateJurnal $templateJurnal)
+    public function edit(BukuBesarPembantu $bukuBesarPembantu)
     {
         //
     }
@@ -52,7 +56,7 @@ class TemplateJurnalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TemplateJurnal $templateJurnal)
+    public function update(Request $request, BukuBesarPembantu $bukuBesarPembantu)
     {
         //
     }
@@ -60,7 +64,7 @@ class TemplateJurnalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TemplateJurnal $templateJurnal)
+    public function destroy(BukuBesarPembantu $bukuBesarPembantu)
     {
         //
     }

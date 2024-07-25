@@ -89,7 +89,7 @@
                                 <select class="select select-bordered w-full max-w-xs" name="akun_debet" id="akun_debet">
                                     @foreach ($coa as $item)
                                     <option disabled selected></option>
-                                        <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
                                     @endforeach
                                 </select>
                             </td>
@@ -122,7 +122,6 @@
 
     <script>
         $(document).ready(function () {
-            $('#nopol').select2();
             $('#akun_debet').select2();
             $('#akun_kredit').select2();
         });

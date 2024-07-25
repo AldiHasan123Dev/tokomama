@@ -149,7 +149,8 @@
                         {{ $item->transaksi->barang->nama }} <br>
                         {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
                         @if ($item->transaksi->barang->satuan->nama_satuan != $item->transaksi->satuan_jual)
-                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ $item->transaksi->barang->satuan->nama_satuan }} @if($transaksi->keterangan == null) {{ "" }} @else {{ "= " . $transaksi->keterangan }} @endif)
+                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ 
+                            $item->transaksi->barang->satuan->nama_satuan }} @if($item->transaksi->keterangan == null) {{ "" }} @else {{ "= " . $item->transaksi->keterangan }} @endif)
                         @else
                             
                         @endif

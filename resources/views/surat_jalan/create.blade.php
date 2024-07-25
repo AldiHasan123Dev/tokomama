@@ -283,8 +283,12 @@
                                             class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-{{ $i }}"
-                                            class="form-control" list="supplier_list" autocomplete="off" placeholder="">
+                                        <select name="supplier[]" id="supplier-{{ $i }}" class="form-control my-0" style="width: 230px; border:none">
+                                            <option value=""></option>
+                                            @foreach ($supplier as $item)
+                                            <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                            @endforeach
+                                        </select>
                                     </td>
                                     <td>
                                         <input type="text" style="width:120px" onchange="inputBarang()" name="keterangan[]" id="keterangan-{{ $i }}" class="form-control">
@@ -431,6 +435,9 @@
     </form>
 
     <script>
+        $(function () {
+            $("select").selectize();
+        });
         $('#kepada').on('input', function () {
             var inputValue = $(this).val();
             var id = $("#ekspedisi_list option[value='" + inputValue + "']").data('id');
@@ -567,21 +574,6 @@
 
         let q = 5;
 
-         $('#submit').on('click', function() {
-            for(let i = 1; i <= q; i++) {
-                const supplier = $('#supplier-' + i).val();
-                    if(supplier != '' && typeof (supplier) != undefined) {
-                    var id_supplier = $("#supplier_list option[value='" + supplier + "']").data('id');
-                    $('#supplier-' + i).val(id_supplier);
-                }
-                // const barang = $('#barang-' + i).val();
-                //     if(barang != '' && typeof (barang) != undefined) {
-                //     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
-                //     $('#barang-' + i).val(id_barang);
-                // }
-            }
-            })
-
             $('#btn_tambah').click(function() {
                 q++;
                 var html = `
@@ -613,8 +605,12 @@
                                             class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-${q}"
-                                            class="form-control" list="supplier_list" autocomplete="off" placeholder="">
+                                        <select name="supplier[]" id="supplier-{{ $i }}" class="form-control my-0" style="width: 230px; border:none">
+                                            <option value=""></option>
+                                            @foreach ($supplier as $item)
+                                            <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                            @endforeach
+                                        </select>
                                     </td>
                                     <td>
                                         <input type="text" style="width:120px" onchange="inputBarang()" name="keterangan[]" id="keterangan-${q}" class="form-control">

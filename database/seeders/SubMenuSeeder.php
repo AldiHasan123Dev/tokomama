@@ -29,6 +29,7 @@ class SubMenuSeeder extends Seeder
             ['menu_id'=>2,'title'=>'Harga Beli & Jual','name'=>'harga-barang','icon'=>'#','url'=>'/surat-jalan-tarif-barang','order'=>3],
             ['menu_id'=>3,'title'=>'Pre Invoice','name'=>'pre-invoice','icon'=>'#','url'=>'/keuangan/pre-invoice','order'=>1],
             ['menu_id'=>3,'title'=>'Invoice','name'=>'invoice','icon'=>'#','url'=>'/keuangan/invoice','order'=>2],
+            ['menu_id'=>3,'title'=>'Laporan Omzet','name'=>'omzet','icon'=>'#','url'=>'/keuangan/omzet','order'=>3],
             ['menu_id'=>4,'title'=>'Nomor Seri (NSFP)','name'=>'nsfp','icon'=>'#','url'=>'/pajak/nsfp','order'=>1],
             ['menu_id'=>4,'title'=>'Laporan PPN','name'=>'laporan-ppn','icon'=>'#','url'=>'/pajak/laporan-ppn','order'=>2],
             ['menu_id'=>5,'title'=>'COA','name'=>'coa','icon'=>'#','url'=>'/coa','order'=>1],

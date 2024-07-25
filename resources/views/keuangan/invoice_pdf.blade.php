@@ -40,7 +40,7 @@
             justify-content: center;
         }
         .pagebreak{
-            page-break-before: always;
+            page-break-before: avoid;
         }
     </style>
 </head>
@@ -50,33 +50,33 @@
         <table>
             <thead>
                 <tr>
-                    <th rowspan="4" style="width: 20%">
-                        <img src="{{ public_path('logo_sb.svg') }}" class="logo">
+                    <th rowspan="4" style="width: 15%; height: 0%;">
+                        <img src="{{ public_path('logo_sb.svg') }}" class="logo" style="width: 70%; height: 7%;">
                     </th>
-                    <td style="font-weight: bold; font-size: 1.3rem;">CV. SARANA BAHAGIA</td>
+                    <td style="font-weight: bold; font-size: 1rem;">CV. SARANA BAHAGIA</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>Jl. Kalianak 55 Blok G, Surabaya</td>
-                    <td style="font-weight: bold; font-size: 1.5rem; text-align: center;"><u>INVOICE</u></td>
+                    <td style="font-size: 0.8rem;">Jl. Kalianak 55 Blok G, Surabaya</td>
+                    <td style="font-weight: bold; font-size: 1.2rem; text-align: center;"><u>INVOICE</u></td>
                 </tr>
                 <tr>
-                    <td>Telp: 031-7495507</td>
-                    <td style="text-align: center;">NO : {{ $invoice ?? '-' }}</td>
+                    <td style="font-size: 0.8rem;">Telp: 031-7495507</td>
+                    <td style="text-align: center; font-size: 0.8rem">NO : {{ $invoice ?? '-' }}</td>
                 </tr>
                 <br>
                 <tr>
-                    <td style="text-align: left; padding-left: 45px;" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
+                    <td style="text-align: left; padding-left: 45px; font-size: 0.8rem" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
                         &nbsp;&nbsp;&nbsp;
                         {{$data->first()->transaksi->suratJalan->customer->nama ?? '-' }}</td>
-                    <td style="text-align: center;"><span style="font-weight: bold;">KAPAL : </span> 
+                    <td style="text-align: center; font-size: 0.8rem; " ><span style="font-weight: bold;">KAPAL : </span> 
                         {{ $data->first()->transaksi->suratJalan->nama_kapal }}
                     </td>
                 </tr>
             </thead>
         </table>
 
-        <table class="table border border-black">
+        <table class="table border border-black" style="font-size: 0.7rem">
             <thead>
                 <tr>
                     <th class="border border-black">No.</th>
@@ -148,8 +148,8 @@
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
                         {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
-                        @if ($satuan->nama_satuan != $transaksi->satuan_jual)
-                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ $satuan->nama_satuan }})
+                        @if ($item->transaksi->barang->satuan->nama_satuan != $item->transaksi->satuan_jual)
+                            (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ $item->transaksi->barang->satuan->nama_satuan }})
                             @if($transaksi->keterangan == null) {{ "" }} @else {{ $transaksi->keterangan }} @endif
                         @else
                             @if($transaksi->keterangan == null) {{ "" }} @else {{"= " . $transaksi->keterangan }} @endif
@@ -211,8 +211,7 @@
             </tbody>
         </table>
 
-
-        <p style="font-weight: bold;">TERBILANG :
+        <p style="font-weight: bold; font-size: 0.7rem">TERBILANG :
         @if($barang->status_ppn == 'ya')
             {{ strtoupper(terbilang(($total * 0.11) + ($total))) }}
         @else
@@ -220,9 +219,8 @@
         @endif 
          RUPIAH </p>
 
-        <br>
 
-        <table>
+        <table style="font-size: 0.8rem;">
             <tr>
                 <th style="text-align: left; padding-left: 50px; font-style: italic;">Pembayaran ke rekening:</th>
                 <td style="text-align: center;">Surabaya, {{ $formattedDate }}</td>
@@ -237,45 +235,51 @@
             </tr>
             <tr>
                 <th style="text-align: left; padding-left: 50px;"></th>
-                <th><br><br><br><br><br>(Dwi Satria Wardana)</th>
+                <th><br><br><br>(Dwi Satria Wardana)</th>
             </tr>
         </table>
     </main>
 
-    <div class="pagebreak"></div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
     {{-- Surat Penerimaan --}}
     <main>
         <table>
             <thead>
                 <tr>
-                    <th rowspan="4" style="width: 20%">
-                        <img src="{{ public_path('logo_sb.svg') }}" class="logo">
+                    <th rowspan="4" style="width: 15%; height: 0%;">
+                        <img src="{{ public_path('logo_sb.svg') }}" class="logo" style="width: 70%; height: 15%;">
                     </th>
-                    <td style="font-weight: bold; font-size: 1.3rem;">CV. SARANA BAHAGIA</td>
+                    <td style="font-weight: bold; font-size: 1rem;">CV. SARANA BAHAGIA</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>Jl. Kalianak 55 Blok G, Surabaya</td>
-                    <td style="font-weight: bold; font-size: 1.5rem; text-align: center;"><u>SURAT PENERIMAAN</u></td>
+                <td style="font-size: 0.8rem;">Jl. Kalianak 55 Blok G, Surabaya</td>
+                    <td style="font-weight: bold; font-size: 1.2rem; text-align: center;"><u>SURAT PENERIMAAN</u></td>
                 </tr>
                 <tr>
-                    <td>Telp: 031-7495507</td>
-                    <td style="text-align: center;">Lamp. INV : {{ $invoice ?? '-' }}</td>
+                    <td style="font-size: 0.8rem;" >Telp: 031-7495507</td>
+                    <td style="text-align: center;font-size: 0.8rem">Lamp. INV : {{ $invoice ?? '-' }}</td>
                 </tr>
                 <br>
                 <tr>
-                    <td style="text-align: left; padding-left: 45px;" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
+                    <td style="text-align: left; padding-left: 45px;font-size: 0.8rem" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
                         &nbsp;&nbsp;&nbsp;
                         {{$data->first()->transaksi->suratJalan->customer->nama ?? '-' }}</td>
-                    <td style="text-align: center;"><span style="font-weight: bold;">KAPAL : </span> 
+                    <td style="text-align: center;font-size: 0.8rem"><span style="font-weight: bold;">KAPAL : </span> 
                         {{ $data->first()->transaksi->suratJalan->nama_kapal }}
                     </td>
                 </tr>
             </thead>
         </table>
 
-        <table class="table border border-black">
+        <table class="table border border-black" style="font-size: 0.7rem" >
             <thead>
                 <tr>
                     <th class="border border-black">No.</th>
@@ -296,8 +300,8 @@
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
                         {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
-                        @if ($satuan->nama_satuan != $transaksi->satuan_jual)
-                        (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ $satuan->nama_satuan }} )
+                        @if ($item->transaksi->barang->satuan->nama_satuan != $item->transaksi->satuan_jual)
+                        (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ $item->transaksi->barang->satuan->nama_satuan }})
                         @if($transaksi->keterangan == null) {{ "" }} @else {{ $transaksi->keterangan }} @endif
                         @else
                         @if($transaksi->keterangan == null) {{ "" }} @else {{"= " . $transaksi->keterangan }} @endif
@@ -348,7 +352,7 @@
                     </td>
                     <td class="border border-black" style="text-align: right;">
                         @if($barang->status_ppn == 'ya')
-                        <b>{{ number_format(($total * 0.11) ($total)) }}</b>
+                        <b>{{ number_format(($total * 0.11) + ($total)) }}</b>
                         @else
                         <b>{{ number_format($total) }}</b>
                         @endif
@@ -358,7 +362,7 @@
         </table>
 
 
-        <p style="font-weight: bold;">TERBILANG :
+        <p style="font-weight: bold;font-size: 0.7rem">TERBILANG :
         @if($barang->status_ppn == 'ya')
             {{ strtoupper(terbilang(($total * 0.11) + ($total))) }}
         @else
@@ -366,9 +370,8 @@
         @endif 
          RUPIAH</p>
 
-        <br>
 
-        <table>
+        <table style="font-size: 0.8rem;">
             <tr>
                 <th style="text-align: left; padding-left: 50px; font-style: italic;">Pembayaran ke rekening:</th>
                 <td style="text-align: center;">Surabaya, {{ $formattedDate }}</td>
@@ -383,7 +386,7 @@
             </tr>
             <tr>
                 <th style="text-align: left; padding-left: 50px;"></th>
-                <th><br><br><br><br><br>(Dwi Satria Wardana)</th>
+                <th><br><br><br>(Dwi Satria Wardana)</th>
             </tr>
         </table>
     </main>

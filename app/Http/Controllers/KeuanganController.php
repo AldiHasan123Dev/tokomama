@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OmzetExport;
+use App\Http\Resources\OmzetResurce;
 use App\Http\Resources\TransactionResource;
 use App\Models\Barang;
 use App\Models\Invoice;
@@ -13,6 +15,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use DateTime;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class KeuanganController extends Controller
@@ -35,6 +38,7 @@ class KeuanganController extends Controller
 
     function suratJalanStore(Request $request): RedirectResponse
     {
+        dd($request->all());
         SuratJalan::create($request->all());
         return redirect()->route('keuangan.pre-invoice');
     }
@@ -86,14 +90,14 @@ class KeuanganController extends Controller
         $satuan = Satuan::where('id', $barang->id_satuan)->first();
         // dd($satuan->nama_satuan);
         // dd($data, $invoice, $barang, $formattedDate, $transaksi, $satuan->nama_satuan, $transaksi->satuan_jual, $transaksi->keterangan);
-        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'landscape');
+        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
         return $pdf->stream('invoice_pdf.pdf');
     }
 
     function generatePDF($id)
     {
         $surat_jalan = SuratJalan::where('id', $id)->get();
-        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('surat_jalan'))->setPaper('a4', 'landscape');
+        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('surat_jalan'))->setPaper('a4', 'potrait');
         return $pdf->stream('invoice_pdf.pdf');
     }
 
@@ -154,5 +158,27 @@ class KeuanganController extends Controller
         //     })
         //     ->rawColumns(['aksi'])
         //     ->make();
+    }
+
+    public function omzet() {
+        return view('keuangan.omzet');
+    }
+
+    public function dataTableOmzet() {
+
+        $query = Invoice::get();
+        $data = OmzetResurce::collection($query);
+        $res = $data->toArray(request());
+        return DataTables::of($res)
+            ->addIndexColumn()
+            ->toJson();
+    }
+
+    public function OmzetExportExcel(Request $request)
+    {
+        if($request->start == null || $request->end == null){
+            return back()->with('error', 'Silahkan atur nilai rentang data.');
+        }
+        return Excel::download(new OmzetExport($request->start, $request->end), 'laporan-omzet.xlsx');
     }
 }

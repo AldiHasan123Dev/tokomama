@@ -11,6 +11,7 @@
             <th>#</th>
             <th>Kode Objek</th>
             <th>Nama</th>
+            <th>Nama Singkat</th>
             <th>Value</th>
             <th>Satuan Standart</th>
             <th>Status PPN</th>
@@ -101,6 +102,7 @@
                 { data: 'DT_RowIndex', name: 'number'},
                 { data: 'kode_objek', name: 'kode objek' },
                 { data: 'nama', name: 'nama' },
+                { data: 'nama_singkat', name: 'nama_singkat' },
                 { data: 'value', name: 'value' },
                 { data: 'nama_satuan', name: 'nama_satuan' },
                 { data: 'status_ppn', name: 'status_ppn' },
@@ -110,7 +112,7 @@
             ]
           });
 
-          function getData(id, kode_objek, nama, value, status_ppn, value_ppn, nama_satuan, id_satuan) {
+          function getData(id, kode_objek, nama, nama_singkat, value, status_ppn, value_ppn, nama_satuan, id_satuan) {
             console.log(nama_satuan)
             $('#dialog').html(`<dialog id="my_modal_6" class="modal">
               <div class="modal-box  w-11/12 max-w-2xl pl-10 py-9 ">
@@ -130,6 +132,10 @@
                     <input type="text" name="nama" value="${nama}" class="border-none" />
                   </label>
                   <label class="input border flex items-center gap-2 mt-4">
+                    Nama Singkat :
+                    <input type="text" name="nama_singkat" value="${nama_singkat}" class="border-none" />
+                  </label>
+                  <label class="input border flex items-center gap-2 mt-4">
                     Value :
                     <input type="text" name="value" value="${value}" class="border-none text-slate-400" />
                   </label>
@@ -138,7 +144,7 @@
                     <select name="status_ppn" class="select select-sm select-bordered w-full max-w-xs">
                       <option selected>${status_ppn}</option>
                       <option value="ya">YA</option>
-                      <option value="tidak">TIDAK</option>
+                      <option value="tidak">TIDAK</option>-
                     </select>
                   </label>
                   <label class="input border flex items-center gap-2 mt-4">

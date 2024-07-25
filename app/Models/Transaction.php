@@ -23,6 +23,7 @@ class Transaction extends Model
         'satuan_jual',
         'margin',
         'keterangan',
+        'id_supplier'
     ];
 
     public function suratJalan()
@@ -38,5 +39,10 @@ class Transaction extends Model
     public function invoices()
     {
         return $this->hasMany(Invoice::class, 'id_transaksi');
+    }
+
+    public function suppliers()
+    {
+        return $this->belongsTo(Supplier::class, 'id_supplier');
     }
 }

@@ -222,7 +222,7 @@
                         </div>
                     </div>
                     <input type="hidden" name="total" id="total">
-                    <button type="submit" onclick="return confirm('Apakah anda yakin?')"
+                    <button id="submit" type="submit" onclick="return confirm('Apakah anda yakin?')"
                         class="btn btn-sm w-full bg-green-500 text-white rounded-lg mt-3">
                         Konfirmasi Surat Jalan
                     </button>
@@ -249,38 +249,41 @@
                                     {{-- <th>Profit</th> --}}
                                 </tr>
                             </thead>
-                            <tbody>
-                                @for ($i = 1; $i < 5; $i++) <input type="hidden" name="id_barang[]" id="id_barang-{{ $i }}" />
+                            <tbody id="tbody-list-barang">
+                                @php
+                                $q = 5;
+                                @endphp
+                                <input type="hidden" name="q" id="q" value="{{ $q }}">
+                                @for ($i = 1; $i <= $q; $i++)
+                                <input type="hidden" name="id_barang[]" id="id_barang-{{ $i }}" />
                                 <input type="hidden" name="nama_satuan[]" id="nama_satuan-{{ $i }}" />
                                 <tr>
                                     <td class="text-center">{{ $i }}</td>
                                     <td>
-                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}"
-                                            class="form-control" list="barang_list">
+                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}" class="form-control" list="barang_list" autocomplete="off">
                                     </td>
                                     <td>
-                                        <input type="number" style="width:120px" onchange="inputBarang()"
-                                            name="jumlah_beli[]" id="jumlah_beli-{{ $i }}" class="form-control">
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_beli[]" id="jumlah_beli-{{ $i }}"
+                                            class="form-control">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_beli[]" id="satuan_beli-{{ $i }}" class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_beli_list" autocomplete="off">
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_beli[]" id="satuan_beli-{{ $i }}"
+                                            class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_beli_list" autocomplete="off">
                                     </td>
                                     <td>
-                                        <input type="number" style="width:120px" onchange="inputBarang()"
-                                            name="jumlah_jual[]" id="jumlah_jual-{{ $i }}" class="form-control">
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_jual[]" id="jumlah_jual-{{ $i }}"
+                                            class="form-control">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()"
-                                            name="satuan_jual[]" id="satuan_jual-{{ $i }}" class="form-control"
-                                            placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off">
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_jual[]" id="satuan_jual-{{ $i }}"
+                                            class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off">
                                     </td>
                                     <td>
                                         <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-{{ $i }}"
-                                            class="form-control" list="supplier_list" autocomplete="off">
+                                            class="form-control" list="supplier_list" autocomplete="off" placeholder="">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="keterangan[]" id="keterangan-{{ $i }}"
-                                            class="form-control">
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="keterangan[]" id="keterangan-{{ $i }}" class="form-control">
                                     </td>
                                 </tr>
                                 @endfor
@@ -303,10 +306,11 @@
                         </datalist>
                         <datalist id="supplier_list">
                             @foreach ($supplier as $sp)
-                            <option data-id="{{$sp->id}}" value="{{ $sp->nama }}">{{ $sp->nama }}</option>
+                            <option data-id="{{$sp->id}}" data-nama="{{ $sp->nama }}" value="{{$sp->nama}}">{{$sp->nama}}</option>
                             @endforeach
                         </datalist>
                     </div>
+                    <button id="btn_tambah" type="button" class="btn bg-blue-500 text-white">Tambah Baris</button>
                 </div>
             </div>
             <div class="grid grid-cols-2 justify-items-stretch">
@@ -552,15 +556,69 @@
             }
         });
 
+        let q = 5;
+
+         $('#submit').on('click', function() {
+            for(let i = 1; i <= q; i++) {
+                const supplier = $('#supplier-' + i).val();
+                    if(supplier != '' && typeof (supplier) != undefined) {
+                    var id_supplier = $("#supplier_list option[value='" + supplier + "']").data('id');
+                    $('#supplier-' + i).val(id_supplier);
+                }
+                const barang = $('#barang-' + i).val();
+                    if(barang != '' && typeof (barang) != undefined) {
+                    var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
+                    $('#barang-' + i).val(id_barang);
+                }
+            }
+            })
+
+            $('#btn_tambah').click(function() {
+                q++;
+                var html = `
+                                <tr>
+                                    <input type="hidden" name="id_barang[]" id="id_barang-${q}" />
+                                    <input type="hidden" name="nama_satuan[]" id="nama_satuan-${q}" />
+                                    <td class="text-center">${q}</td>
+                                    <td>
+                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-${q}" class="form-control" list="barang_list" autocomplete="off">
+                                    </td>
+                                    <td>
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_beli[]" id="jumlah_beli-${q}"
+                                            class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_beli[]" id="satuan_beli-${q}"
+                                            class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_beli_list" autocomplete="off">
+                                    </td>
+                                    <td>
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_jual[]" id="jumlah_jual-${q}"
+                                            class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_jual[]" id="satuan_jual-${q}"
+                                            class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off">
+                                    </td>
+                                    <td>
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-${q}"
+                                            class="form-control" list="supplier_list" autocomplete="off" placeholder="">
+                                    </td>
+                                    <td>
+                                        <input type="text" style="width:120px" onchange="inputBarang()" name="keterangan[]" id="keterangan-${q}" class="form-control">
+                                    </td>
+                                </tr>`;
+                $('#tbody-list-barang').append(html);
+            });
+
         function inputBarang() {
-            for(let i = 1; i < 5; i++) {
+            for(let i = 1; i <= q; i++) {
                 const jumlah_beli = $('#jumlah_beli-' + i).val();
                 const satuan_beli = $('#satuan_beli-' + i).val();
                 const jumlah_jual =  $('#jumlah_jual-' + i).val(jumlah_beli);
                 const satuan_jual = $('#satuan_jual-' + i).val(satuan_beli);
             }
             let text = '';
-            for (let i = 1; i < 5; i++) {
+            for (let i = 1; i <= q; i++) {
                 const barang = $('#barang-' + i).val();
                 const jumlah_beli = $('#jumlah_beli-' + i).val();
                 const satuan_beli = $('#satuan_beli-' + i).val();
@@ -572,7 +630,7 @@
 
                 if (barang != '' && typeof (barang) != undefined) {
                     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
-                    console.log(id_barang)
+                    // console.log(id_barang)
                     var value_barang = $("#barang_list option[value='" + barang + "']").data('value');
                     var nama_satuan = $("#barang_list option[value='" + barang + "']").data('satuan');
                     $("#id_barang-" + i).val(id_barang);

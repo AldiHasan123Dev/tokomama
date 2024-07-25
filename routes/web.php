@@ -32,6 +32,8 @@ use App\Models\Customer;
 use App\Models\Jurnal;
 use App\Models\NSFP as ModelsNSFP;
 use App\Models\SuratJalan;
+use App\Models\TemplateJurnal;
+use App\Models\TemplateJurnalItem;
 use Illuminate\Support\Facades\Route;
 
 
@@ -67,6 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
     Route::get('template-jurnal', [TemplateJurnalController::class,'index'])->name('jurnal.template-jurnal');
     Route::get('template-jurnal-create', [TemplateJurnalController::class,'create'])->name('jurnal.template-jurnal.create');
+    Route::post('template-jurnal-add', [TemplateJurnalController::class,'store'])->name('jurnal.template-jurnal.add');
     Route::post('/omzet-data', [KeuanganController::class, 'dataTableOmzet'])->name('keuangan.omzet.data');
     Route::resource('buku-besar', BukuBesarController::class);
     Route::resource('neraca', Neraca::class);

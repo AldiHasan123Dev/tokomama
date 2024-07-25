@@ -283,7 +283,7 @@
                                             class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off" >
                                     </td>
                                     <td>
-                                        <select name="supplier[]" id="supplier-{{ $i }}" class="form-control my-0" style="width: 230px; border:none">
+                                        <select  name="supplier[]" id="supplier-{{ $i }}" class="form-control my-0" style="width: 230px; border:none">
                                             <option value=""></option>
                                             @foreach ($supplier as $item)
                                             <option value="{{ $item->id }}">{{ $item->nama }}</option>
@@ -645,6 +645,8 @@
                 if (barang != '' && typeof (barang) != undefined) {
                     $("#satuan_beli-" + i).prop('required',true);
                     $("#satuan_jual-" + i).prop('required',true);
+                    $("#supplier-" + i).prop('required',true);
+                    
 
                     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
                     // console.log(id_barang)
@@ -679,6 +681,7 @@
                 } else {
                     $("#satuan_beli-" + i).prop('required',false);
                     $("#satuan_jual-" + i).prop('required',false);
+                    $("#supplier-" + i).prop('required',false);
                 }
 
                 $('#jumlah_beli-' + i).on('input', function () {

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BukuBesar;
 use App\Models\Coa;
-use App\Models\Jurnal;
 use App\Models\Nopol;
 use App\Models\TemplateJurnal;
 use Illuminate\Http\Request;
 
-class JurnalController extends Controller
+class BukuBesarController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class JurnalController extends Controller
         $templates = TemplateJurnal::all();
         $nopol = Nopol::where('status', 'aktif')->get();
         $coa = Coa::where('status', 'aktif')->get();
-        return view('jurnal.jurnal-manual', compact('templates', 'nopol', 'coa'));
+        return view('jurnal.buku-besar', compact('templates', 'nopol', 'coa'));
     }
 
     /**
@@ -26,10 +26,7 @@ class JurnalController extends Controller
      */
     public function create()
     {
-        $templates = TemplateJurnal::get();
-        $coa = Coa::where('status', 'aktif')->get();
-        $nopol = Nopol::where('status', 'aktif')->get();
-        return view('jurnal.jurnal-manual', compact('templates','coa','nopol'));
+        //
     }
 
     /**
@@ -43,7 +40,7 @@ class JurnalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Jurnal $jurnal)
+    public function show(BukuBesar $bukuBesar)
     {
         //
     }
@@ -51,7 +48,7 @@ class JurnalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Jurnal $jurnal)
+    public function edit(BukuBesar $bukuBesar)
     {
         //
     }
@@ -59,7 +56,7 @@ class JurnalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Jurnal $jurnal)
+    public function update(Request $request, BukuBesar $bukuBesar)
     {
         //
     }
@@ -67,7 +64,7 @@ class JurnalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Jurnal $jurnal)
+    public function destroy(BukuBesar $bukuBesar)
     {
         //
     }

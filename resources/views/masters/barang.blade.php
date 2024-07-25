@@ -40,14 +40,14 @@
         <div class="label">
           <span class="label-text">Nama <span class="text-red-500">*</span></span>
         </div>
-        <input type="text" placeholder="Nama Barang" name="nama" class="input input-bordered w-full max-w-xs rounded-md"
+        <input id="nama" type="text" placeholder="Nama Barang" name="nama" class="input input-bordered w-full max-w-xs rounded-md"
           required />
       </label>
       <label class="form-control w-full max-w-xs col-start-3">
         <div class="label">
           <span class="label-text">Nama Singkat<span class="text-red-500">*</span></span>
         </div>
-        <input type="text" placeholder="BERAS" name="nama_singkat" class="input input-bordered w-full max-w-xs rounded-md"
+        <input id="ns" type="text" placeholder="BERAS" name="nama_singkat" class="input input-bordered w-full max-w-xs rounded-md"
           required />
       </label>
       <label class="form-control w-full max-w-xs col-start-1">
@@ -111,6 +111,10 @@
                 { data: 'id', name: 'id', visible:false},
             ]
           });
+
+          $('#nama').on('keyup', function() {
+            $('#ns').val(this.value);
+          })
 
           function getData(id, kode_objek, nama, nama_singkat, value, status_ppn, value_ppn, nama_satuan, id_satuan) {
             console.log(nama_satuan)

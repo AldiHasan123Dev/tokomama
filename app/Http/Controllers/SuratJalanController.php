@@ -44,6 +44,7 @@ class SuratJalanController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         for ($i = 0; $i < count($request->satuan_jual); $i++) {
             $satuanJual = Satuan::where('nama_satuan', $request->satuan_jual[$i])->exists();
             if (!$satuanJual) {
@@ -84,6 +85,7 @@ class SuratJalanController extends Controller
         $data['nomor_surat'] = sprintf('%03d', $no) . '/SJ/SB-' . $month_roman . '/' . date('Y', strtotime($request->tgl_sj));
         $sj = SuratJalan::create($data);
         for ($i = 0; $i < count($request->barang); $i++) {
+            // dd($request->barang);
             if ($request->barang[$i] != null && $request->supplier[$i] != null) {
                 Transaction::create([
                     'id_surat_jalan' => $sj->id,

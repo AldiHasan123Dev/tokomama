@@ -272,7 +272,7 @@
                                     </td>
                                     <td>
                                         <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_beli[]" id="satuan_beli-{{ $i }}"
-                                            class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_beli_list" autocomplete="off">
+                                            class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_beli_list" autocomplete="off"  >
                                     </td>
                                     <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_jual[]" id="jumlah_jual-{{ $i }}"
@@ -280,7 +280,7 @@
                                     </td>
                                     <td>
                                         <input type="text" style="width:120px" onchange="inputBarang()" name="satuan_jual[]" id="satuan_jual-{{ $i }}"
-                                            class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off">
+                                            class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off" >
                                     </td>
                                     <td>
                                         <select name="supplier[]" id="supplier-{{ $i }}" class="form-control my-0" style="width: 230px; border:none">
@@ -626,13 +626,7 @@
                 const satuan_beli = $('#satuan_beli-' + i).val();
                 const jumlah_jual =  $('#jumlah_jual-' + i).val(jumlah_beli);
                 const satuan_jual = $('#satuan_jual-' + i).val(satuan_beli);
-                const idbarang = $('#id_barangs-' + i).val();
-                // console.log(idbarang);
-                if(idbarang != '' && typeof (idbarang) != undefined) {
-                    var id_barang = $("#barang_id option[value='" + idbarang + "']").data('nama');
-                    const barang = $('#barang-' + i).val(id_barang);
-                    console.log(idbarang);
-                }
+                
             }
             let text = '';
             for (let i = 1; i <= q; i++) {
@@ -649,6 +643,9 @@
                 const value_barangs = $('#barang-' + i).find('option:selected').data('value');
                 const satuan_barangs = $('#barang-' + i).find('option:selected').data('satuan');
                 if (barang != '' && typeof (barang) != undefined) {
+                    $("#satuan_beli-" + i).prop('required',true);
+                    $("#satuan_jual-" + i).prop('required',true);
+
                     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
                     // console.log(id_barang)
                     var value_barang = $("#barang_list option[value='" + barang + "']").data('value');
@@ -679,6 +676,9 @@
                             $('#txt_nomor' + i).html(i);
 
                             // var test = $('#profit-' + i).val(jumlah_jual * harga_jual - jumlah_beli * harga_beli);
+                } else {
+                    $("#satuan_beli-" + i).prop('required',false);
+                    $("#satuan_jual-" + i).prop('required',false);
                 }
 
                 $('#jumlah_beli-' + i).on('input', function () {

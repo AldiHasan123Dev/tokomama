@@ -79,24 +79,24 @@
                             </td>
                             <td>
                                 <select class="select select-bordered w-full max-w-xs" name="nopol" id="nopol">
-                                    <option disabled selected></option>
                                     @foreach ($nopol as $item)
+                                    <option disabled selected></option>
                                         <option value="{{ $item->nopol }}">{{ $item->nopol }}</option>
                                     @endforeach
                                 </select>
                             </td>
                             <td>
                                 <select class="select select-bordered w-full max-w-xs" name="akun_debet" id="akun_debet">
-                                    <option disabled selected></option>
                                     @foreach ($coa as $item)
+                                    <option disabled selected></option>
                                         <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
                                     @endforeach
                                 </select>
                             </td>
                             <td>
                                 <select class="select select-bordered w-full max-w-xs" name="akun_kredit" id="akun_kredit">
-                                    <option disabled selected></option>
                                     @foreach ($coa as $item)
+                                        <option disabled selected></option>
                                         <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
                                     @endforeach
                                 </select>
@@ -105,45 +105,7 @@
                                 <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" name="keterangan" id="keterangan" />
                             </td>
                             <td>
-                                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" name="nominal" id="nominal" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="check" id="check">
-                            </td>
-                            <td>
-                                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl"
-                                    name="invoice" id="invoice" />
-                            </td>
-                            <td>
-                                <select class="select select-bordered w-full max-w-xs" name="nopol" id="nopol">
-                                    <option disabled selected></option>
-                                    <option>Han Solo</option>
-                                    <option>Greedo</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="select select-bordered w-full max-w-xs" name="akun_debet" id="akun_debet">
-                                    <option disabled selected></option>
-                                    <option>Han Solo</option>
-                                    <option>Greedo</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="select select-bordered w-full max-w-xs" name="akun_kredit" id="akun_kredit">
-                                    <option disabled selected></option>
-                                    <option>Han Solo</option>
-                                    <option>Greedo</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl"
-                                    name="keterangan" id="keterangan" />
-                            </td>
-                            <td>
-                                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl"
-                                    name="nominal" id="nominal" />
+                                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl text-white" name="nominal" id="nominal" />
                             </td>
                         </tr>
                     </tbody>
@@ -157,4 +119,12 @@
             </form>
         </div>
     </x-keuangan.card-keuangan>
+
+    <script>
+        $(document).ready(function () {
+            $('#nopol').select2();
+            $('#akun_debet').select2();
+            $('#akun_kredit').select2();
+        });
+    </script>
 </x-Layout.layout>

@@ -4,7 +4,9 @@
         <div class="overflow-x-auto">
             <form action="{{ route('jurnal.coa') }}" method="post">
                 @csrf
-                <input type="text">
+                @foreach($coa as $c)
+                    <input type="hidden" name="coa" id="{{ $c->id }}" value="{{ $c->id }}">
+                @endforeach
                 <button class="btn bg-green-400 text-white my-5 py-4 font-bold hidden" id="aktif" type="submit">Ubah Status COA</button>
                 <table class="table" id="coa_table">
                     <!-- head -->

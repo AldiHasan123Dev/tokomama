@@ -431,6 +431,9 @@
     </form>
 
     <script>
+        $(function () {
+            $("select").selectize();
+        });
         $('#kepada').on('input', function () {
             var inputValue = $(this).val();
             var id = $("#ekspedisi_list option[value='" + inputValue + "']").data('id');

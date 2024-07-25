@@ -15,7 +15,10 @@ class JurnalController extends Controller
      */
     public function index()
     {
-        //
+        $templates = TemplateJurnal::all();
+        $nopol = Nopol::where('status', 'aktif')->get();
+        $coa = Coa::where('status', 'aktif')->get();
+        return view('jurnal.jurnal-manual', compact('templates', 'nopol', 'coa'));
     }
 
     /**

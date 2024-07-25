@@ -24,6 +24,7 @@ class CoaController extends Controller
 
     function statusCoa(Request $request)
     {
+        dd($request->all());
         $newArrayV = array_values($request->all());
 
         for ($i = 2; $i < count($request->all()); $i++) {

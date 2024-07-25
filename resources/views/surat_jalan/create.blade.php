@@ -237,6 +237,7 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
+                                    <th>ID Barang</th>
                                     <th>Barang</th>
                                     {{-- <th>Harsat Beli</th> --}}
                                     <th>Jumlah Beli</th>
@@ -259,6 +260,9 @@
                                 <input type="hidden" name="nama_satuan[]" id="nama_satuan-{{ $i }}" />
                                 <tr>
                                     <td class="text-center">{{ $i }}</td>
+                                    <td>
+                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}" class="form-control" list="barang_id" autocomplete="off">
+                                    </td>
                                     <td>
                                         <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}" class="form-control" list="barang_list" autocomplete="off">
                                     </td>
@@ -289,9 +293,14 @@
                                 @endfor
                             </tbody>
                         </table>
+                        <datalist id="barang_id">
+                            @foreach ($barang as $mb)
+                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" data-satuan="{{ $mb->nama_satuan }}" value="{{ $mb->id }}" >{{ $mb->id }} - {{ $mb->nama_singkat }} ({{ $mb->nama_satuan }})</option>
+                            @endforeach
+                        </datalist>
                         <datalist id="barang_list">
                             @foreach ($barang as $mb)
-                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" data-satuan="{{ $mb->nama_satuan }}" value="{{ $mb->nama_singkat }}" >{{ $mb->nama_singkat }} ({{ $mb->nama_satuan }})</option>
+                            <option data-id="{{$mb->id}}" data-value="{{ $mb->value }}" data-satuan="{{ $mb->nama_satuan }}" value="{{ $mb->nama }}" >{{ $mb->nama_singkat }} ({{ $mb->nama_satuan }})</option>
                             @endforeach
                         </datalist>
                         <datalist id="satuan_beli_list">

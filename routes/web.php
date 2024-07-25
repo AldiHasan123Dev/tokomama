@@ -11,8 +11,10 @@ use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\JurnalManualController;
 use App\Http\Controllers\NSFPController as nsfp;
 use App\Http\Controllers\KeuanganController;
+use App\Http\Controllers\LabaRugi;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\Neraca;
 use App\Http\Controllers\NopolController;
 use App\Http\Controllers\PajakController;
 use App\Http\Controllers\ProfileController;
@@ -66,6 +68,8 @@ Route::middleware('auth')->group(function () {
     Route::get('template-jurnal-create', [TemplateJurnalController::class,'create'])->name('jurnal.template-jurnal.create');
     Route::post('/omzet-data', [KeuanganController::class, 'dataTableOmzet'])->name('keuangan.omzet.data');
     Route::resource('buku-besar', BukuBesarController::class);
+    Route::resource('neraca', Neraca::class);
+    Route::resource('laba-rugi', LabaRugi::class);
 });
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {

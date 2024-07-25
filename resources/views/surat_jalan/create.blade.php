@@ -237,8 +237,7 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>ID Barang</th>
-                                    <th>Barang</th>
+                                    <th style="width: 230px">Barang</th>
                                     {{-- <th>Harsat Beli</th> --}}
                                     <th>Jumlah Beli</th>
                                     <th>Satuan Beli</th>
@@ -256,15 +255,16 @@
                                 @endphp
                                 <input type="hidden" name="q" id="q" value="{{ $q }}">
                                 @for ($i = 1; $i <= $q; $i++)
-                                <input type="hidden" name="id_barang[]" id="id_barang-{{ $i }}" />
                                 <input type="hidden" name="nama_satuan[]" id="nama_satuan-{{ $i }}" />
                                 <tr>
                                     <td class="text-center">{{ $i }}</td>
                                     <td>
-                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}" class="form-control" list="barang_id" autocomplete="off">
-                                    </td>
-                                    <td>
-                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-{{ $i }}" class="form-control" list="barang_list" autocomplete="off">
+                                        <select name="barang[]" id="barang-{{ $i }}" class="form-control my-0" style="width: 230px; border:none">
+                                            <option value=""></option>
+                                            @foreach ($barang as $item)
+                                            <option value="{{ $item->id }}">{{ $item->nama }} || {{ $item->nama_satuan }} || {{ $item->value }}</option>
+                                            @endforeach
+                                        </select>
                                     </td>
                                     <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_beli[]" id="jumlah_beli-{{ $i }}"
@@ -283,8 +283,12 @@
                                             class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-{{ $i }}"
-                                            class="form-control" list="supplier_list" autocomplete="off" placeholder="">
+                                        <select name="supplier[]" id="supplier-{{ $i }}" class="form-control my-0" style="width: 230px; border:none">
+                                            <option value=""></option>
+                                            @foreach ($supplier as $item)
+                                            <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                            @endforeach
+                                        </select>
                                     </td>
                                     <td>
                                         <input type="text" style="width:120px" onchange="inputBarang()" name="keterangan[]" id="keterangan-{{ $i }}" class="form-control">
@@ -322,7 +326,7 @@
                     <button id="btn_tambah" type="button" class="btn bg-blue-500 text-white">Tambah Baris</button>
                 </div>
             </div>
-            <div class="grid grid-cols-2 justify-items-stretch">
+            {{-- <div class="grid grid-cols-2 justify-items-stretch">
                 <div class="grid grid-cols-3">
                     <div>
                         <img src="{{ asset('/assets/img/logo_sb.svg') }}" alt="Logo SB" class="w-20 mx-auto">
@@ -426,11 +430,14 @@
                         <p>(<span id="txt_nama_pengirim">FIRDA</span>)</p>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </form>
 
     <script>
+        $(function () {
+            $("select").selectize();
+        });
         $('#kepada').on('input', function () {
             var inputValue = $(this).val();
             var id = $("#ekspedisi_list option[value='" + inputValue + "']").data('id');
@@ -567,30 +574,19 @@
 
         let q = 5;
 
-         $('#submit').on('click', function() {
-            for(let i = 1; i <= q; i++) {
-                const supplier = $('#supplier-' + i).val();
-                    if(supplier != '' && typeof (supplier) != undefined) {
-                    var id_supplier = $("#supplier_list option[value='" + supplier + "']").data('id');
-                    $('#supplier-' + i).val(id_supplier);
-                }
-                const barang = $('#barang-' + i).val();
-                    if(barang != '' && typeof (barang) != undefined) {
-                    var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
-                    $('#barang-' + i).val(id_barang);
-                }
-            }
-            })
-
             $('#btn_tambah').click(function() {
                 q++;
                 var html = `
                                 <tr>
-                                    <input type="hidden" name="id_barang[]" id="id_barang-${q}" />
                                     <input type="hidden" name="nama_satuan[]" id="nama_satuan-${q}" />
                                     <td class="text-center">${q}</td>
                                     <td>
-                                        <input type="text" onchange="inputBarang()" name="barang[]" id="barang-${q}" class="form-control" list="barang_list" autocomplete="off">
+                                        <select name="barang[]" id="barang-${q}" class="form-control my-0" style="width: 230px; border:none">
+                                            <option value=""></option>
+                                            @foreach ($barang as $item)
+                                            <option value="{{ $item->id }}">{{ $item->nama }} || {{ $item->nama_satuan }} || {{ $item->value }}</option>
+                                            @endforeach
+                                        </select>
                                     </td>
                                     <td>
                                         <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_beli[]" id="jumlah_beli-${q}"
@@ -609,14 +605,19 @@
                                             class="form-control" placeholder="(ZAK, BALL, KARTON, DLL)" list="satuan_jual_list" autocomplete="off">
                                     </td>
                                     <td>
-                                        <input type="text" style="width:120px" onchange="inputBarang()" name="supplier[]" id="supplier-${q}"
-                                            class="form-control" list="supplier_list" autocomplete="off" placeholder="">
+                                        <select name="supplier[]" id="supplier-{{ $i }}" class="form-control my-0" style="width: 230px; border:none">
+                                            <option value=""></option>
+                                            @foreach ($supplier as $item)
+                                            <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                            @endforeach
+                                        </select>
                                     </td>
                                     <td>
                                         <input type="text" style="width:120px" onchange="inputBarang()" name="keterangan[]" id="keterangan-${q}" class="form-control">
                                     </td>
                                 </tr>`;
                 $('#tbody-list-barang').append(html);
+                $("select").selectize();
             });
 
         function inputBarang() {
@@ -636,7 +637,9 @@
                 const satuan_jual = $('#satuan_jual-' + i).val();
                 const keterangan = $('#keterangan-' + i).val();
                 // const harga_jual = $('#harga_jual-' + i).val();
-
+                const nama_barangs = $('#barang-' + i).find('option:selected').data('nama');
+                const value_barangs = $('#barang-' + i).find('option:selected').data('value');
+                const satuan_barangs = $('#barang-' + i).find('option:selected').data('satuan');
                 if (barang != '' && typeof (barang) != undefined) {
                     var id_barang = $("#barang_list option[value='" + barang + "']").data('id');
                     // console.log(id_barang)

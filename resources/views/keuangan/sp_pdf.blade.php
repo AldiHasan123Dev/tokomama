@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Invoice</title>
+    <title>Surat Penerimaan</title>
     <style>
         @page {
             size: 21.59cm 13.97cm;
@@ -22,7 +22,6 @@
 
         body {
             width: 100%;
-            /* padding: 10px 30px; */
         }
 
         table.table {
@@ -49,6 +48,8 @@
 </head>
 
 <body>
+                
+    {{-- Surat Penerimaan --}}
     <main>
         <table>
             <thead>
@@ -61,25 +62,25 @@
                 </tr>
                 <tr>
                     <td style="font-size: 0.8rem;">Jl. Kalianak 55 Blok G, Surabaya</td>
-                    <td style="font-weight: bold; font-size: 1.2rem; text-align: center;"><u>INVOICE</u></td>
+                    <td style="font-weight: bold; font-size: 1.2rem; text-align: center;"><u>SURAT PENERIMAAN</u></td>
                 </tr>
                 <tr>
-                    <td style="font-size: 0.8rem;">Telp: 031-7495507</td>
-                    <td style="text-align: center; font-size: 0.8rem">NO : {{ $invoice ?? '-' }}</td>
+                    <td style="font-size: 0.8rem;" >Telp: 031-7495507</td>
+                    <td style="text-align: center;font-size: 0.8rem">Lamp. INV : {{ $invoice ?? '-' }}</td>
                 </tr>
                 <br>
                 <tr>
-                    <td style="text-align: left; padding-left: 45px; font-size: 0.8rem" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
+                    <td style="text-align: left; padding-left: 45px;font-size: 0.8rem" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
                         &nbsp;&nbsp;&nbsp;
                         {{$data->first()->transaksi->suratJalan->customer->nama ?? '-' }}</td>
-                    <td style="text-align: center; font-size: 0.8rem; " ><span style="font-weight: bold;">KAPAL : </span> 
+                    <td style="text-align: center;font-size: 0.8rem"><span style="font-weight: bold;">KAPAL : </span> 
                         {{ $data->first()->transaksi->suratJalan->nama_kapal }}
                     </td>
                 </tr>
             </thead>
         </table>
 
-        <table class="table border border-black" style="font-size: 0.7rem">
+        <table class="table border border-black" style="font-size: 0.7rem" >
             <thead>
                 <tr>
                     <th class="border border-black">No.</th>
@@ -151,7 +152,7 @@
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
                         {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
-                       @if ($item->transaksi->barang->satuan->nama_satuan != $item->transaksi->satuan_jual)
+                        @if ($item->transaksi->barang->satuan->nama_satuan != $item->transaksi->satuan_jual)
                             (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ 
                             $item->transaksi->barang->satuan->nama_satuan }} @if($item->transaksi->keterangan == null) {{ "" }} @else {{ "= " . $item->transaksi->keterangan }} @endif)
                         @else
@@ -208,20 +209,19 @@
                         @else
                             <b>{{ number_format($total) }}</b>
                         @endif
-                        
                     </td>
                 </tr>
             </tbody>
         </table>
 
-        <p style="font-weight: bold; font-size: 0.7rem">TERBILANG :
-        @if($barang->status_ppn == 'ya')
-            {{ strtoupper(terbilang(($total * 0.11) + ($total))) }}
-        @else
-         {{ strtoupper(terbilang($total)) }} 
-        @endif 
-         RUPIAH </p>
-
+        <p style="font-weight: bold;font-size: 0.7rem">TERBILANG :
+            @if($barang->status_ppn == 'ya')
+                {{ strtoupper(terbilang(($total * 0.11) + ($total))) }}
+            @else
+                {{ strtoupper(terbilang($total)) }} 
+            @endif 
+            RUPIAH
+        </p>
 
         <table style="font-size: 0.8rem;">
             <tr>
@@ -242,9 +242,6 @@
             </tr>
         </table>
     </main>
-
-   
-
 </body>
 
 </html>

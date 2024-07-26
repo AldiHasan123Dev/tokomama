@@ -12,6 +12,12 @@ class TemplateJurnalItem extends Model
     protected $fillable = [
         'template_jurnal_id',
         'coa_debit_id',
-        'coa_kredit_id'
+        'coa_kredit_id',
+        'keterangan'
     ];
+
+    public function template_jurnal()
+    {
+        return $this->belongsTo(TemplateJurnal::class, 'template_jurnal_id', 'id');
+    }
 }

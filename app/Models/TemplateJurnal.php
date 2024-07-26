@@ -9,4 +9,7 @@ class TemplateJurnal extends Model
 {
     use HasFactory;
     protected $table = 'template_jurnal';
+    protected $fillable = [
+        'nama',
+    ];
 }

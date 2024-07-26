@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coa;
+use App\Models\JurnalTemplate;
 use App\Models\TemplateJurnal;
+use App\Models\TemplateJurnalItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TemplateJurnalController extends Controller
 {
@@ -30,7 +33,24 @@ class TemplateJurnalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::transaction(function () use ($request) {
+            $result = TemplateJurnal::create([
+                'nama' => $request->nama
+            ]);
+
+            if($result){
+                $idTemplateJurnal = TemplateJurnal::latest('id')->first();
+                TemplateJurnalItem::create([
+                    'template_jurnal_id' => $idTemplateJurnal->id,
+                    'coa_debit_id' => $request->coa_debit_id,
+                    'coa_kredit_id' => $request->coa_kredit_id,
+                    'keterangan' => $request->keterangan,
+                ]);
+            }
+        });
+        
+        return to_route('jurnal.template-jurnal.create')->with('success', 'Data berhasil tambahkan');
+
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TemplateJurnalItem extends Model
 {
@@ -19,5 +20,13 @@ class TemplateJurnalItem extends Model
     public function template_jurnal()
     {
         return $this->belongsTo(TemplateJurnal::class, 'template_jurnal_id', 'id');
+    }
+
+    public function coa_debit() : BelongsTo {
+        return $this->belongsTo(Coa::class, 'coa_debit_id', 'id');
+    }
+
+    public function coa_kredit() : BelongsTo {
+        return $this->belongsTo(Coa::class, 'coa_kredit_id', 'id');
     }
 }

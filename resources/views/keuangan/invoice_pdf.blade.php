@@ -95,7 +95,7 @@
                 @php
                 $total = 0;
                 function terbilang($angka) {
-                            $angka = (float)$angka;
+                            $angka = round((float)$angka);
                             $bilangan = array(
                                     '',
                                     'satu',

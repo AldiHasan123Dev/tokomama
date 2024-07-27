@@ -8,6 +8,7 @@ use App\Models\TemplateJurnal;
 use App\Models\TemplateJurnalItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use SebastianBergmann\Template\Template;
 use Yajra\DataTables\DataTables;
 
 class TemplateJurnalController extends Controller
@@ -69,11 +70,13 @@ class TemplateJurnalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TemplateJurnal $templateJurnal)
+    public function edit(TemplateJurnal $templateJurnal, Request $request)
     {
-        $jurnalTemplate = TemplateJurnalItem::where('template_jurnal_id', request('id'))->get();
-        // dd($jurnalTemplate->);
-        return view('jurnal.edit-jurnal-template', compact('jurnalTemplate'));
+        $jurnalTemplate = TemplateJurnalItem::where('template_jurnal_id', $request->id)->get();
+        $coa = Coa::where('status', 'aktif')->get();
+        // dd($jurnalTemplate);
+        // return to_route('jurnal.template-jurnal.editView', ['jurnalTemplate' => $jurnalTemplate, 'coa' => $coa]);
+        return view('jurnal.edit-jurnal-template', compact('jurnalTemplate', 'coa'));
     }
 
     /**
@@ -81,13 +84,71 @@ class TemplateJurnalController extends Controller
      */
     public function update(Request $request, TemplateJurnal $templateJurnal)
     {
-        $data = TemplateJurnal::find($request->id);
-        $data->nama = $request->nama;
-        if ($data->save()) {
-            return redirect()->route('jurnal.template-jurnal')->with('success', 'Nama Template Jurnal berhasil diubah!');
-        } else {
-            return redirect()->route('jurnal.template-jurnal')->with('error', 'Nama Template Jurnal gagal diubah!');
-        }
+        // $data = TemplateJurnal::find($request);
+        // $data->nama = $request->nama;
+        // dd($request);
+        TemplateJurnal::where('id', $request->nama_template_id)->update(['nama' => $request->nama]);
+
+        // for ($i=0; $i < count($request->id); $i++) { 
+        //     TemplateJurnalItem::where('id', $request->id[$i])->update([
+        //         'coa_debit_id' => $request->coa_debit_id[$i],
+        //         'coa_kredit_id' => $request->coa_kredit_id[$i],
+        //         'keterangan' => $request->keterangan[$i]
+        //     ]);
+        // }
+
+        // for ($i=0; $i < count($request->id); $i++) { 
+        //     // TemplateJurnalItem::where('id', $request->id[$i])->update([
+        //     //     'template_jurnal_id' => $request->nama_template_id,
+        //     //     'coa_debit_id' => $request->coa_debit_id[$i],
+        //     //     'coa_kredit_id' => $request->coa_kredit_id[$i],
+        //     //     'keterangan' => $request->keterangan[$i]
+        //     // ]);
+
+        //     TemplateJurnalItem::upsert([
+        //         'template_jurnal_id' => $request->nama_template_id,
+        //         'coa_debit_id' => $request->coa_debit_id[$i],
+        //         'coa_kredit_id' => $request->coa_kredit_id[$i],
+        //         'keterangan' => $request->keterangan[$i]
+        //     ], uniqueBy: ['template_jurnal_id'], update: ['coa_debit_id', 'coa_kredit_id', 'keterangan']);
+        // }
+
+        // Ambil template jurnal yang akan diupdate
+    $templateJurnal = TemplateJurnalItem::findOrFail($request->id);
+
+    // Ambil id item yang sudah ada dari request
+    $existingIds = $request->input('id', []);
+
+    // Data yang akan diupdate
+    for ($i = 0; $i < count($existingIds); $i++) {
+        TemplateJurnalItem::where('id', $existingIds[$i])->update([
+            'template_jurnal_id' => $request->input('nama_template_id'),
+            'coa_debit_id' => $request->input('coa_debit_id')[$i],
+            'coa_kredit_id' => $request->input('coa_kredit_id')[$i],
+            'keterangan' => $request->input('keterangan')[$i],
+        ]);
+    }
+
+    // Data baru yang akan ditambahkan
+    for ($i = count($existingIds); $i < count($request->input('coa_debit_id', [])); $i++) {
+        TemplateJurnalItem::create([
+            'template_jurnal_id' => $request->input('nama_template_id'),
+            'coa_debit_id' => $request->input('coa_debit_id')[$i],
+            'coa_kredit_id' => $request->input('coa_kredit_id')[$i],
+            'keterangan' => $request->input('keterangan')[$i],
+        ]);
+    }
+
+    // Redirect atau kembali dengan pesan sukses
+    // return redirect()->route('route.name')->with('success', 'Data updated successfully.');
+
+
+        return to_route('jurnal.template-jurnal');
+        // if ($data->save()) {
+        //     return redirect()->route('jurnal.template-jurnal')->with('success', 'Nama Template Jurnal berhasil diubah!');
+        // } else {
+        //     return redirect()->route('jurnal.template-jurnal')->with('error', 'Nama Template Jurnal gagal diubah!');
+        // }
     }
 
     /**
@@ -106,10 +167,15 @@ class TemplateJurnalController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
-                return '<div class="flex gap-3 mt-2">
-            <button onclick="getData(' . $row->id . ', \'' . addslashes($row->nama) . '\')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button> |
-            <button onclick="deleteData(' . $row->id . ')"  id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>
-        </div>';
+                return '
+                <div class="flex gap-3 mt-2">
+                <form action="/template-jurnal-edit" method="post">
+                    ' . csrf_field() . '
+                    <input type="hidden" name="id" value="' . $row->id . '">
+                    <button onclick="getData(' . $row->id . ', \'' . addslashes($row->nama) . '\')" id="delete-faktur-all" class="text-yellow-300 font-semibold mb-3 self-end" ><i class="fa-solid fa-pencil"></i></button> </form> |
+                    <button onclick="deleteData(' . $row->id . ')"  id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>
+                </div>
+                ';
             })
             ->rawColumns(['aksi'])
             ->make();

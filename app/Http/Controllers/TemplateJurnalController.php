@@ -72,7 +72,7 @@ class TemplateJurnalController extends Controller
     public function edit(TemplateJurnal $templateJurnal)
     {
         $jurnalTemplate = TemplateJurnalItem::where('template_jurnal_id', request('id'))->get();
-        // dd($jurnalTemplate);
+        // dd($jurnalTemplate->);
         return view('jurnal.edit-jurnal-template', compact('jurnalTemplate'));
     }
 

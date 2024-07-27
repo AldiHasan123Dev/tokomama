@@ -7,10 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $surat_jalan->nomor_surat }}</title>
     <style>
-        
+         @page {
+            size: 21.59cm 13.97cm;
+        }
         table {
             border-collapse: collapse;
-            width: 90%;
+            width: 100%;
         }
 
          body, table, th, td, p {

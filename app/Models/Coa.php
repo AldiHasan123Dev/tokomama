@@ -12,4 +12,14 @@ class Coa extends Model
     protected $table = 'coa';
 
     protected $guarded = ['id'];
+
+    public function template_jurnal_item_coa_debit()
+    {
+        return $this->hasMany(TemplateJurnalItem::class, 'coa_debit_id');
+    }
+
+    public function template_jurnal_item_coa_kredit()
+    {
+        return $this->hasMany(TemplateJurnalItem::class, 'coa_kredit_id');
+    }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\NSFPController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BukuBesarController;
+use App\Http\Controllers\BukuBesarPembantuController;
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EkspedisiController;
@@ -31,6 +32,8 @@ use App\Models\Customer;
 use App\Models\Jurnal;
 use App\Models\NSFP as ModelsNSFP;
 use App\Models\SuratJalan;
+use App\Models\TemplateJurnal;
+use App\Models\TemplateJurnalItem;
 use Illuminate\Support\Facades\Route;
 
 
@@ -65,11 +68,18 @@ Route::middleware('auth')->group(function () {
     Route::get('coa', [CoaController::class,'index'])->name('jurnal.coa');
     Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
     Route::get('template-jurnal', [TemplateJurnalController::class,'index'])->name('jurnal.template-jurnal');
+    Route::get('template-jurnal-list', [TemplateJurnalController::class,'datatable'])->name('jurnal.template-jurnal.data');
     Route::get('template-jurnal-create', [TemplateJurnalController::class,'create'])->name('jurnal.template-jurnal.create');
+    Route::post('template-jurnal-edit', [TemplateJurnalController::class,'edit'])->name('jurnal.template-jurnal.edit');
+    // Route::get('template-jurnal-editView', [TemplateJurnalController::class,'edit'])->name('jurnal.template-jurnal.editView');
+    Route::post('template-jurnal-add', [TemplateJurnalController::class,'store'])->name('jurnal.template-jurnal.add');
+    Route::post('template-jurnal-update', [TemplateJurnalController::class,'update'])->name('jurnal.template-jurnal.update');
+    Route::post('template-jurnal-delete', [TemplateJurnalController::class,'destroy'])->name('jurnal.template-jurnal.delete');
     Route::post('/omzet-data', [KeuanganController::class, 'dataTableOmzet'])->name('keuangan.omzet.data');
     Route::resource('buku-besar', BukuBesarController::class);
     Route::resource('neraca', Neraca::class);
     Route::resource('laba-rugi', LabaRugi::class);
+    Route::resource('buku-besar-pembantu', BukuBesarPembantuController::class);
 });
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {
@@ -81,6 +91,7 @@ Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('au
     Route::post('draf-invoice/{surat_jalan}', 'submitInvoice')->name('keuangan.invoice.submit');
     Route::get('draf-invoice/{surat_jalan}', 'invoiceDraf')->name('keuangan.invoice.draf');
     Route::get('cetak-invoice', 'cetakInvoice')->name('keuangan.invoice.cetak');
+    Route::get('cetak-invoicesp', 'cetakInvoicesp')->name('keuangan.invoicesp.cetak');
     Route::get('omzet', 'omzet')->name('keuangan.omzet');
     Route::get('omzet-list', 'dataTableOmzet')->name('keuangan.omzet.datatable');
     Route::post('omzet-export', 'OmzetExportExcel')->name('keuangan.omzet.exportexcel');
@@ -159,6 +170,7 @@ Route::get('/invoice', function () {
 });
 
 Route::get('/invoice_pdf/{id}', [KeuanganController::class, 'generatePDF'])->name('invoice.print');
+Route::get('/sp_pdf/{id}', [KeuanganController::class, 'generatePDF'])->name('sp.print');
 
 
 require __DIR__ . '/auth.php';

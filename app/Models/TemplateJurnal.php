@@ -9,4 +9,12 @@ class TemplateJurnal extends Model
 {
     use HasFactory;
     protected $table = 'template_jurnal';
+    protected $fillable = [
+        'nama',
+    ];
+
+    public function template_jurnal_item()
+    {
+        return $this->hasMany(TemplateJurnalItem::class, 'template_jurnal_id');
+    }
 }

@@ -11,6 +11,10 @@
                 class="btn bg-green-400 text-white my-5 py-4 font-bold hidden" id="print">
                 <i class="fas fa-print"></i> Cetak Invoice</button>
             </a>
+            <a href="#" target="_blank"
+                class="btn bg-green-400 text-white my-5 py-4 font-bold hidden" id="print1">
+                <i class="fas fa-print"></i> Cetak Surat Penerimaan</button>
+            </a>
             <table class="table" id="surat_jalan_table">
                 <!-- head -->
                 <thead>
@@ -56,6 +60,11 @@
                 let row =  table.row( this ).data();
                 $('.btn').removeClass('hidden');
                 $('#print').attr('href', "{{ url('keuangan/cetak-invoice') }}"+'/?invoice='+row.invoice);
+            });
+            $('#surat_jalan_table tbody').on( 'click', 'tr', function () {
+                let row =  table.row( this ).data();
+                $('.btn').removeClass('hidden');
+                $('#print1').attr('href', "{{ url('keuangan/cetak-invoicesp') }}"+'/?invoice='+row.invoice);
             });
         });
     </script>

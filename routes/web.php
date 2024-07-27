@@ -71,6 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::get('template-jurnal-list', [TemplateJurnalController::class,'datatable'])->name('jurnal.template-jurnal.data');
     Route::get('template-jurnal-create', [TemplateJurnalController::class,'create'])->name('jurnal.template-jurnal.create');
     Route::post('template-jurnal-edit', [TemplateJurnalController::class,'edit'])->name('jurnal.template-jurnal.edit');
+    // Route::get('template-jurnal-editView', [TemplateJurnalController::class,'edit'])->name('jurnal.template-jurnal.editView');
     Route::post('template-jurnal-add', [TemplateJurnalController::class,'store'])->name('jurnal.template-jurnal.add');
     Route::post('template-jurnal-update', [TemplateJurnalController::class,'update'])->name('jurnal.template-jurnal.update');
     Route::post('template-jurnal-delete', [TemplateJurnalController::class,'destroy'])->name('jurnal.template-jurnal.delete');

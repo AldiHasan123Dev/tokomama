@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('surat-jalan', SuratJalanController::class);
     Route::resource('invoice-transaksi', InvoiceController::class);
     Route::resource('jurnal', JurnalController::class);
+    Route::post('jurnal-sj-wherejob', [JurnalController::class, 'getSuratJalanWhereJob'])->name('jurnal.sj.wherejob');
     Route::post('ekspedisi-data', [EkspedisiController::class, 'dataTable'])->name('ekspedisi.data');
     Route::post('transaction-data', [TransactionController::class, 'dataTable'])->name('transaksi.data');
     Route::put('transaction-update', [TransactionController::class, 'update'])->name('transaksi.update');

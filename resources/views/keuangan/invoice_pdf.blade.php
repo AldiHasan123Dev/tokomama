@@ -9,7 +9,26 @@
     <style>
         @page {
             size: 21.59cm 13.97cm;
+            margin-top: 145px; /* Menyesuaikan margin top untuk memberi ruang bagi header di setiap halaman */
         }
+
+        body {
+            width: 100%;
+            font-size: 0.8rem;
+        }
+
+        .header {
+            position: fixed;
+            top: -130px;
+            left: 0;
+            right: 0;
+            height: 105px;
+            background: white;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
@@ -18,15 +37,6 @@
         .logo {
             max-width: 100%;
             height: 100px;
-        }
-
-        body {
-            width: 100%;
-            /* padding: 10px 30px; */
-        }
-
-        table.table {
-            margin-top: 10px;
         }
 
         .border.border-black {
@@ -42,19 +52,31 @@
             text-align: center !important;
             justify-content: center;
         }
-        .pagebreak{
-            page-break-before: avoid;
+
+        .customer-info,
+
+        .customer-info {
+            text-align: left;
+        }
+
+        .kapal-info {
+            text-align: right;
+        }
+
+        .info-table {
+            padding: 5px;
+            width: 100%;
         }
     </style>
 </head>
 
 <body>
-    <main>
+    <div class="header" style="margin-top:10px">
         <table>
             <thead>
                 <tr>
-                    <th rowspan="4" style="width: 15%; height: 0%;">
-                        <img src="{{ public_path('logo_sb.svg') }}" class="logo" style="width: 70%; height: 15%;">
+                    <th rowspan="4" style="width: 13%; height: 15%;">
+                        <img src="{{ public_path('logo_sb.svg') }}" class="logo" style="width: 70%; height: 50%;">
                     </th>
                     <td style="font-weight: bold; font-size: 1rem;">CV. SARANA BAHAGIA</td>
                     <td></td>
@@ -67,18 +89,19 @@
                     <td style="font-size: 0.8rem;">Telp: 031-7495507</td>
                     <td style="text-align: center; font-size: 0.8rem">NO : {{ $invoice ?? '-' }}</td>
                 </tr>
-                <br>
-                <tr>
-                    <td style="text-align: left; padding-left: 45px; font-size: 0.8rem" colspan="2">Customer &nbsp;&nbsp;&nbsp; :
-                        &nbsp;&nbsp;&nbsp;
-                        {{$data->first()->transaksi->suratJalan->customer->nama ?? '-' }}</td>
-                    <td style="text-align: center; font-size: 0.8rem; " ><span style="font-weight: bold;">KAPAL : </span> 
-                        {{ $data->first()->transaksi->suratJalan->nama_kapal }}
-                    </td>
-                </tr>
             </thead>
         </table>
-
+        <table class="info-table">
+            <tbody>
+                <tr>
+                    <td class="header-cell" style="text-align:left ;padding-left:40px">Customer : {{ $data->first()->transaksi->suratJalan->customer->nama ?? '-' }}</td>
+                    <td class="header-cell" style="text-align:center;">KAPAL : {{ $data->first()->transaksi->suratJalan->nama_kapal }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <main>
+        <br>
         <table class="table border border-black" style="font-size: 0.7rem">
             <thead>
                 <tr>
@@ -146,18 +169,15 @@
                 @foreach ($data as $item)
                 <tr>
                     <td class="text-center border border-black">{{ $loop->iteration }}</td>
-                    <td class="text-center border border-black">{{ date('d M Y',
-                        strtotime($item->transaksi->suratJalan->tgl_sj)) }}</td>
+                    <td class="text-center border border-black">{{ date('d M Y', strtotime($item->transaksi->suratJalan->tgl_sj)) }}</td>
                     <td class="text-center border border-black">
                         {{ $item->transaksi->barang->nama }} <br>
-                        {{-- @if (str_contains($item->transaksi->barang->nama, '@')) --}}
                        @if ($item->transaksi->barang->satuan->nama_satuan != $item->transaksi->satuan_jual)
                             (Total {{ number_format($item->jumlah * $item->transaksi->barang->value) }} {{ 
                             $item->transaksi->barang->satuan->nama_satuan }} @if($item->transaksi->keterangan == null) {{ "" }} @else {{ "= " . $item->transaksi->keterangan }} @endif)
                         @else
                             
                         @endif
-                        {{-- @endif --}}
                     </td>
                     <td class="text-center border border-black">{{ $item->transaksi->suratJalan->no_cont }}</td>
                     <td class="text-center border border-black">{{ number_format($item->jumlah) }} {{ $item->transaksi->satuan_jual }}</td>
@@ -208,7 +228,6 @@
                         @else
                             <b>{{ number_format($total) }}</b>
                         @endif
-                        
                     </td>
                 </tr>
             </tbody>
@@ -242,9 +261,6 @@
             </tr>
         </table>
     </main>
-
-   
-
 </body>
 
 </html>

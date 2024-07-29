@@ -8,6 +8,7 @@ use App\Http\Controllers\CoaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\InvoiceExternalController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\JurnalManualController;
 use App\Http\Controllers\NSFPController as nsfp;
@@ -57,7 +58,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/surat-jalan-cetak/{surat_jalan}', [SuratJalanController::class, 'cetak'])->name('surat-jalan.cetak');
     Route::get('/surat-jalan-tarif-barang', [SuratJalanController::class, 'tarif'])->name('surat-jalan.barang');
     Route::post('/surat-jalan-data', [SuratJalanController::class, 'dataTable'])->name('surat-jalan.data');
+    Route::post('/surat-jalan-supplier-data', [SuratJalanController::class, 'dataTableSupplier'])->name('surat-jalan-supplier.data');
     Route::post('/surat-jalan-edit', [SuratJalanController::class, 'update'])->name('surat-jalan.data.edit');
+    Route::post('/surat-jalan-external-edit', [SuratJalanController::class, 'updateInvoiceExternal'])->name('surat-jalan-external.data.edit');
     Route::post('/surat-jalan-delete', [SuratJalanController::class, 'destroy'])->name('surat-jalan.data.delete');
     Route::resource('surat-jalan', SuratJalanController::class);
     Route::resource('invoice-transaksi', InvoiceController::class);
@@ -81,6 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('neraca', Neraca::class);
     Route::resource('laba-rugi', LabaRugi::class);
     Route::resource('buku-besar-pembantu', BukuBesarPembantuController::class);
+    Route::resource('invoice-external', InvoiceExternalController::class);
 });
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {

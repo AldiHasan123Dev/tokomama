@@ -9,6 +9,7 @@ use App\Models\Supplier;
 use App\Models\SuratJalan;
 use App\Models\TemplateJurnal;
 use App\Models\TipeJurnal;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class JurnalController extends Controller
@@ -27,7 +28,8 @@ class JurnalController extends Controller
         $tipe_jurnal_bbk = TipeJurnal::where('tipe_jurnal', 'BBK')->orderBy('no', 'desc')->first();
         $tipe_jurnal_bbm = TipeJurnal::where('tipe_jurnal', 'BBM')->orderBy('no', 'desc')->first();
         $surat_jalan = SuratJalan::all();
-        return view('jurnal.jurnal-manual', compact('templates', 'nopol', 'coa', 'tipe_jurnal_jnl', 'tipe_jurnal_bkk', 'tipe_jurnal_bkm', 'tipe_jurnal_bbk', 'tipe_jurnal_bbm', 'surat_jalan'));
+        $transaksi = Transaction::all();
+        return view('jurnal.jurnal-manual', compact('templates', 'nopol', 'coa', 'tipe_jurnal_jnl', 'tipe_jurnal_bkk', 'tipe_jurnal_bkm', 'tipe_jurnal_bbk', 'tipe_jurnal_bbm', 'surat_jalan', 'transaksi'));
     }
 
     /**

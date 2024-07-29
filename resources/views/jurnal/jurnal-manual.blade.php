@@ -135,8 +135,8 @@
                             <td>
                                 <select class="select select-bordered w-full max-w-xs" name="akun_kredit" id="akun_kredit">
                                     @foreach ($coa as $item)
-                                        <option disabled selected></option>
-                                        <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
+                                    <option disabled selected></option>
+                                    <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
                                     @endforeach
                                 </select>
                             </td>
@@ -147,7 +147,12 @@
                                 <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl text-white" name="nominal" id="nominal" />
                             </td>
                             <td>
-                                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl">
+                                <select class="select select-bordered w-full max-w-xs" name="invoice_external" id="invoice_external">
+                                    @foreach ($transaksi as $item)
+                                        <option disabled selected></option>
+                                        <option value="{{ $item->invoice_external }}">{{ $item->invoice_external }}</option>
+                                    @endforeach
+                                </select>
                             </td>
                         </tr>
                     </tbody>

@@ -144,7 +144,7 @@
                                 <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" name="keterangan" id="keterangan" />
                             </td>
                             <td>
-                                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl text-white" name="nominal" id="nominal" />
+                                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" min="0" name="nominal" id="nominal" />
                             </td>
                             <td>
                                 <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl">
@@ -175,9 +175,14 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(response) 
                 {
-                    response.forEach(item => {
+                    response.surat_jalan.forEach(item => {
                         $(`#param1`).val(item.customer.nama)
+                    });
+
+                    response.supplier.forEach(item => {
+                         $(`#param2`).val(item.nama)
                     })
+               
                 },
                 error: function(xhr, status, error) 
                 {

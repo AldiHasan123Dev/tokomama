@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Coa;
 use App\Models\Jurnal;
 use App\Models\Nopol;
+use App\Models\Supplier;
 use App\Models\SuratJalan;
 use App\Models\TemplateJurnal;
 use App\Models\TipeJurnal;
@@ -86,7 +87,16 @@ class JurnalController extends Controller
         $surat_jalan = SuratJalan::with(['customer', 'transactions'])
                             ->where('no_job', request('job'))
                             ->get();
-                            // dd($surat_jalan);
-        return response()->json($surat_jalan);
+
+        $id_suppliers = $surat_jalan->flatMap(function ($sj) {
+            return $sj->transactions->pluck('id_supplier');
+        });
+        
+        $supplier = Supplier::where('id', $id_suppliers[0])->get();
+
+        return response()->json([
+            'surat_jalan' => $surat_jalan,
+            'supplier' => $supplier
+        ]);
     }
 }

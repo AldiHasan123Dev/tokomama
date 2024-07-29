@@ -43,6 +43,6 @@ class Transaction extends Model
 
     public function suppliers()
     {
-        return $this->belongsTo(Supplier::class, 'id_supplier');
+        return $this->hasMany(Supplier::class, 'id_supplier');
     }
 }

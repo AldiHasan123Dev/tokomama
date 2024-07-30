@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>Cetak Surat Penerimaan</title>
     <style>
         @page {
@@ -17,6 +18,7 @@
             font-size: 0.8rem;
             margin: 0;
             padding: 0;
+
         }
 
         .header {
@@ -25,7 +27,6 @@
             left: 0;
             right: 0;
             height: 105px;
-            
             text-align: center;
             padding: 5px;
             box-sizing: border-box;

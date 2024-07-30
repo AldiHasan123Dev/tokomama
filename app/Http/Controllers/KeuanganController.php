@@ -90,7 +90,7 @@ class KeuanganController extends Controller
         $satuan = Satuan::where('id', $barang->id_satuan)->first();
         // dd($satuan->nama_satuan);
         // dd($data, $invoice, $barang, $formattedDate, $transaksi, $satuan->nama_satuan, $transaksi->satuan_jual, $transaksi->keterangan);
-        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
+        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data', 'invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
         return $pdf->stream('invoice_pdf.pdf');
     }
     public function cetakInvoicesp()
@@ -139,23 +139,22 @@ class KeuanganController extends Controller
                 $transaksi = Transaction::where('id', $id_transaksi)->get();
                 $id_barang = $transaksi[0]->id_barang;
                 $barang = Barang::where('id', $id_barang)->first();
-                if($barang->status_ppn == 'ya'){
+                if ($barang->status_ppn == 'ya') {
                     return number_format($row->sum('subtotal') * ($barang->value_ppn / 100));
-                }else{
+                } else {
                     return 0;
                 }
-                
             })
             ->addColumn('total', function ($row) {
                 $id_transaksi = $row->first()->transaksi->id;
                 $transaksi = Transaction::where('id', $id_transaksi)->get();
                 $id_barang = $transaksi[0]->id_barang;
                 $barang = Barang::where('id', $id_barang)->first();
-                if($barang->status_ppn == 'ya'){
+                if ($barang->status_ppn == 'ya') {
                     return number_format($row->sum('subtotal') * ($barang->value_ppn / 100) + $row->sum('subtotal'));
-                }else{
+                } else {
                     return number_format($row->sum('subtotal'));
-                } 
+                }
             })
             ->make();
 
@@ -177,11 +176,13 @@ class KeuanganController extends Controller
         //     ->make();
     }
 
-    public function omzet() {
+    public function omzet()
+    {
         return view('keuangan.omzet');
     }
 
-    public function dataTableOmzet() {
+    public function dataTableOmzet()
+    {
 
         $query = Invoice::get();
         $data = OmzetResurce::collection($query);
@@ -193,7 +194,7 @@ class KeuanganController extends Controller
 
     public function OmzetExportExcel(Request $request)
     {
-        if($request->start == null || $request->end == null){
+        if ($request->start == null || $request->end == null) {
             return back()->with('error', 'Silahkan atur nilai rentang data.');
         }
         return Excel::download(new OmzetExport($request->start, $request->end), 'laporan-omzet.xlsx');

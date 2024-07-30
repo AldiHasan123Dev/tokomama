@@ -143,6 +143,13 @@ class SuratJalanController extends Controller
         return redirect()->route('surat-jalan.index');
     }
 
+    public function updateInvoiceExternal(Request $request)
+    {   
+        Transaction::where('id_surat_jalan', $request->id_surat_jalan)->where('id_supplier', $request->id_supplier)->update(['invoice_external' => $request->invoice_external]);
+
+        return redirect()->route('invoice-external.index');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -202,6 +209,35 @@ class SuratJalanController extends Controller
                             </div>';
             })
             ->rawColumns(['profit'])
+            ->rawColumns(['aksi'])
+            ->make();
+    }
+
+    public function dataTableSupplier()
+    {
+        $data = Transaction::query()->groupBy('id_surat_jalan', 'id_supplier', 'invoice_external')->orderBy('invoice_external');
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('nomor_surat', function ($row) {
+                return $row->suratJalan->nomor_surat;
+            })
+            ->addColumn('supplier', function ($row) {
+                return $row->suppliers->nama;
+            })
+            ->addColumn('invoice_external', function ($row) {
+                return $row->invoice_external;
+            })
+            ->addColumn('aksi', function ($row) {
+                $action = '';
+                $sisa = $row->sum('sisa');
+                if ($sisa > 0) {
+                    $action = '<button onclick="getData(' . $row->id_surat_jalan . ', \'' . addslashes($row->suratJalan->nomor_surat) . '\', ' . $row->id_supplier . ', \'' . addslashes($row->suppliers->nama) . '\', \'' . addslashes($row->invoice_external) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>';
+                }
+                return '<div class="flex gap-3 mt-2">
+                            '.$action.'
+                        </div>';
+            })
             ->rawColumns(['aksi'])
             ->make();
     }

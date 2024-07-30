@@ -18,6 +18,7 @@ class Jurnal extends Model
         'debit',
         'kredit',
         'invoice',
+        'invoice_external',
         'nopol',
         'container',
         'tipe',

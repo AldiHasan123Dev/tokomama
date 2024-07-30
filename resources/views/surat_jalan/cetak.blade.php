@@ -7,11 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $surat_jalan->nomor_surat }}</title>
     <style>
-
         @page {
             size: 21.59cm 13.97cm;
             margin: 145px 0px 50px 0px /* Adjust bottom margin to make space for footer */
-
         }
 
         body {

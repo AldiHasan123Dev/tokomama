@@ -108,7 +108,7 @@ class KeuanganController extends Controller
         $satuan = Satuan::where('id', $barang->id_satuan)->first();
         // dd($satuan->nama_satuan);
         // dd($data, $invoice, $barang, $formattedDate, $transaksi, $satuan->nama_satuan, $transaksi->satuan_jual, $transaksi->keterangan);
-        $pdf = Pdf::loadView('keuangan/sp_pdf', compact('data', 'invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
+        $pdf = Pdf::loadView('keuangan/sp_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
         return $pdf->stream('sp_pdf.pdf');
     }
     function generatePDF($id)

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Invoice</title>
+    <title>Cetak Surat Penerimaan</title>
     <style>
         @page {
             size: 21.59cm 13.97cm;
@@ -25,7 +25,7 @@
             left: 0;
             right: 0;
             height: 105px;
-           
+            
             text-align: center;
             padding: 5px;
             box-sizing: border-box;
@@ -33,13 +33,12 @@
 
         table {
             border-collapse: collapse;
-            width: 90%;            
+            width: 90%;
             margin:0 auto;
         }
 
         .logo {
-            max-width: 100%;
-            height: 100px;
+            width: 70px;
         }
 
         .border-black {
@@ -71,8 +70,6 @@
             position: absolute;
             align-items: bottom;
         }
-
-
     </style>
 </head>
 
@@ -89,11 +86,11 @@
                 </tr>
                 <tr>
                     <td style="font-size: 0.8rem;">Jl. Kalianak 55 Blok G, Surabaya</td>
-                    <td style="font-weight: bold; font-size: 1.2rem; text-align: center;"><u>INVOICE</u></td>
+                    <td style="font-weight: bold; font-size: 1.2rem; text-align: center;"><u>SURAT PENERIMAAN</u></td>
                 </tr>
                 <tr>
                     <td style="font-size: 0.8rem;">Telp: 031-7495507</td>
-                    <td style="text-align: center; font-size: 0.8rem">NO : {{ $invoice ?? '-' }}</td>
+                    <td style="text-align: center; font-size: 0.8rem">Lamp. INV : {{ $invoice ?? '-' }}</td>
                 </tr>
             </thead>
         </table>
@@ -181,7 +178,7 @@
                 $end_date = min($start_date + $dates_per_page, $total_dates);
             @endphp
 
-            <table class="table border border-black" style="font-size: 0.7rem;">
+            <table class="table border border-black" style="font-size: 0.7rem">
                 <thead>
                     <tr>
                         <th class="border border-black">No.</th>
@@ -220,37 +217,34 @@
             </table>
 
             <div class="footer">
-    @if ($page == $pages)
-        <p style="font-weight: bold;padding-left:30px; font-size: 0.8rem">Terbilang: {{ terbilang($total) }} rupiah</p>
-        <table style="font-size: 0.8rem;">
-        <tr>
-            <th style="text-align: left; padding-left: 50px; font-style: italic;">Pembayaran ke rekening:</th>
-            <td style="align-items:right ;text-align: center;">Surabaya, {{ $formattedDate }}</td>
-        </tr>
-        <tr>
-            <th style="text-align: left; padding-left: 50px; font-style: italic;">CV. Sarana Bahagia</th>
-            <td style="text-align: center;">Hormat Kami</td>
-        </tr>
-        <tr>
-            <th style="text-align: left; padding-left: 50px; font-style: italic;">Mandiri (Cab.Indrapura) : 14.000.45006.005</th>
-            <th></th>
-        </tr>
-        <tr>
-            <th style="text-align: left; padding-left: 50px;"></th>
-            <th style="padding-top:30px">(Dwi Satria Wardana)</th>
-        </tr>
-    </table>
-    @endif
-    
-</div>
-<p class="page-number" style=" position: fixed; align-items:bottom ; right: 10px; bottom: -40px; margin: 0; font-size: 0.8rem;">Halaman: {{ $page }} dari {{ $pages }}</p>
+                @if ($page == $pages)
+                    <p style="font-weight: bold; padding-left:30px; font-size: 0.8rem">Terbilang: {{ terbilang($total) }} rupiah</p>
+                    <table style="font-size: 0.8rem;">
+                    <tr>
+                        <th style="text-align: left; padding-left: 50px; font-style: italic;">Pembayaran ke rekening:</th>
+                        <td style="text-align: center;">Surabaya, {{ $formattedDate }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left; padding-left: 50px; font-style: italic;">CV. Sarana Bahagia</th>
+                        <td style="text-align: center;">Hormat Kami</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left; padding-left: 50px; font-style: italic;">Mandiri (Cab.Indrapura) : 14.000.45006.005</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left; padding-left: 50px;"></th>
+                        <th style="padding-top:30px">(Dwi Satria Wardana)</th>
+                    </tr>
+                </table>
+                @endif
+                
+            </div>
+            <p class="page-number" style=" position: fixed; align-items:bottom ; right: 10px; bottom: -40px; margin: 0; font-size: 0.8rem;">Halaman: {{ $page }} dari {{ $pages }}</p>
 
-
-            
 
             @if ($page < $pages)
                 <div class="page-break"></div>
-                
             @endif
         @endfor
     </main>

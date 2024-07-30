@@ -81,6 +81,7 @@ Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('au
     Route::post('draf-invoice/{surat_jalan}', 'submitInvoice')->name('keuangan.invoice.submit');
     Route::get('draf-invoice/{surat_jalan}', 'invoiceDraf')->name('keuangan.invoice.draf');
     Route::get('cetak-invoice', 'cetakInvoice')->name('keuangan.invoice.cetak');
+    Route::get('cetak-invoicesp', 'cetakInvoicesp')->name('keuangan.invoicesp.cetak');
     Route::get('omzet', 'omzet')->name('keuangan.omzet');
     Route::get('omzet-list', 'dataTableOmzet')->name('keuangan.omzet.datatable');
     Route::post('omzet-export', 'OmzetExportExcel')->name('keuangan.omzet.exportexcel');
@@ -159,6 +160,7 @@ Route::get('/invoice', function () {
 });
 
 Route::get('/invoice_pdf/{id}', [KeuanganController::class, 'generatePDF'])->name('invoice.print');
+Route::get('/sp_pdf/{id}', [KeuanganController::class, 'generatePDF'])->name('sp.print');
 
 
 require __DIR__ . '/auth.php';

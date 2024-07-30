@@ -93,7 +93,24 @@ class KeuanganController extends Controller
         $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
         return $pdf->stream('invoice_pdf.pdf');
     }
-
+    public function cetakInvoicesp()
+    {
+        $invoice = request('invoice');
+        $data = Invoice::where('invoice', request('invoice'))->get();
+        $dateTime = new DateTime($data[0]->tgl_invoice);
+        $formattedDate = $dateTime->format('d F Y');
+        $id_transaksi = $data[0]->transaksi->id;
+        $transaksi = Transaction::where('id', $id_transaksi)->first(); //keteran
+        // dd($transaksi);
+        $id_barang = $transaksi->id_barang;
+        $barang = Barang::where('id', $id_barang)->first();
+        // dd($barang->id_satuan);
+        $satuan = Satuan::where('id', $barang->id_satuan)->first();
+        // dd($satuan->nama_satuan);
+        // dd($data, $invoice, $barang, $formattedDate, $transaksi, $satuan->nama_satuan, $transaksi->satuan_jual, $transaksi->keterangan);
+        $pdf = Pdf::loadView('keuangan/sp_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
+        return $pdf->stream('sp_pdf.pdf');
+    }
     function generatePDF($id)
     {
         $surat_jalan = SuratJalan::where('id', $id)->get();

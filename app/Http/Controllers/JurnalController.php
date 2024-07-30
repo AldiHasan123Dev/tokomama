@@ -85,8 +85,7 @@ class JurnalController extends Controller
         // dd($keterangan);
 
         for ($i = 0; $i < $request->counter; $i++) {
-
-            if ($request->check . $i == 1) {
+            if ($request->check[$i] == 1) {
                 DB::transaction(
                     function () use ($request, $i, $nomor, $tipe, $no, $keterangan) {
                         Jurnal::create([

@@ -63,7 +63,7 @@
                             <div class="label">
                                 <span class="label-text">Tipe Jurnal</span>
                             </div>
-                            <select name="tipe" id="tipe" class="select select-bordered w-full max-w-xs">
+                            <select name="tipe" id="tipe" class="select select-bordered w-full max-w-xs" required>
                                 <option selected></option>
                                 <option value="Jurnal - {{ $no_JNL }}/{{'JNL'}}-SB/{{ date('y') }}">Jurnal - {{ $no_JNL }}/{{'JNL'}}-SB/{{ date('y') }}</option>
                                 <option value="Kas Keluar - {{ $no_BKK }}/{{'BKK'}}-SB/{{ date('y') }}">Kas Keluar - {{ $no_BKK }}/{{'BKK'}}-SB/{{ date('y') }}</option>
@@ -105,7 +105,8 @@
                     <tbody id="tableBody">
                         <tr>
                             <td>
-                                <input type="checkbox" name="check" id="check" checked>
+                                <input type="hidden" name="check0" id="check0" value="0" checked>
+                                <input type="checkbox" name="check0" id="check0" value="1" checked>
                             </td>
                             <td>
                                 <select class="select select-bordered w-full max-w-xs" name="invoice[]" id="invoice-1">
@@ -214,7 +215,8 @@
         let html = `
         <tr>
             <td>
-                <input type="checkbox" name="check" id="check-${newRowId}" checked>
+                <input type="hidden" name="check${newRowId - 1}" id="check" value="0" checked>
+                <input type="checkbox" name="check${newRowId - 1}" id="check" value="1" checked>
             </td>
             <td>
                 <select class="select select-bordered w-full max-w-xs" name="invoice[]" id="invoice-${newRowId}">

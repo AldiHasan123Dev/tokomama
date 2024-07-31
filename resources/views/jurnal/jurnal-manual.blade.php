@@ -176,10 +176,8 @@
         $(`#akun_debet-1`).select2();
         $(`#akun_kredit-1`).select2();
         $(`#invoice_external-1`).select2();
-        $(`#nominal-1`).on(`change`, function() {
-            totaltdtc += parseInt($(this).val());
-            $(`#td`).text(totaltdtc);
-            $(`#tc`).text(totaltdtc);
+        $(`#nominal-1`).on('keyup', function() {
+            updateTotal();
         });
         bindInvoiceChange(1);
     });
@@ -205,6 +203,18 @@
                 }
             });
         });
+    }
+
+    function updateTotal() {
+        totaltdtc = 0;
+        $(`input[name="nominal[]"]`).each(function() {
+            let value = parseInt($(this).val());
+            if (!isNaN(value)) {
+                totaltdtc += value;
+            }
+        });
+        $(`#td`).text(totaltdtc);
+        $(`#tc`).text(totaltdtc);
     }
 
     $('#addRow').on('click', function() {
@@ -283,11 +293,6 @@
         $(`#akun_kredit-${newRowId}`).select2();
         $(`#invoice_external-${newRowId}`).select2();
 
-        $(`#nominal-${newRowId}`).on(`change`, function() {
-            totaltdtc += parseInt($(this).val());
-            $(`#td`).text(totaltdtc);
-            $(`#tc`).text(totaltdtc);
-        });
 
         $(`#check${newRowId - 1}`).click(function() {
             if ($(`#check${newRowId - 1}`).is(':checked')) {

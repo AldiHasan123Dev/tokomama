@@ -117,7 +117,7 @@ class JurnalController extends Controller
             }
         }
 
-        return route('jurnal.index');
+        return redirect()->route('jurnal.index');
     }
 
     /**

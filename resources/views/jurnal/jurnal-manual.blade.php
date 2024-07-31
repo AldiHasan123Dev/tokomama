@@ -105,8 +105,8 @@
                     <tbody id="tableBody">
                         <tr>
                             <td>
-                                <input type="hidden" name="check[0]" id="check0h" value="0" checked>
-                                <input type="checkbox" name="check[0]" id="check0" value="1" checked>
+                                <input type="hidden" name="check[0]" id="check[0]" value="0" checked>
+                                <input type="checkbox" name="check[0]" id="check[0]" value="1" checked>
                             </td>
                             <td>
                                 <select class="select select-bordered w-full max-w-xs" name="invoice[]" id="invoice-1">
@@ -181,27 +181,6 @@
             $(`#td`).text(totaltdtc);
             $(`#tc`).text(totaltdtc);
         });
-
-        $('#check0').click(function() {
-            if ($('#check0').is(':checked')) {
-                $('#invoice-1').prop('disabled', false);
-                $('#nopol-1').prop('disabled', false);
-                $('#akun_debet-1').prop('disabled', false);
-                $('#akun_kredit-1').prop('disabled', false);
-                $('#keterangan-1').prop('disabled', false);
-                $('#nominal-1').prop('disabled', false);
-                $('#invoice_external-1').prop('disabled', false);
-            } else {
-                $('#invoice-1').prop('disabled', true);
-                $('#nopol-1').prop('disabled', true);
-                $('#akun_debet-1').prop('disabled', true);
-                $('#akun_kredit-1').prop('disabled', true);
-                $('#keterangan-1').prop('disabled', true);
-                $('#nominal-1').prop('disabled', true);
-                $('#invoice_external-1').prop('disabled', true);
-            }
-        });
-
         bindInvoiceChange(1);
     });
 
@@ -236,8 +215,8 @@
         let html = `
         <tr>
             <td>
-                <input type="hidden" name="check[${newRowId - 1}]" id="check${newRowId - 1}h" value="0" checked>
-                <input type="checkbox" name="check[${newRowId - 1}]" id="check${newRowId - 1}" value="1" checked>
+                <input type="hidden" name="check[${newRowId - 1}]" id="check[${newRowId - 1}]" value="0" checked>
+                <input type="checkbox" name="check[${newRowId - 1}]" id="check[${newRowId - 1}]" value="1" checked>
             </td>
             <td>
                 <select class="select select-bordered w-full max-w-xs" name="invoice[]" id="invoice-${newRowId}">
@@ -330,6 +309,9 @@
             }
         });
 
+        $(`#nominal-${newRowId}`).on('keyup', function() {
+            updateTotal();
+        });
         bindInvoiceChange(newRowId);
     });
 

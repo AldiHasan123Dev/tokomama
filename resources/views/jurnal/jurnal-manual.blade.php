@@ -23,7 +23,7 @@
             <form action="{{ route('jurnal.store') }}" method="post">
                 @csrf
                 <input type="hidden" name="counter" id="counter">
-                <table border="1" id="param">
+                <table id="param" class="mb-10">
                     <thead>
                         <th>Customer [1]</th>
                         <th>Supplier [2]</th>
@@ -31,12 +31,18 @@
                     </thead>
                     <tbody id="tableParam">
                         <tr>
-                            <td><input type="text" name="param1[]" id="param1-1" class="w-full"></td>
-                            <td><input type="text" name="param2[]" id="param2-1" class="w-full"></td>
-                            <td><input type="text" name="param3[]" id="param3-1" class="w-full"></td>
+                            <td>
+                                <input type="text" name="param1[]" id="param1-1" class="w-full py-0">
+                            </td>
+                            <td>
+                                <input type="text" name="param2[]" id="param2-1" class="w-full py-0">
+                            </td>
+                            <td>
+                                <input type="text" name="param3[]" id="param3-1" class="w-full py-0">
+                            </td>
                         </tr>
                 </tbody>
-                <div class="grid grid-cols-2 justify-items-start">
+                <div class="grid grid-cols-2 justify-items-start mb-10">
                     <div class="w-full">
                         <label class="form-control w-full max-w-xs mb-5">
                             <div class="label">
@@ -57,7 +63,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 justify-items-start">
+                <div class="grid grid-cols-3 justify-items-start mb-10">
                     <div class="w-full">
                         <label class="form-control w-full max-w-xs mb-5">
                             <div class="label">
@@ -304,9 +310,9 @@
 
         let param = `
         <tr>
-            <td><input type="text" name="param1[]" id="param1-${newRowId}" class="w-full"></td>
-            <td><input type="text" name="param2[]" id="param2-${newRowId}" class="w-full"></td>
-            <td><input type="text" name="param3[]" id="param3-${newRowId}" class="w-full"></td>
+            <td><input type="text" name="param1[]" id="param1-${newRowId}" class="w-full py-0"></td>
+            <td><input type="text" name="param2[]" id="param2-${newRowId}" class="w-full py-0"></td>
+            <td><input type="text" name="param3[]" id="param3-${newRowId}" class="w-full py-0"></td>
         </tr>
         `;
         $(`#tableParam`).append(param);

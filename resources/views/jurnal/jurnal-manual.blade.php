@@ -15,6 +15,13 @@
             border-collapse: collapse;
         }
 
+        #maintable td {
+            padding: 10px;
+        }
+        
+        #maintable th {
+            padding: 10px;
+        }
     </style>
 
     <x-keuangan.card-keuangan>
@@ -94,7 +101,7 @@
                         <button id="addRow" type="button" class="btn bg-blue-400 text-white">Tambah Baris</button>
                     </div>
                 </div>
-                <table class="table">
+                <table class="table" id="maintable">
                     <!-- head -->
                     <thead>
                         <tr>
@@ -115,7 +122,7 @@
                                 <input type="checkbox" name="check[0]" id="check0" value="1" checked>
                             </td>
                             <td>
-                                <select class="select select-bordered w-full max-w-xs" name="invoice[]" id="invoice-1">
+                                <select class="select select-bordered w-36" name="invoice[]" id="invoice-1">
                                     <option selected></option>
                                     @foreach ($invoice as $item)
                                         <option value="{{ $item->invoice }}">{{ $item->invoice }}</option>
@@ -123,7 +130,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="select select-bordered w-full max-w-xs" name="nopol[]" id="nopol-1">
+                                <select class="select select-bordered w-36" name="nopol[]" id="nopol-1">
                                     @foreach ($nopol as $item)
                                     <option disabled selected></option>
                                         <option value="{{ $item->nopol }}">{{ $item->nopol }}</option>
@@ -131,7 +138,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="select select-bordered w-full max-w-xs" name="akun_debet[]" id="akun_debet-1" required>
+                                <select class="select select-bordered w-36" name="akun_debet[]" id="akun_debet-1" required>
                                     @foreach ($coa as $item)
                                     <option disabled selected></option>
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -139,7 +146,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="select select-bordered w-full max-w-xs" name="akun_kredit[]" id="akun_kredit-1" required>
+                                <select class="select select-bordered w-36" name="akun_kredit[]" id="akun_kredit-1" required>
                                     @foreach ($coa as $item)
                                     <option disabled selected></option>
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -147,13 +154,13 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" name="keterangan[]" id="keterangan-1" required />
+                                <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[]" id="keterangan-1" required />
                             </td>
                             <td>
-                                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" min="0" name="nominal[]" id="nominal-1" required />
+                                <input type="number" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" min="0" name="nominal[]" id="nominal-1" required />
                             </td>
                             <td>
-                                <select class="select select-bordered w-full max-w-xs" name="invoice_external[]" id="invoice_external-1">
+                                <select class="select select-bordered w-36" name="invoice_external[]" id="invoice_external-1">
                                     @foreach ($transaksi as $item)
                                         <option disabled selected></option>
                                         <option value="{{ $item->invoice_external }}">{{ $item->invoice_external }}</option>
@@ -167,7 +174,7 @@
                 <h3 class="font-bold">TOTAL DEBET : <span id="td"></span></h3>
                 <h3 class="font-bold mb-5">TOTAL CREDIT : <span id="tc"></span></h3>
 
-                <button class="btn bg-green-500 text-white w-5/12 ms-10">Simpan Jurnal</button>
+                <button class="btn bg-green-500 text-white w-5/12 ms-10 mb-5">Simpan Jurnal</button>
             </form>
         </div>
     </x-keuangan.card-keuangan>
@@ -259,7 +266,7 @@
                 <input type="checkbox" name="check[${newRowId - 1}]" id="check${newRowId - 1}" value="1" checked>
             </td>
             <td>
-                <select class="select select-bordered w-full max-w-xs" name="invoice[]" id="invoice-${newRowId}">
+                <select class="select select-bordered w-36 max-w-xs" name="invoice[]" id="invoice-${newRowId}">
                     <option selected></option>
                     @foreach ($invoice as $item)
                         <option value="{{ $item->invoice }}">{{ $item->invoice }}</option>
@@ -267,7 +274,7 @@
                 </select>
             </td>
             <td>
-                <select class="select select-bordered w-full max-w-xs" name="nopol[]" id="nopol-${newRowId}">
+                <select class="select select-bordered w-36 max-w-xs" name="nopol[]" id="nopol-${newRowId}">
                     @foreach ($nopol as $item)
                     <option disabled selected></option>
                         <option value="{{ $item->nopol }}">{{ $item->nopol }}</option>
@@ -275,7 +282,7 @@
                 </select>
             </td>
             <td>
-                <select class="select select-bordered w-full max-w-xs" name="akun_debet[]" id="akun_debet-${newRowId}" required>
+                <select class="select select-bordered w-36 max-w-xs" name="akun_debet[]" id="akun_debet-${newRowId}" required>
                     @foreach ($coa as $item)
                     <option disabled selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -283,7 +290,7 @@
                 </select>
             </td>
             <td>
-                <select class="select select-bordered w-full max-w-xs" name="akun_kredit[]" id="akun_kredit-${newRowId}" required>
+                <select class="select select-bordered w-36 max-w-xs" name="akun_kredit[]" id="akun_kredit-${newRowId}" required>
                     @foreach ($coa as $item)
                     <option disabled selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -291,13 +298,13 @@
                 </select>
             </td>
             <td>
-                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" name="keterangan[]" id="keterangan-${newRowId}" required />
+                <input type="text" class="input input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md" name="keterangan[]" id="keterangan-${newRowId}" required />
             </td>
             <td>
-                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" min="0" name="nominal[]" id="nominal-${newRowId}" required />
+                <input type="number" class="input input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md" min="0" name="nominal[]" id="nominal-${newRowId}" required />
             </td>
             <td>
-                <select class="select select-bordered w-full max-w-xs" name="invoice_external[]" id="invoice_external-${newRowId}">
+                <select class="select select-bordered w-36 max-w-xs" name="invoice_external[]" id="invoice_external-${newRowId}">
                     @foreach ($transaksi as $item)
                         <option disabled selected></option>
                         <option value="{{ $item->invoice_external }}">{{ $item->invoice_external }}</option>

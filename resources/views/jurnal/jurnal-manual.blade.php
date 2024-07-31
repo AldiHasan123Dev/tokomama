@@ -125,7 +125,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="select select-bordered w-full max-w-xs" name="akun_debet[]" id="akun_debet-1">
+                                <select class="select select-bordered w-full max-w-xs" name="akun_debet[]" id="akun_debet-1" required>
                                     @foreach ($coa as $item)
                                     <option disabled selected></option>
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -133,7 +133,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="select select-bordered w-full max-w-xs" name="akun_kredit[]" id="akun_kredit-1">
+                                <select class="select select-bordered w-full max-w-xs" name="akun_kredit[]" id="akun_kredit-1" required>
                                     @foreach ($coa as $item)
                                     <option disabled selected></option>
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -141,10 +141,10 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" name="keterangan[]" id="keterangan-1" />
+                                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" name="keterangan[]" id="keterangan-1" required />
                             </td>
                             <td>
-                                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" min="0" name="nominal[]" id="nominal-1" />
+                                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" min="0" name="nominal[]" id="nominal-1" required />
                             </td>
                             <td>
                                 <select class="select select-bordered w-full max-w-xs" name="invoice_external[]" id="invoice_external-1">
@@ -169,6 +169,7 @@
     <script>
 
     let totaltdtc = 0;
+    let dataTemp = [];
 
     $(document).ready(function () {
         $(`#invoice-1`).select2();
@@ -197,6 +198,8 @@
                 $('#keterangan-1').prop('disabled', true);
                 $('#nominal-1').prop('disabled', true);
                 $('#invoice_external-1').prop('disabled', true);
+                $('#nominal-1').val(0);
+                updateTotal();
             }
         });
 
@@ -266,7 +269,7 @@
                 </select>
             </td>
             <td>
-                <select class="select select-bordered w-full max-w-xs" name="akun_debet[]" id="akun_debet-${newRowId}">
+                <select class="select select-bordered w-full max-w-xs" name="akun_debet[]" id="akun_debet-${newRowId}" required>
                     @foreach ($coa as $item)
                     <option disabled selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -274,7 +277,7 @@
                 </select>
             </td>
             <td>
-                <select class="select select-bordered w-full max-w-xs" name="akun_kredit[]" id="akun_kredit-${newRowId}">
+                <select class="select select-bordered w-full max-w-xs" name="akun_kredit[]" id="akun_kredit-${newRowId}" required>
                     @foreach ($coa as $item)
                     <option disabled selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -282,10 +285,10 @@
                 </select>
             </td>
             <td>
-                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" name="keterangan[]" id="keterangan-${newRowId}" />
+                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" name="keterangan[]" id="keterangan-${newRowId}" required />
             </td>
             <td>
-                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" min="0" name="nominal[]" id="nominal-${newRowId}" />
+                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" min="0" name="nominal[]" id="nominal-${newRowId}" required />
             </td>
             <td>
                 <select class="select select-bordered w-full max-w-xs" name="invoice_external[]" id="invoice_external-${newRowId}">
@@ -332,6 +335,8 @@
                 $(`#keterangan-${newRowId}`).prop('disabled', true);
                 $(`#nominal-${newRowId}`).prop('disabled', true);
                 $(`#invoice_external-${newRowId}`).prop('disabled', true);
+                $(`#nominal-${newRowId}`).val(0);
+                updateTotal();
             }
         });
 

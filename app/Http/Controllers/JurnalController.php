@@ -94,9 +94,9 @@ class JurnalController extends Controller
                             'tgl' => $request->tanggal_jurnal,
                             'keterangan' => $keterangan[$i],
                             'debit' => $request->nominal[$i],
-                            'invoice' => $request->invoice[$i],
-                            'invoice_external' => $request->invoice_external[$i],
-                            'nopol' => $request->nopol[$i],
+                            'invoice' => $request->invoice[$i] ?? null,
+                            'invoice_external' => $request->invoice_external[$i] ?? null,
+                            'nopol' => $request->nopol[$i] ?? null,
                             'tipe' => $tipe,
                             'no' => $no
                         ]);
@@ -106,9 +106,9 @@ class JurnalController extends Controller
                             'tgl' => $request->tanggal_jurnal,
                             'keterangan' => $keterangan[$i],
                             'kredit' => $request->nominal[$i],
-                            'invoice' => $request->invoice[$i],
-                            'invoice_external' => $request->invoice_external[$i],
-                            'nopol' => $request->nopol[$i],
+                            'invoice' => $request->invoice[$i] ?? null,
+                            'invoice_external' => $request->invoice_external[$i] ?? null,
+                            'nopol' => $request->nopol[$i] ?? null,
                             'tipe' => $tipe,
                             'no' => $no
                         ]);

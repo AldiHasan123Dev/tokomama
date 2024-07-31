@@ -23,7 +23,7 @@
             <form action="{{ route('jurnal.store') }}" method="post">
                 @csrf
                 <input type="hidden" name="counter" id="counter">
-                <table border="1" id="param">
+                <table id="param" class="mb-10">
                     <thead>
                         <th>Customer [1]</th>
                         <th>Supplier [2]</th>
@@ -31,12 +31,18 @@
                     </thead>
                     <tbody id="tableParam">
                         <tr>
-                            <td><input type="text" name="param1[]" id="param1-1" class="w-full"></td>
-                            <td><input type="text" name="param2[]" id="param2-1" class="w-full"></td>
-                            <td><input type="text" name="param3[]" id="param3-1" class="w-full"></td>
+                            <td>
+                                <input type="text" name="param1[]" id="param1-1" class="w-full py-0">
+                            </td>
+                            <td>
+                                <input type="text" name="param2[]" id="param2-1" class="w-full py-0">
+                            </td>
+                            <td>
+                                <input type="text" name="param3[]" id="param3-1" class="w-full py-0">
+                            </td>
                         </tr>
                 </tbody>
-                <div class="grid grid-cols-2 justify-items-start">
+                <div class="grid grid-cols-2 justify-items-start mb-10">
                     <div class="w-full">
                         <label class="form-control w-full max-w-xs mb-5">
                             <div class="label">
@@ -57,7 +63,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 justify-items-start">
+                <div class="grid grid-cols-3 justify-items-start mb-10">
                     <div class="w-full">
                         <label class="form-control w-full max-w-xs mb-5">
                             <div class="label">
@@ -141,10 +147,10 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" name="keterangan[]" id="keterangan-1" />
+                                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-md" name="keterangan[]" id="keterangan-1" />
                             </td>
                             <td>
-                                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" min="0" name="nominal[]" id="nominal-1" />
+                                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-md" min="0" name="nominal[]" id="nominal-1" />
                             </td>
                             <td>
                                 <select class="select select-bordered w-full max-w-xs" name="invoice_external[]" id="invoice_external-1">
@@ -282,10 +288,10 @@
                 </select>
             </td>
             <td>
-                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" name="keterangan[]" id="keterangan-${newRowId}" />
+                <input type="text" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-md" name="keterangan[]" id="keterangan-${newRowId}" />
             </td>
             <td>
-                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-xl" min="0" name="nominal[]" id="nominal-${newRowId}" />
+                <input type="number" class="input input-sm input-bordered w-full max-w-xs bg-transparent rounded-md" min="0" name="nominal[]" id="nominal-${newRowId}" />
             </td>
             <td>
                 <select class="select select-bordered w-full max-w-xs" name="invoice_external[]" id="invoice_external-${newRowId}">
@@ -301,9 +307,9 @@
 
         let param = `
         <tr>
-            <td><input type="text" name="param1[]" id="param1-${newRowId}" class="w-full"></td>
-            <td><input type="text" name="param2[]" id="param2-${newRowId}" class="w-full"></td>
-            <td><input type="text" name="param3[]" id="param3-${newRowId}" class="w-full"></td>
+            <td><input type="text" name="param1[]" id="param1-${newRowId}" class="w-full py-0"></td>
+            <td><input type="text" name="param2[]" id="param2-${newRowId}" class="w-full py-0"></td>
+            <td><input type="text" name="param3[]" id="param3-${newRowId}" class="w-full py-0"></td>
         </tr>
         `;
         $(`#tableParam`).append(param);

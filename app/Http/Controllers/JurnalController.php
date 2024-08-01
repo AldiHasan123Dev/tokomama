@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coa;
+use App\Models\Invoice;
 use App\Models\Jurnal;
 use App\Models\Nopol;
+use App\Models\Supplier;
 use App\Models\SuratJalan;
 use App\Models\TemplateJurnal;
 use App\Models\TipeJurnal;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class JurnalController extends Controller
 {
@@ -21,14 +25,24 @@ class JurnalController extends Controller
         $templates = TemplateJurnal::all();
         $nopol = Nopol::where('status', 'aktif')->get();
         $coa = Coa::where('status', 'aktif')->get();
-        $tipe_jurnal_jnl = TipeJurnal::where('tipe_jurnal', 'JNL')->orderBy('no', 'desc')->first();
-        $tipe_jurnal_bkk = TipeJurnal::where('tipe_jurnal', 'BKK')->orderBy('no', 'desc')->first();
-        $tipe_jurnal_bkm = TipeJurnal::where('tipe_jurnal', 'BKM')->orderBy('no', 'desc')->first();
-        $tipe_jurnal_bbk = TipeJurnal::where('tipe_jurnal', 'BBK')->orderBy('no', 'desc')->first();
-        $tipe_jurnal_bbm = TipeJurnal::where('tipe_jurnal', 'BBM')->orderBy('no', 'desc')->first();
-        $surat_jalan = SuratJalan::all();
+
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        $noJNL = Jurnal::where('tipe', 'JNL')->whereMonth('tgl', $currentMonth)->orderBy('no', 'desc')->first() ?? 0;
+        $no_JNL =  $noJNL ? $noJNL->no + 1 : 1;
+        $noBKK = Jurnal::where('tipe', 'BKK')->whereYear('tgl', $currentYear)->orderBy('no', 'desc')->first() ?? 0;
+        $no_BKK = $noBKK ? $noBKK->no + 1 : 1;
+        $noBKM = Jurnal::where('tipe', 'BKM')->whereYear('tgl', $currentYear)->orderBy('no', 'desc')->first() ?? 0;
+        $no_BKM =  $noBKM ? $noBKM->no + 1 : 1;
+        $noBBK = Jurnal::where('tipe', 'BBK')->whereYear('tgl', $currentYear)->orderBy('no', 'desc')->first() ?? 0;
+        $no_BBK =  $noBBK ? $noBBK->no + 1 : 1;
+        $noBBM = Jurnal::where('tipe', 'BBM')->whereYear('tgl', $currentYear)->orderBy('no', 'desc')->first() ?? 0;
+        $no_BBM =  $noBBM ? $noBBM->no + 1 : 1;
+
+        $invoice = Invoice::all();
         $transaksi = Transaction::all();
-        return view('jurnal.jurnal-manual', compact('templates', 'nopol', 'coa', 'tipe_jurnal_jnl', 'tipe_jurnal_bkk', 'tipe_jurnal_bkm', 'tipe_jurnal_bbk', 'tipe_jurnal_bbm', 'surat_jalan', 'transaksi'));
+        return view('jurnal.jurnal-manual', compact('templates', 'nopol', 'coa', 'no_JNL', 'no_BKK', 'no_BKM', 'no_BBK', 'no_BBM', 'invoice', 'transaksi'));
     }
 
     /**
@@ -39,7 +53,7 @@ class JurnalController extends Controller
         $templates = TemplateJurnal::get();
         $coa = Coa::where('status', 'aktif')->get();
         $nopol = Nopol::where('status', 'aktif')->get();
-        return view('jurnal.jurnal-manual', compact('templates','coa','nopol'));
+        return view('jurnal.jurnal-manual', compact('templates', 'coa', 'nopol'));
     }
 
     /**
@@ -47,7 +61,63 @@ class JurnalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
+        $nomor = $request->tipe;
+        $data_nomor = explode('/', $request->tipe)[1];
+        $tipe = explode('-', $data_nomor)[0];
+        $noCounter = explode('-', $nomor)[1];
+        $no = str_replace(' ', '', explode('/', $noCounter)[0]);
+
+        $keterangan = [];
+
+        for($i = 0; $i < $request->counter; $i++) {
+            if (str_contains($request->keterangan[$i], '[1]')) {
+                $keterangan[$i] = str_replace('[1]', $request->param1[$i], $request->keterangan[$i]);
+            } else if (str_contains($request->keterangan[$i], '[2]')) {
+                $keterangan[$i] = str_replace('[2]', $request->param2[$i], $request->keterangan[$i]);
+            } else if(str_contains($request->keterangan[$i], '[3]')) {
+                $keterangan[$i] = str_replace('[3]', $request->param3[$i], $request->keterangan[$i]);
+            } else {
+                $keterangan[$i] = $request->keterangan[$i];
+            }
+        }
+
+        // dd($keterangan);
+
+        for ($i = 0; $i < $request->counter; $i++) {
+            if ($request->check[$i] == 1) {
+                DB::transaction(
+                    function () use ($request, $i, $nomor, $tipe, $no, $keterangan) {
+                        Jurnal::create([
+                            'coa_id' => $request->akun_debet[$i],
+                            'nomor' => $nomor,
+                            'tgl' => $request->tanggal_jurnal,
+                            'keterangan' => $keterangan[$i],
+                            'debit' => $request->nominal[$i],
+                            'invoice' => $request->invoice[$i] ?? null,
+                            'invoice_external' => $request->invoice_external[$i] ?? null,
+                            'nopol' => $request->nopol[$i] ?? null,
+                            'tipe' => $tipe,
+                            'no' => $no
+                        ]);
+                        Jurnal::create([
+                            'coa_id' => $request->akun_kredit[$i],
+                            'nomor' => $nomor,
+                            'tgl' => $request->tanggal_jurnal,
+                            'keterangan' => $keterangan[$i],
+                            'kredit' => $request->nominal[$i],
+                            'invoice' => $request->invoice[$i] ?? null,
+                            'invoice_external' => $request->invoice_external[$i] ?? null,
+                            'nopol' => $request->nopol[$i] ?? null,
+                            'tipe' => $tipe,
+                            'no' => $no
+                        ]);
+                    }
+                );
+            }
+        }
+
+        return redirect()->route('jurnal.index');
     }
 
     /**
@@ -82,13 +152,37 @@ class JurnalController extends Controller
         //
     }
 
-    public function getSuratJalanWhereJob()
+    public function getInvoiceWhereNoInv()
     {
-        // dd(request('job'));
-        $surat_jalan = SuratJalan::with(['customer', 'transactions'])
-                            ->where('no_job', request('job'))
-                            ->get();
-                            // dd($surat_jalan);
-        return response()->json($surat_jalan);
+        // dd(request('invoice'));
+        $invoices = Invoice::with([
+            'transaksi.suppliers',
+            'transaksi.barang',
+            'transaksi.suratJalan',
+        ])
+            ->where('invoice', request('invoice'))
+            ->get();
+
+        $suratJalans = [];
+
+        if ($invoices->isNotEmpty()) {
+            // Iterate over the invoices collection
+            foreach ($invoices as $invoice) {
+                if ($invoice->transaksi && $invoice->transaksi->suratJalan) {
+                    $suratJalans[] = $invoice->transaksi->suratJalan->customer->nama;
+                } else {
+                    return response()->json(['error' => 'Surat jalan Not Found'], 404);
+                }
+            }
+        } else {
+            return response()->json(['error' => 'No invoices found'], 404);
+        }
+
+        // dd($suratJalans);
+
+        return response()->json([
+            'invoices' => $invoices,
+            'suratJalans' => $suratJalans,
+        ]);
     }
 }

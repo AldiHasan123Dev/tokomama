@@ -96,16 +96,15 @@
             <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Nov</button>
             <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Des</button>
 
-            <table id="table-buku-besar">
+            <table id="table-buku-besar" class="cell-border hover display nowrap">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Tanggal</th>
                         <th>No. Jurnal</th>
                         <th>No. Akun</th>
                         <th>Akun</th>
-                        <th>No. Cont</th>
                         <th>Nopol</th>
-                        <th>No. Job</th>
                         <th>Invoice</th>
                         <th>Keterangan</th>
                         <th>Debit</th>
@@ -120,22 +119,35 @@
         
         </div>
     </x-keuangan.card-keuangan>
-
+    <script src="https://cdn.datatables.net/2.1.0/js/dataTables.tailwindcss.js"></script>
     <script>
         $(document).ready(function () {
             $('.js-example-basic-single').select2();
+            
+            const date = new Date();
+            const month = date.getMonth() //+ 1;
+            const year = date.getFullYear();
+
 
             var table = $('#table-buku-besar').DataTable({
                 select:true,
                 ajax: {
-                    url: "{{ route('coa.data') }}",
-                    type: 'POST'
+                    url: `{{ url('/buku-besar/${month}/${year}') }}`,
+                    type: 'GET'
                 },
                 columns: [
-                    { data: '#' },
-                    { data: 'no_akun' },
-                    { data: 'nama_akun' },
-                    { data: 'status' },
+                    { data: 'DT_RowIndex', name: 'number'},
+                    { data: 'tgl', name: 'tanggal' },
+                    { data: 'nomor', name: 'nomor jurnal' },
+                    { data: 'no_akun', name: 'nomor akun' },
+                    { data: 'akun', name: 'akun' },
+                    { data: 'nopol', name: 'nomor polisi' },
+                    { data: 'invoice', name: 'invoice' },
+                    { data: 'keterangan', name: 'Keterangan' },
+                    { data: 'debit', name: 'debit' },
+                    { data: 'kredit', name: 'kredit' },
+                    { data: 'saldo', name: 'saldo' },
+                    { data: 'id', name: 'id', visible:false},
                 ]
             });
         });

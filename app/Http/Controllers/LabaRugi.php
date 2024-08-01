@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Coa;
+use App\Models\Jurnal;
 use Illuminate\Http\Request;
 
 class LabaRugi extends Controller
@@ -11,7 +12,52 @@ class LabaRugi extends Controller
      */
     public function index()
     {
-        return view('jurnal.jurnal-lr');
+    
+    $coa1 = Coa::where('tabel', 'A')->get();
+    $coa2 = Coa::where('tabel', 'B')->get();
+    $coa3 = Coa::where('tabel', 'C')->get();
+    $coa4 = Coa::where('tabel', 'D')->get();
+    $coa5 = Coa::where('tabel', 'E')->get();
+    $coa6 = Coa::where('tabel', 'F')->get();
+    $coa7 = Coa::where('tabel', 'G')->get();
+    $coa = Coa::get();
+       
+    $totals = [];
+    $coaId1 = $coa1->pluck('id')->toArray();
+    $coaId2 = $coa2->pluck('id')->toArray();
+    $coaId3 = $coa3->pluck('id')->toArray();
+    $coaId4 = $coa4->pluck('id')->toArray();
+    $coaId5 = $coa5->pluck('id')->toArray();
+    $coaId6 = $coa6->pluck('id')->toArray();
+    $coaId7 = $coa7->pluck('id')->toArray();
+    $allCoaIds = array_merge($coaId1, $coaId2, $coaId3, $coaId4, $coaId5, $coaId6, $coaId7);
+
+
+    foreach ($allCoaIds as $coaId) {
+        $debit = Jurnal::where('coa_id', $coaId)->sum('debit');
+        $kredit = Jurnal::where('coa_id', $coaId)->sum('kredit');
+        $totals[$coaId] = [
+            'debit' => $debit,
+            'kredit' => $kredit,
+            'selisih' => $debit - $kredit,
+        ];
+    }
+        
+        $totalA = array_sum(array_column(array_intersect_key($totals, array_flip($coaId1)), 'selisih'));
+        $totalB = array_sum(array_column(array_intersect_key($totals, array_flip($coaId2)), 'selisih'));
+        $totalC = array_sum(array_column(array_intersect_key($totals, array_flip($coaId3)), 'selisih'));
+        $totalD = array_sum(array_column(array_intersect_key($totals, array_flip($coaId4)), 'selisih'));
+        $totalE = array_sum(array_column(array_intersect_key($totals, array_flip($coaId5)), 'selisih'));
+        $totalF = array_sum(array_column(array_intersect_key($totals, array_flip($coaId6)), 'selisih'));
+        $totalG = array_sum(array_column(array_intersect_key($totals, array_flip($coaId7)), 'selisih'));
+
+        // Kembalikan view dengan data yang dibutuhkan
+        return view('jurnal.jurnal-lr', compact(
+            'coa1', 'coa2', 'coa3', 'coa4', 'coa5', 'coa6', 'coa7',
+            'totals', 'totalA', 'totalB', 'totalC', 'totalD', 'totalE', 'totalF', 'totalG'
+        ));
+
+
     }
 
     /**

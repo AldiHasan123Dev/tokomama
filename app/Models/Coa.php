@@ -22,4 +22,9 @@ class Coa extends Model
     {
         return $this->hasMany(TemplateJurnalItem::class, 'coa_kredit_id');
     }
+
+    public function jurnal()
+    {
+        return $this->hasMany(Jurnal::class, 'coa_id');
+    }
 }

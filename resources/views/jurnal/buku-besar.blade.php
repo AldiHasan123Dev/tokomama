@@ -7,7 +7,7 @@
             <div class="grid grid-cols-4">
                 <div class="font-bold">Akun : </div>
                 <div>
-                    <select class="js-example-basic-single w-1/2" name="akun">
+                    <select class="js-example-basic-single w-1/2" name="akun" id="coas">
                         @foreach ($coa as $c)
                             <option disabled selected></option>
                             <option value="{{ $c->id }}">{{ $c->no_akun }} - {{ $c->nama_akun }}</option>
@@ -16,34 +16,16 @@
                 </div>
                 <div class="font-bold">Tahun : </div>
                 <div>
-                    <select class="js-example-basic-single w-1/2" name="akun">
+                    <select class="js-example-basic-single w-1/2" name="akun" id="thn">
                         <option selected value="{{ date('Y') }}">{{ date('Y') }}</option>
-                        <option value="2030">2030</option>
-                        <option value="2029">2029</option>
-                        <option value="2028">2028</option>
-                        <option value="2027">2027</option>
-                        <option value="2026">2026</option>
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
-                        <option value="2015">2015</option>
-                        <option value="2014">2014</option>
-                        <option value="2013">2013</option>
-                        <option value="2012">2012</option>
-                        <option value="2011">2011</option>
-                        <option value="2010">2010</option>
+                        @for($year = date('Y'); $year >= 2024; $year--)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                        @endfor
                     </select>
                 </div>
             </div>
 
-            <table class="table">
+            <table class="table mb-10">
                 <!-- head -->
                 <thead>
                   <tr>
@@ -82,30 +64,93 @@
                 </tbody>
               </table>
 
-            <label for="tahun" class="mr-2 margin-top:40px">Bulan:</label>
-            <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black " id="aktif" type="submit">Jan</button>
-            <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Feb</button>
-            <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Mar</button>
-            <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Apr</button>
-            <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Mei</button>
-            <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Jun</button>
-            <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Jul</button>
-            <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Aug</button>
-            <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Sep</button>
-            <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Okt</button>
-            <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Nov</button>
-            <button class="btn dark:text-white dark:bg-blue-500 bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Des</button>
+            
+            <div class="mb-16 mt-8 flex">
+                <label for="month" class="font-bold">Bulan:</label>
+                <form action="" method="GET">
+                    <input type="hidden" name="month" value="1">
+                    <input type="hidden" name="year" id="y1" value="{{ date('Y') }}">
+                    <input type="hidden" name="coa" id="c1">
+                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Jan</button>
+                </form>
+                <form action="" method="GET">
+                    <input type="hidden" name="month" value="2">
+                    <input type="hidden" name="year" id="y2" value="{{ date('Y') }}">
+                    <input type="hidden" name="coa" id="c2">
+                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Feb</button>
+                </form>
+                <form action="" method="GET">
+                    <input type="hidden" name="month" value="3">
+                    <input type="hidden" name="year" id="y3" value="{{ date('Y') }}">
+                    <input type="hidden" name="coa" id="c3">
+                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Mar</button>
+                </form>
+                <form action="" method="GET">
+                    <input type="hidden" name="month" value="4">
+                    <input type="hidden" name="year" id="y4" value="{{ date('Y') }}">
+                    <input type="hidden" name="coa" id="c4">
+                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Apr</button>
+                </form>
+                <form action="" method="GET">
+                    <input type="hidden" name="month" value="5">
+                    <input type="hidden" name="year" id="y5" value="{{ date('Y') }}">
+                    <input type="hidden" name="coa" id="c5">
+                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Mei</button>
+                </form>
+                <form action="" method="GET">
+                    <input type="hidden" name="month" value="6">
+                    <input type="hidden" name="year" id="y6" value="{{ date('Y') }}">
+                    <input type="hidden" name="coa" id="c6">
+                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Jun</button>
+                </form>
+                <form action="" method="GET">
+                    <input type="hidden" name="month" value="7">
+                    <input type="hidden" name="year" id="y7" value="{{ date('Y') }}">
+                    <input type="hidden" name="coa" id="c7">
+                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Jul</button>
+                </form>
+                <form action="" method="GET">
+                    <input type="hidden" name="month" value="8">
+                    <input type="hidden" name="year" id="y8" value="{{ date('Y') }}">
+                    <input type="hidden" name="coa" id="c8">
+                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Agu</button>
+                </form>
+                <form action="" method="GET">
+                    <input type="hidden" name="month" value="9">
+                    <input type="hidden" name="year" id="y9" value="{{ date('Y') }}">
+                    <input type="hidden" name="coa" id="c9">
+                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Sep</button>
+                </form>
+                <form action="" method="GET">
+                    <input type="hidden" name="month" value="10">
+                    <input type="hidden" name="year" id="y10" value="{{ date('Y') }}">
+                    <input type="hidden" name="coa" id="c10">
+                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Okt</button>
+                </form>
+                <form action="" method="GET">
+                    <input type="hidden" name="month" value="11">
+                    <input type="hidden" name="year" id="y11" value="{{ date('Y') }}">
+                    <input type="hidden" name="coa" id="c11">
+                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Nov</button>
+                </form>
+                <form action="" method="GET">
+                    <input type="hidden" name="month" value="12">
+                    <input type="hidden" name="year" id="y12" value="{{ date('Y') }}">
+                    <input type="hidden" name="coa" id="c12">
+                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Des</button>
+                </form>
+            </div>
+            
 
-            <table id="table-buku-besar">
+            <table id="table-buku-besar" class="cell-border hover display nowrap">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Tanggal</th>
                         <th>No. Jurnal</th>
                         <th>No. Akun</th>
                         <th>Akun</th>
-                        <th>No. Cont</th>
                         <th>Nopol</th>
-                        <th>No. Job</th>
                         <th>Invoice</th>
                         <th>Keterangan</th>
                         <th>Debit</th>
@@ -117,25 +162,72 @@
 
                 </tbody>
             </table>
-        
+
         </div>
     </x-keuangan.card-keuangan>
-
+    <script src="https://cdn.datatables.net/2.1.0/js/dataTables.tailwindcss.js"></script>
     <script>
         $(document).ready(function () {
             $('.js-example-basic-single').select2();
+            
+            //const date = new Date();
+            //const month = date.getMonth() //+ 1;
+            //const year = date.getFullYear();
+
+            $(`#coas`).on(`change`, function() {
+                $(`#c1`).val($(this).val())
+                $(`#c2`).val($(this).val())
+                $(`#c3`).val($(this).val())
+                $(`#c4`).val($(this).val())
+                $(`#c5`).val($(this).val())
+                $(`#c6`).val($(this).val())
+                $(`#c7`).val($(this).val())
+                $(`#c8`).val($(this).val())
+                $(`#c9`).val($(this).val())
+                $(`#c10`).val($(this).val())
+                $(`#c11`).val($(this).val())
+                $(`#c12`).val($(this).val())
+            });
+
+            $(`#thn`).on(`change`, function() {
+                $(`#y1`).val($(this).val())
+                $(`#y2`).val($(this).val())
+                $(`#y3`).val($(this).val())
+                $(`#y4`).val($(this).val())
+                $(`#y5`).val($(this).val())
+                $(`#y6`).val($(this).val())
+                $(`#y7`).val($(this).val())
+                $(`#y8`).val($(this).val())
+                $(`#y9`).val($(this).val())
+                $(`#y10`).val($(this).val())
+                $(`#y11`).val($(this).val())
+                $(`#y12`).val($(this).val())
+            })
+
+            const searchParams = new URLSearchParams(window.location.search);
+            let month = searchParams.get("month");
+            let year = searchParams.get("year");
+            let coa = searchParams.get("coa");
 
             var table = $('#table-buku-besar').DataTable({
                 select:true,
                 ajax: {
-                    url: "{{ route('coa.data') }}",
-                    type: 'POST'
+                    url: `{{ url('/bb-data/${month}/${year}/${coa}') }}`,
+                    type: 'GET'
                 },
                 columns: [
-                    { data: '#' },
-                    { data: 'no_akun' },
-                    { data: 'nama_akun' },
-                    { data: 'status' },
+                    { data: 'DT_RowIndex', name: 'number'},
+                    { data: 'tgl', name: 'tanggal' },
+                    { data: 'nomor', name: 'nomor jurnal' },
+                    { data: 'no_akun', name: 'nomor akun' },
+                    { data: 'akun', name: 'akun' },
+                    { data: 'nopol', name: 'nomor polisi' },
+                    { data: 'invoice', name: 'invoice' },
+                    { data: 'keterangan', name: 'Keterangan' },
+                    { data: 'debit', name: 'debit' },
+                    { data: 'kredit', name: 'kredit' },
+                    { data: 'saldo', name: 'saldo' },
+                    { data: 'id', name: 'id', visible:false},
                 ]
             });
         });

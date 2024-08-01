@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             SubMenuSeeder::class,
             CoaSeeder::class,
             NopolSeeder::class,
-            EkspedisiSeeder::class
+            EkspedisiSeeder::class,
+            TipeJurnalSeeder::class
         ]);
     }
 }

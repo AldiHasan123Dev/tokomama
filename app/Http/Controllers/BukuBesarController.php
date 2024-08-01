@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\BukuBesar;
 use App\Models\Coa;
+use App\Models\Jurnal;
 use App\Models\Nopol;
 use App\Models\TemplateJurnal;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class BukuBesarController extends Controller
 {
@@ -67,5 +69,48 @@ class BukuBesarController extends Controller
     public function destroy(BukuBesar $bukuBesar)
     {
         //
+    }
+
+    public function datatable($month, $year, $coa)
+    {
+        $data = Jurnal::whereMonth('tgl', $month)
+        ->whereYear('tgl', $year)
+        ->where('coa_id', $coa)
+        ->orderBy('created_at')
+        ->get();
+        
+        return DataTables::of($data)
+        ->addIndexColumn()
+        ->addColumn('no_akun', function ($row) {
+            return $row->Coa->no_akun ?? '-';
+        })
+        ->addColumn('akun', function ($row) {
+            return $row->Coa->nama_akun ?? '-';
+        })
+        ->addColumn('saldo', function($row) {
+            return $row->sum('debit') - $row->sum('kredit');
+        })
+        ->make();
+    }
+
+    public function datatableDefault($month, $year)
+    {
+        $data = Jurnal::whereMonth('tgl', $month)
+        ->whereYear('tgl', $year)
+        ->orderBy('created_at')
+        ->get();
+
+        return DataTables::of($data)
+        ->addIndexColumn()
+        ->addColumn('no_akun', function ($row) {
+            return $row->Coa->no_akun ?? '-';
+        })
+        ->addColumn('akun', function ($row) {
+            return $row->Coa->nama_akun ?? '-';
+        })
+        ->addColumn('saldo', function($row) {
+            return $row->sum('debit') - $row->sum('kredit');
+        })
+        ->make();
     }
 }

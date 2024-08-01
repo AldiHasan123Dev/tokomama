@@ -26,4 +26,9 @@ class Jurnal extends Model
         'created_by',
         'updated_by',
     ];
+
+    public function coa()
+    {
+        return $this->belongsTo(Coa::class, 'coa_id'); 
+    }
 }

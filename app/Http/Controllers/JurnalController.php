@@ -61,59 +61,151 @@ class JurnalController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $nomor = $request->tipe;
         $data_nomor = explode('/', $request->tipe)[1];
         $tipe = explode('-', $data_nomor)[0];
         $noCounter = explode('-', $nomor)[1];
         $no = str_replace(' ', '', explode('/', $noCounter)[0]);
 
+        $tgl = $request->tanggal_jurnal;
+        $bulan = date('m', strtotime($tgl));
+        $bulanNow = date('m');
+
+        //pemecahan nomor jurnal
+        $jurnalsort = Jurnal::whereMonth('tgl', 07)->where('tipe', 'JNL')->get();
+        $nomorArray = $jurnalsort->pluck('no')->toArray();
+        $maxNomor = max($nomorArray); // max nmor pada bulan yang diinputkan user
+
+        // penggabungan nomor jurnal untuk kondisi jurnal yang diinputkan bulannya tidak sama dengan bulan sekarang
+        $breakdown = explode('/', $request->tipe);
+        $sec2 = $breakdown[1];
+        $sec3 = $breakdown[2];
+        $title = str_replace(' ', '', explode('-', $breakdown[0])[0]);
+        $newNoJurnal = $title . ' - ' . $maxNomor + 1 . '/' . $sec2 . '/' . $sec3;
+
         $keterangan = [];
 
-        for($i = 0; $i < $request->counter; $i++) {
+        for ($i = 0; $i < $request->counter; $i++) {
             if (str_contains($request->keterangan[$i], '[1]')) {
                 $keterangan[$i] = str_replace('[1]', $request->param1[$i], $request->keterangan[$i]);
             } else if (str_contains($request->keterangan[$i], '[2]')) {
                 $keterangan[$i] = str_replace('[2]', $request->param2[$i], $request->keterangan[$i]);
-            } else if(str_contains($request->keterangan[$i], '[3]')) {
+            } else if (str_contains($request->keterangan[$i], '[3]')) {
                 $keterangan[$i] = str_replace('[3]', $request->param3[$i], $request->keterangan[$i]);
             } else {
                 $keterangan[$i] = $request->keterangan[$i];
             }
         }
 
-        // dd($keterangan);
-
         for ($i = 0; $i < $request->counter; $i++) {
             if ($request->check[$i] == 1) {
-                DB::transaction(
-                    function () use ($request, $i, $nomor, $tipe, $no, $keterangan) {
-                        Jurnal::create([
-                            'coa_id' => $request->akun_debet[$i],
-                            'nomor' => $nomor,
-                            'tgl' => $request->tanggal_jurnal,
-                            'keterangan' => $keterangan[$i],
-                            'debit' => $request->nominal[$i],
-                            'invoice' => $request->invoice[$i] ?? null,
-                            'invoice_external' => $request->invoice_external[$i] ?? null,
-                            'nopol' => $request->nopol[$i] ?? null,
-                            'tipe' => $tipe,
-                            'no' => $no
-                        ]);
-                        Jurnal::create([
-                            'coa_id' => $request->akun_kredit[$i],
-                            'nomor' => $nomor,
-                            'tgl' => $request->tanggal_jurnal,
-                            'keterangan' => $keterangan[$i],
-                            'kredit' => $request->nominal[$i],
-                            'invoice' => $request->invoice[$i] ?? null,
-                            'invoice_external' => $request->invoice_external[$i] ?? null,
-                            'nopol' => $request->nopol[$i] ?? null,
-                            'tipe' => $tipe,
-                            'no' => $no
-                        ]);
+                if ($tipe == 'JNL') {
+                    if ($bulan < $bulanNow) {
+                        DB::transaction(
+                            function () use ($request, $i, $tipe, $keterangan, $maxNomor, $newNoJurnal) {
+                                if ($request->akun_debet[$i] != 0) {
+                                    Jurnal::create([
+                                        'coa_id' => $request->akun_debet[$i],
+                                        'nomor' => $newNoJurnal,
+                                        'tgl' => $request->tanggal_jurnal,
+                                        'keterangan' => $keterangan[$i],
+                                        'debit' => $request->nominal[$i],
+                                        'invoice' => $request->invoice[$i] ?? null,
+                                        'invoice_external' => $request->invoice_external[$i] ?? null,
+                                        'nopol' => $request->nopol[$i] ?? null,
+                                        'tipe' => $tipe,
+                                        'no' => $maxNomor + 1
+                                    ]);
+                                }
+
+                                if ($request->akun_kredit[$i] != 0) {
+                                    Jurnal::create([
+                                        'coa_id' => $request->akun_kredit[$i],
+                                        'nomor' => $newNoJurnal,
+                                        'tgl' => $request->tanggal_jurnal,
+                                        'keterangan' => $keterangan[$i],
+                                        'kredit' => $request->nominal[$i],
+                                        'invoice' => $request->invoice[$i] ?? null,
+                                        'invoice_external' => $request->invoice_external[$i] ?? null,
+                                        'nopol' => $request->nopol[$i] ?? null,
+                                        'tipe' => $tipe,
+                                        'no' => $maxNomor + 1
+                                    ]);
+                                }
+                            }
+                        );
+                    } else {
+                        DB::transaction(
+                            function () use ($request, $i, $nomor, $tipe, $no, $keterangan) {
+                                if ($request->akun_debet[$i] != 0) {
+                                    Jurnal::create([
+                                        'coa_id' => $request->akun_debet[$i],
+                                        'nomor' => $nomor,
+                                        'tgl' => $request->tanggal_jurnal,
+                                        'keterangan' => $keterangan[$i],
+                                        'debit' => $request->nominal[$i],
+                                        'invoice' => $request->invoice[$i] ?? null,
+                                        'invoice_external' => $request->invoice_external[$i] ?? null,
+                                        'nopol' => $request->nopol[$i] ?? null,
+                                        'tipe' => $tipe,
+                                        'no' => $no
+                                    ]);
+                                }
+
+                                if ($request->akun_kredit[$i] != 0) {
+                                    Jurnal::create([
+                                        'coa_id' => $request->akun_kredit[$i],
+                                        'nomor' => $nomor,
+                                        'tgl' => $request->tanggal_jurnal,
+                                        'keterangan' => $keterangan[$i],
+                                        'kredit' => $request->nominal[$i],
+                                        'invoice' => $request->invoice[$i] ?? null,
+                                        'invoice_external' => $request->invoice_external[$i] ?? null,
+                                        'nopol' => $request->nopol[$i] ?? null,
+                                        'tipe' => $tipe,
+                                        'no' => $no
+                                    ]);
+                                }
+                            }
+
+                        );
                     }
-                );
+                } else {
+                    DB::transaction(
+                        function () use ($request, $i, $nomor, $tipe, $no, $keterangan) {
+                            if ($request->akun_debet[$i] != 0) {
+                                Jurnal::create([
+                                    'coa_id' => $request->akun_debet[$i],
+                                    'nomor' => $nomor,
+                                    'tgl' => $request->tanggal_jurnal,
+                                    'keterangan' => $keterangan[$i],
+                                    'debit' => $request->nominal[$i],
+                                    'invoice' => $request->invoice[$i] ?? null,
+                                    'invoice_external' => $request->invoice_external[$i] ?? null,
+                                    'nopol' => $request->nopol[$i] ?? null,
+                                    'tipe' => $tipe,
+                                    'no' => $no
+                                ]);
+                            }
+
+                            if ($request->akun_kredit[$i] != 0) {
+                                Jurnal::create([
+                                    'coa_id' => $request->akun_kredit[$i],
+                                    'nomor' => $nomor,
+                                    'tgl' => $request->tanggal_jurnal,
+                                    'keterangan' => $keterangan[$i],
+                                    'kredit' => $request->nominal[$i],
+                                    'invoice' => $request->invoice[$i] ?? null,
+                                    'invoice_external' => $request->invoice_external[$i] ?? null,
+                                    'nopol' => $request->nopol[$i] ?? null,
+                                    'tipe' => $tipe,
+                                    'no' => $no
+                                ]);
+                            }
+                        }
+
+                    );
+                }
             }
         }
 

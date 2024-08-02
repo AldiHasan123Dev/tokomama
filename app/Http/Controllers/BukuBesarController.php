@@ -78,6 +78,9 @@ class BukuBesarController extends Controller
         ->where('coa_id', $coa)
         ->orderBy('created_at')
         ->get();
+
+        $totalDebit = $data->sum('debit');
+        $totalKredit = $data->sum('kredit');
         
         return DataTables::of($data)
         ->addIndexColumn()
@@ -87,8 +90,8 @@ class BukuBesarController extends Controller
         ->addColumn('akun', function ($row) {
             return $row->Coa->nama_akun ?? '-';
         })
-        ->addColumn('saldo', function($row) {
-            return $row->sum('debit') - $row->sum('kredit');
+        ->addColumn('saldo', function($row) use ($totalKredit) {
+            return $totalKredit;
         })
         ->make();
     }

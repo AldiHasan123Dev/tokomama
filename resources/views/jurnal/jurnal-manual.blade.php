@@ -140,7 +140,7 @@
                             <td>
                                 <select class="select select-bordered w-36" name="akun_debet[]" id="akun_debet-1" required>
                                     @foreach ($coa as $item)
-                                    <option disabled selected></option>
+                                    <option value="0" selected></option>
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
                                     @endforeach
                                 </select>
@@ -148,7 +148,7 @@
                             <td>
                                 <select class="select select-bordered w-36" name="akun_kredit[]" id="akun_kredit-1" required>
                                     @foreach ($coa as $item)
-                                    <option disabled selected></option>
+                                    <option value="0" selected></option>
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
                                     @endforeach
                                 </select>
@@ -284,7 +284,7 @@
             <td>
                 <select class="select select-bordered w-36 max-w-xs" name="akun_debet[]" id="akun_debet-${newRowId}" required>
                     @foreach ($coa as $item)
-                    <option disabled selected></option>
+                    <option value="0" selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
                     @endforeach
                 </select>
@@ -292,7 +292,7 @@
             <td>
                 <select class="select select-bordered w-36 max-w-xs" name="akun_kredit[]" id="akun_kredit-${newRowId}" required>
                     @foreach ($coa as $item)
-                    <option disabled selected></option>
+                    <option value="0" selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
                     @endforeach
                 </select>

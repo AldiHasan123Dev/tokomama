@@ -16,6 +16,7 @@
                             <th>No. Akun</th>
                             <th>Nama Akun</th>
                             <th>Status</th>
+                            <th>Tabel</th>
                         </tr>
                     </thead>
                 </table>
@@ -38,6 +39,7 @@
                     { data: 'no_akun' },
                     { data: 'nama_akun' },
                     { data: 'status' },
+                    { data: 'tabel' }
                 ]
             });
 

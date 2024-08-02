@@ -112,6 +112,9 @@ class BukuBesarController extends Controller
         ->orderBy('created_at')
         ->get();
 
+        $totalDebit = $data->sum('debit');
+        $totalKredit = $data->sum('kredit');
+
         return DataTables::of($data)
         ->addIndexColumn()
         ->addColumn('no_akun', function ($row) {
@@ -120,8 +123,8 @@ class BukuBesarController extends Controller
         ->addColumn('akun', function ($row) {
             return $row->Coa->nama_akun ?? '-';
         })
-        ->addColumn('saldo', function($row) {
-            return $row->sum('debit') - $row->sum('kredit');
+        ->addColumn('saldo', function($row) use ($totalKredit) {
+            return $totalKredit;
         })
         ->make();
     }

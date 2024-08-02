@@ -8,8 +8,10 @@
                 <div class="font-bold">Akun : </div>
                 <div>
                     <select class="js-example-basic-single w-1/2" name="akun" id="coas">
+                        @if(isset($_GET['coa']))
+                            <option value="{{ $coa_by_id->id }}" selected>{{ $coa_by_id->no_akun }} - {{ $coa_by_id->nama_akun }}</option>
+                        @endif
                         @foreach ($coa as $c)
-                            <option disabled selected></option>
                             <option value="{{ $c->id }}">{{ $c->no_akun }} - {{ $c->nama_akun }}</option>
                         @endforeach
                     </select>
@@ -48,23 +50,35 @@
                   <!-- row 1 -->
                   <tr>
                     <th>Saldo Awal</th>
+                      @foreach ($saldo['saldo_awal'] as $idx => $item)
+                          <td>{{ number_format($item,2,'.',',') }}</td>
+                      @endforeach
                   </tr>
                   <!-- row 2 -->
-                  <tr class="hover">
+                  <tr>
                     <th>Debit</th>
+                      @foreach ($saldo['debit'] as $idx => $item)
+                          <td>{{ number_format($item,2,'.',',') }}</td>
+                      @endforeach
                   </tr>
                   <!-- row 3 -->
                   <tr>
                     <th>Credit</th>
+                      @foreach ($saldo['kredit'] as $idx => $item)
+                          <td>{{ number_format($item,2,'.',',') }}</td>
+                      @endforeach
                   </tr>
                   <!-- row 4 -->
                   <tr>
                     <th>Saldo Akhir</th>
+                      @foreach ($saldo['saldo_akhir'] as $idx => $item)
+                          <td>{{ number_format($item,2,'.',',') }}</td>
+                      @endforeach
                   </tr>
                 </tbody>
               </table>
 
-            
+
             <div class="mb-16 mt-8 flex">
                 <label for="month" class="font-bold">Bulan:</label>
                 <form action="" method="GET">
@@ -140,7 +154,7 @@
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Des</button>
                 </form>
             </div>
-            
+
 
             <table id="table-buku-besar" class="cell-border hover display nowrap">
                 <thead>
@@ -169,7 +183,7 @@
     <script>
         $(document).ready(function () {
             $('.js-example-basic-single').select2();
-            
+
             //const date = new Date();
             //const month = date.getMonth() //+ 1;
             //const year = date.getFullYear();

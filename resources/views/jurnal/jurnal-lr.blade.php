@@ -2,45 +2,33 @@
     <x-keuangan.card-keuangan>
         <x-slot:tittle>Laporan Laba/Rugi</x-slot:tittle>
         <div class="overflow-x-auto">
-            <form action="{{ route('jurnal.coa') }}" method="post">
-                @csrf
+          
+          
             <div>
             <div>
-            <a href="#" target="_blank"
-                class="btn bg-green-400 text-white my-5 py-4 font-bold" id="print">
-                <i class="fas fa-print"></i> Print Laporan</button>
-            </a>
-            <div class="flex justify-between">
+                <a href="#" target="_blank"
+                    class="btn bg-green-400 text-white my-5 py-4 font-bold" id="print" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print Laporan</button>
+                </a>
+                <div class="flex justify-between">
                 <div>
-                    <label for="bulan" class="mr-2 margin-top:40px">Bulan:</label>
-                    <button class="btn bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Jan</button>
-                    <button class="btn bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Feb</button>
-                    <button class="btn bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Mar</button>
-                    <button class="btn bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Apr</button>
-                    <button class="btn bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Mei</button>
-                    <button class="btn bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Jun</button>
-                    <button class="btn bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Jul</button>
-                    <button class="btn bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Aug</button>
-                    <button class="btn bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Sep</button>
-                    <button class="btn bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Okt</button>
-                    <button class="btn bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Nov</button>
-                    <button class="btn bg-green-10 text-black hover:text-white my-5 py-4 font-bold border-black" id="aktif" type="submit">Des</button>
+                    <label for="bulan" class="mr-2 mt-10">Bulan:</label>
+                    @foreach(['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'] as $index => $bulanName)
+                        <button id="bulan-{{ $index + 1 }}" 
+                            class="btn my-5 py-4 font-bold border-black 
+                                {{ $index + 1 == $bulan ? 'bg-gray-200 text-black' : 'bg-white text-black hover:text-white' }}" 
+                            data-bulan="{{ $index + 1 }}" 
+                            onclick="filterBulan({{ $index + 1 }})">
+                            {{ $bulanName }}
+                        </button>
+                    @endforeach
                 </div>
-                    <!-- <div class="flex items-center">
-                        <label for="tahun" class="mr-2">Tahun:</label>
-                        <input type="text" id="tahun" name="tahun" class="input input-bordered rounded-lg dark:text-black my-3 py-3">
-                    </div> -->
                     <div class="flex items-center">
-                        <b class="mr-2">Tahun:  </b>
-                        <select class="form-control-bordered rounded-lg dark:text-black my-3 py-3" wire:model="year" style="width: 70px">
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                            <option value="2025">2025</option>
-                            <option value="2026">2026</option>
-                            <option value="2027">2027</option>
-                            <option value="2028">2028</option>
-                            <option value="2029">2029</option>
-                            <option value="2030">2030</option>
+                        <b class="mr-2 margin-top:40px">Tahun:</b>
+                        <select class="form-control-bordered rounded-lg dark:text-black my-7 py-3 w-24 pl-2" id="tahun" onchange="filterBulanAndYear()">
+                            @for($year = 2024; $year <= 2030; $year++)
+                                <option value="{{ $year }}" {{ $year == $tahun ? 'selected' : '' }}>{{ $year }}</option>
+                            @endfor
                         </select>
                     </div>
                 </div>
@@ -236,7 +224,7 @@
                                             <td colspan="2" class="border px-4 py-2 font-bold">TOTAL</td>
                                             <td class="border px-4 py-2 text-right font-bold">{{$totalG}}</td>
                                         </tr>
-                                    </tfoot>
+                                    </tfoot >
                                 </tbody>
                             </table>
                         </div>
@@ -300,9 +288,33 @@
                             </tbody>
                         </table>
 
-            </form>
+        
         </div>
     </x-keuangan.card-keuangan>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
+    <script>
+        function filterBulan(bulan) {
+            const tahun = document.getElementById('tahun').value;
+            window.location.href = `{{ route('laba-rugi.index') }}?bulan=${bulan}&tahun=${tahun}`;
+        }
+
+        function filterBulanAndYear() {
+            const activeButton = document.querySelector('button.active');
+            const bulan = activeButton ? activeButton.getAttribute('data-bulan') : 1; // Default to January if no active button
+            const tahun = document.getElementById('tahun').value;
+            window.location.href = `{{ route('laba-rugi.index') }}?bulan=${bulan}&tahun=${tahun}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('button[data-bulan]');
+            buttons.forEach(button => {
+                button.addEventListener('click', function () {
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+
 </x-Layout.layout>

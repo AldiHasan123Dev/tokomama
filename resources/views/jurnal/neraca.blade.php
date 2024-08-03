@@ -2,12 +2,11 @@
     <x-keuangan.card-keuangan>
         <x-slot:tittle>Laporan Neraca</x-slot:tittle>
         <div class="overflow-x-auto">
-            <form action="{{ route('jurnal.coa') }}" method="post">
-                @csrf
+            
             <div>
             <div class="flex justify-between">
             <a href="#" target="_blank"
-                class="btn bg-green-400 text-white my-5 py-4 font-bold" id="print">
+                class="btn bg-green-400 text-white my-5 py-4 font-bold" id="print" onclick="window.print()">
                 <i class="fas fa-print"></i> Print Laporan</button>
             </a>
             </div>
@@ -173,5 +172,28 @@
     </x-keuangan.card-keuangan>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
+    <script>
+        function filterBulan(bulan) {
+            const tahun = document.getElementById('tahun').value;
+            window.location.href = `{{ route('neraca.index') }}?bulan=${bulan}&tahun=${tahun}`;
+        }
+
+        function filterBulanAndYear() {
+            const activeButton = document.querySelector('button.active');
+            const bulan = activeButton ? activeButton.getAttribute('data-bulan') : 1; // Default to January if no active button
+            const tahun = document.getElementById('tahun').value;
+            window.location.href = `{{ route('neraca.index') }}?bulan=${bulan}&tahun=${tahun}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('button[data-bulan]');
+            buttons.forEach(button => {
+                button.addEventListener('click', function () {
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
     
 </x-Layout.layout>

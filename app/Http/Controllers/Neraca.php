@@ -12,7 +12,6 @@ class Neraca extends Controller
      */
     public function index(Request $request)
     {
-        
         // Get the current month and year
         $currentMonth = now()->month;
         $currentYear = now()->year;
@@ -21,40 +20,46 @@ class Neraca extends Controller
         $bulan = $request->input('bulan', $currentMonth);
         $tahun = $request->input('tahun', $currentYear);
     
-        $coa1 = Coa::where('no_akun','not like','1.2%')->where('no_akun','like','1%')->orderBy('no_akun')->get();
-        $coa2 = Coa::where('no_akun','like','1.2%')->orderBy('no_akun')->get();
-        $coa3 = Coa::where('no_akun','like','2%')->orderBy('no_akun')->get();
-        $coa4 = Coa::where('no_akun','like','3%')->orderBy('no_akun')->get();
-        $coa5 = Coa::where('tabel', 'E')->get();
-        $coa6 = Coa::where('tabel', 'F')->get();
-        $coa7 = Coa::where('tabel', 'G')->get();
+        // Define the start date as January 2023
+        $startDate = '2023-01-01';
+        // Define the end date based on the selected month and year
+        $endDate = now()->create($tahun . '-' . $bulan . '-01')->endOfMonth()->toDateString();
+    
+        $coa1 = Coa::where('no_akun', 'not like', '1.2%')->where('no_akun', 'like', '1%')->orderBy('no_akun')->get();
+        $coa2 = Coa::where('no_akun', 'like', '1.2%')->orderBy('no_akun')->get();
+        $coa3 = Coa::where('no_akun', 'like', '2%')->orderBy('no_akun')->get();
+        $coa4 = Coa::where('no_akun', 'like', '3%')->orderBy('no_akun')->get();
     
         $totals = [];
         $coaId1 = $coa1->pluck('id')->toArray();
         $coaId2 = $coa2->pluck('id')->toArray();
         $coaId3 = $coa3->pluck('id')->toArray();
         $coaId4 = $coa4->pluck('id')->toArray();
-        $coaId5 = $coa5->pluck('id')->toArray();
-        $coaId6 = $coa6->pluck('id')->toArray();
-        $coaId7 = $coa7->pluck('id')->toArray();
-        $allCoaIds = array_merge($coaId1, $coaId2, $coaId3, $coaId4, $coaId5, $coaId6, $coaId7);
+    
+        $allCoaIds = array_merge($coaId1, $coaId2, $coaId3, $coaId4);
     
         foreach ($allCoaIds as $coaId) {
-            // Filter based on month and year
+            // Filter based on start date and end date
             $debit = Jurnal::where('coa_id', $coaId)
-                ->whereMonth('tgl', $bulan)
-                ->whereYear('tgl', $tahun)
+                ->whereBetween('tgl', [$startDate, $endDate])
                 ->sum('debit');
     
             $kredit = Jurnal::where('coa_id', $coaId)
-                ->whereMonth('tgl', $bulan)
-                ->whereYear('tgl', $tahun)
+                ->whereBetween('tgl', [$startDate, $endDate])
                 ->sum('kredit');
+    
+            if (in_array($coaId, $coaId1) || in_array($coaId, $coaId2)) {
+                $selisih = $debit - $kredit;
+            } elseif (in_array($coaId, $coaId3) || in_array($coaId, $coaId4)) {
+                $selisih = $kredit - $debit;
+            } else {
+                $selisih = 0;
+            }
     
             $totals[$coaId] = [
                 'debit' => $debit,
                 'kredit' => $kredit,
-                'selisih' => $debit - $kredit,
+                'selisih' => $selisih,
             ];
         }
     
@@ -63,17 +68,15 @@ class Neraca extends Controller
         $totalB = array_sum(array_column(array_intersect_key($totals, array_flip($coaId2)), 'selisih'));
         $totalC = array_sum(array_column(array_intersect_key($totals, array_flip($coaId3)), 'selisih'));
         $totalD = array_sum(array_column(array_intersect_key($totals, array_flip($coaId4)), 'selisih'));
-        $totalE = array_sum(array_column(array_intersect_key($totals, array_flip($coaId5)), 'selisih'));
-        $totalF = array_sum(array_column(array_intersect_key($totals, array_flip($coaId6)), 'selisih'));
-        $totalG = array_sum(array_column(array_intersect_key($totals, array_flip($coaId7)), 'selisih'));
-
-
+    
         return view('jurnal.neraca', compact(
-            'coa1', 'coa2', 'coa3', 'coa4', 'coa5', 'coa6', 'coa7',
-            'totals', 'totalA', 'totalB', 'totalC', 'totalD', 'totalE', 'totalF', 'totalG',
-            'bulan', 'tahun' // Pass bulan and tahun to the view
+            'coa1', 'coa2', 'coa3', 'coa4',
+            'totals', 'totalA', 'totalB', 'totalC', 'totalD',
+            'bulan', 'tahun'
         ));
     }
+    
+
 
     /**
      * Show the form for creating a new resource.

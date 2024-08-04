@@ -14,7 +14,7 @@
                     @foreach(['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'] as $index => $bulanName)
                         <button id="bulan-{{ $index + 1 }}" 
                             class="btn my-5 py-4 font-bold border-black 
-                                {{ $index + 1 == $bulan ? 'bg-gray-200 text-black' : 'bg-white text-black hover:text-white' }}" 
+                                {{ $index + 1 == $bulan ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white' }}" 
                             data-bulan="{{ $index + 1 }}" 
                             onclick="filterBulan({{ $index + 1 }})">
                             {{ $bulanName }}

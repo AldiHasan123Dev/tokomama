@@ -18,7 +18,7 @@
         #maintable td {
             padding: 10px;
         }
-        
+
         #maintable th {
             padding: 10px;
         }

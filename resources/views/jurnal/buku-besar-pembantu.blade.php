@@ -1,6 +1,6 @@
 <x-Layout.layout>
     <x-keuangan.card-keuangan>
-        <x-slot:tittle>Jurnal Buku Besar</x-slot:tittle>
+        <x-slot:tittle>Jurnal Buku Besar Pembantu</x-slot:tittle>
         <div class="overflow-x-auto">
             <div class="grid grid-cols-3 mb-5">
                 <div>

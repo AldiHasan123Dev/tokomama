@@ -71,6 +71,10 @@ Route::middleware('auth')->group(function () {
     Route::put('transaction-update', [TransactionController::class, 'update'])->name('transaksi.update');
     Route::get('coa', [CoaController::class,'index'])->name('jurnal.coa');
     Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
+    Route::post('/jurnal/coa/store', [CoaController::class, 'store'])->name('jurnal.coa.store');
+    Route::post('coa-delete', [CoaController::class,'hapusCoa'])->name('jurnal.coa.delete');
+    
+    Route::post('/jurnal/coa/store', [CoaController::class, 'store'])->name('jurnal.coa.store');
     Route::get('template-jurnal', [TemplateJurnalController::class,'index'])->name('jurnal.template-jurnal');
     Route::get('template-jurnal-list', [TemplateJurnalController::class,'datatable'])->name('jurnal.template-jurnal.data');
     Route::get('template-jurnal-create', [TemplateJurnalController::class,'create'])->name('jurnal.template-jurnal.create');

@@ -54,7 +54,7 @@ class JurnalController extends Controller
      */
     public function edit(Jurnal $jurnal)
     {
-        //
+        return view('jurnal.edit-jurnal');
     }
 
     /**

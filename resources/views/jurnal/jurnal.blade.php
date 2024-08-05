@@ -126,7 +126,7 @@
                     </div>
                 </div>
                 <div>
-                    <a href="{{ route('jurnal-manual.index') }}">
+                    <a href="{{ route('jurnal.edit') }}">
                         <button class="btn bg-blue-500 text-white font-bold hover:bg-blue-700">Edit Jurnal</button>
                     </a>
                 </div>

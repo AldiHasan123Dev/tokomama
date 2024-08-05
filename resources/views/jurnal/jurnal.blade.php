@@ -6,6 +6,10 @@
                 <button class="btn bg-green-500 text-white font-bold hover:bg-green-700">Jurnal Manual</button>
             </a>
 
+            <a href="{{ route('jurnal-manual.index') }}">
+                <button class="btn bg-gray-500 text-white font-bold hover:bg-gray-700">Merge Jurnal</button>
+            </a>
+
             <div class="flex flex-row mb-16 mt-8">
                 <label for="month" class="font-bold mt-4">Bulan:</label>
                 <form action="" method="GET">
@@ -92,7 +96,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-3">
+            <div class="grid grid-cols-3 mb-10">
                 <div>
                     Filter Tanggal : <input type="date" name="tanggal" id="tanggal">
                 </div>
@@ -126,12 +130,73 @@
                     </div>
                 </div>
                 <div>
-                    <a href="{{ route('jurnal-manual.index') }}">
-                        <button class="btn bg-blue-500 text-white font-bold hover:bg-blue-700">Edit Jurnal</button>
-                    </a>
+                    <form action="{{ route('jurnal.edit') }}" method="get">
+                        <input type="hidden" name="tipe" id="tipe">
+                        <input type="hidden" name="no" id="no">
+                        <input type="hidden" name="tgl" id="tgl">
+                        <button class="btn bg-yellow-500 text-white font-bold hover:bg-yellow-700" id="edit">Edit Jurnal</button>
+                    </form>
                 </div>
             </div>
+
+            <table class="table" id="coa_table">
+                <!-- head -->
+                <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Tipe</th>
+                    <th>Nomor</th>
+                    <th>No. Akun</th>
+                    <th>Nama Akun</th>
+                    <th>Invoice</th>
+                    <th>Debit</th>
+                    <th>Kredit</th>
+                    <th>Keterangan</th>
+                    <th>Invoice External</th>
+                    <th>Nopol</th>
+                    <th>Container</th>
+                </tr>
+                </thead>
+            </table>
         </div>
     </x-keuangan.card-keuangan>
+
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
+    <script>
+        $(document).ready(function () {
+            var table = $('#coa_table').DataTable({
+                serverSide: true,
+                select:true,
+                ajax: {
+                    url: "{{ route('jurnal.data') }}",
+                    type: 'POST'
+                },
+                columns: [
+                    { data: 'tgl' },
+                    { data: 'tipe' },
+                    { data: 'nomor' },
+                    { data: 'no_akun' },
+                    { data: 'nama_akun' },
+                    { data: 'invoice' },
+                    { data: 'debit' },
+                    { data: 'kredit' },
+                    { data: 'keterangan' },
+                    { data: 'invoice_external' },
+                    { data: 'nopol' },
+                    { data: 'container' },
+                ]
+            });
+
+            $('#coa_table tbody').on('click', 'tr', function () {
+                const row =  table.row( this ).data();
+                $('#tipe').val(row.tipe);
+                $('#no').val(row.no);
+                $('#tgl').val(row.tgl);
+                $('.btn').removeClass('hidden');
+                $('#print').attr('href', "{{ route('invoice.print', ['id' => ':id']) }}".replace(':id', row.id));
+            });
+        });
+    </script>
 
 </x-Layout.layout>

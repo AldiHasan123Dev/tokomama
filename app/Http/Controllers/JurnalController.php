@@ -14,6 +14,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Yajra\DataTables\Facades\DataTables;
 
 class JurnalController extends Controller
 {
@@ -52,9 +53,9 @@ class JurnalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Jurnal $jurnal)
+    public function edit()
     {
-        //
+        return view('jurnal.edit-jurnal');
     }
 
     /**
@@ -73,8 +74,16 @@ class JurnalController extends Controller
         //
     }
 
-    public function getInvoiceWhereNoInv()
+    public function dataTable()
     {
+        $jurnal = Jurnal::join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->orderBy('tgl', 'asc')->orderBy('nomor', 'asc')->orderBy('tipe', 'asc')->get();
 
+        return DataTables::of($jurnal)
+            ->addIndexColumn()
+//            ->addColumn('#', function ($row) {
+//                return '<input type="checkbox" name="id' . $row->id . '" id="id" value="' . $row->id . '">';
+//            })
+//            ->rawColumns(['#'])
+            ->make(true);
     }
 }

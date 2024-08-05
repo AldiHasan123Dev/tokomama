@@ -209,7 +209,7 @@ class JurnalManualController extends Controller
             }
         }
 
-        return redirect()->route('jurnal-manual.index');
+        return redirect()->route('jurnal.index');
     }
 
     /**

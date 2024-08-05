@@ -8,9 +8,7 @@
                 <div class="font-bold">Akun : </div>
                 <div>
                     <select class="js-example-basic-single w-1/2" name="akun" id="coas">
-                        @if(isset($_GET['coa']))
-                            <option value="{{ $coa_by_id->id }}" selected>{{ $coa_by_id->no_akun }} - {{ $coa_by_id->nama_akun }}</option>
-                        @endif
+                        <option value="{{ $coa_by_id->id ?? 1 }}" selected>{{ $coa_by_id->no_akun ?? 1.1 }} - {{ $coa_by_id->nama_akun ?? "Aktiva Lancar" }}</option>
                         @foreach ($coa as $c)
                             <option value="{{ $c->id }}">{{ $c->no_akun }} - {{ $c->nama_akun }}</option>
                         @endforeach
@@ -50,28 +48,28 @@
                   <!-- row 1 -->
                   <tr>
                     <th>Saldo Awal</th>
-                      @foreach ($saldo['saldo_awal'] as $idx => $item)
+                      @foreach ($saldo['saldo_awal'] as $item)
                           <td>{{ number_format($item,2,'.',',') }}</td>
                       @endforeach
                   </tr>
                   <!-- row 2 -->
                   <tr>
                     <th>Debit</th>
-                      @foreach ($saldo['debit'] as $idx => $item)
+                      @foreach ($saldo['debit'] as $item)
                           <td>{{ number_format($item,2,'.',',') }}</td>
                       @endforeach
                   </tr>
                   <!-- row 3 -->
                   <tr>
                     <th>Credit</th>
-                      @foreach ($saldo['kredit'] as $idx => $item)
+                      @foreach ($saldo['kredit'] as $item)
                           <td>{{ number_format($item,2,'.',',') }}</td>
                       @endforeach
                   </tr>
                   <!-- row 4 -->
                   <tr>
                     <th>Saldo Akhir</th>
-                      @foreach ($saldo['saldo_akhir'] as $idx => $item)
+                      @foreach ($saldo['saldo_akhir'] as $item)
                           <td>{{ number_format($item,2,'.',',') }}</td>
                       @endforeach
                   </tr>
@@ -85,7 +83,7 @@
                     <input type="hidden" name="month" value="1">
                     <input type="hidden" name="year" id="y1" value="{{ date('Y') }}">
                     <input type="hidden" name="coa" id="c1">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Jan</button>
+                        <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 1) bg-green-500 text-white @endif">Jan</button>
                 </form>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="2">

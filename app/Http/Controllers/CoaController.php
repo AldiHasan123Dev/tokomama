@@ -41,5 +41,23 @@ class CoaController extends Controller
         }
 
         return redirect()->route('jurnal.coa');
-    }
+    }    
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'no_akun' => 'required|unique:coa,no_akun',
+            'nama_akun' => 'required',
+            'status' => 'required',
+            'tabel' => 'nullable',
+        ]);
+
+        try {
+            Coa::create($validatedData);
+            return redirect()->route('jurnal.coa')->with('success', 'Data COA berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->route('jurnal.coa')->with('error', 'Data COA gagal ditambahkan. Kesalahan: ' . $e->getMessage());
+        }
+    }   
 }
+ 

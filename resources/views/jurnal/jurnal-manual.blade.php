@@ -182,6 +182,8 @@
     <script>
 
     let totaltdtc = 0;
+    let totaltd = 0;
+    let totaltc = 0;
     let dataTemp = [];
 
     $(document).ready(function () {
@@ -191,7 +193,8 @@
         $(`#akun_kredit-1`).select2();
         $(`#invoice_external-1`).select2();
         $(`#nominal-1`).on('keyup', function() {
-            updateTotal();
+            updateTotalDebit(1);
+            updateTotalKredit(1);
         });
 
         $('#check0').click(function() {
@@ -212,7 +215,8 @@
                 $('#nominal-1').prop('disabled', true);
                 $('#invoice_external-1').prop('disabled', true);
                 $('#nominal-1').val(0);
-                updateTotal();
+                updateTotalDebit(1);
+                updateTotalKredit(1);
             }
         });
 
@@ -242,16 +246,43 @@
         });
     }
 
-    function updateTotal() {
-        totaltdtc = 0;
-        $(`input[name="nominal[]"]`).each(function() {
-            let value = parseInt($(this).val());
-            if (!isNaN(value)) {
-                totaltdtc += value;
-            }
-        });
-        $(`#td`).text(totaltdtc);
-        $(`#tc`).text(totaltdtc);
+    // function updateTotal() {
+    //     totaltdtc = 0;
+    //     $(`input[name="nominal[]"]`).each(function() {
+    //         let value = parseInt($(this).val());
+    //         if (!isNaN(value)) {
+    //             totaltdtc += value;
+    //         }
+    //     });
+    //     $(`#td`).text(totaltdtc);
+    //     $(`#tc`).text(totaltdtc);
+    // }
+    
+    function updateTotalDebit(id) {
+        totaltd = 0;
+        if($(`#akun_debet-${id}`).val() != 0) {
+            $(`input[name="nominal[]"]`).each(function() {
+                let value = parseInt($(this).val());
+                if (!isNaN(value)) {
+                    totaltd += value;
+                }
+             });
+            $(`#td`).text(totaltd);
+        } 
+    }
+
+    function updateTotalKredit(id) {
+        totaltc = 0;
+        if($(`#akun_kredit-${id}`).val() != 0) {
+            $(`input[name="nominal[]"]`).each(function() {
+                let value = parseInt($(this).val());
+                if (!isNaN(value)) {
+                    totaltc += value;
+                }
+             });
+            $(`#tc`).text(totaltc);
+        }
+        
     }
 
     $('#addRow').on('click', function() {
@@ -354,7 +385,9 @@
         });
 
         $(`#nominal-${newRowId}`).on('keyup', function() {
-            updateTotal();
+            // updateTotal()
+            updateTotalDebit(newRowId);
+            updateTotalKredit(newRowId);
         });
         bindInvoiceChange(newRowId);
     });

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\NSFPController;
 use App\Http\Controllers\Api\SuratJalanController;
 use App\Http\Controllers\CoaController;
+use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\JurnalManualController;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Resources\DatatableCollection;
@@ -43,6 +44,7 @@ Route::post('/nsfp_edit', [NSFPController::class, 'update'])->name('nsfp.edit');
 Route::post('/invoice', [KeuanganController::class, 'dataTable'])->name('invoice.data');
 
 Route::post('/coa', [CoaController::class, 'dataTable'])->name('coa.data');
+Route::post('/jurnal-data', [JurnalController::class, 'dataTable'])->name('jurnal.data');
 
 Route::get('/pre-invoice', [InvoiceController::class, 'dataTable'])->name('invoice.pre-invoice');
 Route::post('/pre-invoice', [InvoiceController::class, 'ambil'])->name('invoice.pre-invoice.ambil');

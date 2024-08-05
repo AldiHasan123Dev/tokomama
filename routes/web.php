@@ -64,8 +64,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/surat-jalan-delete', [SuratJalanController::class, 'destroy'])->name('surat-jalan.data.delete');
     Route::resource('surat-jalan', SuratJalanController::class);
     Route::resource('invoice-transaksi', InvoiceController::class);
-    Route::resource('jurnal', JurnalController::class);
-    Route::get('jurnal_edit', [JurnalController::class, 'edit'])->name('jurnal.edit'); // sementara untuk buat view
+//    Route::resource('jurnal', JurnalController::class);
+    Route::get('/jurnal', [JurnalController::class, 'index'])->name('jurnal.index');
+    Route::get('/jurnal-edit', [JurnalController::class, 'edit'])->name('jurnal.edit');
     Route::resource('jurnal-manual', JurnalManualController::class);
     Route::post('jurnal-sj-wherejob', [JurnalController::class, 'getInvoiceWhereNoInv'])->name('jurnal.sj.whereInv');
     Route::post('ekspedisi-data', [EkspedisiController::class, 'dataTable'])->name('ekspedisi.data');
@@ -75,7 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
     Route::post('/jurnal/coa/store', [CoaController::class, 'store'])->name('jurnal.coa.store');
     Route::post('coa-delete', [CoaController::class,'hapusCoa'])->name('jurnal.coa.delete');
-    
+
     Route::post('/jurnal/coa/store', [CoaController::class, 'store'])->name('jurnal.coa.store');
     Route::get('template-jurnal', [TemplateJurnalController::class,'index'])->name('jurnal.template-jurnal');
     Route::get('template-jurnal-list', [TemplateJurnalController::class,'datatable'])->name('jurnal.template-jurnal.data');

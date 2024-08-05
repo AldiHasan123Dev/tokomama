@@ -2,7 +2,23 @@
     <x-keuangan.card-keuangan>
         <x-slot:tittle>Laporan Neraca</x-slot:tittle>
         <div class="overflow-x-auto">
-            
+        @php
+            $namaBulan = [
+                1 => 'Januari', 
+                2 => 'Februari', 
+                3 => 'Maret', 
+                4 => 'April', 
+                5 => 'Mei', 
+                6 => 'Juni', 
+                7 => 'Juli', 
+                8 => 'Agustus', 
+                9 => 'September', 
+                10 => 'Oktober', 
+                11 => 'November', 
+                12 => 'Desember'
+            ];
+        @endphp
+
             <div>
             <div class="flex justify-between">
             <a href="#" target="_blank"
@@ -30,7 +46,7 @@
             </div>   
             </div>
             <div class="w-full flex justify-center text-center">
-            <h1>Laporan Neraca s/d Bulan {{$bulan}}</h1><br> 
+            <h1>Laporan Neraca Per {{ $namaBulan[$bulan] }} {{ $tahun }}</h1><br>
             </div> 
         </div>
 

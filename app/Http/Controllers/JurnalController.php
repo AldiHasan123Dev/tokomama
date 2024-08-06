@@ -55,7 +55,14 @@ class JurnalController extends Controller
      */
     public function edit()
     {
-        return view('jurnal.edit-jurnal');
+        // dd($_GET['tipe']);
+        $data = Jurnal::where('tipe', $_GET['tipe'])->where('no', $_GET['no'])->join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
+        $coa = Coa::where('status', 'aktif')->get();
+        $tgl = $_GET['tgl'];
+        $nopol = Nopol::where('status', 'aktif')->get();
+        $invoice = Invoice::get();
+        $invext = Transaction::whereNot('invoice_external', null)->get();
+        return view('jurnal.edit-jurnal', compact('data', 'tgl', 'coa', 'nopol', 'invoice', 'invext'));
     }
 
     /**
@@ -63,7 +70,43 @@ class JurnalController extends Controller
      */
     public function update(Request $request, Jurnal $jurnal)
     {
-        //
+        // dd($request->all());
+
+        //query customer, supplier, barang
+        $invoice = $request->invoice;
+        $invoices = Invoice::where('invoice', $invoice)->with(['transaksi.suratJalan.customer', 'transaksi.barang'])->get();
+        $customer = [];
+        $supplier = [];
+        $barang = [];
+        $i = 0;
+        foreach ($invoices as $item) {
+            $customer[$i] = $item->transaksi->suratJalan->customer->nama;
+            $supplier[$i] = $item->transaksi->suppliers->nama;
+            $barang[$i] = $item->transaksi->barang->nama;
+            $i++;
+        }
+
+        dd($barang);
+
+        $tipe = explode('-',explode('/', $request->nomor)[1])[0];
+        $data = Jurnal::find($request->id);
+        $data->nomor = $request->nomor;
+        $data->debit = $request->debit;
+        $data->kredit = $request->kredit;
+        $data->keterangan = $request->keterangan;
+        $data->invoice_external = $request->invoice_external;
+        $data->nopol = $request->nopol;
+        $data->tipe = $tipe;
+        $data->coa_id = $request->coa_id;
+
+
+        if ($data->save()) {
+            return redirect()->route('jurnal.edit', $data)->with('success', 'Data Jurnal berhasil diubah!');
+        } else {
+            return redirect()->route('jurnal.edit', $data)->with('error', 'Data Jurnal gagal diubah!');
+        }
+
+        return redirect()->route('jurnal.edit');
     }
 
     /**
@@ -85,5 +128,10 @@ class JurnalController extends Controller
 //            })
 //            ->rawColumns(['#'])
             ->make(true);
+    }
+
+    public function datatableEdit()
+    {
+        
     }
 }

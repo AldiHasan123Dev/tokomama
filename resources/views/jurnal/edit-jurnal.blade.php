@@ -21,8 +21,10 @@
     <x-jurnal.card-jurnal>
         <x-slot:tittle>Edit Jurnal</x-slot:tittle>
         <div class="overflow-x-auto">
-            <form action="">
-                <input type="date" class="mb-8 rounded-md" id="tgl_input">
+            <form action="{{ route('jurnal.edit.tglupdate') }}" method="post">
+                @csrf
+                <input name="tgl_input" type="date" class="mb-8 rounded-md" id="tgl_input">
+                <input readonly name="nomor_jurnal_input" type="text" class="mb-8 rounded-md bg-gray-100" id="nomor_jurnal">
                 <button type="submit" class="btn bg-green-500 font-semibold text-white">Simpan Tanggal</button>
             </form>
 
@@ -48,7 +50,7 @@
                 @foreach ($data as $item)
                   <tr>
                     <td><button class="text-yellow-400" onclick="editJurnal( '{{$item->id}}', '{{$item->nomor}}', '{{$item->tgl}}', '{{$item->debit}}', '{{$item->kredit}}', '{{$item->keterangan}}', '{{$item->invoice}}', '{{$item->invoice_external}}', '{{$item->nopol}}', '{{$item->tipe}}', '{{$item->coa_id}}', '{{$item->nama_akun}}', '{{$item->no_akun}}')"><i class="fa-solid fa-pencil"></i></button> |
-                    <button id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button></td>
+                    <button id="delete-faktur-all" onclick="deleteItemJurnal('{{$item->id}}')" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button></td>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->nomor ?? '-' }}</td>
                     <td>{{ $item->tgl ?? '-' }}</td>
@@ -83,12 +85,9 @@
             let tgl = $("#tgl").val();
 
             $("#tgl_input").val(tgl);
+            $("#nomor_jurnal").val(nomorJurnal);
 
-            let table = $(`#table-editj`).DataTable({
-                search: {
-                    "search" : nomorJurnal
-                }
-            });
+            let table = $(`#table-editj`).DataTable({});
 
             function editJurnal(id, nomor, tgl, debit, kredit, keterangan, invoice, invoice_external, nopol, tipe, coa_id, nama_akun, no_akun) {
                 $("#dialog").html(`
@@ -187,6 +186,26 @@
                 $('#invext').select2({
                     dropdownParent: $(`#my_modal_3`),
                 });
+            }
+
+            function deleteItemJurnal(id) {
+                if (confirm('Apakah anda ingin menghapus data ini?')) {
+                    $.ajax({
+                        method: 'post',
+                        url: "{{ route('jurnal.item.delete') }}",
+                        data: {id: id},
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        success: function(response) {
+                            alert("Data Master Barang berhasil dihapus!");
+                            table.ajax.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('Error:', error);
+                            console.log('Status:', status);
+                            console.dir(xhr);
+                        }
+                    });
+                }
             }
 
             

@@ -70,6 +70,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/jurnal-merger', [JurnalController::class, 'merger'])->name('jurnal.jurnal-merger');
     Route::post('/jurnal-merger', [JurnalController::class, 'merger_store'])->name('jurnal.jurnal-merger');
     Route::post('/jurnal-update', [JurnalController::class, 'update'])->name('jurnal.edit.update');
+    Route::post('/jurnal-delete', [JurnalController::class, 'destroy'])->name('jurnal.item.delete');
+    Route::post('/jurnal-tgl-update', [JurnalController::class, 'tglUpdate'])->name('jurnal.edit.tglupdate');
     Route::get('/jurnal-edit-list', [JurnalController::class, 'datatableEdit'])->name('jurnal.edit.list');
     Route::resource('jurnal-manual', JurnalManualController::class);
     Route::post('jurnal-sj-wherejob', [JurnalManualController::class, 'getInvoiceWhereNoInv'])->name('jurnal.sj.whereInv');

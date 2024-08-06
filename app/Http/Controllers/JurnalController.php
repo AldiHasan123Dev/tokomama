@@ -115,7 +115,9 @@ class JurnalController extends Controller
      */
     public function destroy(Jurnal $jurnal)
     {
-        //
+        $data = Jurnal::destroy(request('id'));
+        $redirectUrl = session('jurnal_edit_url', route('jurnal.edit', $data));
+        return redirect($redirectUrl)->with('success', 'Data Jurnal berhasil dihapus!');
     }
 
     public function dataTable()
@@ -131,8 +133,14 @@ class JurnalController extends Controller
             ->make(true);
     }
 
-    public function datatableEdit()
+    public function tglUpdate(Request $request)
     {
-        
+        // dd($request->all());
+        $data = Jurnal::where('nomor', $request->nomor_jurnal_input)->update([
+            'tgl' => $request->tgl_input
+        ]);
+        $redirectUrl = session('jurnal_edit_url', route('jurnal.edit', $data));
+        return redirect($redirectUrl)->with('success', 'Tanggal Jurnal berhasil diubah!');
+
     }
 }

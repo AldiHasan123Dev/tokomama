@@ -67,6 +67,8 @@ Route::middleware('auth')->group(function () {
 //    Route::resource('jurnal', JurnalController::class);
     Route::get('/jurnal', [JurnalController::class, 'index'])->name('jurnal.index');
     Route::get('/jurnal-edit', [JurnalController::class, 'edit'])->name('jurnal.edit');
+    Route::get('/jurnal-merger', [JurnalController::class, 'merger'])->name('jurnal.jurnal-merger');
+    Route::post('/jurnal-merger', [JurnalController::class, 'merger_store'])->name('jurnal.jurnal-merger');
     Route::resource('jurnal-manual', JurnalManualController::class);
     Route::post('jurnal-sj-wherejob', [JurnalController::class, 'getInvoiceWhereNoInv'])->name('jurnal.sj.whereInv');
     Route::post('ekspedisi-data', [EkspedisiController::class, 'dataTable'])->name('ekspedisi.data');

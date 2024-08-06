@@ -27,30 +27,6 @@ class JurnalController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Jurnal $jurnal)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit()
@@ -58,20 +34,23 @@ class JurnalController extends Controller
         return view('jurnal.edit-jurnal');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Jurnal $jurnal)
+    public function merger()
     {
-        //
+        $jurnal = Jurnal::groupBy('nomor')->orderBy('nomor', 'asc')->get();
+        return view('jurnal.jurnal-merger', compact('jurnal'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Jurnal $jurnal)
+    function merger_store(Request $request)
     {
-        //
+        $tujuan = Jurnal::where('nomor', $request->jurnal_tujuan)->first();
+        Jurnal::where('nomor',$request->jurnal_awal)->update([
+            'nomor' => $tujuan->nomor,
+            'no' => $tujuan->no,
+            'tipe' => $tujuan->tipe,
+            'tgl' => $tujuan->tgl
+        ]);
+
+        return to_route('jurnal.index')->with('success','Merge No. Jurnal berhasil');
     }
 
     public function dataTable()

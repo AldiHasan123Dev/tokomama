@@ -58,6 +58,7 @@ class JurnalController extends Controller
         ]);
 
         return to_route('jurnal.index')->with('success','Merge No. Jurnal berhasil');
+    }
     /**
      * Update the specified resource in storage.
      */

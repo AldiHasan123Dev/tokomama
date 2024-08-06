@@ -79,10 +79,10 @@ Route::middleware('auth')->group(function () {
     // Route::get('coa', [CoaController::class,'index'])->name('jurnal.coa');
     // Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
     Route::get('coa', [CoaController::class,'index'])->name('jurnal.coa');
-Route::post('coa', [CoaController::class,'store'])->name('jurnal.coa.store');
-Route::put('coa/{coa}', [CoaController::class,'update'])->name('jurnal.coa.update');
-Route::delete('coa/{coa}', [CoaController::class,'destroy'])->name('jurnal.coa.destroy');
-Route::get('coa/data', [CoaController::class, 'dataTable'])->name('jurnal.coa.data');
+    Route::post('coa', [CoaController::class,'store'])->name('jurnal.coa.store');
+    Route::put('coa/{coa}', [CoaController::class,'update'])->name('jurnal.coa.update');
+    Route::delete('coa/{coa}', [CoaController::class,'destroy'])->name('jurnal.coa.destroy');
+    Route::get('coa/data', [CoaController::class, 'dataTable'])->name('jurnal.coa.data');
     
     Route::post('/jurnal/coa/store', [CoaController::class, 'store'])->name('jurnal.coa.store');
     Route::post('coa-delete', [CoaController::class,'hapusCoa'])->name('jurnal.coa.delete');

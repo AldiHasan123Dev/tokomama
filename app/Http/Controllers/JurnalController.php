@@ -38,6 +38,7 @@ class JurnalController extends Controller
         $nopol = Nopol::where('status', 'aktif')->get();
         $invoice = Invoice::get();
         $invext = Transaction::whereNot('invoice_external', null)->get();
+        session(['jurnal_edit_url' => url()->full()]);
         return view('jurnal.edit-jurnal', compact('data', 'tgl', 'coa', 'nopol', 'invoice', 'invext'));
     }
 
@@ -69,35 +70,41 @@ class JurnalController extends Controller
         //query customer, supplier, barang
         $invoice = $request->invoice;
         $invoices = Invoice::where('invoice', $invoice)->with(['transaksi.suratJalan.customer', 'transaksi.barang'])->get();
-        $customer = [];
-        $supplier = [];
-        $barang = [];
-        $i = 0;
-        foreach ($invoices as $item) {
-            $customer[$i] = $item->transaksi->suratJalan->customer->nama;
-            $supplier[$i] = $item->transaksi->suppliers->nama;
-            $barang[$i] = $item->transaksi->barang->nama;
-            $i++;
+
+        $barang = $invoices[0]->transaksi->barang->nama;
+        $supplier = $invoices[0]->transaksi->suppliers->nama;
+        $customer = $invoices[0]->transaksi->suratJalan->customer->nama;
+        
+        if (str_contains($request->keterangan, '[1]')) {
+            $keterangan = str_replace('[1]', $customer, $request->keterangan);
+        } else if (str_contains($request->keterangan, '[2]')) {
+            $keterangan = str_replace('[2]', $supplier, $request->keterangan);
+        } else if (str_contains($request->keterangan, '[3]')) {
+            $keterangan = str_replace('[3]', $barang, $request->keterangan);
+        } else {
+            $keterangan = $request->keterangan;
         }
 
-        dd($barang);
-
         $tipe = explode('-',explode('/', $request->nomor)[1])[0];
+
+        $no = str_replace(' ', '', explode('-', explode('/', $request->nomor)[0])[1]);
+        // dd($no);
         $data = Jurnal::find($request->id);
         $data->nomor = $request->nomor;
         $data->debit = $request->debit;
         $data->kredit = $request->kredit;
-        $data->keterangan = $request->keterangan;
+        $data->keterangan = $keterangan;
         $data->invoice_external = $request->invoice_external;
         $data->nopol = $request->nopol;
         $data->tipe = $tipe;
         $data->coa_id = $request->coa_id;
 
-
         if ($data->save()) {
-            return redirect()->route('jurnal.edit', $data)->with('success', 'Data Jurnal berhasil diubah!');
+            $redirectUrl = session('jurnal_edit_url', route('jurnal.edit', $data));
+            return redirect($redirectUrl)->with('success', 'Data Jurnal berhasil diubah!');
         } else {
-            return redirect()->route('jurnal.edit', $data)->with('error', 'Data Jurnal gagal diubah!');
+            $redirectUrl = session('jurnal_edit_url', route('jurnal.edit', $data));
+            return redirect($redirectUrl)->with('error', 'Data Jurnal Gagal diubah!');
         }
 
         return redirect()->route('jurnal.edit');

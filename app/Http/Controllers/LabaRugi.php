@@ -54,11 +54,12 @@ class LabaRugi extends Controller
                 'debit' => $debit,
                 'kredit' => $kredit,
                 'selisih' => $debit - $kredit,
+                'pendapatan' => $kredit - $debit
             ];
         }
     
         // Calculate totals based on filtered COAs
-        $totalA = array_sum(array_column(array_intersect_key($totals, array_flip($coaId1)), 'selisih'));
+        $totalA = array_sum(array_column(array_intersect_key($totals, array_flip($coaId1)), 'pendapatan'));
         $totalB = array_sum(array_column(array_intersect_key($totals, array_flip($coaId2)), 'selisih'));
         $totalC = array_sum(array_column(array_intersect_key($totals, array_flip($coaId3)), 'selisih'));
         $totalD = array_sum(array_column(array_intersect_key($totals, array_flip($coaId4)), 'selisih'));

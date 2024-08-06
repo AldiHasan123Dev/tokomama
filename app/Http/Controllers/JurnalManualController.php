@@ -72,9 +72,12 @@ class JurnalManualController extends Controller
         $bulanNow = date('m');
 
         //pemecahan nomor jurnal
-        $jurnalsort = Jurnal::whereMonth('tgl', 07)->where('tipe', 'JNL')->get();
+        $jurnalsort = Jurnal::whereMonth('tgl', $bulan)->where('tipe', 'JNL')->get();
         $nomorArray = $jurnalsort->pluck('no')->toArray();
-        $maxNomor = max($nomorArray); // max nmor pada bulan yang diinputkan user
+        if ($nomorArray == []) {
+            $nomorArray = [0];
+        }
+        $maxNomor = max($nomorArray); // max nmor pada bulan yang diinputkan user
 
         // penggabungan nomor jurnal untuk kondisi jurnal yang diinputkan bulannya tidak sama dengan bulan sekarang
         $breakdown = explode('/', $request->tipe);

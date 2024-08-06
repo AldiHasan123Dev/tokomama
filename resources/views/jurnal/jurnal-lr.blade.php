@@ -48,12 +48,12 @@
                                     @foreach($coa1 as $item)
                                         @php
                                         
-                                        $total = $totals[$item->id] ?? ['selisih' => 0];
+                                        $total = $totals[$item->id] ?? ['pendapatan' => 0];
                                     @endphp
                                     <tr>
                                         <td class="border px-4 py-2">{{ $item->no_akun }}</td>
                                         <td class="border px-4 py-2">{{ $item->nama_akun }}</td>
-                                        <td class="border px-4 py-2 text-right">{{ $total['selisih'] }}</td>
+                                        <td class="border px-4 py-2 text-right">{{ $total['pendapatan'] }}</td>
                                     </tr>
                                     @endforeach
                                     <!-- masukkan logic -->

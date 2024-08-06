@@ -36,10 +36,11 @@ class BukuBesarController extends Controller
         $year = $_GET['year'] ?? date('Y');
 
         if (isset($_GET['coa'])) {
-            $data = Jurnal::whereMonth('jurnal.created_at',$month)->whereYear('jurnal.created_at',$year)->where('jurnal.coa_id',$coa_id)->orderBy('tgl','desc')->orderBy('nomor', 'asc')->orderBy('tipe', 'asc')->get();
+            $data = Jurnal::whereMonth('jurnal.tgl',$month)->whereYear('jurnal.tgl',$year)->where('jurnal.coa_id',$coa_id)->orderBy('created_at','asc')->orderBy('tgl','asc')->orderBy('no', 'asc')->orderBy('tipe', 'asc')->get();
         } else {
-            $data = Jurnal::orderBy('tgl','desc')->orderBy('nomor', 'asc')->orderBy('tipe', 'asc')->get();
+            $data = Jurnal::orderBy('created_at','asc')->orderBy('tgl', 'asc')->orderBy('no', 'asc')->orderBy('tipe', 'asc')->get();
         }
+        
 
         $tipe = 'D';
         if(substr($coa_find->no_akun,0,1)=='2'||substr($coa_find->no_akun,0,1)=='3'||substr($coa_find->no_akun,0,1)=='5'){

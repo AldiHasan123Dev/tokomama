@@ -27,7 +27,7 @@
     <x-keuangan.card-keuangan>
         <x-slot:tittle>Form Jurnal Manual</x-slot:tittle>
         <div class="overflow-x-auto">
-            <form action="{{ route('jurnal.store') }}" method="post">
+            <form action="{{ route('jurnal-manual.store') }}" method="post">
                 @csrf
                 <input type="hidden" name="counter" id="counter">
                 <table id="param" class="mb-10">
@@ -257,7 +257,7 @@
     //     $(`#td`).text(totaltdtc);
     //     $(`#tc`).text(totaltdtc);
     // }
-    
+
     function updateTotalDebit(id) {
         totaltd = 0;
         if($(`#akun_debet-${id}`).val() != 0) {
@@ -268,7 +268,7 @@
                 }
              });
             $(`#td`).text(totaltd);
-        } 
+        }
     }
 
     function updateTotalKredit(id) {
@@ -282,7 +282,7 @@
              });
             $(`#tc`).text(totaltc);
         }
-        
+
     }
 
     $('#addRow').on('click', function() {

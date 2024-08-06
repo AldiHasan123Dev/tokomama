@@ -177,7 +177,7 @@
           if (confirm('Apakah anda ingin menghapus data ini?')) {
             $.ajax({
               method: 'post',
-              url: "{{ route('master.bara ng.delete') }}",
+              url: "{{ route('master.barang.delete') }}",
               data: {id: id},
               headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
               success: function(response) {

@@ -6,7 +6,7 @@
                 <button class="btn bg-green-500 text-white font-bold hover:bg-green-700">Jurnal Manual</button>
             </a>
 
-            <a href="{{ route('jurnal-manual.index') }}">
+            <a href="{{ route('jurnal.jurnal-merger') }}">
                 <button class="btn bg-gray-500 text-white font-bold hover:bg-gray-700">Merge Jurnal</button>
             </a>
 

@@ -67,6 +67,8 @@ Route::middleware('auth')->group(function () {
 //    Route::resource('jurnal', JurnalController::class);
     Route::get('/jurnal', [JurnalController::class, 'index'])->name('jurnal.index');
     Route::get('/jurnal-edit', [JurnalController::class, 'edit'])->name('jurnal.edit');
+    Route::get('/jurnal-merger', [JurnalController::class, 'merger'])->name('jurnal.jurnal-merger');
+    Route::post('/jurnal-merger', [JurnalController::class, 'merger_store'])->name('jurnal.jurnal-merger');
     Route::post('/jurnal-update', [JurnalController::class, 'update'])->name('jurnal.edit.update');
     Route::get('/jurnal-edit-list', [JurnalController::class, 'datatableEdit'])->name('jurnal.edit.list');
     Route::resource('jurnal-manual', JurnalManualController::class);
@@ -74,8 +76,14 @@ Route::middleware('auth')->group(function () {
     Route::post('ekspedisi-data', [EkspedisiController::class, 'dataTable'])->name('ekspedisi.data');
     Route::post('transaction-data', [TransactionController::class, 'dataTable'])->name('transaksi.data');
     Route::put('transaction-update', [TransactionController::class, 'update'])->name('transaksi.update');
+    // Route::get('coa', [CoaController::class,'index'])->name('jurnal.coa');
+    // Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
     Route::get('coa', [CoaController::class,'index'])->name('jurnal.coa');
-    Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
+Route::post('coa', [CoaController::class,'store'])->name('jurnal.coa.store');
+Route::put('coa/{coa}', [CoaController::class,'update'])->name('jurnal.coa.update');
+Route::delete('coa/{coa}', [CoaController::class,'destroy'])->name('jurnal.coa.destroy');
+Route::get('coa/data', [CoaController::class, 'dataTable'])->name('jurnal.coa.data');
+    
     Route::post('/jurnal/coa/store', [CoaController::class, 'store'])->name('jurnal.coa.store');
     Route::post('coa-delete', [CoaController::class,'hapusCoa'])->name('jurnal.coa.delete');
 

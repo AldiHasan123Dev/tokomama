@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/jurnal-merger', [JurnalController::class, 'merger'])->name('jurnal.jurnal-merger');
     Route::post('/jurnal-merger', [JurnalController::class, 'merger_store'])->name('jurnal.jurnal-merger');
     Route::resource('jurnal-manual', JurnalManualController::class);
-    Route::post('jurnal-sj-wherejob', [JurnalController::class, 'getInvoiceWhereNoInv'])->name('jurnal.sj.whereInv');
+    Route::post('jurnal-sj-wherejob', [JurnalManualController::class, 'getInvoiceWhereNoInv'])->name('jurnal.sj.whereInv');
     Route::post('ekspedisi-data', [EkspedisiController::class, 'dataTable'])->name('ekspedisi.data');
     Route::post('transaction-data', [TransactionController::class, 'dataTable'])->name('transaksi.data');
     Route::put('transaction-update', [TransactionController::class, 'update'])->name('transaksi.update');
@@ -81,7 +81,7 @@ Route::post('coa', [CoaController::class,'store'])->name('jurnal.coa.store');
 Route::put('coa/{coa}', [CoaController::class,'update'])->name('jurnal.coa.update');
 Route::delete('coa/{coa}', [CoaController::class,'destroy'])->name('jurnal.coa.destroy');
 Route::get('coa/data', [CoaController::class, 'dataTable'])->name('jurnal.coa.data');
-    
+
     Route::post('/jurnal/coa/store', [CoaController::class, 'store'])->name('jurnal.coa.store');
     Route::post('coa-delete', [CoaController::class,'hapusCoa'])->name('jurnal.coa.delete');
 
@@ -96,6 +96,7 @@ Route::get('coa/data', [CoaController::class, 'dataTable'])->name('jurnal.coa.da
     Route::post('template-jurnal-delete', [TemplateJurnalController::class,'destroy'])->name('jurnal.template-jurnal.delete');
     Route::post('/omzet-data', [KeuanganController::class, 'dataTableOmzet'])->name('keuangan.omzet.data');
     Route::resource('buku-besar', BukuBesarController::class);
+    Route::get('/export/buku-besar', [BukuBesarController::class, 'export'])->name('buku-besar.export');
     Route::get('buku-besar/{month}/{year}', [BukuBesarController::class, 'datatableDefault'])->name('buku-besar.dataf');
     Route::get('bb-data/{month}/{year}/{coa}', [BukuBesarController::class, 'datatable'])->name('buku-besar.data');
     Route::resource('neraca', Neraca::class);

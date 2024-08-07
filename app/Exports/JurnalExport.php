@@ -1,23 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Exports;
 
-use App\Exports\JurnalExport;
-use App\Models\BukuBesar;
 use App\Models\Coa;
 use App\Models\Jurnal;
 use App\Models\Nopol;
 use App\Models\TemplateJurnal;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class BukuBesarController extends Controller
+class JurnalExport implements FromView
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function view(): View
     {
         $templates = TemplateJurnal::all();
         $nopol = Nopol::where('status', 'aktif')->get();
@@ -83,59 +78,6 @@ class BukuBesarController extends Controller
         $m = (int)$month;
         $saldo_awal = $saldo['saldo_awal'][$m-1];
 
-        return view('jurnal.buku-besar', compact('templates','nopol', 'coa', 'months', 'saldo','saldo_awal', 'coa', 'coa_id', 'year', 'coa_by_id', 'data', 'tipe'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(BukuBesar $bukuBesar)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(BukuBesar $bukuBesar)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, BukuBesar $bukuBesar)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(BukuBesar $bukuBesar)
-    {
-        //
-    }
-
-    public function export()
-    {
-        return Excel::download(new JurnalExport, 'buku_besar.xlsx');
+        return view('jurnal.buku-besar-export', compact('templates','nopol', 'coa', 'months', 'saldo','saldo_awal', 'coa', 'coa_id', 'year', 'coa_by_id', 'data', 'tipe'));
     }
 }

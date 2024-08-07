@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Http\Controllers;
+
 use App\Models\Coa;
 use App\Models\Jurnal;
 use Illuminate\Http\Request;
@@ -37,7 +37,7 @@ class Neraca extends Controller
         $coaId4 = $coa4->pluck('id')->toArray();
     
         $allCoaIds = array_merge($coaId1, $coaId2, $coaId3, $coaId4);
-    
+       
         foreach ($allCoaIds as $coaId) {
             // Filter based on start date and end date
             $debit = Jurnal::where('coa_id', $coaId)
@@ -69,12 +69,36 @@ class Neraca extends Controller
         $totalC = array_sum(array_column(array_intersect_key($totals, array_flip($coaId3)), 'selisih'));
         $totalD = array_sum(array_column(array_intersect_key($totals, array_flip($coaId4)), 'selisih'));
     
+        // Calculate Laba Rugi (LR)
+        $kel5 = Jurnal::join('coa', 'coa.id', '=', 'jurnal.coa_id')
+            ->where('coa.no_akun', 'like', '5.%')
+            ->whereBetween('jurnal.tgl', [$startDate, $endDate])
+            ->get();
+
+        $kel6 = Jurnal::join('coa', 'coa.id', '=', 'jurnal.coa_id')
+            ->where('coa.no_akun', 'like', '6.%')
+            ->whereBetween('jurnal.tgl', [$startDate, $endDate])
+            ->get();
+
+        $kel7 = Jurnal::join('coa', 'coa.id', '=', 'jurnal.coa_id')
+            ->where('coa.no_akun', 'like', '7.%')
+            ->whereBetween('jurnal.tgl', [$startDate, $endDate])
+            ->get();
+
+        $lr = ($kel5->sum('kredit') - $kel5->sum('debit')) - 
+            (($kel6->sum('debit') - $kel6->sum('kredit')) + 
+            ($kel7->sum('debit') - $kel7->sum('kredit')));
+
         return view('jurnal.neraca', compact(
             'coa1', 'coa2', 'coa3', 'coa4',
             'totals', 'totalA', 'totalB', 'totalC', 'totalD',
-            'bulan', 'tahun'
+            'bulan', 'tahun', 'lr', 'startDate', 'endDate'
         ));
     }
+
+    // Other controller methods...
+
+
     
 
 

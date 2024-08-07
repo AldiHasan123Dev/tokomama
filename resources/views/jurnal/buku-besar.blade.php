@@ -2,7 +2,12 @@
     <x-keuangan.card-keuangan>
         <x-slot:tittle>Jurnal Buku Besar</x-slot:tittle>
         <div class="overflow-x-auto">
-            <button class="btn bg-green-500 text-white mt-3 mb-5" type="button"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
+            <form action="{{ route('buku-besar.export') }}" method="get">
+                <input type="hidden" name="month" value="@if (isset($_GET['month'])) {{ $_GET['month'] }} @else {{ date('m') }} @endif">
+                <input type="hidden" name="year" id="y4" value="@if (isset($_GET['year'])) {{ $_GET['year'] }} @else {{ date('Y') }} @endif">
+                <input type="hidden" name="coa" id="c4" value="@if (isset($_GET['coa'])) {{ $_GET['coa'] }} @else {{ '' }} @endif">
+                <button class="btn bg-green-500 text-white mt-3 mb-5" type="submit"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
+            </form>
 
             <div class="grid grid-cols-4">
                 <div class="font-bold">Akun : </div>

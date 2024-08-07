@@ -77,7 +77,7 @@ class JurnalManualController extends Controller
         if ($nomorArray == []) {
             $nomorArray = [0];
         }
-        $maxNomor = max($nomorArray); // max nmor pada bulan yang diinputkan user
+        $maxNomor = max($nomorArray); // max nmor pada bulan yang diinputkan user
 
         // penggabungan nomor jurnal untuk kondisi jurnal yang diinputkan bulannya tidak sama dengan bulan sekarang
         $breakdown = explode('/', $request->tipe);

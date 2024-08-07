@@ -73,7 +73,7 @@ class CustomerController extends Controller
         if ($data->save()) {
             return redirect()->route('master.customer', $data)->with('success', 'Data Master Customer berhasil diubah!');
         } else {
-            return redirect()->route('master.customer', $data)->with('error', 'Data Master Customer berhasil diubah!');
+            return redirect()->route('master.customer', $data)->with('error', 'Data Master Customer gagal diubah!');
         }
 
         return redirect()->route('master.customer');

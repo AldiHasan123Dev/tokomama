@@ -31,7 +31,15 @@ class JurnalController extends Controller
      */
     public function edit()
     {
-        return view('jurnal.edit-jurnal');
+        // dd($_GET['tipe']);
+        $data = Jurnal::where('tipe', $_GET['tipe'])->where('no', $_GET['no'])->join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
+        $coa = Coa::where('status', 'aktif')->get();
+        $tgl = $_GET['tgl'];
+        $nopol = Nopol::where('status', 'aktif')->get();
+        $invoice = Invoice::get();
+        $invext = Transaction::whereNot('invoice_external', null)->get();
+        session(['jurnal_edit_url' => url()->full()]);
+        return view('jurnal.edit-jurnal', compact('data', 'tgl', 'coa', 'nopol', 'invoice', 'invext'));
     }
 
     public function merger()
@@ -52,6 +60,65 @@ class JurnalController extends Controller
 
         return to_route('jurnal.index')->with('success','Merge No. Jurnal berhasil');
     }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Jurnal $jurnal)
+    {
+        // dd($request->all());
+
+        //query customer, supplier, barang
+        $invoice = $request->invoice;
+        $invoices = Invoice::where('invoice', $invoice)->with(['transaksi.suratJalan.customer', 'transaksi.barang'])->get();
+
+        $barang = $invoices[0]->transaksi->barang->nama;
+        $supplier = $invoices[0]->transaksi->suppliers->nama;
+        $customer = $invoices[0]->transaksi->suratJalan->customer->nama;
+        
+        if (str_contains($request->keterangan, '[1]')) {
+            $keterangan = str_replace('[1]', $customer, $request->keterangan);
+        } else if (str_contains($request->keterangan, '[2]')) {
+            $keterangan = str_replace('[2]', $supplier, $request->keterangan);
+        } else if (str_contains($request->keterangan, '[3]')) {
+            $keterangan = str_replace('[3]', $barang, $request->keterangan);
+        } else {
+            $keterangan = $request->keterangan;
+        }
+
+        $tipe = explode('-',explode('/', $request->nomor)[1])[0];
+
+        $no = str_replace(' ', '', explode('-', explode('/', $request->nomor)[0])[1]);
+        // dd($no);
+        $data = Jurnal::find($request->id);
+        $data->nomor = $request->nomor;
+        $data->debit = $request->debit;
+        $data->kredit = $request->kredit;
+        $data->keterangan = $keterangan;
+        $data->invoice_external = $request->invoice_external;
+        $data->nopol = $request->nopol;
+        $data->tipe = $tipe;
+        $data->coa_id = $request->coa_id;
+
+        if ($data->save()) {
+            $redirectUrl = session('jurnal_edit_url', route('jurnal.edit', $data));
+            return redirect($redirectUrl)->with('success', 'Data Jurnal berhasil diubah!');
+        } else {
+            $redirectUrl = session('jurnal_edit_url', route('jurnal.edit', $data));
+            return redirect($redirectUrl)->with('error', 'Data Jurnal Gagal diubah!');
+        }
+
+        return redirect()->route('jurnal.edit');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Jurnal $jurnal)
+    {
+        $data = Jurnal::destroy(request('id'));
+        $redirectUrl = session('jurnal_edit_url', route('jurnal.edit', $data));
+        return redirect($redirectUrl)->with('success', 'Data Jurnal berhasil dihapus!');
+    }
 
     public function dataTable()
     {
@@ -64,5 +131,16 @@ class JurnalController extends Controller
 //            })
 //            ->rawColumns(['#'])
             ->make(true);
+    }
+
+    public function tglUpdate(Request $request)
+    {
+        // dd($request->all());
+        $data = Jurnal::where('nomor', $request->nomor_jurnal_input)->update([
+            'tgl' => $request->tgl_input
+        ]);
+        $redirectUrl = session('jurnal_edit_url', route('jurnal.edit', $data));
+        return redirect($redirectUrl)->with('success', 'Tanggal Jurnal berhasil diubah!');
+
     }
 }

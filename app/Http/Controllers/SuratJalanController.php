@@ -230,10 +230,8 @@ class SuratJalanController extends Controller
             })
             ->addColumn('aksi', function ($row) {
                 $action = '';
-                $sisa = $row->sum('sisa');
-                if ($sisa > 0) {
-                    $action = '<button onclick="getData(' . $row->id_surat_jalan . ', \'' . addslashes($row->suratJalan->nomor_surat) . '\', ' . $row->id_supplier . ', \'' . addslashes($row->suppliers->nama) . '\', \'' . addslashes($row->invoice_external) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>';
-                }
+                $action = '<button onclick="getData(' . $row->id_surat_jalan . ', \'' . addslashes($row->suratJalan->nomor_surat) . '\', ' . $row->id_supplier . ', \'' . addslashes($row->suppliers->nama) . '\', \'' . addslashes($row->invoice_external) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>';
+                
                 return '<div class="flex gap-3 mt-2">
                             '.$action.'
                         </div>';

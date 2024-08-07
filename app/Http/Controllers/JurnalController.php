@@ -23,7 +23,15 @@ class JurnalController extends Controller
      */
     public function index()
     {
-        return view('jurnal.jurnal');
+        if(isset($_GET['tipe']) && isset($_GET['month']) && isset($_GET['year'])){
+            $data = Jurnal::whereMonth('tgl', $_GET['month'])->whereYear('tgl', $_GET['year'])->where('tipe', $_GET['tipe'])->join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
+        } elseif (isset($_GET['month']) && isset($_GET['year'])) {
+            $data = Jurnal::whereMonth('tgl', $_GET['month'])->whereYear('tgl', $_GET['year'])->join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
+        } else {
+            $data = Jurnal::join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
+        }
+        // dd($data);
+        return view('jurnal.jurnal', compact('data'));
     }
 
     /**

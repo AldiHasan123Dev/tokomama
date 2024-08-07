@@ -13,76 +13,64 @@
             <div class="flex flex-row mb-16 mt-8">
                 <label for="month" class="font-bold mt-4">Bulan:</label>
                 <form action="" method="GET">
-                    <input type="hidden" name="month" value="1">
+                    <input type="hidden" name="month" id="m1" value="1">
                     <input type="hidden" name="year" id="y1" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c1">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 1) bg-green-500 text-white @endif">Jan</button>
+                    <button id="btn1" class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 1) bg-green-500 text-white @endif">Jan</button>
                 </form>
                 <form action="" method="GET">
-                    <input type="hidden" name="month" value="2">
+                    <input type="hidden" name="month" id="m2" value="2">
                     <input type="hidden" name="year" id="y2" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c2">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Feb</button>
+                    <button id="btn2" class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Feb</button>
                 </form>
                 <form action="" method="GET">
-                    <input type="hidden" name="month" value="3">
+                    <input type="hidden" name="month" id="m3" value="3">
                     <input type="hidden" name="year" id="y3" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c3">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Mar</button>
+                    <button id="btn3" class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Mar</button>
                 </form>
                 <form action="" method="GET">
-                    <input type="hidden" name="month" value="4">
+                    <input type="hidden" name="month" id="m4" value="4">
                     <input type="hidden" name="year" id="y4" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c4">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Apr</button>
+                    <button id="btn4" class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Apr</button>
                 </form>
                 <form action="" method="GET">
-                    <input type="hidden" name="month" value="5">
+                    <input type="hidden" name="month" id="m5" value="5">
                     <input type="hidden" name="year" id="y5" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c5">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Mei</button>
+                    <button id="btn5" class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Mei</button>
                 </form>
                 <form action="" method="GET">
-                    <input type="hidden" name="month" value="6">
+                    <input type="hidden" name="month" id="m6" value="6">
                     <input type="hidden" name="year" id="y6" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c6">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Jun</button>
+                    <button id="btn6" class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Jun</button>
                 </form>
                 <form action="" method="GET">
-                    <input type="hidden" name="month" value="7">
+                    <input type="hidden" name="month" id="m7" value="7">
                     <input type="hidden" name="year" id="y7" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c7">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Jul</button>
+                    <button id="btn7" class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Jul</button>
                 </form>
                 <form action="" method="GET">
-                    <input type="hidden" name="month" value="8">
+                    <input type="hidden" name="month" id="m8" value="8">
                     <input type="hidden" name="year" id="y8" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c8">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Agu</button>
+                    <button id="btn8" class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Agu</button>
                 </form>
                 <form action="" method="GET">
-                    <input type="hidden" name="month" value="9">
+                    <input type="hidden" name="month" id="m9" value="9">
                     <input type="hidden" name="year" id="y9" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c9">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Sep</button>
+                    <button id="btn9" class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Sep</button>
                 </form>
                 <form action="" method="GET">
-                    <input type="hidden" name="month" value="10">
+                    <input type="hidden" name="month" id="m10" value="10">
                     <input type="hidden" name="year" id="y10" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c10">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Okt</button>
+                    <button id="btn10" class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Okt</button>
                 </form>
                 <form action="" method="GET">
-                    <input type="hidden" name="month" value="11">
+                    <input type="hidden" name="month" id="m11" value="11">
                     <input type="hidden" name="year" id="y11" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c11">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Nov</button>
+                    <button id="btn11" class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Nov</button>
                 </form>
                 <form action="" method="GET">
-                    <input type="hidden" name="month" value="12">
+                    <input type="hidden" name="month" id="m12" value="12">
                     <input type="hidden" name="year" id="y12" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c12">
-                    <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Des</button>
+                    <button id="btn12" class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">Des</button>
                 </form>
 
                 <div class="w-full ml-10 mt-3">
@@ -96,41 +84,47 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 mb-10">
-                <div>
+            <div class="mb-10 flex justify-between">
+                {{-- <div>
                     Filter Tanggal : <input type="date" name="tanggal" id="tanggal">
-                </div>
+                </div> --}}
                 <div>
                     <div class="flex flex-row">
                         <label for="month" class="font-bold mt-3">Tipe : </label>
                         <form action="" method="GET">
-                            <input type="hidden" name="month" value="1">
-                            <input type="hidden" name="year" id="y1" value="{{ date('Y') }}">
-                            <input type="hidden" name="coa" id="c1">
-                            <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 1) bg-green-500 text-white @endif">BANK</button>
-                        </form>
-                        <form action="" method="GET">
-                            <input type="hidden" name="month" value="2">
-                            <input type="hidden" name="year" id="y2" value="{{ date('Y') }}">
-                            <input type="hidden" name="coa" id="c2">
-                            <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">KAS</button>
-                        </form>
-                        <form action="" method="GET">
-                            <input type="hidden" name="month" value="3">
-                            <input type="hidden" name="year" id="y3" value="{{ date('Y') }}">
-                            <input type="hidden" name="coa" id="c3">
+                            <input type="hidden" name="tipe" value="JNL">
+                            <input type="hidden" name="month" id="tm1" value="{{ isset($_GET['month']) ? $_GET['month'] : '' }}">
+                            <input type="hidden" name="year" id="y2-1" value="{{ date('Y') }}">
                             <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">JNL</button>
                         </form>
                         <form action="" method="GET">
-                            <input type="hidden" name="month" value="4">
-                            <input type="hidden" name="year" id="y4" value="{{ date('Y') }}">
-                            <input type="hidden" name="coa" id="c4">
-                            <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">TEST</button>
+                        <input type="hidden" name="tipe" value="BKK">
+                            <input type="hidden" name="month" id="tm2" value="{{ isset($_GET['month']) ? $_GET['month'] : '' }}">
+                            <input type="hidden" name="year" id="y2-2" value="{{ date('Y') }}">
+                            <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">BKK</button>
+                        </form>
+                        <form action="" method="GET">
+                        <input type="hidden" name="tipe" value="BKM">
+                            <input type="hidden" name="month" id="tm3" value="{{ isset($_GET['month']) ? $_GET['month'] : '' }}">
+                            <input type="hidden" name="year" id="y2-3" value="{{ date('Y') }}">
+                            <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">BKM</button>
+                        </form>
+                        <form action="" method="GET">
+                            <input type="hidden" name="tipe" value="BBK">
+                            <input type="hidden" name="month" id="tm4" value="{{ isset($_GET['month']) ? $_GET['month'] : '' }}">
+                            <input type="hidden" name="year" id="y2-4" value="{{ date('Y') }}">
+                            <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">BBK</button>
+                        </form>
+                        <form action="" method="GET">
+                            <input type="hidden" name="tipe" value="BBM">
+                            <input type="hidden" name="month" id="tm5" value="{{ isset($_GET['month']) ? $_GET['month'] : '' }}">
+                            <input type="hidden" name="year" id="y2-5" value="{{ date('Y') }}">
+                            <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1">BBM</button>
                         </form>
                     </div>
                 </div>
                 <div>
-                    <form action="{{ route('jurnal.edit') }}" method="get">
+                    <form action="{{ route('jurnal.edit') }}" method="get" class="ml-10">
                         <input type="hidden" name="tipe" id="tipe">
                         <input type="hidden" name="no" id="no">
                         <input type="hidden" name="tgl" id="tgl">
@@ -139,7 +133,7 @@
                 </div>
             </div>
 
-            <table class="table" id="coa_table">
+            <table id="coa_table" class="cell-border hover display nowrap compact">
                 <!-- head -->
                 <thead>
                 <tr>
@@ -154,48 +148,71 @@
                     <th>Keterangan</th>
                     <th>Invoice External</th>
                     <th>Nopol</th>
-                    <th>Container</th>
+                    <th class="hidden">no</th>
                 </tr>
                 </thead>
+                <tbody>
+                    @foreach($data as $d)
+                    <tr>
+                        <td>{{ $d->tgl }}</td>
+                        <td>{{ $d->tipe }}</td>
+                        <td>{{ $d->nomor }}</td>
+                        <td>{{ $d->no_akun }}</td>
+                        <td>{{ $d->nama_akun }}</td>
+                        <td>{{ $d->invoice }}</td>
+                        <td>{{ $d->debit }}</td>
+                        <td>{{ $d->kredit }}</td>
+                        <td>{{ $d->keterangan }}</td>
+                        <td>{{ $d->invoice_external }}</td>
+                        <td>{{ $d->nopol }}</td>
+                        <td class="hidden">{{ $d->no }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
         </div>
     </x-keuangan.card-keuangan>
 
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
+    <script src="https://cdn.datatables.net/2.1.0/js/dataTables.tailwindcss.js"></script>
     <script>
         $(document).ready(function () {
             var table = $('#coa_table').DataTable({
-                serverSide: true,
-                select:true,
-                ajax: {
-                    url: "{{ route('jurnal.data') }}",
-                    type: 'POST'
-                },
-                columns: [
-                    { data: 'tgl' },
-                    { data: 'tipe' },
-                    { data: 'nomor' },
-                    { data: 'no_akun' },
-                    { data: 'nama_akun' },
-                    { data: 'invoice' },
-                    { data: 'debit' },
-                    { data: 'kredit' },
-                    { data: 'keterangan' },
-                    { data: 'invoice_external' },
-                    { data: 'nopol' },
-                    { data: 'container' },
-                ]
+                select: true,
+                
             });
 
             $('#coa_table tbody').on('click', 'tr', function () {
                 const row =  table.row( this ).data();
-                $('#tipe').val(row.tipe);
-                $('#no').val(row.no);
-                $('#tgl').val(row.tgl);
+                console.log(row);
+                $('#tipe').val(row[1]);
+                $('#no').val(row[11]);
+                $('#tgl').val(row[0]);
                 $('.btn').removeClass('hidden');
                 $('#print').attr('href', "{{ route('invoice.print', ['id' => ':id']) }}".replace(':id', row.id));
             });
+
+            $(`#thn`).on(`change`, function() {
+                $(`#y1`).val($(this).val())
+                $(`#y2`).val($(this).val())
+                $(`#y3`).val($(this).val())
+                $(`#y4`).val($(this).val())
+                $(`#y5`).val($(this).val())
+                $(`#y6`).val($(this).val())
+                $(`#y7`).val($(this).val())
+                $(`#y8`).val($(this).val())
+                $(`#y9`).val($(this).val())
+                $(`#y10`).val($(this).val())
+                $(`#y11`).val($(this).val())
+                $(`#y12`).val($(this).val())
+                $(`#y2-1`).val($(this).val())
+                $(`#y2-2`).val($(this).val())
+                $(`#y2-3`).val($(this).val())
+                $(`#y2-4`).val($(this).val())
+                $(`#y2-5`).val($(this).val())
+            })
+            
         });
     </script>
 

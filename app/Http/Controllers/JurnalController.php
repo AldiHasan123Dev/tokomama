@@ -73,7 +73,7 @@ class JurnalController extends Controller
      */
     public function update(Request $request, Jurnal $jurnal)
     {
-        // dd($request->all());
+        dd($request->all());
 
         //query customer, supplier, barang
         $invoice = $request->invoice;
@@ -87,13 +87,28 @@ class JurnalController extends Controller
         $keterangan = $request->keterangan;
 
         if (str_contains($request->keterangan, '[1]')) {
-            $keterangan = str_replace('[1]', $request->param1, $request->keterangan);
+            $keterangan = str_replace('[1]', $customer, $keterangan);
         } 
         if (str_contains($request->keterangan, '[2]')) {
-            $keterangan = str_replace('[2]', $request->param2, $request->keterangan);
+            $keterangan = str_replace('[2]', $supplier, $keterangan);
         }
         if (str_contains($request->keterangan, '[3]')) {
-            $keterangan = str_replace('[3]', $request->param3, $request->keterangan);
+            $keterangan = str_replace('[3]', $barang, $keterangan);
+        }
+        if (str_contains($request->keterangan, '[4]')) {
+            $keterangan = str_replace('[4]', $request->param4, $keterangan);
+        }
+        if (str_contains($request->keterangan, '[5]')) {
+            $keterangan = str_replace('[5]', $request->param5, $keterangan);
+        }
+        if (str_contains($request->keterangan, '[6]')) {
+            $keterangan = str_replace('[6]', $request->param6, $keterangan);
+        }
+        if (str_contains($request->keterangan, '[7]')) {
+            $keterangan = str_replace('[7]', $request->param7, $keterangan);
+        }
+        if (str_contains($request->keterangan, '[8]')) {
+            $keterangan = str_replace('[8]', $request->param8, $keterangan);
         }
 
         $keteranganNow = $keterangan;

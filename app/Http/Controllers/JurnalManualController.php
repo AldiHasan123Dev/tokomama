@@ -43,7 +43,7 @@ class JurnalManualController extends Controller
         $invoices = Invoice::all();
         $processedInvoices = [];
         $invoiceCounts = [];
-        foreach($invoices as $invoice) {
+        foreach ($invoices as $invoice) {
             $invoiceNumber = $invoice->invoice;
             if (!isset($invoiceCounts[$invoiceNumber])) {
                 $invoiceCounts[$invoiceNumber] = 0;
@@ -57,7 +57,7 @@ class JurnalManualController extends Controller
         $transaksi = Transaction::whereNotNull('invoice_external')->get();
         $procTransactions = [];
         $transactionCounts = [];
-        foreach($transaksi as $transaction) {
+        foreach ($transaksi as $transaction) {
             $invoiceNumber = $transaction->invoice_external;
             if (!isset($transactionCounts[$invoiceNumber])) {
                 $transactionCounts[$invoiceNumber] = 0;
@@ -114,17 +114,34 @@ class JurnalManualController extends Controller
         $newNoJurnal = $title . ' - ' . $maxNomor + 1 . '/' . $sec2 . '/' . $sec3;
 
         $keteranganList = [];
+
         for ($i = 0; $i < $request->counter; $i++) {
             $keterangan = $request->keterangan[$i];
             if (str_contains($request->keterangan[$i], '[1]')) {
-                $keterangan = str_replace('[1]', $request->param1[$i], $request->keterangan[$i]);
-            } 
+                $keterangan = str_replace('[1]', $request->param1[$i], $keterangan);
+            }
             if (str_contains($request->keterangan[$i], '[2]')) {
-                $keterangan = str_replace('[2]', $request->param2[$i], $request->keterangan[$i]);
+                $keterangan = str_replace('[2]', $request->param2[$i], $keterangan);
             }
             if (str_contains($request->keterangan[$i], '[3]')) {
-                $keterangan = str_replace('[3]', $request->param3[$i], $request->keterangan[$i]);
+                $keterangan = str_replace('[3]', $request->param3[$i], $keterangan);
             }
+            if (str_contains($request->keterangan[$i], '[4]')) {
+                $keterangan = str_replace('[4]', $request->param4[$i], $keterangan);
+            }
+            if (str_contains($request->keterangan[$i], '[5]')) {
+                $keterangan = str_replace('[5]', $request->param5[$i], $keterangan);
+            }
+            if (str_contains($request->keterangan[$i], '[6]')) {
+                $keterangan = str_replace('[6]', $request->param6[$i], $keterangan);
+            }
+            if (str_contains($request->keterangan[$i], '[7]')) {
+                $keterangan = str_replace('[7]', $request->param7[$i], $keterangan);
+            }
+            if (str_contains($request->keterangan[$i], '[8]')) {
+                $keterangan = str_replace('[8]', $request->param8[$i], $keterangan);
+            }
+
             $keteranganList[$i] = $keterangan;
         }
 
@@ -281,20 +298,30 @@ class JurnalManualController extends Controller
         $invoices = Invoice::with([
             'transaksi.suppliers',
             'transaksi.barang',
-            'transaksi.suratJalan',
+            'transaksi.suratJalan.customer',
         ])
             ->where('invoice', request('invoice'))
             ->get();
 
-        $suratJalans = [];
+        $dataCust = [];
+        $dataSup = [];
+        $dataBar = [];
+        $dataQty = [];
+        $dataSat = [];
+        $dataHarsBel = [];
+        $dataHarsJul = [];
+        $dataKet = [];
 
         if ($invoices->isNotEmpty()) {
             foreach ($invoices as $invoice) {
-                if ($invoice->transaksi && $invoice->transaksi->suratJalan) {
-                    $suratJalans[] = $invoice->transaksi->suratJalan->customer->nama;
-                } else {
-                    return response()->json(['error' => 'Surat jalan Not Found'], 404);
-                }
+                $dataCust[] = $invoice->transaksi->suratJalan->customer->nama;
+                $dataSup[] = $invoice->transaksi->suppliers->nama;
+                $dataBar[] = $invoice->transaksi->barang->nama;
+                $dataQty[] = $invoice->transaksi->jumlah_jual;
+                $dataSat[] = $invoice->transaksi->satuan_jual;
+                $dataHarsBel[] = $invoice->transaksi->harga_beli;
+                $dataHarsJul[] = $invoice->transaksi->harga_jual;
+                $dataKet[] = $invoice->transaksi->keterangan;
             }
         } else {
             return response()->json(['error' => 'No invoices found'], 404);
@@ -303,8 +330,14 @@ class JurnalManualController extends Controller
         // dd($suratJalans);
 
         return response()->json([
-            'invoices' => $invoices,
-            'suratJalans' => $suratJalans,
+            'customer' => $dataCust,
+            'supplier' => $dataSup,
+            'barang' => $dataBar,
+            'quantity' => $dataQty,
+            'satuan' => $dataSat,
+            'harsat_beli' => $dataHarsBel,
+            'harsat_jual' => $dataHarsJul,
+            'keterangan' => $dataKet
         ]);
     }
 
@@ -312,18 +345,28 @@ class JurnalManualController extends Controller
     {
         // dd(request('invoice_ext'));
         $invoiceExt = Transaction::where('invoice_external', request('invoice_ext'))
-        ->with(['suratJalan.customer', 'barang', 'suppliers'])
-        ->get();
+            ->with(['suratJalan.customer', 'barang', 'suppliers'])
+            ->get();
 
         $dataCust = [];
         $dataSup = [];
         $dataBar = [];
+        $dataQty = [];
+        $dataSat = [];
+        $dataHarsBel = [];
+        $dataHarsJul = [];
+        $dataKet = [];
 
-        if($invoiceExt->isNotEmpty()) {
-            foreach($invoiceExt as $item) {
+        if ($invoiceExt->isNotEmpty()) {
+            foreach ($invoiceExt as $item) {
                 $dataCust[] = $item->suratJalan->customer->nama;
                 $dataSup[] = $item->suppliers->nama;
                 $dataBar[] = $item->barang->nama;
+                $dataQty[] = $item->jumlah_jual;
+                $dataSat[] = $item->satuan_jual;
+                $dataHarsBel[] = $item->harga_beli;
+                $dataHarsJul[] = $item->harga_jual;
+                $dataKet[] = $item->keterangan;
             }
         } else {
             return response()->json(['error' => 'No invoices found'], 404);
@@ -333,6 +376,11 @@ class JurnalManualController extends Controller
             'customer' => $dataCust,
             'supplier' => $dataSup,
             'barang' => $dataBar,
+            'quantity' => $dataQty,
+            'satuan' => $dataSat,
+            'harsat_beli' => $dataHarsBel,
+            'harsat_jual' => $dataHarsJul,
+            'keterangan' => $dataKet
         ]);
     }
 }

@@ -35,6 +35,11 @@
                         <th>Customer [1]</th>
                         <th>Supplier [2]</th>
                         <th>Barang [3]</th>
+                        <th>Quantity [4]</th>
+                        <th>Satuan [5]</th>
+                        <th>Harsat Beli [6]</th>
+                        <th>Harsat Jual [7]</th>
+                        <th>Keterangan [8]</th>
                     </thead>
                     <tbody id="tableParam">
                         <tr>
@@ -46,6 +51,21 @@
                             </td>
                             <td>
                                 <input type="text" name="param3[]" id="param3-1" class="w-full py-0">
+                            </td>
+                            <td>
+                                <input type="text" name="param4[]" id="param4-1" class="w-full py-0">
+                            </td>
+                            <td>
+                                <input type="text" name="param5[]" id="param5-1" class="w-full py-0">
+                            </td>
+                            <td>
+                                <input type="text" name="param6[]" id="param6-1" class="w-full py-0">
+                            </td>
+                            <td>
+                                <input type="text" name="param7[]" id="param7-1" class="w-full py-0">
+                            </td>
+                            <td>
+                                <input type="text" name="param8[]" id="param8-1" class="w-full py-0">
                             </td>
                         </tr>
                 </tbody>
@@ -237,9 +257,15 @@
                 data: { invoice: datainv, },
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(response) {
-                    $(`#param1-${rowId}`).val(response.suratJalans[no]);
-                    $(`#param2-${rowId}`).val(response.invoices[no]['transaksi']['suppliers']['nama']);
-                    $(`#param3-${rowId}`).val(response.invoices[no]['transaksi']['barang']['nama']);
+                    console.log(response)
+                    $(`#param1-${rowId}`).val(response.customer[no]);
+                    $(`#param2-${rowId}`).val(response.supplier[no]);
+                    $(`#param3-${rowId}`).val(response.barang[no]);
+                    $(`#param4-${rowId}`).val(response.quantity[no]);
+                    $(`#param5-${rowId}`).val(response.satuan[no]);
+                    $(`#param6-${rowId}`).val(response.harsat_beli[no]);
+                    $(`#param7-${rowId}`).val(response.harsat_jual[no]);
+                    $(`#param8-${rowId}`).val(response.keterangan[no]);
                 },
                 error: function(xhr, status, error) {
                     console.log('Error:', error);
@@ -265,6 +291,11 @@
                     $(`#param1-${rowId}`).val(response.customer[no]);
                     $(`#param2-${rowId}`).val(response.supplier[no]);
                     $(`#param3-${rowId}`).val(response.barang[no]);
+                    $(`#param4-${rowId}`).val(response.quantity[no]);
+                    $(`#param5-${rowId}`).val(response.satuan[no]);
+                    $(`#param6-${rowId}`).val(response.harsat_beli[no]);
+                    $(`#param7-${rowId}`).val(response.harsat_jual[no]);
+                    $(`#param8-${rowId}`).val(response.keterangan[no]);
                 },
                 error: function(xhr, status, error) {
                     console.log('Error:', error);

@@ -73,7 +73,7 @@ class JurnalController extends Controller
      */
     public function update(Request $request, Jurnal $jurnal)
     {
-        dd($request->all());
+        // dd($request->all());
 
         //query customer, supplier, barang
         $invoice = $request->invoice;

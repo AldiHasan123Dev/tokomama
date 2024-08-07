@@ -69,30 +69,47 @@
                     </tr>
                 </thead>
                 <tbody>
+    @foreach ($customers as $key => $customer)
+        <tr>
+            <td>{{ $key + 1 }}</td>
+            <td>{{ $customer->nama }}</td> 
+            <td>{{ $customer->debit }}</td>  <!-- Menampilkan total debit -->
+            <td>{{ $customer->kredit }}</td>  <!-- Menampilkan total kredit -->
+            <td>{{ $customer->debit - $customer->kredit }}</td>  <!-- Menghitung saldo -->
+            <td><button class="btn btn-primary">Aksi</button></td> 
+        </tr>
+    @endforeach
+</tbody>
 
-                </tbody>
             </table>
 
         </div>
     </x-keuangan.card-keuangan>
 
     <script>
-        $(document).ready(function () {
-            $('.js-example-basic-single').select2();
+   $(document).ready(function () {
+    $('.js-example-basic-single').select2();
 
-            var table = $('#table-buku-besar').DataTable({
-                select:true,
-                ajax: {
-                    url: "{{ route('coa.data') }}",
-                    type: 'POST'
-                },
-                columns: [
-                    { data: '#' },
-                    { data: 'no_akun' },
-                    { data: 'nama_akun' },
-                    { data: 'status' },
-                ]
-            });
-        });
-    </script>
+    var table = $('#table-buku-besar').DataTable({
+        data: {!! json_encode($customers) !!}, 
+        columns: [
+            { data: null, render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1; 
+            }},
+            { data: 'nama' }, // Kolom customer
+            { data: 'debit' }, // Ambil nilai debit dari model
+            { data: 'kredit' }, // Ambil nilai kredit dari model
+            { 
+                data: null, 
+                render: function (data, type, row) {
+                    return row.debit - row.kredit; // Menghitung saldo
+                } 
+            },
+            { data: null, defaultContent: '<button class="btn btn-primary">Aksi</button>' } 
+        ]
+    });
+});
+
+</script>
+
 </x-Layout.layout>

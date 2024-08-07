@@ -7,6 +7,16 @@
     <title>Buku Besar</title>
 </head>
 <body>
+    <h1>Laporan Buku Besar</h1>
+
+    <br>
+
+    <p><b>Bulan : </b> @if (isset($_GET['month'])) {{ $_GET['month'] }} @else Semua  @endif</p>
+    <p><b>Tahun : </b> {{ $year }}</p>
+    <p><b>COA : </b> @if (isset($_GET['coa'])) {{ $coa_by_id->no_akun }} {{ $coa_by_id->nama_akun }} @else Semua COA @endif</p>
+
+    <br>
+
     <table>
         <thead>
             <tr>

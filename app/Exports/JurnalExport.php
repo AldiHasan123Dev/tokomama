@@ -78,6 +78,6 @@ class JurnalExport implements FromView
         $m = (int)$month;
         $saldo_awal = $saldo['saldo_awal'][$m-1];
 
-        return view('jurnal.buku-besar-export', compact('templates','nopol', 'coa', 'months', 'saldo','saldo_awal', 'coa', 'coa_id', 'year', 'coa_by_id', 'data', 'tipe'));
+        return view('jurnal.buku-besar-export', compact('templates','nopol', 'coa', 'months', 'saldo','saldo_awal', 'coa', 'coa_id', 'year', 'coa_by_id', 'data', 'tipe', 'month'));
     }
 }

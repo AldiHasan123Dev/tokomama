@@ -40,9 +40,36 @@ class JurnalManualController extends Controller
         $noBBM = Jurnal::where('tipe', 'BBM')->whereYear('tgl', $currentYear)->orderBy('no', 'desc')->first() ?? 0;
         $no_BBM =  $noBBM ? $noBBM->no + 1 : 1;
 
-        $invoice = Invoice::all();
-        $transaksi = Transaction::all();
-        return view('jurnal.jurnal-manual', compact('templates', 'nopol', 'coa', 'no_JNL', 'no_BKK', 'no_BKM', 'no_BBK', 'no_BBM', 'invoice', 'transaksi'));
+        $invoices = Invoice::all();
+        $processedInvoices = [];
+        $invoiceCounts = [];
+        foreach($invoices as $invoice) {
+            $invoiceNumber = $invoice->invoice;
+            if (!isset($invoiceCounts[$invoiceNumber])) {
+                $invoiceCounts[$invoiceNumber] = 0;
+            }
+            $invoiceCounts[$invoiceNumber]++;
+
+            $processedInvoiceNumber = $invoiceNumber . '_' . $invoiceCounts[$invoiceNumber];
+            $processedInvoices[] = $processedInvoiceNumber;
+        }
+
+        $transaksi = Transaction::whereNotNull('invoice_external')->get();
+        $procTransactions = [];
+        $transactionCounts = [];
+        foreach($transaksi as $transaction) {
+            $invoiceNumber = $transaction->invoice_external;
+            if (!isset($transactionCounts[$invoiceNumber])) {
+                $transactionCounts[$invoiceNumber] = 0;
+            }
+            $transactionCounts[$invoiceNumber]++;
+
+            $procTransactionNumber = $invoiceNumber . '_' . $transactionCounts[$invoiceNumber];
+            $procTransactions[] = $procTransactionNumber;
+        }
+
+        // dd($procTransactions);
+        return view('jurnal.jurnal-manual', compact('templates', 'nopol', 'coa', 'no_JNL', 'no_BKK', 'no_BKM', 'no_BBK', 'no_BBM', 'invoices', 'processedInvoices', 'procTransactions', 'transaksi'));
     }
 
     /**
@@ -86,18 +113,19 @@ class JurnalManualController extends Controller
         $title = str_replace(' ', '', explode('-', $breakdown[0])[0]);
         $newNoJurnal = $title . ' - ' . $maxNomor + 1 . '/' . $sec2 . '/' . $sec3;
 
-        $keterangan = [];
-
+        $keteranganList = [];
         for ($i = 0; $i < $request->counter; $i++) {
+            $keterangan = $request->keterangan[$i];
             if (str_contains($request->keterangan[$i], '[1]')) {
-                $keterangan[$i] = str_replace('[1]', $request->param1[$i], $request->keterangan[$i]);
-            } else if (str_contains($request->keterangan[$i], '[2]')) {
-                $keterangan[$i] = str_replace('[2]', $request->param2[$i], $request->keterangan[$i]);
-            } else if (str_contains($request->keterangan[$i], '[3]')) {
-                $keterangan[$i] = str_replace('[3]', $request->param3[$i], $request->keterangan[$i]);
-            } else {
-                $keterangan[$i] = $request->keterangan[$i];
+                $keterangan = str_replace('[1]', $request->param1[$i], $request->keterangan[$i]);
+            } 
+            if (str_contains($request->keterangan[$i], '[2]')) {
+                $keterangan = str_replace('[2]', $request->param2[$i], $request->keterangan[$i]);
             }
+            if (str_contains($request->keterangan[$i], '[3]')) {
+                $keterangan = str_replace('[3]', $request->param3[$i], $request->keterangan[$i]);
+            }
+            $keteranganList[$i] = $keterangan;
         }
 
         for ($i = 0; $i < $request->counter; $i++) {
@@ -105,13 +133,13 @@ class JurnalManualController extends Controller
                 if ($tipe == 'JNL') {
                     if ($bulan < $bulanNow) {
                         DB::transaction(
-                            function () use ($request, $i, $tipe, $keterangan, $maxNomor, $newNoJurnal) {
+                            function () use ($request, $i, $tipe, $keteranganList, $maxNomor, $newNoJurnal) {
                                 if ($request->akun_debet[$i] != 0) {
                                     Jurnal::create([
                                         'coa_id' => $request->akun_debet[$i],
                                         'nomor' => $newNoJurnal,
                                         'tgl' => $request->tanggal_jurnal,
-                                        'keterangan' => $keterangan[$i],
+                                        'keterangan' => $keteranganList[$i],
                                         'debit' => $request->nominal[$i],
                                         'invoice' => $request->invoice[$i] ?? null,
                                         'invoice_external' => $request->invoice_external[$i] ?? null,
@@ -126,7 +154,7 @@ class JurnalManualController extends Controller
                                         'coa_id' => $request->akun_kredit[$i],
                                         'nomor' => $newNoJurnal,
                                         'tgl' => $request->tanggal_jurnal,
-                                        'keterangan' => $keterangan[$i],
+                                        'keterangan' => $keteranganList[$i],
                                         'kredit' => $request->nominal[$i],
                                         'invoice' => $request->invoice[$i] ?? null,
                                         'invoice_external' => $request->invoice_external[$i] ?? null,
@@ -139,13 +167,13 @@ class JurnalManualController extends Controller
                         );
                     } else {
                         DB::transaction(
-                            function () use ($request, $i, $nomor, $tipe, $no, $keterangan) {
+                            function () use ($request, $i, $nomor, $tipe, $no, $keteranganList) {
                                 if ($request->akun_debet[$i] != 0) {
                                     Jurnal::create([
                                         'coa_id' => $request->akun_debet[$i],
                                         'nomor' => $nomor,
                                         'tgl' => $request->tanggal_jurnal,
-                                        'keterangan' => $keterangan[$i],
+                                        'keterangan' => $keteranganList[$i],
                                         'debit' => $request->nominal[$i],
                                         'invoice' => $request->invoice[$i] ?? null,
                                         'invoice_external' => $request->invoice_external[$i] ?? null,
@@ -160,7 +188,7 @@ class JurnalManualController extends Controller
                                         'coa_id' => $request->akun_kredit[$i],
                                         'nomor' => $nomor,
                                         'tgl' => $request->tanggal_jurnal,
-                                        'keterangan' => $keterangan[$i],
+                                        'keterangan' => $keteranganList[$i],
                                         'kredit' => $request->nominal[$i],
                                         'invoice' => $request->invoice[$i] ?? null,
                                         'invoice_external' => $request->invoice_external[$i] ?? null,
@@ -175,13 +203,13 @@ class JurnalManualController extends Controller
                     }
                 } else {
                     DB::transaction(
-                        function () use ($request, $i, $nomor, $tipe, $no, $keterangan) {
+                        function () use ($request, $i, $nomor, $tipe, $no, $keteranganList) {
                             if ($request->akun_debet[$i] != 0) {
                                 Jurnal::create([
                                     'coa_id' => $request->akun_debet[$i],
                                     'nomor' => $nomor,
                                     'tgl' => $request->tanggal_jurnal,
-                                    'keterangan' => $keterangan[$i],
+                                    'keterangan' => $keteranganList[$i],
                                     'debit' => $request->nominal[$i],
                                     'invoice' => $request->invoice[$i] ?? null,
                                     'invoice_external' => $request->invoice_external[$i] ?? null,
@@ -196,7 +224,7 @@ class JurnalManualController extends Controller
                                     'coa_id' => $request->akun_kredit[$i],
                                     'nomor' => $nomor,
                                     'tgl' => $request->tanggal_jurnal,
-                                    'keterangan' => $keterangan[$i],
+                                    'keterangan' => $keteranganList[$i],
                                     'kredit' => $request->nominal[$i],
                                     'invoice' => $request->invoice[$i] ?? null,
                                     'invoice_external' => $request->invoice_external[$i] ?? null,
@@ -261,7 +289,6 @@ class JurnalManualController extends Controller
         $suratJalans = [];
 
         if ($invoices->isNotEmpty()) {
-            // Iterate over the invoices collection
             foreach ($invoices as $invoice) {
                 if ($invoice->transaksi && $invoice->transaksi->suratJalan) {
                     $suratJalans[] = $invoice->transaksi->suratJalan->customer->nama;
@@ -278,6 +305,34 @@ class JurnalManualController extends Controller
         return response()->json([
             'invoices' => $invoices,
             'suratJalans' => $suratJalans,
+        ]);
+    }
+
+    public function getInvoiceWhereNoInvExt()
+    {
+        // dd(request('invoice_ext'));
+        $invoiceExt = Transaction::where('invoice_external', request('invoice_ext'))
+        ->with(['suratJalan.customer', 'barang', 'suppliers'])
+        ->get();
+
+        $dataCust = [];
+        $dataSup = [];
+        $dataBar = [];
+
+        if($invoiceExt->isNotEmpty()) {
+            foreach($invoiceExt as $item) {
+                $dataCust[] = $item->suratJalan->customer->nama;
+                $dataSup[] = $item->suppliers->nama;
+                $dataBar[] = $item->barang->nama;
+            }
+        } else {
+            return response()->json(['error' => 'No invoices found'], 404);
+        }
+
+        return response()->json([
+            'customer' => $dataCust,
+            'supplier' => $dataSup,
+            'barang' => $dataBar,
         ]);
     }
 }

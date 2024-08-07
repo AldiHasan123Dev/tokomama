@@ -124,8 +124,8 @@
                             <td>
                                 <select class="select select-bordered w-36" name="invoice[]" id="invoice-1">
                                     <option selected></option>
-                                    @foreach ($invoice as $item)
-                                        <option value="{{ $item->invoice }}">{{ $item->invoice }}</option>
+                                    @foreach ($processedInvoices as $item)
+                                        <option value="{{ $item }}">{{ $item }}</option>
                                     @endforeach
                                 </select>
                             </td>
@@ -161,9 +161,9 @@
                             </td>
                             <td>
                                 <select class="select select-bordered w-36" name="invoice_external[]" id="invoice_external-1">
-                                    @foreach ($transaksi as $item)
+                                    @foreach ($procTransactions as $item)
                                         <option disabled selected></option>
-                                        <option value="{{ $item->invoice_external }}">{{ $item->invoice_external }}</option>
+                                        <option value="{{ $item }}">{{ $item }}</option>
                                     @endforeach
                                 </select>
                             </td>
@@ -221,21 +221,25 @@
         });
 
         bindInvoiceChange(1);
+        bindInvoiceExternalChange(1)
     });
 
     let no = 1;
     $(`#counter`).val(no);
     function bindInvoiceChange(rowId) {
         $(`#invoice-${rowId}`).on('change', function() {
+            const procdata = $(this).val();
+            let datainv = procdata.split('_')[0];
+            let no = procdata.split('_')[1] - 1;
             $.ajax({
                 method: 'post',
                 url: "{{ route('jurnal.sj.whereInv') }}",
-                data: { invoice: $(this).val(), },
+                data: { invoice: datainv, },
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(response) {
-                    $(`#param1-${rowId}`).val(response.suratJalans[0]);
-                    $(`#param2-${rowId}`).val(response.invoices[0]['transaksi']['suppliers']['nama']);
-                    $(`#param3-${rowId}`).val(response.invoices[0]['transaksi']['barang']['nama']);
+                    $(`#param1-${rowId}`).val(response.suratJalans[no]);
+                    $(`#param2-${rowId}`).val(response.invoices[no]['transaksi']['suppliers']['nama']);
+                    $(`#param3-${rowId}`).val(response.invoices[no]['transaksi']['barang']['nama']);
                 },
                 error: function(xhr, status, error) {
                     console.log('Error:', error);
@@ -243,6 +247,32 @@
                     console.dir(xhr);
                 }
             });
+        });
+    }
+
+    function bindInvoiceExternalChange(rowId) {
+        $(`#invoice_external-${rowId}`).on('change', function() {
+            const procdata = $(this).val();
+            const datainvext = procdata.split('_')[0];
+            const no = procdata.split('_')[1] - 1;
+            $.ajax({
+                method: 'post',
+                url: "{{ route('jurnal.sj.whereInvExt') }}",
+                data: { invoice_ext: datainvext, },
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function(response) {
+                    console.log(response);
+                    $(`#param1-${rowId}`).val(response.customer[no]);
+                    $(`#param2-${rowId}`).val(response.supplier[no]);
+                    $(`#param3-${rowId}`).val(response.barang[no]);
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error:', error);
+                    console.log('Status:', status);
+                    console.dir(xhr);
+                }
+                
+            })
         });
     }
 
@@ -270,7 +300,6 @@
             $(`#td`).text(totaltd);
         }
     }
-
     function updateTotalKredit(id) {
         totaltc = 0;
         if($(`#akun_kredit-${id}`).val() != 0) {
@@ -282,8 +311,9 @@
              });
             $(`#tc`).text(totaltc);
         }
-
     }
+
+    
 
     $('#addRow').on('click', function() {
         no++;
@@ -299,8 +329,8 @@
             <td>
                 <select class="select select-bordered w-36 max-w-xs" name="invoice[]" id="invoice-${newRowId}">
                     <option selected></option>
-                    @foreach ($invoice as $item)
-                        <option value="{{ $item->invoice }}">{{ $item->invoice }}</option>
+                    @foreach ($processedInvoices as $item)
+                        <option value="{{ $item }}">{{ $item }}</option>
                     @endforeach
                 </select>
             </td>
@@ -336,9 +366,9 @@
             </td>
             <td>
                 <select class="select select-bordered w-36 max-w-xs" name="invoice_external[]" id="invoice_external-${newRowId}">
-                    @foreach ($transaksi as $item)
+                    @foreach ($procTransactions as $item)
                         <option disabled selected></option>
-                        <option value="{{ $item->invoice_external }}">{{ $item->invoice_external }}</option>
+                        <option value="{{ $item }}">{{ $item }}</option>
                     @endforeach
                 </select>
             </td>
@@ -390,6 +420,7 @@
             updateTotalKredit(newRowId);
         });
         bindInvoiceChange(newRowId);
+        bindInvoiceExternalChange(newRowId);
     });
 
 </script>

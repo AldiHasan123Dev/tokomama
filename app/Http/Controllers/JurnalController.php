@@ -73,7 +73,7 @@ class JurnalController extends Controller
      */
     public function update(Request $request, Jurnal $jurnal)
     {
-        // dd($request->all());
+        dd($request->all());
 
         //query customer, supplier, barang
         $invoice = $request->invoice;
@@ -83,15 +83,21 @@ class JurnalController extends Controller
         $supplier = $invoices[0]->transaksi->suppliers->nama;
         $customer = $invoices[0]->transaksi->suratJalan->customer->nama;
         
+        
+        $keterangan = $request->keterangan;
+
         if (str_contains($request->keterangan, '[1]')) {
-            $keterangan = str_replace('[1]', $customer, $request->keterangan);
-        } else if (str_contains($request->keterangan, '[2]')) {
-            $keterangan = str_replace('[2]', $supplier, $request->keterangan);
-        } else if (str_contains($request->keterangan, '[3]')) {
-            $keterangan = str_replace('[3]', $barang, $request->keterangan);
-        } else {
-            $keterangan = $request->keterangan;
+            $keterangan = str_replace('[1]', $request->param1, $request->keterangan);
+        } 
+        if (str_contains($request->keterangan, '[2]')) {
+            $keterangan = str_replace('[2]', $request->param2, $request->keterangan);
         }
+        if (str_contains($request->keterangan, '[3]')) {
+            $keterangan = str_replace('[3]', $request->param3, $request->keterangan);
+        }
+
+        $keteranganNow = $keterangan;
+
 
         $tipe = explode('-',explode('/', $request->nomor)[1])[0];
 
@@ -101,7 +107,7 @@ class JurnalController extends Controller
         $data->nomor = $request->nomor;
         $data->debit = $request->debit;
         $data->kredit = $request->kredit;
-        $data->keterangan = $keterangan;
+        $data->keterangan = $keteranganNow;
         $data->invoice_external = $request->invoice_external;
         $data->nopol = $request->nopol;
         $data->tipe = $tipe;

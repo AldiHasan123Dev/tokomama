@@ -173,6 +173,47 @@
         </div>
     </x-keuangan.card-keuangan>
 
+    <x-keuangan.card-keuangan>
+        <x-slot:tittle>Monitoring jurnal JNL</x-slot:tittle>
+        <table id="monitoring_JNL" class="cell-border hover display nowrap compact">
+            <thead>
+                <th>Total Debet</th>
+                <th>Total Kredit</th>
+                <th>Jumlah Jurnal</th>
+                <th>Status Balance</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ number_format($MonJNL->sum('debit'), 0, ',', '.') }}</td>
+                    <td>{{ number_format($MonJNL->sum('kredit'), 0, ',', '.') }}</td>
+                    <td>{{ count($MonJNL) }}</td>
+                    <td>{{ ($MonJNL->sum('debit') - $MonJNL->sum('kredit')) == 0 ? 'Balance' : 'Not Balance' }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <center>
+            <div class="overflow-x-auto">
+                <h1 class="font-bold text-xl">Nomor Jurnal yang tidak Balance</h1>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Nomor Jurnal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($notBalance as $nb)
+                    <tr class="hover">
+                      <td>{{ $loop->iteration }}</td>
+                      <td>{{ $nb }}</td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+        </center>
+    </x-keuangan.card-keuangan>
+
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
     <script src="https://cdn.datatables.net/2.1.0/js/dataTables.tailwindcss.js"></script>
@@ -182,6 +223,8 @@
                 select: true,
                 
             });
+
+            var MonJNL = $('#monitoring_JNL').DataTable({})
 
             $('#coa_table tbody').on('click', 'tr', function () {
                 const row =  table.row( this ).data();

@@ -30,8 +30,50 @@ class JurnalController extends Controller
         } else {
             $data = Jurnal::join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
         }
-        // dd($data);
-        return view('jurnal.jurnal', compact('data'));
+
+        if(isset($_GET['month']) && isset($_GET['year'])) {
+            $MonJNL = Jurnal::whereMonth('tgl', $_GET['month'])->whereYear('tgl', $_GET['year'])->where('tipe', 'JNL')->join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
+            $balance = Jurnal::select('nomor', 
+                              DB::raw('SUM(debit) as total_debit'), 
+                              DB::raw('SUM(kredit) as total_kredit'))
+            ->whereMonth('tgl', $_GET['month'])
+            ->whereYear('tgl', $_GET['year'])
+            ->where('tipe', 'JNL')
+            ->groupBy('nomor')
+            ->get();
+
+            $notBalance = [];
+
+            for($i = 0; $i < count($balance); $i++) {
+                if($balance[$i]->total_debit != $balance[$i]->total_kredit) {
+                    $notBalance[] = $balance[$i]->nomor;
+                }
+            }
+
+        } else {
+            $MonJNL = Jurnal::whereMonth('tgl', date('m'))->whereYear('tgl', date('Y'))->where('tipe', 'JNL')->join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
+            $balance = Jurnal::select('nomor', 
+                              DB::raw('SUM(debit) as total_debit'), 
+                              DB::raw('SUM(kredit) as total_kredit'))
+            ->whereMonth('tgl', date('m'))
+            ->whereYear('tgl', date('Y'))
+            ->where('tipe', 'JNL')
+            ->groupBy('nomor')
+            ->get();
+
+            $notBalance = [];
+            
+            for($i = 0; $i < count($balance); $i++) {
+                if($balance[$i]->total_debit != $balance[$i]->total_kredit) {
+                    $notBalance[] = $balance[$i]->nomor;
+                }
+            }
+            
+        }
+
+        // dd($notBalance);
+
+        return view('jurnal.jurnal', compact('data', 'MonJNL', 'notBalance'));
     }
 
     /**

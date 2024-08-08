@@ -101,7 +101,7 @@ class JurnalController extends Controller
      */
     public function update(Request $request, Jurnal $jurnal)
     {
-        dd($request->all());
+        // dd($request->all());
 
         if ($request->invoice != null || $request->invoice != '-') {
             if (str_contains($request->invoice, '_')) {

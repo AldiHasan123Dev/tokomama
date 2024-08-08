@@ -14,76 +14,76 @@ use App\Models\Transaksi;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use DB;
+use Carbon\Carbon;
 class BukuBesarPembantuController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
 {
     $templates = TemplateJurnal::all();
     $nopol = Nopol::where('status', 'aktif')->get();
     $coa = Coa::where('status', 'aktif')->get();
+
+    // Get selected month and year or use current month and year as default
+    $selectedYear = $request->input('year', date('Y'));
+    $selectedMonth = $request->input('month', date('m'));
     
-    // Ambil semua customer
+    // Get selected coa_id or use default coa_id 63
+    $selectedCoaId = $request->input('coa_id', 63);
+
+    // Set start date to January 2023
+    $startDate = '2023-01-01';
+    // Set end date based on selected month and year
+    $endDate = Carbon::create($selectedYear, $selectedMonth)->endOfMonth()->toDateString();
+
+    // Get all customers
     $customers = Customer::all();
 
-    // Menghitung debit dan kredit untuk setiap customer
     foreach ($customers as $customer) {
-        // Ambil semua surat jalan untuk customer ini
         $suratJalan = SuratJalan::where('id_customer', $customer->id)->get();
-    
+
         $debitTotal = 0;
         $kreditTotal = 0;
 
         foreach ($suratJalan as $sj) {
-            // Ambil semua transaksi yang terkait dengan surat jalan
             $transaksi = Transaction::where('id_surat_jalan', $sj->id)->get();
-    
-            // Simpan ID invoice yang sudah dihitung untuk menghindari duplikasi
             $processedInvoices = [];
 
             foreach ($transaksi as $tr) {
-                // Ambil semua invoice berdasarkan ID transaksi
                 $invoices = Invoice::where('id_transaksi', $tr->id)->get();
-    
+
                 foreach ($invoices as $inv) {
-                    // Cek apakah invoice sudah diproses
                     if (in_array($inv->invoice, $processedInvoices)) {
-                        continue; // Lewati jika sudah diproses
+                        continue;
                     }
 
-                    // Ambil semua jurnal berdasarkan invoice
-                    $jurnals = Jurnal::where('invoice', $inv->invoice)->get(); 
+                    $jurnals = Jurnal::where('invoice', $inv->invoice)
+                        ->where('coa_id', $selectedCoaId) // Filter by coa_id
+                        ->whereBetween('tgl', [$startDate, $endDate]) // Filter by date
+                        ->get();
 
-                    // Hitung total debit dan kredit dari jurnal
                     foreach ($jurnals as $j) {
-                        // Pastikan untuk hanya menghitung yang tidak 0
                         if ($j->debit > 0 || $j->kredit > 0) {
-                            \Log::info("Customer: {$customer->nama}, Jurnal ID: {$j->id}, Debit: {$j->debit}, Kredit: {$j->kredit}");
-                           
                             $debitTotal += $j->debit;
                             $kreditTotal += $j->kredit;
                         }
                     }
 
-                    // Tandai invoice ini sebagai sudah diproses
                     $processedInvoices[] = $inv->invoice;
                 }
             }
         }
-    
-        // Set nilai debit dan kredit ke customer
+
         $customer->debit = $debitTotal;
         $customer->kredit = $kreditTotal;
-
-        // Log total debit dan kredit setelah dihitung
-        \Log::info("Customer: {$customer->nama}, Total Debit: {$debitTotal}, Total Kredit: {$kreditTotal}");
     }
 
-    // Kirim data ke view
-    return view('jurnal.buku-besar-pembantu', compact('customers', 'coa', 'templates', 'nopol'));
+    return view('jurnal.buku-besar-pembantu', compact('customers', 'coa', 'templates', 'nopol', 'selectedYear', 'selectedMonth', 'selectedCoaId'));
 }
+
+
 
 
 

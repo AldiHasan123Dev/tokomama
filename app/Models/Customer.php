@@ -15,4 +15,5 @@ class Customer extends Model
     {
         return $this->hasMany(SuratJalan::class, 'id_customer'); // Sesuaikan dengan nama kolom yang tepat
     }
+    
 }

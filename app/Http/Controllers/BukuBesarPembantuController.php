@@ -9,6 +9,7 @@ use App\Models\TemplateJurnal;
 use App\Models\Transaction;
 use App\Models\Jurnal;
 use App\Models\Customer;
+use App\Models\Supplier;
 use App\Models\SuratJalan;
 use App\Models\Transaksi;
 use App\Models\Invoice;
@@ -25,13 +26,17 @@ class BukuBesarPembantuController extends Controller
     $templates = TemplateJurnal::all();
     $nopol = Nopol::where('status', 'aktif')->get();
     $coa = Coa::where('status', 'aktif')->get();
+    $suppliers = Supplier::all();
 
     // Get selected month and year or use current month and year as default
     $selectedYear = $request->input('year', date('Y'));
     $selectedMonth = $request->input('month', date('m'));
     
-    // Get selected coa_id or use default coa_id 63
-    $selectedCoaId = $request->input('coa_id', 63);
+    // Get selected coa_id or use default coa_id 8
+    $selectedCoaId = $request->input('coa_id', 8);
+    $akun = Coa::where('id', $selectedCoaId)
+           ->orWhere('no_akun', $selectedCoaId)
+           ->get();
 
     // Set start date to January 2023
     $startDate = '2023-01-01';
@@ -79,9 +84,75 @@ class BukuBesarPembantuController extends Controller
         $customer->debit = $debitTotal;
         $customer->kredit = $kreditTotal;
     }
+    $tipe = 'D';
 
-    return view('jurnal.buku-besar-pembantu', compact('customers', 'coa', 'templates', 'nopol', 'selectedYear', 'selectedMonth', 'selectedCoaId'));
+    // Periksa setiap item dalam koleksi $coa untuk menentukan tipe
+    foreach ($akun as $item) {
+        if (in_array(substr($item->no_akun, 0, 1), ['2', '3', '5'])) {
+            $tipe = 'K';
+        }
+    }
+    // dd($akun->all());
+    
+    
+
+    return view('jurnal.buku-besar-pembantu', compact('customers','suppliers', 'coa', 'templates', 'nopol', 'selectedYear', 'selectedMonth', 'selectedCoaId', 'tipe', 'akun'));
 }
+
+
+
+public function showDetail($customerId, Request $request)
+{
+    $selectedYear = $request->input('year', date('Y'));
+    $selectedMonth = $request->input('month', date('m'));
+    $selectedCoaId = $request->input('coa_id', 8);
+
+    $startDate = '2023-01-01';
+    $endDate = Carbon::create($selectedYear, $selectedMonth)->endOfMonth()->toDateString();
+
+    $customer = Customer::findOrFail($customerId);
+    $coa = Coa::findOrFail($selectedCoaId); // Ambil data coa berdasarkan coa_id
+
+    $suratJalan = SuratJalan::where('id_customer', $customerId)->get();
+
+    $details = [];
+    foreach ($suratJalan as $sj) {
+        $transaksi = Transaction::where('id_surat_jalan', $sj->id)->get();
+        $processedInvoices = [];
+
+        foreach ($transaksi as $tr) {
+            $invoices = Invoice::where('id_transaksi', $tr->id)->get();
+
+            foreach ($invoices as $inv) {
+                if (in_array($inv->invoice, $processedInvoices)) {
+                    continue;
+                }
+
+                $jurnals = Jurnal::where('invoice', $inv->invoice)
+                    ->where('coa_id', $selectedCoaId)
+                    ->whereBetween('tgl', [$startDate, $endDate])
+                    ->get();
+
+                foreach ($jurnals as $j) {
+                    if ($j->debit > 0 || $j->kredit > 0) {
+                        $details[] = $j;
+                    }
+                }
+
+                $processedInvoices[] = $inv->invoice;
+            }
+        }
+    }
+
+    return response()->json([
+        'customer' => $customer,
+        'details' => $details,
+        'coa' => $coa // Tambahkan data coa ke dalam respons
+    ]);
+}
+
+
+
 
 
 

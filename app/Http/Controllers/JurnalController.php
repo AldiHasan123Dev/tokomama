@@ -44,10 +44,38 @@ class JurnalController extends Controller
         $coa = Coa::where('status', 'aktif')->get();
         $tgl = $_GET['tgl'];
         $nopol = Nopol::where('status', 'aktif')->get();
-        $invoice = Invoice::get();
+
+        $invoices = Invoice::all();
+        $invProc = [];
+        $invoiceCounts = [];
+        foreach ($invoices as $invoice) {
+            $invoiceNumber = $invoice->invoice;
+            if (!isset($invoiceCounts[$invoiceNumber])) {
+                $invoiceCounts[$invoiceNumber] = 0;
+            }
+            $invoiceCounts[$invoiceNumber]++;
+
+            $processedInvoiceNumber = $invoiceNumber . '_' . $invoiceCounts[$invoiceNumber];
+            $invProc[] = $processedInvoiceNumber;
+        }
+
+
         $invext = Transaction::whereNot('invoice_external', null)->get();
+        $invExtProc = [];
+        $transactionCounts = [];
+        foreach ($invext as $transaction) {
+            $invoiceNumber = $transaction->invoice_external;
+            if (!isset($transactionCounts[$invoiceNumber])) {
+                $transactionCounts[$invoiceNumber] = 0;
+            }
+            $transactionCounts[$invoiceNumber]++;
+
+            $procTransactionNumber = $invoiceNumber . '_' . $transactionCounts[$invoiceNumber];
+            $invExtProc[] = $procTransactionNumber;
+        }
+
         session(['jurnal_edit_url' => url()->full()]);
-        return view('jurnal.edit-jurnal', compact('data', 'tgl', 'coa', 'nopol', 'invoice', 'invext'));
+        return view('jurnal.edit-jurnal', compact('data', 'tgl', 'coa', 'nopol', 'invProc', 'invExtProc'));
     }
 
     public function merger()
@@ -74,6 +102,36 @@ class JurnalController extends Controller
     public function update(Request $request, Jurnal $jurnal)
     {
         dd($request->all());
+
+        if($request->invoice != null || $request->invoice != '-') {
+            if(str_contains($request->invoice, '_')) {
+                $inv = explode('_', $request->invoice)[0];
+                $no = explode('_', $request->invoice)[1];
+                $invoices = Invoice::with([
+                    'transaksi.suppliers',
+                    'transaksi.barang',
+                    'transaksi.suratJalan.customer',
+                ])
+                    ->where('invoice', $inv)
+                    ->get();
+
+                $barang = $invoices[$no]->transaksi->barang->nama;
+                $supplier = $invoices[$no]->transaksi->suppliers->nama;
+                $customer = $invoices[$no]->transaksi->suratJalan->customer->nama;
+                $quantity = $invoices[$no]->transaksi->jumlah_jual;
+                $satuan = $invoices[$no]->transaksi->satuan_jual;
+                $hargabeli = $invoices[$no]->transaksi->harga_beli;
+                $hargajual = $invoices[$no]->transaksi->harga_jual;
+                $ket = $invoices[$no]->transaksi->keterangan;
+
+            } else {
+
+            }
+        } else if($request->invoice_external) {
+            
+        } else {
+            return redirect()->back()->with('error', 'Invoice dan Invoice External kosong');
+        }
 
         //query customer, supplier, barang
         $invoice = $request->invoice;

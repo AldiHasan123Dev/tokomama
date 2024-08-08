@@ -412,6 +412,11 @@
             <td><input type="text" name="param1[]" id="param1-${newRowId}" class="w-full py-0"></td>
             <td><input type="text" name="param2[]" id="param2-${newRowId}" class="w-full py-0"></td>
             <td><input type="text" name="param3[]" id="param3-${newRowId}" class="w-full py-0"></td>
+            <td><input type="text" name="param4[]" id="param4-${newRowId}" class="w-full py-0"></td>
+            <td><input type="text" name="param5[]" id="param5-${newRowId}" class="w-full py-0"></td>
+            <td><input type="text" name="param6[]" id="param6-${newRowId}" class="w-full py-0"></td>
+            <td><input type="text" name="param7[]" id="param7-${newRowId}" class="w-full py-0"></td>
+            <td><input type="text" name="param8[]" id="param8-${newRowId}" class="w-full py-0"></td>
         </tr>
         `;
         $(`#tableParam`).append(param);

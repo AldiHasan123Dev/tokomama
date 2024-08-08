@@ -127,8 +127,8 @@
                                     </div>
                                     <select class="select select-bordered w-full"  name="invoice" id="invoices">
                                         <option value="${invoice}" selected>${invoice}</option>
-                                     @foreach ($invoice as $i)
-                                    <option class="z-10" value="{{ $i->invoice}}">{{$i->invoice}}</option>
+                                     @foreach ($invProc as $i)
+                                    <option class="z-10" value="{{ $i }}">{{$i }}</option>
                                     @endforeach
                                     </select>
                                 </label>
@@ -163,8 +163,8 @@
                                     </div>
                                     <select class="select select-bordered w-full"  name="invoice_external" id="invext">
                                         <option value="${invoice_external}" selected>${invoice_external}</option>
-                                        @foreach ($invext as $in)
-                                        <option class="z-10" value="{{ $in->invoice_external }}">{{$in->invoice_external}}</option>
+                                        @foreach ($invExtProc as $in)
+                                        <option class="z-10" value="{{ $in }}">{{$in}}</option>
                                         @endforeach
                                     </select>
                                 </label>

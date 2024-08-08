@@ -43,6 +43,8 @@ class TemplateJurnalController extends Controller
             ]);
             $idTemplateJurnal = TemplateJurnal::latest('id')->first();
 
+            // dd($request->all());
+
             if ($result) {
                 for ($i = 0; $i < $request->counter; $i++) {
                     //  dd($request->keterangan[$i]);

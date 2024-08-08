@@ -9,6 +9,7 @@ use App\Models\Nopol;
 use App\Models\Supplier;
 use App\Models\SuratJalan;
 use App\Models\TemplateJurnal;
+use App\Models\TemplateJurnalItem;
 use App\Models\TipeJurnal;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -398,6 +399,33 @@ class JurnalManualController extends Controller
             'harsat_beli' => $dataHarsBel,
             'harsat_jual' => $dataHarsJul,
             'keterangan' => $dataKet
+        ]);
+    }
+
+    public function terapanTemplateJurnal()
+    {
+        $data = TemplateJurnalItem::where('template_jurnal_id', request('template'))
+            ->with([
+                'coa_debit',
+                'coa_kredit'
+            ])
+            ->get();
+        $count = count($data);
+        $coa_debit = [];
+        $coa_kredit = [];
+        $keterangan = [];
+
+        foreach ($data as $d) {
+            $coa_debit[] = $d->coa_debit;
+            $coa_kredit[] = $d->coa_kredit;
+            $keterangan[] = $d->keterangan;
+        }
+
+        return response()->json([
+            'count' => $count,
+            'coa_debit' => $coa_debit,
+            'coa_kredit' => $coa_kredit,
+            'keterangan' => $keterangan
         ]);
     }
 }

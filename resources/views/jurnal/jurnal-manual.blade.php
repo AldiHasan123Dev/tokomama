@@ -75,7 +75,7 @@
                             <div class="label">
                                 <span class="label-text">Template Jurnal</span>
                             </div>
-                            <select name="tipe" id="tipe" class="select select-bordered w-full max-w-xs">
+                            <select name="template" id="template" class="select select-bordered w-full max-w-xs">
                                 <option disabled selected></option>
                                 @foreach ($templates as $item)
                                     <option value="{{ $item->id }}">{{ $item->nama }}</option>
@@ -85,8 +85,8 @@
                     </div>
 
                     <div class="self-center w-fit">
-                        <button class="btn bg-green-500 text-white">Terapkan</button>
-                        <button class="btn bg-orange-500 text-white">Reset</button>
+                        <button id="terapkan" class="btn bg-green-500 text-white">Terapkan</button>
+                        {{-- <button class="btn bg-orange-500 text-white">Reset</button> --}}
                     </div>
                 </div>
 
@@ -207,6 +207,7 @@
     let dataTemp = [];
 
     $(document).ready(function () {
+        $(`#template`).select2();
         $(`#invoice-1`).select2();
         $(`#nopol-1`).select2();
         $(`#akun_debet-1`).select2();
@@ -244,6 +245,24 @@
         bindInvoiceExternalChange(1)
     });
 
+    $(`#terapkan`).on('click', function() {
+        const dataTemplate = $(`#template`).val();
+        $.ajax({
+            method: 'post',
+            url: "{{ route('jurnal.template.terapan') }}",
+            data: { template: dataTemplate, },
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                console.log('Error:', error);
+                console.log('Status:', status);
+                console.dir(xhr);
+            }
+        })
+    })
+    
     let no = 1;
     $(`#counter`).val(no);
     function bindInvoiceChange(rowId) {

@@ -12,10 +12,15 @@
 
     <x-jurnal.card-jurnal>
         <x-slot:tittle>Parameter</x-slot:tittle>
-        <div class="grid grid-cols-3 ">
+        <div class="grid grid-cols-3 gap-4  ">
             <p class="bg-gray-500 text-white p-1 text-center">[1] Customer</p>
             <p class="bg-gray-500 text-white p-1 text-center">[2] Supplier</p>
             <p class="bg-gray-500 text-white p-1 text-center">[3] Barang</p>
+            <p class="bg-gray-500 text-white p-1 text-center">[4] Kuantitas</p>
+            <p class="bg-gray-500 text-white p-1 text-center">[5] Satuan</p>
+            <p class="bg-gray-500 text-white p-1 text-center">[6] Harsat Beli</p>
+            <p class="bg-gray-500 text-white p-1 text-center">[7] Harsat Jual</p>
+            <p class="bg-gray-500 text-white p-1 text-center">[8] Keterangan</p>
         </div>
     </x-jurnal.card-jurnal>
     <x-jurnal.card-jurnal>
@@ -79,8 +84,8 @@
     <x-slot:script>
         <script src="https://cdn.datatables.net/2.1.0/js/dataTables.tailwindcss.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        
         <script>
-
             let nomorJurnal = $("#nj").val();
             let tgl = $("#tgl").val();
 
@@ -197,7 +202,7 @@
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success: function(response) {
                             alert("Data Master Barang berhasil dihapus!");
-                            table.ajax.reload();
+                            location.reload();
                         },
                         error: function(xhr, status, error) {
                             console.log('Error:', error);

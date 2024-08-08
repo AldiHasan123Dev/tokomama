@@ -88,6 +88,7 @@ class JurnalManualController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $nomor = $request->tipe;
         $data_nomor = explode('/', $request->tipe)[1];
         $tipe = explode('-', $data_nomor)[0];
@@ -118,28 +119,44 @@ class JurnalManualController extends Controller
         for ($i = 0; $i < $request->counter; $i++) {
             $keterangan = $request->keterangan[$i];
             if (str_contains($request->keterangan[$i], '[1]')) {
-                $keterangan = str_replace('[1]', $request->param1[$i], $keterangan);
+                if ($request->param1[$i] != null) {
+                    $keterangan = str_replace('[1]', $request->param1[$i], $keterangan);
+                }
             }
             if (str_contains($request->keterangan[$i], '[2]')) {
-                $keterangan = str_replace('[2]', $request->param2[$i], $keterangan);
+                if ($request->param2[$i] != null) {
+                    $keterangan = str_replace('[2]', $request->param2[$i], $keterangan);
+                }
             }
             if (str_contains($request->keterangan[$i], '[3]')) {
-                $keterangan = str_replace('[3]', $request->param3[$i], $keterangan);
+                if ($request->param3[$i] != null) {
+                    $keterangan = str_replace('[3]', $request->param3[$i], $keterangan);
+                }
             }
             if (str_contains($request->keterangan[$i], '[4]')) {
-                $keterangan = str_replace('[4]', $request->param4[$i], $keterangan);
+                if ($request->param4[$i] != null) {
+                    $keterangan = str_replace('[4]', $request->param4[$i], $keterangan);
+                }
             }
             if (str_contains($request->keterangan[$i], '[5]')) {
-                $keterangan = str_replace('[5]', $request->param5[$i], $keterangan);
+                if ($request->param5[$i] != null) {
+                    $keterangan = str_replace('[5]', $request->param5[$i], $keterangan);
+                }
             }
             if (str_contains($request->keterangan[$i], '[6]')) {
-                $keterangan = str_replace('[6]', $request->param6[$i], $keterangan);
+                if ($request->param6[$i] != null) {
+                    $keterangan = str_replace('[6]', $request->param6[$i], $keterangan);
+                }
             }
             if (str_contains($request->keterangan[$i], '[7]')) {
-                $keterangan = str_replace('[7]', $request->param7[$i], $keterangan);
+                if ($request->param7[$i] != null) {
+                    $keterangan = str_replace('[7]', $request->param7[$i], $keterangan);
+                }
             }
             if (str_contains($request->keterangan[$i], '[8]')) {
-                $keterangan = str_replace('[8]', $request->param8[$i], $keterangan);
+                if ($request->param8[$i] != null) {
+                    $keterangan = str_replace('[8]', $request->param8[$i], $keterangan);
+                }
             }
 
             $keteranganList[$i] = $keterangan;

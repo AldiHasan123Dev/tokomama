@@ -42,30 +42,30 @@
                         <th>Keterangan [8]</th>
                     </thead>
                     <tbody id="tableParam">
-                        <tr>
+                        <tr id="table-row-top">
                             <td>
-                                <input type="text" name="param1[]" id="param1-1" class="w-full py-0">
+                                <input type="text" name="param1[0]" id="param1-1i" class="w-full py-0">
                             </td>
                             <td>
-                                <input type="text" name="param2[]" id="param2-1" class="w-full py-0">
+                                <input type="text" name="param2[0]" id="param2-1i" class="w-full py-0">
                             </td>
                             <td>
-                                <input type="text" name="param3[]" id="param3-1" class="w-full py-0">
+                                <input type="text" name="param3[0]" id="param3-1i" class="w-full py-0">
                             </td>
                             <td>
-                                <input type="text" name="param4[]" id="param4-1" class="w-full py-0">
+                                <input type="text" name="param4[0]" id="param4-1i" class="w-full py-0">
                             </td>
                             <td>
-                                <input type="text" name="param5[]" id="param5-1" class="w-full py-0">
+                                <input type="text" name="param5[0]" id="param5-1i" class="w-full py-0">
                             </td>
                             <td>
-                                <input type="text" name="param6[]" id="param6-1" class="w-full py-0">
+                                <input type="text" name="param6[0]" id="param6-1i" class="w-full py-0">
                             </td>
                             <td>
-                                <input type="text" name="param7[]" id="param7-1" class="w-full py-0">
+                                <input type="text" name="param7[0]" id="param7-1i" class="w-full py-0">
                             </td>
                             <td>
-                                <input type="text" name="param8[]" id="param8-1" class="w-full py-0">
+                                <input type="text" name="param8[0]" id="param8-1i" class="w-full py-0">
                             </td>
                         </tr>
                 </tbody>
@@ -85,8 +85,8 @@
                     </div>
 
                     <div class="self-center w-fit">
-                        <button id="terapkan" class="btn bg-green-500 text-white">Terapkan</button>
-                        {{-- <button class="btn bg-orange-500 text-white">Reset</button> --}}
+                        <button id="terapkan" class="btn bg-green-500 text-white" type="button">Terapkan</button>
+                        <button id="reset" class="btn bg-orange-500 text-white" type="button">Reset</button>
                     </div>
                 </div>
 
@@ -117,7 +117,7 @@
                     </div>
 
                     <div class="self-center w-fit">
-                        <button type="submit" class="btn bg-blue-500 text-white">Tambah Baris Template</button>
+                        <button type="button" id="addBarisTemplate" class="btn bg-blue-500 text-white">Tambah Baris Template</button>
                         <button id="addRow" type="button" class="btn bg-blue-400 text-white">Tambah Baris</button>
                     </div>
                 </div>
@@ -136,51 +136,51 @@
                         </tr>
                     </thead>
                     <tbody id="tableBody">
-                        <tr>
+                        <tr id="table-row">
                             <td>
                                 <input type="hidden" name="check[0]" id="check0h" value="0" checked>
-                                <input type="checkbox" name="check[0]" id="check0" value="1" checked>
+                                <input type="checkbox" name="check[0]" id="check0i" value="1" checked>
                             </td>
                             <td>
-                                <select class="select select-bordered w-36" name="invoice[]" id="invoice-1">
-                                    <option selected></option>
+                                <select class="select select-bordered w-36" name="invoice[0]" id="invoice-1i">
+                                    <option value="" selected></option>
                                     @foreach ($processedInvoices as $item)
                                         <option value="{{ $item }}">{{ $item }}</option>
                                     @endforeach
                                 </select>
                             </td>
                             <td>
-                                <select class="select select-bordered w-36" name="nopol[]" id="nopol-1">
+                                <select class="select select-bordered w-36" name="nopol[0]" id="nopol-1i">
                                     @foreach ($nopol as $item)
-                                    <option disabled selected></option>
+                                        <option disabled selected></option>
                                         <option value="{{ $item->nopol }}">{{ $item->nopol }}</option>
                                     @endforeach
                                 </select>
                             </td>
                             <td>
-                                <select class="select select-bordered w-36" name="akun_debet[]" id="akun_debet-1" required>
+                                <select class="select select-bordered w-36" name="akun_debet[0]" id="akun_debet-1i">
+                                    <option value="0"></option>
                                     @foreach ($coa as $item)
-                                    <option value="0" selected></option>
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
                                     @endforeach
                                 </select>
                             </td>
                             <td>
-                                <select class="select select-bordered w-36" name="akun_kredit[]" id="akun_kredit-1" required>
+                                <select class="select select-bordered w-36" name="akun_kredit[0]" id="akun_kredit-1i">
+                                    <option value="0"></option>
                                     @foreach ($coa as $item)
-                                    <option value="0" selected></option>
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
                                     @endforeach
                                 </select>
                             </td>
                             <td>
-                                <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[]" id="keterangan-1" required />
+                                <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[0]" id="keterangan-1i" />
                             </td>
                             <td>
-                                <input type="number" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" min="0" name="nominal[]" id="nominal-1" required />
+                                <input type="number" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" min="0" name="nominal[0]" id="nominal-1i" />
                             </td>
                             <td>
-                                <select class="select select-bordered w-36" name="invoice_external[]" id="invoice_external-1">
+                                <select class="select select-bordered w-36" name="invoice_external[0]" id="invoice_external-1i">
                                     @foreach ($procTransactions as $item)
                                         <option disabled selected></option>
                                         <option value="{{ $item }}">{{ $item }}</option>
@@ -207,45 +207,60 @@
     let dataTemp = [];
 
     $(document).ready(function () {
-        $(`#template`).select2();
-        $(`#invoice-1`).select2();
-        $(`#nopol-1`).select2();
-        $(`#akun_debet-1`).select2();
-        $(`#akun_kredit-1`).select2();
-        $(`#invoice_external-1`).select2();
+        $('select.select').select2();
+        // $(`#template`).select2();
+        // $(`#invoice-1`).select2();
+        // $(`#nopol-1`).select2();
+        // $(`#akun_debet-1`).select2();
+        // $(`#akun_kredit-1`).select2();
+        // $(`#invoice_external-1`).select2();
         $(`#nominal-1`).on('keyup', function() {
             updateTotalDebit(1);
             updateTotalKredit(1);
         });
 
-        $('#check0').click(function() {
-            if ($('#check0').is(':checked')) {
-                $('#invoice-1').prop('disabled', false);
-                $('#nopol-1').prop('disabled', false);
-                $('#akun_debet-1').prop('disabled', false);
-                $('#akun_kredit-1').prop('disabled', false);
-                $('#keterangan-1').prop('disabled', false);
-                $('#nominal-1').prop('disabled', false);
-                $('#invoice_external-1').prop('disabled', false);
+        $('#check0i').click(function() {
+            if ($('#check0i').is(':checked')) {
+                $('#invoice-1i').prop('disabled', false);
+                $('#nopol-1i').prop('disabled', false);
+                $('#akun_debet-1i').prop('disabled', false);
+                $('#akun_kredit-1i').prop('disabled', false);
+                $('#keterangan-1i').prop('disabled', false);
+                $('#nominal-1i').prop('disabled', false);
+                $('#invoice_external-1i').prop('disabled', false);
             } else {
-                $('#invoice-1').prop('disabled', true);
-                $('#nopol-1').prop('disabled', true);
-                $('#akun_debet-1').prop('disabled', true);
-                $('#akun_kredit-1').prop('disabled', true);
-                $('#keterangan-1').prop('disabled', true);
-                $('#nominal-1').prop('disabled', true);
-                $('#invoice_external-1').prop('disabled', true);
-                $('#nominal-1').val(0);
+                $('#invoice-1i').prop('disabled', true);
+                $('#nopol-1i').prop('disabled', true);
+                $('#akun_debet-1i').prop('disabled', true);
+                $('#akun_kredit-1i').prop('disabled', true);
+                $('#keterangan-1i').prop('disabled', true);
+                $('#nominal-1i').prop('disabled', true);
+                $('#invoice_external-1i').prop('disabled', true);
+                $('#nominal-1i').val(0);
                 updateTotalDebit(1);
                 updateTotalKredit(1);
             }
         });
 
-        bindInvoiceChange(1);
-        bindInvoiceExternalChange(1)
+        bindInvoiceChange(1 + 'i');
+        bindInvoiceExternalChange(1 + 'i');
     });
 
     $(`#terapkan`).on('click', function() {
+        $('#table-row').hide();
+        $('#table-row-top').hide();
+        addTemplate();
+    });
+
+    $(`#addBarisTemplate`).on('click', function() {
+        addTemplate();
+    });
+
+    $('#reset').click(function (e) {
+        location.reload();
+    });
+
+    function addTemplate() {
         const dataTemplate = $(`#template`).val();
         $.ajax({
             method: 'post',
@@ -253,17 +268,144 @@
             data: { template: dataTemplate, },
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function(response) {
-                console.log(response);
+                // $(`#counter`).val(response.count);
+                
+                for (let i = 0; i < response.count; i++) {
+                    console.log("no : " + no);
+                    let currentNo = no;
+
+                    let html = '';
+                    html += `<tr id="table-row">
+                                <td>
+                                    <input type="hidden" name="check[${no - 1}]" id="check${no - 1}h" value="0" checked>
+                                    <input type="checkbox" name="check[${no - 1}]" id="check${no - 1}" value="1" checked>
+                                </td>
+                                <td>
+                                    <select class="select select-bordered w-36" name="invoice[${no - 1}]" id="invoice-${no}">
+                                        <option selected></option>
+                                        @foreach ($processedInvoices as $item)
+                                            <option value="{{ $item }}">{{ $item }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="select select-bordered w-36" name="nopol[${no - 1}]" id="nopol-${no}">
+                                        @foreach ($nopol as $item)
+                                        <option selected></option>
+                                            <option value="{{ $item->nopol }}">{{ $item->nopol }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="select select-bordered w-36" name="akun_debet[${no - 1}]" id="akun_debet-${no}">
+                                        <option id="option_debet-${no - 1}"></option>
+                                        @foreach ($coa as $item)
+                                        <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="select select-bordered w-36" name="akun_kredit[${no - 1}]" id="akun_kredit-${no}">
+                                        <option id="option_kredit-${no - 1}"></option>
+                                        @foreach ($coa as $item)
+                                        <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[${no - 1}]" id="keterangan-${no}" value="${response.keterangan[no - 1] ?? ""}" required />
+                                </td>
+                                <td>
+                                    <input type="number" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" min="0" name="nominal[${no - 1}]" id="nominal-${no}" required />
+                                </td>
+                                <td>
+                                    <select class="select select-bordered w-36" name="invoice_external[${no - 1}]" id="invoice_external-${no}">
+                                        @foreach ($procTransactions as $item)
+                                            <option disabled selected></option>
+                                            <option value="{{ $item }}">{{ $item }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>`;
+                        
+                        // Object.is(response.coa_debit[i], null) ? (response.coa_debit[i] = 0) : (response.coa_debit[i] = response.coa_debit[i]);
+                        
+                    $('#maintable').append(html);
+
+                    let param = `
+                        <tr>
+                            <td><input type="text" name="param1[${no - 1}]" id="param1-${no}" class="w-full py-0"></td>
+                            <td><input type="text" name="param2[${no - 1}]" id="param2-${no}" class="w-full py-0"></td>
+                            <td><input type="text" name="param3[${no - 1}]" id="param3-${no}" class="w-full py-0"></td>
+                            <td><input type="text" name="param4[${no - 1}]" id="param4-${no}" class="w-full py-0"></td>
+                            <td><input type="text" name="param5[${no - 1}]" id="param5-${no}" class="w-full py-0"></td>
+                            <td><input type="text" name="param6[${no - 1}]" id="param6-${no}" class="w-full py-0"></td>
+                            <td><input type="text" name="param7[${no - 1}]" id="param7-${no}" class="w-full py-0"></td>
+                            <td><input type="text" name="param8[${no - 1}]" id="param8-${no}" class="w-full py-0"></td>
+                        </tr>
+                        `;
+                    
+                    $(`#tableParam`).append(param);
+
+                    if (response.coa_debit[i] == null) {
+                        $('#option_debet-' + (no - 1)).val(0);
+                        $('#option_debet-' + (no - 1)).text(0);
+                    } else {
+                        $('#option_debet-' + (no - 1)).val(response.coa_debit[i].id);
+                        $('#option_debet-' + (no - 1)).text(response.coa_debit[i].no_akun + ' - ' + response.coa_debit[i].nama_akun);
+                    }
+
+                    if (response.coa_kredit[i] == null) {
+                        $('#option_kredit-' + (no - 1)).val(0);
+                        $('#option_kredit-' + (no - 1)).text(0);
+                    } else {
+                        $('#option_kredit-' + (no - 1)).val(response.coa_kredit[i].id);
+                        $('#option_kredit-' + (no - 1)).text(response.coa_kredit[i].no_akun + ' - ' + response.coa_kredit[i].nama_akun);
+                    }
+
+                    $(`#check${currentNo - 1}`).click(function() {
+                        console.log('clicked' + (currentNo - 1));
+                        if ($(`#check${currentNo - 1}`).is(':checked')) {
+                            $(`#invoice-${currentNo}`).prop('disabled', false);
+                            $(`#nopol-${currentNo}`).prop('disabled', false);
+                            $(`#akun_debet-${currentNo}`).prop('disabled', false);
+                            $(`#akun_kredit-${currentNo}`).prop('disabled', false);
+                            $(`#keterangan-${currentNo}`).prop('disabled', false);
+                            $(`#nominal-${currentNo}`).prop('disabled', false);
+                            $(`#invoice_external-${currentNo}`).prop('disabled', false);
+                        } else {
+                            $(`#invoice-${currentNo}`).prop('disabled', true);
+                            $(`#nopol-${currentNo}`).prop('disabled', true);
+                            $(`#akun_debet-${currentNo}`).prop('disabled', true);
+                            $(`#akun_kredit-${currentNo}`).prop('disabled', true);
+                            $(`#keterangan-${currentNo}`).prop('disabled', true);
+                            $(`#nominal-${currentNo}`).prop('disabled', true);
+                            $(`#invoice_external-${currentNo}`).prop('disabled', true);
+                            $(`#nominal-${currentNo}`).val(0);
+                            updateTotalDebit(no - 1);
+                            updateTotalKredit(no - 1);
+                        }
+                    });
+
+                    bindInvoiceChange(no);
+                    bindInvoiceExternalChange(no);
+                    
+                    $('select.select').select2();
+
+                    $('#counter').val(no);
+                    no++;
+                }
             },
+            
             error: function(xhr, status, error) {
                 console.log('Error:', error);
                 console.log('Status:', status);
                 console.dir(xhr);
             }
         })
-    })
+    }
     
-    let no = 1;
+    var no = 1;
     $(`#counter`).val(no);
     function bindInvoiceChange(rowId) {
         $(`#invoice-${rowId}`).on('change', function() {
@@ -366,6 +508,8 @@
     
 
     $('#addRow').on('click', function() {
+        no = $(`#counter`).val();
+        console.log("no_first: " + no);
         no++;
         $(`#counter`).val(no);
         let newRowId = no;
@@ -393,7 +537,7 @@
                 </select>
             </td>
             <td>
-                <select class="select select-bordered w-36 max-w-xs" name="akun_debet[]" id="akun_debet-${newRowId}" required>
+                <select class="select select-bordered w-36 max-w-xs" name="akun_debet[]" id="akun_debet-${newRowId}">
                     @foreach ($coa as $item)
                     <option value="0" selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -401,7 +545,7 @@
                 </select>
             </td>
             <td>
-                <select class="select select-bordered w-36 max-w-xs" name="akun_kredit[]" id="akun_kredit-${newRowId}" required>
+                <select class="select select-bordered w-36 max-w-xs" name="akun_kredit[]" id="akun_kredit-${newRowId}">
                     @foreach ($coa as $item)
                     <option value="0" selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -440,12 +584,13 @@
         `;
         $(`#tableParam`).append(param);
 
-        $(`#invoice-${newRowId}`).select2();
-        $(`#nopol-${newRowId}`).select2();
-        $(`#akun_debet-${newRowId}`).select2();
-        $(`#akun_kredit-${newRowId}`).select2();
-        $(`#invoice_external-${newRowId}`).select2();
+        // $(`#invoice-${newRowId}`).select2();
+        // $(`#nopol-${newRowId}`).select2();
+        // $(`#akun_debet-${newRowId}`).select2();
+        // $(`#akun_kredit-${newRowId}`).select2();
+        // $(`#invoice_external-${newRowId}`).select2();
 
+        $('select.select').select2();
 
         $(`#check${newRowId - 1}`).click(function() {
             if ($(`#check${newRowId - 1}`).is(':checked')) {
@@ -465,7 +610,8 @@
                 $(`#nominal-${newRowId}`).prop('disabled', true);
                 $(`#invoice_external-${newRowId}`).prop('disabled', true);
                 $(`#nominal-${newRowId}`).val(0);
-                updateTotal();
+                updateTotalDebit(newRowId);
+                updateTotalKredit(newRowId);
             }
         });
 

@@ -53,14 +53,16 @@
                                     <tr>
                                         <td class="border px-4 py-2">{{ $item->no_akun }}</td>
                                         <td class="border px-4 py-2">{{ $item->nama_akun }}</td>
-                                        <td class="border px-4 py-2 text-right">{{ $total['pendapatan'] }}</td>
+                                        
+                                        <td class="border px-4 py-2 text-right">{{ number_format($total['pendapatan'] , 2, ',', '.') }}</td>
                                     </tr>
                                     @endforeach
                                     <!-- masukkan logic -->
                                     <tfoot>
                                         <tr>
                                             <td colspan="2" class="border px-4 py-2 font-bold">TOTAL</td>
-                                            <td class="border px-4 py-2 text-right font-bold">{{$totalA}}</td>
+                                            
+                                            <td class="border px-4 py-2 text-right font-bold">{{ number_format($totalA , 2, ',', '.') }}</td>
                                         </tr>
                                     </tfoot>
                                 </tbody>
@@ -80,14 +82,14 @@
                                     <tr>
                                         <td class="border px-4 py-2">{{ $item->no_akun }}</td>
                                         <td class="border px-4 py-2">{{ $item->nama_akun }}</td>
-                                        <td class="border px-4 py-2 text-right">{{ $total['selisih'] }}</td>
+                                        <td class="border px-4 py-2 text-right">{{ number_format($total['selisih'] , 2, ',', '.') }}</td>
                                     </tr>
                                     @endforeach
                                     <!-- masukkan logic -->
                                     <tfoot>
                                         <tr>
                                             <td colspan="2" class="border px-4 py-2 font-bold">TOTAL</td>
-                                            <td class="border px-4 py-2 text-right font-bold">{{$totalB}}</td>
+                                            <td class="border px-4 py-2 text-right font-bold">{{ number_format($totalB , 2, ',', '.') }}</td>
                                         </tr>
                                     </tfoot>
                                 </tbody>
@@ -107,14 +109,15 @@
                                     <tr>
                                         <td class="border px-4 py-2">{{ $item->no_akun }}</td>
                                         <td class="border px-4 py-2">{{ $item->nama_akun }}</td>
-                                        <td class="border px-4 py-2 text-right">{{ $total['selisih'] }}</td>
+                                        
+                                        <td class="border px-4 py-2 text-right">{{ number_format($total['selisih'] , 2, ',', '.') }}</td>
                                     </tr>
                                     @endforeach
                                     <!-- masukkan logic -->
                                     <tfoot>
                                         <tr>
                                             <td colspan="2" class="border px-4 py-2 font-bold">TOTAL</td>
-                                            <td class="border px-4 py-2 text-right font-bold">{{$totalC}}</td>
+                                            <td class="border px-4 py-2 text-right font-bold">{{ number_format($totalC , 2, ',', '.') }}</td>
                                         </tr>
                                     </tfoot>
                                 </tbody>
@@ -134,14 +137,14 @@
                                     <tr>
                                         <td class="border px-4 py-2">{{ $item->no_akun }}</td>
                                         <td class="border px-4 py-2">{{ $item->nama_akun }}</td>
-                                        <td class="border px-4 py-2 text-right">{{ $total['selisih'] }}</td>
+                                        <td class="border px-4 py-2 text-right">{{ number_format($total['selisih'] , 2, ',', '.') }}</td>
                                     </tr>
                                     @endforeach
                                     <!-- masukkan logic -->
                                     <tfoot>
                                         <tr>
                                             <td colspan="2" class="border px-4 py-2 font-bold">TOTAL</td>
-                                            <td class="border px-4 py-2 text-right font-bold">{{$totalD}}</td>
+                                            <td class="border px-4 py-2 text-right font-bold">{{ number_format($totalD , 2, ',', '.') }}</td>
                                         </tr>
                                     </tfoot>
                                 </tbody>
@@ -161,14 +164,14 @@
                                     <tr>
                                         <td class="border px-4 py-2">{{ $item->no_akun }}</td>
                                         <td class="border px-4 py-2">{{ $item->nama_akun }}</td>
-                                        <td class="border px-4 py-2 text-right">{{ $total['selisih'] }}</td>
+                                        <td class="border px-4 py-2 text-right">{{ number_format($total['selisih'] , 2, ',', '.') }}</td>
                                     </tr>
                                     @endforeach
                                     <!-- masukkan logic -->
                                     <tfoot>
                                         <tr>
                                             <td colspan="2" class="border px-4 py-2 font-bold">TOTAL</td>
-                                            <td class="border px-4 py-2 text-right font-bold">{{$totalE}}</td>
+                                            <td class="border px-4 py-2 text-right font-bold">{{ number_format($totalE , 2, ',', '.') }}</td>
                                         </tr>
                                     </tfoot>
                                 </tbody>
@@ -188,14 +191,14 @@
                                     <tr>
                                         <td class="border px-4 py-2">{{ $item->no_akun }}</td>
                                         <td class="border px-4 py-2">{{ $item->nama_akun }}</td>
-                                        <td class="border px-4 py-2 text-right">{{ $total['selisih'] }}</td>
+                                        <td class="border px-4 py-2 text-right">{{ number_format($total['selisih'] , 2, ',', '.') }}</td>
                                     </tr>
                                     @endforeach
                                     <!-- masukkan logic -->
                                     <tfoot>
                                         <tr>
                                             <td colspan="2" class="border px-4 py-2 font-bold">TOTAL</td>
-                                            <td class="border px-4 py-2 text-right font-bold">{{$totalF}}</td>
+                                            <td class="border px-4 py-2 text-right font-bold">{{ number_format($totalF , 2, ',', '.') }}</td>
                                         </tr>
                                     </tfoot>
                                 </tbody>
@@ -215,14 +218,14 @@
                                     <tr>
                                         <td class="border px-4 py-2">{{ $item->no_akun }}</td>
                                         <td class="border px-4 py-2">{{ $item->nama_akun }}</td>
-                                        <td class="border px-4 py-2 text-right">{{ $total['selisih'] }}</td>
+                                        <td class="border px-4 py-2 text-right">{{ number_format($total['selisih'] , 2, ',', '.') }}</td>
                                     </tr>
                                     @endforeach
                                     <!-- masukkan logic -->
                                     <tfoot>
                                         <tr>
                                             <td colspan="2" class="border px-4 py-2 font-bold">TOTAL</td>
-                                            <td class="border px-4 py-2 text-right font-bold">{{$totalG}}</td>
+                                            <td class="border px-4 py-2 text-right font-bold">{{ number_format($totalG , 2, ',', '.') }}</td>
                                         </tr>
                                     </tfoot >
                                 </tbody>
@@ -243,47 +246,50 @@
                             <tbody>
                                 <tr class="border-t">
                                     <td class="px-2 py-1">TOTAL PENJUALAN USAHA</td>
-                                    <td class="px-2 py-1">{{$totalA}}</td>
+                                    <td class="px-2 py-1">{{ number_format($totalA , 2, ',', '.') }}</td>
                                 </tr>
                                 <tr class="border-t ">
                                     <td class="px-2 py-1">TOTAL HARGA POKOK PENJUALAN</td>
-                                    <td class="px-2 py-1">{{$totalB}}</td>
+                                    <td class="px-2 py-1">{{ number_format($totalB , 2, ',', '.') }}</td>
                                 </tr>
                                 <tr class="border-t bg-gray-50">
                                     <td class="px-2 py-1">LABA/RUGI KOTOR</td>
-                                    <td class="px-2 py-1">{{$kotor = $totalA - $totalB}}</td>
+                                    
+                                    <td class="px-2 py-1">{{ number_format($kotor = $totalA - $totalB , 2, ',', '.') }}</td>
                                 </tr>
                                 <tr class="border-t">
                                     <td class="px-2 py-1">TOTAL BIAYA USAHA</td>
-                                    <td class="px-2 py-1">{{$totalC}}</td>
+                                    <td class="px-2 py-1">{{ number_format($totalC , 2, ',', '.') }}</td>
                                 </tr>
                                 <tr class="border-t">
                                     <td class="px-2 py-1">TOTAL BIAYA PENYUSUTAN</td>
-                                    <td class="px-2 py-1">{{$totalD}}</td>
+                                    <td class="px-2 py-1">{{ number_format($totalD , 2, ',', '.') }}</td>
                                 </tr>
                                 <tr class="border-t bg-gray-50">
                                     <td class="px-2 py-1">LABA/RUGI USAHA</td>
-                                    <td class="px-2 py-1">{{$usaha = $kotor - $totalC - $totalD}}</td>
+                                    
+                                    <td class="px-2 py-1">{{ number_format($usaha = $kotor - $totalC - $totalD , 2, ',', '.') }}</td>
                                 </tr>
                                 <tr class="border-t">
                                     <td class="px-2 py-1">TOTAL PENDAPATAN DAN BIAYA LAIN-LAIN</td>
-                                    <td class="px-2 py-1">{{$totalE}}</td>
+                                    <td class="px-2 py-1">{{ number_format($totalE , 2, ',', '.') }}</td>
                                 </tr>
                                 <tr class="border-t">
                                     <td class="px-2 py-1">TOTAL BIAYA KEUANGAN I</td>
-                                    <td class="px-2 py-1">{{$totalF}}</td>
+                                    <td class="px-2 py-1">{{ number_format($totalF , 2, ',', '.') }}</td>
                                 </tr>
                                 <tr class="border-t bg-gray-50">
                                     <td class="px-2 py-1">LABA/RUGI BERSIH SEBELUM PAJAK</td>
-                                    <td class="px-2 py-1">{{$bersih = $usaha - $totalE - $totalF}}</td>
+                                    <td class="px-2 py-1">{{ number_format($bersih = $usaha - $totalE - $totalF , 2, ',', '.') }}</td>
                                 </tr>
                                 <tr class="border-t">
                                     <td class="px-2 py-1">TOTAL BIAYA KEUANGAN I</td>
-                                    <td class="px-2 py-1">{{$totalF}}</td>
+                                    <td class="px-2 py-1">{{ number_format($totalD , 2, ',', '.') }}</td>
                                 </tr>
                                 <tr class="border-t bg-gray-50">
                                     <td class="px-2 py-1">LABA/RUGI BERSIH SESUDAH PAJAK</td>
-                                    <td class="px-2 py-1">{{$pajak = $bersih - $totalG}}</td>
+                                    
+                                    <td class="px-2 py-1">{{ number_format($pajak = $bersih - $totalG , 2, ',', '.') }}</td>
                                 </tr>
                             </tbody>
                         </table>

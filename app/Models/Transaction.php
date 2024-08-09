@@ -45,4 +45,8 @@ class Transaction extends Model
     {
         return $this->belongsTo(Supplier::class, 'id_supplier');
     }
+    public function jurnals()
+    {
+        return $this->hasMany(Jurnal::class, 'invoice_external', 'invoice');
+    }
 }

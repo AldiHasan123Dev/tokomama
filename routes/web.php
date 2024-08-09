@@ -113,7 +113,7 @@ Route::get('coa/data', [CoaController::class, 'dataTable'])->name('jurnal.coa.da
     Route::resource('neraca', Neraca::class);
     Route::resource('laba-rugi', LabaRugi::class);
     Route::resource('buku-besar-pembantu', BukuBesarPembantuController::class);
-    Route::get('/buku-besar-pembantu/{customer}/detail', [BukuBesarPembantuController::class, 'showDetail'])->name('buku-besar-pembantu.showDetail');
+    Route::get('buku-besar-pembantu/{id}/detail', [BukuBesarPembantuController::class, 'showDetail'])->name('buku-besar-pembantu.showDetail');
     Route::resource('invoice-external', InvoiceExternalController::class);
 });
 

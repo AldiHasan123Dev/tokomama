@@ -157,14 +157,14 @@ class JurnalController extends Controller
                     ->where('invoice', $inv)
                     ->get();
 
-                $barang = $invoices[$index]->transaksi->barang->nama;
-                $supplier = $invoices[$index]->transaksi->suppliers->nama;
-                $customer = $invoices[$index]->transaksi->suratJalan->customer->nama;
-                $quantity = $invoices[$index]->transaksi->jumlah_jual;
-                $satuan = $invoices[$index]->transaksi->satuan_jual;
-                $hargabeli = $invoices[$index]->transaksi->harga_beli;
-                $hargajual = $invoices[$index]->transaksi->harga_jual;
-                $ket = $invoices[$index]->transaksi->keterangan;
+                $barang = $invoices[$index - 1]->transaksi->barang->nama;
+                $supplier = $invoices[$index - 1]->transaksi->suppliers->nama;
+                $customer = $invoices[$index - 1]->transaksi->suratJalan->customer->nama;
+                $quantity = $invoices[$index - 1]->transaksi->jumlah_jual;
+                $satuan = $invoices[$index - 1]->transaksi->satuan_jual;
+                $hargabeli = $invoices[$index - 1]->transaksi->harga_beli;
+                $hargajual = $invoices[$index - 1]->transaksi->harga_jual;
+                $ket = $invoices[$index - 1]->transaksi->keterangan;
 
                 $keterangan = $request->keterangan;
 
@@ -290,14 +290,14 @@ class JurnalController extends Controller
                     ->with(['suratJalan.customer', 'barang', 'suppliers'])
                     ->get();
 
-                $barang = $invoice_external[$index]->barang->nama;
-                $supplier = $invoice_external[$index]->suppliers->nama;
-                $customer = $invoice_external[$index]->suratJalan->customer->nama;
-                $quantity = $invoice_external[$index]->jumlah_jual;
-                $satuan = $invoice_external[$index]->satuan_jual;
-                $hargabeli = $invoice_external[$index]->harga_beli;
-                $hargajual = $invoice_external[$index]->harga_jual;
-                $ket = $invoice_external[$index]->keterangan;
+                $barang = $invoice_external[$index - 1]->barang->nama;
+                $supplier = $invoice_external[$index - 1]->suppliers->nama;
+                $customer = $invoice_external[$index - 1]->suratJalan->customer->nama;
+                $quantity = $invoice_external[$index - 1]->jumlah_jual;
+                $satuan = $invoice_external[$index - 1]->satuan_jual;
+                $hargabeli = $invoice_external[$index - 1]->harga_beli;
+                $hargajual = $invoice_external[$index - 1]->harga_jual;
+                $ket = $invoice_external[$index - 1]->keterangan;
 
                 $keterangan = $request->keterangan;
 

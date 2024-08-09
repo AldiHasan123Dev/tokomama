@@ -31,4 +31,5 @@ class Jurnal extends Model
     {
         return $this->belongsTo(Coa::class, 'coa_id'); 
     }
+    
 }

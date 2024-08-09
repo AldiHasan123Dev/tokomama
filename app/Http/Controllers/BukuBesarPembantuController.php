@@ -16,6 +16,8 @@ use App\Models\Invoice;
 use Illuminate\Http\Request;
 use DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 class BukuBesarPembantuController extends Controller
 {
     /**
@@ -23,34 +25,138 @@ class BukuBesarPembantuController extends Controller
      */
     public function index(Request $request)
 {
-    $templates = TemplateJurnal::all();
-    $nopol = Nopol::where('status', 'aktif')->get();
+    // Ambil data COA yang aktif
     $coa = Coa::where('status', 'aktif')->get();
-    $suppliers = Supplier::all();
 
-    // Get selected month and year or use current month and year as default
+    // Dapatkan tahun dan bulan yang dipilih
     $selectedYear = $request->input('year', date('Y'));
     $selectedMonth = $request->input('month', date('m'));
-    
-    // Get selected coa_id or use default coa_id 8
     $selectedCoaId = $request->input('coa_id', 8);
-    $akun = Coa::where('id', $selectedCoaId)
-           ->orWhere('no_akun', $selectedCoaId)
-           ->get();
-
-    // Set start date to January 2023
+    $selectedState = $request->input('state', 'customer'); // Dapatkan state (customer/supplier)
+  
+   
+    // Rentang tanggal
     $startDate = '2023-01-01';
-    // Set end date based on selected month and year
     $endDate = Carbon::create($selectedYear, $selectedMonth)->endOfMonth()->toDateString();
 
-    // Get all customers
-    $customers = Customer::all();
+    // Inisialisasi variabel untuk customer dan supplier
+    $customers = [];
+    $suppliers = [];
 
-    foreach ($customers as $customer) {
-        $suratJalan = SuratJalan::where('id_customer', $customer->id)->get();
+    // Logika untuk pelanggan (customers)
+    if ($selectedState == 'customer') {
+        $customers = Customer::all();
 
-        $debitTotal = 0;
-        $kreditTotal = 0;
+        foreach ($customers as $customer) {
+            $suratJalan = SuratJalan::where('id_customer', $customer->id)->get();
+
+            $debitTotal = 0;
+            $kreditTotal = 0;
+
+            foreach ($suratJalan as $sj) {
+                $transaksi = Transaction::where('id_surat_jalan', $sj->id)->get();
+                $processedInvoices = [];
+
+                foreach ($transaksi as $tr) {
+                    $invoices = Invoice::where('id_transaksi', $tr->id)->get();
+
+                    foreach ($invoices as $inv) {
+                        if (in_array($inv->invoice, $processedInvoices)) {
+                            continue;
+                        }
+
+                        $jurnals = Jurnal::where('invoice', $inv->invoice)
+                            ->where('coa_id', $selectedCoaId)
+                            ->whereBetween('tgl', [$startDate, $endDate])
+                            ->get();
+
+                        foreach ($jurnals as $j) {
+                            if ($j->debit > 0 || $j->kredit > 0) {
+                                $debitTotal += $j->debit;
+                                $kreditTotal += $j->kredit;
+                            }
+                        }
+
+                        $processedInvoices[] = $inv->invoice;
+                    }
+                }
+            }
+
+            $customer->debit = $debitTotal;
+            $customer->kredit = $kreditTotal;
+        }
+    }
+
+    // Logika untuk pemasok (suppliers)
+    if ($selectedState == 'supplier') {
+        $suppliers = Supplier::all();
+    
+        foreach ($suppliers as $supplier) {
+            $debitTotal = 0;
+            $kreditTotal = 0;
+    
+            // Ambil semua jurnal untuk supplier berdasarkan invoice_external
+            $jurnals = Jurnal::where('coa_id', $selectedCoaId)
+                ->whereBetween('tgl', [$startDate, $endDate])
+                ->whereNotNull('invoice_external') // Menambahkan kondisi ini
+                ->get();
+    
+            foreach ($jurnals as $j) {
+                $transaksi = Transaction::where('invoice_external', $j->invoice_external)
+                    ->where('id_supplier', $supplier->id)
+                    ->first();
+    
+                if ($transaksi && ($j->debit > 0 || $j->kredit > 0)) {
+                  
+                    $debitTotal += $j->debit;
+                    $kreditTotal += $j->kredit;
+                }
+            }
+    
+            $supplier->debit = $debitTotal;
+            $supplier->kredit = $kreditTotal;
+        }
+    }
+    
+
+    // Tentukan tipe (tipe) untuk perhitungan saldo
+    $akun = Coa::where('id', $selectedCoaId)
+        ->orWhere('no_akun', $selectedCoaId)
+        ->get();
+    
+    $tipe = 'D';
+    foreach ($akun as $item) {
+        if (in_array(substr($item->no_akun, 0, 1), ['2', '3', '5'])) {
+            $tipe = 'K';
+        }
+    }
+
+    return view('jurnal.buku-besar-pembantu', compact('customers', 'suppliers', 'coa', 'selectedYear', 'selectedMonth', 'selectedCoaId', 'tipe', 'selectedState'));
+}
+
+
+
+
+public function showDetail($id, Request $request)
+{
+    $selectedYear = $request->input('year', date('Y'));
+    $selectedMonth = $request->input('month', date('m'));
+    $selectedCoaId = $request->input('coa_id', 8);
+    $selectedState = $request->input('state', 'customer'); 
+
+    $startDate = '2023-01-01';
+    $endDate = Carbon::create($selectedYear, $selectedMonth)->endOfMonth()->toDateString();
+    
+    $suratJalan = SuratJalan::where('id_customer', $id)->get();
+
+    $details = [];
+    $coa = Coa::findOrFail($selectedCoaId);
+    $totalDebit = 0;
+    $totalKredit = 0;
+
+    if ($selectedState == 'customer') {
+        $entity = Customer::findOrFail($id);
+        $suratJalan = SuratJalan::where('id_customer', $id)->get();
 
         foreach ($suratJalan as $sj) {
             $transaksi = Transaction::where('id_surat_jalan', $sj->id)->get();
@@ -65,14 +171,21 @@ class BukuBesarPembantuController extends Controller
                     }
 
                     $jurnals = Jurnal::where('invoice', $inv->invoice)
-                        ->where('coa_id', $selectedCoaId) // Filter by coa_id
-                        ->whereBetween('tgl', [$startDate, $endDate]) // Filter by date
+                        ->where('coa_id', $selectedCoaId)
+                        ->whereBetween('tgl', [$startDate, $endDate])
                         ->get();
 
                     foreach ($jurnals as $j) {
                         if ($j->debit > 0 || $j->kredit > 0) {
-                            $debitTotal += $j->debit;
-                            $kreditTotal += $j->kredit;
+                            $details[] = [
+                                'tgl' => $j->tgl,
+                                'invoice' => $inv->invoice,
+                                'debit' => $j->debit,
+                                'kredit' => $j->kredit,
+                                'keterangan' => $j->keterangan // Menambahkan keterangan
+                            ];
+                            $totalDebit += $j->debit;
+                            $totalKredit += $j->kredit;
                         }
                     }
 
@@ -80,76 +193,51 @@ class BukuBesarPembantuController extends Controller
                 }
             }
         }
+        $entityName = $entity->nama;
+    } elseif ($selectedState == 'supplier') {
+        $entity = Supplier::findOrFail($id);
 
-        $customer->debit = $debitTotal;
-        $customer->kredit = $kreditTotal;
-    }
-    $tipe = 'D';
+        $jurnals = Jurnal::where('coa_id', $selectedCoaId)
+            ->whereBetween('tgl', [$startDate, $endDate])
+            ->whereNotNull('invoice_external')
+            ->get();
 
-    // Periksa setiap item dalam koleksi $coa untuk menentukan tipe
-    foreach ($akun as $item) {
-        if (in_array(substr($item->no_akun, 0, 1), ['2', '3', '5'])) {
-            $tipe = 'K';
-        }
-    }
-    // dd($akun->all());
-    
-    
+        foreach ($jurnals as $j) {
+            $transaksi = Transaction::where('invoice_external', $j->invoice_external)
+                ->where('id_supplier', $entity->id)
+                ->first();
 
-    return view('jurnal.buku-besar-pembantu', compact('customers','suppliers', 'coa', 'templates', 'nopol', 'selectedYear', 'selectedMonth', 'selectedCoaId', 'tipe', 'akun'));
-}
-
-
-
-public function showDetail($customerId, Request $request)
-{
-    $selectedYear = $request->input('year', date('Y'));
-    $selectedMonth = $request->input('month', date('m'));
-    $selectedCoaId = $request->input('coa_id', 8);
-
-    $startDate = '2023-01-01';
-    $endDate = Carbon::create($selectedYear, $selectedMonth)->endOfMonth()->toDateString();
-
-    $customer = Customer::findOrFail($customerId);
-    $coa = Coa::findOrFail($selectedCoaId); // Ambil data coa berdasarkan coa_id
-
-    $suratJalan = SuratJalan::where('id_customer', $customerId)->get();
-
-    $details = [];
-    foreach ($suratJalan as $sj) {
-        $transaksi = Transaction::where('id_surat_jalan', $sj->id)->get();
-        $processedInvoices = [];
-
-        foreach ($transaksi as $tr) {
-            $invoices = Invoice::where('id_transaksi', $tr->id)->get();
-
-            foreach ($invoices as $inv) {
-                if (in_array($inv->invoice, $processedInvoices)) {
-                    continue;
-                }
-
-                $jurnals = Jurnal::where('invoice', $inv->invoice)
-                    ->where('coa_id', $selectedCoaId)
-                    ->whereBetween('tgl', [$startDate, $endDate])
-                    ->get();
-
-                foreach ($jurnals as $j) {
-                    if ($j->debit > 0 || $j->kredit > 0) {
-                        $details[] = $j;
-                    }
-                }
-
-                $processedInvoices[] = $inv->invoice;
+            if ($transaksi && ($j->debit > 0 || $j->kredit > 0)) {
+                $details[] = [
+                    'tgl' => $j->tgl,
+                    'invoice_external' => $j->invoice_external,
+                    'debit' => $j->debit,
+                    'kredit' => $j->kredit,
+                    'keterangan' => $j->keterangan // Menambahkan keterangan
+                ];
+                $totalDebit += $j->debit;
+                $totalKredit += $j->kredit;
             }
         }
+        $entityName = $entity->nama;
     }
 
+    // Calculate balance (saldo)
+    $view_total = ($coa->tipe == 'K') ? $totalKredit - $totalDebit : $totalDebit - $totalKredit;
+
     return response()->json([
-        'customer' => $customer,
+        'entity' => $entity,
         'details' => $details,
-        'coa' => $coa // Tambahkan data coa ke dalam respons
+        'coa' => $coa,
+        'totalDebit' => $totalDebit,
+        'totalKredit' => $totalKredit,
+        'view_total' => $view_total, // Pass view_total to the view
+        'entityName' => $entityName
     ]);
 }
+
+
+
 
 
 

@@ -3,7 +3,7 @@
         <x-slot:tittle>Menu Jurnal</x-slot:tittle>
         <div class="overflow-x-auto">
             <a href="{{ route('jurnal-manual.index') }}">
-                <button class="btn bg-green-500 text-white font-bold hover:bg-green-700">Jurnal Manual</button>
+                <button class="btn bg-green-500 text-white font-bold hover:bg-green-700">Input Jurnal</button>
             </a>
 
             <a href="{{ route('jurnal.jurnal-merger') }}">

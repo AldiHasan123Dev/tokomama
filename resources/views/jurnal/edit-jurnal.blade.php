@@ -39,7 +39,8 @@
                   <th>Aksi</th>
                   <th>ID</th>
                   <th>Nomor Jurnal</th>
-                  <th>Tanggal</th>
+                  <th>Akun</th>
+                  <th>Nama Akun</th>
                   <th>Debit</th>
                   <th>Kredit</th>
                   <th>Keterangan</th>
@@ -47,8 +48,7 @@
                   <th>Invoice External</th>
                   <th>Nopol</th>
                   <th>Tipe</th>
-                  <th>Akun</th>
-                  <th>Nomor Akun</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -58,7 +58,8 @@
                     <button id="delete-faktur-all" onclick="deleteItemJurnal('{{$item->id}}')" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button></td>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->nomor ?? '-' }}</td>
-                    <td>{{ $item->tgl ?? '-' }}</td>
+                    <td>{{ $item->no_akun ?? '-' }}</td>
+                    <td>{{ $item->nama_akun ?? '-' }}</td>
                     <td>{{ $item->debit ?? '-' }}</td>
                     <td>{{ $item->kredit ?? '-' }}</td>
                     <td>{{ $item->keterangan ?? '-' }}</td>
@@ -66,8 +67,7 @@
                     <td>{{ $item->invoice_external ?? '-' }}</td>
                     <td>{{ $item->nopol ?? '-' }}</td>
                     <td>{{ $item->tipe ?? '-' }}</td>
-                    <td>{{ $item->no_akun ?? '-' }}</td>
-                    <td>{{ $item->nama_akun ?? '-' }}</td>
+                    
                 </tr>
                 @endforeach
               </tbody>
@@ -139,7 +139,7 @@
                                 </label>
                                 <label class="form-control w-full mb-3">
                                     <div class="label">
-                                        <span class="label-text">Invoice</span>
+                                        <span class="label-text">Coa</span>
                                     </div>
                                     <select class="select select-bordered w-full"  name="coa_id" id="coa_id">
                                         <option value="${coa_id}" selected>${no_akun} ${nama_akun}</option>

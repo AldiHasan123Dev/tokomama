@@ -1,7 +1,9 @@
 <x-Layout.layout>
     <!-- <link rel="stylesheet" href="{{ asset('assets/css/table.css')}}"> -->
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets/css/ui.jqgrid-bootstrap5.css') }}" />
     <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.5.2/css/dataTables.dateTime.min.css">
+    <style>
+      
+    </style>
     <x-pajak.card>
         <x-slot:tittle>Laporan PPN</x-slot:tittle>
         <div class="grid grid-cols-7">
@@ -36,7 +38,7 @@
                 </tr>
               </tbody>
             </table>
-            <table class="table" id="table-ppn">
+            <table class="cell-border hover nowrap" id="table-ppn">
               <thead>
                 <tr>
                   <th>No.</th>
@@ -73,6 +75,7 @@
     <x-slot:script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
       <script src="https://cdn.datatables.net/datetime/1.5.2/js/dataTables.dateTime.min.js"></script>
+      <!-- <script src="https://cdn.datatables.net/2.1.0/js/dataTables.tailwindcss.js"></script> -->
         <script>
           
             
@@ -105,11 +108,13 @@
           
         
           let table = $('#table-ppn').DataTable({
+
               ajax:{
                   url: "{{ route('pajak.laporan-ppn.data') }}",
                   dataSrc: "data",
                    // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
               },
+              autoWidth: false,
               columns: [
                 { data: 'DT_RowIndex', name: 'number'},
                 { data: 'invoice', name: 'invoice' },
@@ -117,10 +122,10 @@
                 { data: 'nik', name: 'nik' },
                 { data: 'nama_customer', name: 'nama_customer' },
                 { data: 'nama_npwp', name: 'nama_npwp' },
-                { data: 'alamat_npwp', name: 'alamat_npwp' },
+                { data: 'alamat_npwp', name: 'alamat_npwp', className: "truncate max-w-xs", width: '30px'},
                 { data: 'tgl_invoice', name: 'tgl_faktur' },
                 { data: 'tujuan', name: 'tujuan' },
-                { data: 'keterangan', name: 'uraian' },
+                { data: 'keterangan', name: 'uraian', className: "truncate max-w-xs"},
                 { data: 'nomor_nsfp', name: 'faktur' },
                 { data: 'total', name: 'total' },
                 { data: 'ppn', name: 'ppn' },

@@ -139,7 +139,7 @@
                                 </label>
                                 <label class="form-control w-full mb-3">
                                     <div class="label">
-                                        <span class="label-text">Invoice</span>
+                                        <span class="label-text">Coa</span>
                                     </div>
                                     <select class="select select-bordered w-full"  name="coa_id" id="coa_id">
                                         <option value="${coa_id}" selected>${no_akun} ${nama_akun}</option>

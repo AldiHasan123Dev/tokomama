@@ -174,19 +174,19 @@
     </x-keuangan.card-keuangan>
 
     <x-keuangan.card-keuangan>
-        <x-slot:tittle>Monitoring jurnal JNL</x-slot:tittle>
+        <x-slot:tittle>Monitoring jurnal</x-slot:tittle>
         <table id="monitoring_JNL" class="cell-border hover display nowrap compact">
             <thead>
                 <th>Total Debet</th>
                 <th>Total Kredit</th>
-                <th>Jumlah Jurnal</th>
+                <th>Nomor Jurnal Terakhir JNL</th>
                 <th>Status Balance</th>
             </thead>
             <tbody>
                 <tr>
                     <td>{{ number_format($MonJNL->sum('debit'), 0, ',', '.') }}</td>
                     <td>{{ number_format($MonJNL->sum('kredit'), 0, ',', '.') }}</td>
-                    <td>{{ count($MonJNL) }}</td>
+                    <td>{{ $LastJNL->max('no') }}</td>
                     <td>{{ ($MonJNL->sum('debit') - $MonJNL->sum('kredit')) == 0 ? 'Balance' : 'Not Balance' }}</td>
                 </tr>
             </tbody>

@@ -55,14 +55,6 @@
                   <th>Sub Total</th> <!-- invoice -->
                   <th>PPN</th>  <!-- pasti 11% -->
                   <th>Total</th> <!-- sub total + ppn -->
-                  <th>PPH</th> 
-                  <th>Job</th> <!-- surat jalan  -->
-                  <th>No Bupot</th>
-                  <th>Masa Pajak</th>
-                  <th>Bupot</th>
-                  <th>Tanggal Bupot</th>
-                  <th>Selisih Bupot</th>
-                  <th>Jurnal Bupot</th>
                 </tr>
               </thead>
               <tbody>
@@ -120,24 +112,16 @@
                 { data: 'invoice', name: 'invoice' },
                 { data: 'npwp', name: 'npwp' },
                 { data: 'nik', name: 'nik' },
-                { data: 'nama_customer', name: 'nama_customer' },
-                { data: 'nama_npwp', name: 'nama_npwp' },
-                { data: 'alamat_npwp', name: 'alamat_npwp', className: "truncate max-w-xs", width: '30px'},
-                { data: 'tgl_invoice', name: 'tgl_faktur' },
+                { data: 'nama', name: 'nama' },
+                { data: 'nama_npwp', name: 'nama npwp' },
+                { data: 'alamat_npwp', name: 'alamat npwp' },
+                { data: 'tgl_invoice', name: 'tanggal invoice' },
                 { data: 'tujuan', name: 'tujuan' },
-                { data: 'keterangan', name: 'uraian', className: "truncate max-w-xs"},
-                { data: 'nomor_nsfp', name: 'faktur' },
-                { data: 'total', name: 'total' },
+                { data: 'uraian', name: 'uraian' },
+                { data: 'faktur', name: 'faktur' },
+                { data: 'subtotal', name: 'subtotal' },
                 { data: 'ppn', name: 'ppn' },
-                { data: 'total_all', name: 'total_all' },
-                { data: 'pph', name: 'pph' },
-                { data: 'job', name: 'job' },
-                { data: 'no_bupot', name: 'no_bupot' },
-                { data: 'masa_pajak', name: 'masa_pajak' },
-                { data: 'bupot', name: 'bupot' },
-                { data: 'tanggal_bupot', name: 'tanggal_bupot' },
-                { data: 'selisih_bupot', name: 'selisih_bupot' },
-                { data: 'jurnal_bupot', name: 'jurnal_bupot' },
+                { data: 'total', name: 'total' },
                 { data: 'id', name: 'id', visible:false},  
             ]
           });

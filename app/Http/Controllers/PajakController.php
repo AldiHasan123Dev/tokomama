@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\LaporanPpnExport;
 use App\Http\Resources\SuratJalanResource;
+use App\Models\Invoice;
 use App\Models\NSFP;
 use App\Models\SuratJalan;
 use Illuminate\Http\Request;
@@ -60,7 +61,7 @@ class PajakController extends Controller
          * kemudian di passing ke databable
          */
 
-        $data1 = SuratJalan::get();
+        $data1 = Invoice::get();
         $data = SuratJalanResource::collection($data1);
         $res = $data->toArray(request());
         return DataTables::of($res)

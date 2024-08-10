@@ -145,7 +145,7 @@ class JurnalController extends Controller
     {
         // dd($request->all());
 
-        if ($request->invoice != null || $request->invoice != '-') {
+        if ($request->invoice != null) {
             if (str_contains($request->invoice, '_')) {
                 $inv = explode('_', $request->invoice)[0];
                 $index = explode('_', $request->invoice)[1];
@@ -223,6 +223,7 @@ class JurnalController extends Controller
                     'transaksi.suratJalan.customer',
                 ])->get();
 
+                
                 $barang = $invoices[0]->transaksi->barang->nama;
                 $supplier = $invoices[0]->transaksi->suppliers->nama;
                 $customer = $invoices[0]->transaksi->suratJalan->customer->nama;
@@ -231,6 +232,8 @@ class JurnalController extends Controller
                 $hargabeli = $invoices[0]->transaksi->harga_beli;
                 $hargajual = $invoices[0]->transaksi->harga_jual;
                 $ket = $invoices[0]->transaksi->keterangan;
+                
+                // dd($barang);
 
                 $keterangan = $request->keterangan;
 
@@ -350,9 +353,9 @@ class JurnalController extends Controller
             } else {
                 $invoice_external = $request->invoice_external;
                 $invoiceExternal = Transaction::where('invoice_external', $request->invoice_external)
-                    ->with(['suratJalan.customer', 'barang', 'suppliers'])
-                    ->get();
-
+                ->with(['suratJalan.customer', 'barang', 'suppliers'])
+                ->get();
+                
                 $barang = $invoiceExternal[0]->barang->nama;
                 $supplier = $invoiceExternal[0]->suppliers->nama;
                 $customer = $invoiceExternal[0]->suratJalan->customer->nama;
@@ -361,7 +364,8 @@ class JurnalController extends Controller
                 $hargabeli = $invoiceExternal[0]->harga_beli;
                 $hargajual = $invoiceExternal[0]->harga_jual;
                 $ket = $invoiceExternal[0]->keterangan;
-
+                
+                // dd($request->invoice_external);
                 $keterangan = $request->keterangan;
 
                 if (str_contains($request->keterangan, '[1]')) {

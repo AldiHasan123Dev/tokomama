@@ -165,9 +165,9 @@
                     <th>TOTAL AKTIVA</th>
                       <th>TOTAL PASIVA</th>
                 </tr>
-               <tr>
-                 <td>{{$aktiva = $totalA + $totalB}}</td>
-                     <td>{{$pasiva = $totalC + $totalD}}</td>
+               <tr> 
+                 <td>{{ number_format($aktiva = $totalA + $totalB, 2, ',', '.') }}</td>
+                     <td>{{ number_format($pasiva = $totalC + $totalD, 2, ',', '.') }}</td>
                  </tr>       
             </table>
         </div>

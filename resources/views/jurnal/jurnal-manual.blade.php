@@ -142,14 +142,16 @@
                                 <input type="checkbox" name="check[0]" id="check0i" value="1" checked>
                             </td>
                             <td>
+                                <input type="hidden" name="invoice[0]" value="">
                                 <select class="select select-bordered w-36" name="invoice[0]" id="invoice-1i">
-                                    <option value="" selected></option>
+                                    <option value="0" selected></option>
                                     @foreach ($processedInvoices as $item)
                                         <option value="{{ $item }}">{{ $item }}</option>
                                     @endforeach
                                 </select>
                             </td>
                             <td>
+                                <input type="hidden" name="nopol[0]" value="">
                                 <select class="select select-bordered w-36" name="nopol[0]" id="nopol-1i">
                                     @foreach ($nopol as $item)
                                         <option disabled selected></option>
@@ -158,6 +160,7 @@
                                 </select>
                             </td>
                             <td>
+                                <input type="hidden" name="akun_debet[0]" value="">
                                 <select class="select select-bordered w-36" name="akun_debet[0]" id="akun_debet-1i">
                                     <option value="0"></option>
                                     @foreach ($coa as $item)
@@ -166,6 +169,7 @@
                                 </select>
                             </td>
                             <td>
+                                <input type="hidden" name="akun_kredit[0]" value="">
                                 <select class="select select-bordered w-36" name="akun_kredit[0]" id="akun_kredit-1i">
                                     <option value="0"></option>
                                     @foreach ($coa as $item)
@@ -180,9 +184,10 @@
                                 <input type="number" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" min="0" name="nominal[0]" id="nominal-1i" />
                             </td>
                             <td>
+                                <input type="hidden" name="invoice_external[0]" value="">
                                 <select class="select select-bordered w-36" name="invoice_external[0]" id="invoice_external-1i">
                                     @foreach ($procTransactions as $item)
-                                        <option disabled selected></option>
+                                        <option value="0" selected></option>
                                         <option value="{{ $item }}">{{ $item }}</option>
                                     @endforeach
                                 </select>
@@ -225,16 +230,16 @@
                 $('#nopol-1i').prop('disabled', false);
                 $('#akun_debet-1i').prop('disabled', false);
                 $('#akun_kredit-1i').prop('disabled', false);
-                $('#keterangan-1i').prop('disabled', false);
-                $('#nominal-1i').prop('disabled', false);
+                $('#keterangan-1i').prop('readonly', false);
+                $('#nominal-1i').prop('readonly', false);
                 $('#invoice_external-1i').prop('disabled', false);
             } else {
                 $('#invoice-1i').prop('disabled', true);
                 $('#nopol-1i').prop('disabled', true);
                 $('#akun_debet-1i').prop('disabled', true);
                 $('#akun_kredit-1i').prop('disabled', true);
-                $('#keterangan-1i').prop('disabled', true);
-                $('#nominal-1i').prop('disabled', true);
+                $('#keterangan-1i').prop('readonly', true);
+                $('#nominal-1i').prop('readonly', true);
                 $('#invoice_external-1i').prop('disabled', true);
                 $('#nominal-1i').val(0);
                 updateTotalDebit(1);
@@ -281,6 +286,7 @@
                                     <input type="checkbox" name="check[${no - 1}]" id="check${no - 1}" value="1" checked>
                                 </td>
                                 <td>
+                                    <input type="hidden" name="invoice[${no - 1}]" value="">
                                     <select class="select select-bordered w-36" name="invoice[${no - 1}]" id="invoice-${no}">
                                         <option selected></option>
                                         @foreach ($processedInvoices as $item)
@@ -289,6 +295,7 @@
                                     </select>
                                 </td>
                                 <td>
+                                    <input type="hidden" name="nopol[${no - 1}]" value="">
                                     <select class="select select-bordered w-36" name="nopol[${no - 1}]" id="nopol-${no}">
                                         @foreach ($nopol as $item)
                                         <option selected></option>
@@ -297,6 +304,7 @@
                                     </select>
                                 </td>
                                 <td>
+                                    <input type="hidden" name="akun_debet[${no - 1}]" value="">
                                     <select class="select select-bordered w-36" name="akun_debet[${no - 1}]" id="akun_debet-${no}">
                                         <option id="option_debet-${no - 1}"></option>
                                         @foreach ($coa as $item)
@@ -305,6 +313,7 @@
                                     </select>
                                 </td>
                                 <td>
+                                    <input type="hidden" name="akun_kredit[${no - 1}]" value="">
                                     <select class="select select-bordered w-36" name="akun_kredit[${no - 1}]" id="akun_kredit-${no}">
                                         <option id="option_kredit-${no - 1}"></option>
                                         @foreach ($coa as $item)
@@ -319,6 +328,7 @@
                                     <input type="number" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" min="0" name="nominal[${no - 1}]" id="nominal-${no}" required />
                                 </td>
                                 <td>
+                                    <input type="hidden" name="invoice_external[${no - 1}]" value="">
                                     <select class="select select-bordered w-36" name="invoice_external[${no - 1}]" id="invoice_external-${no}">
                                         @foreach ($procTransactions as $item)
                                             <option disabled selected></option>
@@ -370,16 +380,16 @@
                             $(`#nopol-${currentNo}`).prop('disabled', false);
                             $(`#akun_debet-${currentNo}`).prop('disabled', false);
                             $(`#akun_kredit-${currentNo}`).prop('disabled', false);
-                            $(`#keterangan-${currentNo}`).prop('disabled', false);
-                            $(`#nominal-${currentNo}`).prop('disabled', false);
+                            $(`#keterangan-${currentNo}`).prop('readonly', false);
+                            $(`#nominal-${currentNo}`).prop('readonly', false);
                             $(`#invoice_external-${currentNo}`).prop('disabled', false);
                         } else {
                             $(`#invoice-${currentNo}`).prop('disabled', true);
                             $(`#nopol-${currentNo}`).prop('disabled', true);
                             $(`#akun_debet-${currentNo}`).prop('disabled', true);
                             $(`#akun_kredit-${currentNo}`).prop('disabled', true);
-                            $(`#keterangan-${currentNo}`).prop('disabled', true);
-                            $(`#nominal-${currentNo}`).prop('disabled', true);
+                            $(`#keterangan-${currentNo}`).prop('readonly', true);
+                            $(`#nominal-${currentNo}`).prop('readonly', true);
                             $(`#invoice_external-${currentNo}`).prop('disabled', true);
                             $(`#nominal-${currentNo}`).val(0);
                             updateTotalDebit(no - 1);
@@ -521,7 +531,8 @@
                 <input type="checkbox" name="check[${newRowId - 1}]" id="check${newRowId - 1}" value="1" checked>
             </td>
             <td>
-                <select class="select select-bordered w-36 max-w-xs" name="invoice[]" id="invoice-${newRowId}">
+                <input type="hidden" name="invoice[${newRowId - 1}]" value="">
+                <select class="select select-bordered w-36 max-w-xs" name="invoice[${newRowId - 1}]" id="invoice-${newRowId}">
                     <option selected></option>
                     @foreach ($processedInvoices as $item)
                         <option value="{{ $item }}">{{ $item }}</option>
@@ -529,7 +540,8 @@
                 </select>
             </td>
             <td>
-                <select class="select select-bordered w-36 max-w-xs" name="nopol[]" id="nopol-${newRowId}">
+                <input type="hidden" name="nopol[${newRowId - 1}]" value="">
+                <select class="select select-bordered w-36 max-w-xs" name="nopol[${newRowId - 1}]" id="nopol-${newRowId}">
                     @foreach ($nopol as $item)
                     <option disabled selected></option>
                         <option value="{{ $item->nopol }}">{{ $item->nopol }}</option>
@@ -537,7 +549,8 @@
                 </select>
             </td>
             <td>
-                <select class="select select-bordered w-36 max-w-xs" name="akun_debet[]" id="akun_debet-${newRowId}">
+                <input type="hidden" name="akun_debet[${newRowId - 1}]" value="">
+                <select class="select select-bordered w-36 max-w-xs" name="akun_debet[${newRowId - 1}]" id="akun_debet-${newRowId}">
                     @foreach ($coa as $item)
                     <option value="0" selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -545,7 +558,8 @@
                 </select>
             </td>
             <td>
-                <select class="select select-bordered w-36 max-w-xs" name="akun_kredit[]" id="akun_kredit-${newRowId}">
+                <input type="hidden" name="akun_kredit[${newRowId - 1}]" value="">
+                <select class="select select-bordered w-36 max-w-xs" name="akun_kredit[${newRowId - 1}]" id="akun_kredit-${newRowId}">
                     @foreach ($coa as $item)
                     <option value="0" selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -553,13 +567,14 @@
                 </select>
             </td>
             <td>
-                <input type="text" class="input input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md" name="keterangan[]" id="keterangan-${newRowId}" required />
+                <input type="text" class="input input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md" name="keterangan[${newRowId - 1}]" id="keterangan-${newRowId}" value="" required />
             </td>
             <td>
-                <input type="number" class="input input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md" min="0" name="nominal[]" id="nominal-${newRowId}" required />
+                <input type="number" class="input input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md" min="0" name="nominal[${newRowId - 1}]" id="nominal-${newRowId}" value="" required />
             </td>
             <td>
-                <select class="select select-bordered w-36 max-w-xs" name="invoice_external[]" id="invoice_external-${newRowId}">
+                <input type="hidden" name="invoice_external[${newRowId - 1}]" value="">
+                <select class="select select-bordered w-36 max-w-xs" name="invoice_external[${newRowId - 1}]" id="invoice_external-${newRowId}">
                     @foreach ($procTransactions as $item)
                         <option disabled selected></option>
                         <option value="{{ $item }}">{{ $item }}</option>
@@ -598,16 +613,16 @@
                 $(`#nopol-${newRowId}`).prop('disabled', false);
                 $(`#akun_debet-${newRowId}`).prop('disabled', false);
                 $(`#akun_kredit-${newRowId}`).prop('disabled', false);
-                $(`#keterangan-${newRowId}`).prop('disabled', false);
-                $(`#nominal-${newRowId}`).prop('disabled', false);
+                $(`#keterangan-${newRowId}`).prop('readonly', false);
+                $(`#nominal-${newRowId}`).prop('readonly', false);
                 $(`#invoice_external-${newRowId}`).prop('disabled', false);
             } else {
                 $(`#invoice-${newRowId}`).prop('disabled', true);
                 $(`#nopol-${newRowId}`).prop('disabled', true);
                 $(`#akun_debet-${newRowId}`).prop('disabled', true);
                 $(`#akun_kredit-${newRowId}`).prop('disabled', true);
-                $(`#keterangan-${newRowId}`).prop('disabled', true);
-                $(`#nominal-${newRowId}`).prop('disabled', true);
+                $(`#keterangan-${newRowId}`).prop('readonly', true);
+                $(`#nominal-${newRowId}`).prop('readonly', true);
                 $(`#invoice_external-${newRowId}`).prop('disabled', true);
                 $(`#nominal-${newRowId}`).val(0);
                 updateTotalDebit(newRowId);

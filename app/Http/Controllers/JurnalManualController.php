@@ -89,7 +89,7 @@ class JurnalManualController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $nomor = $request->tipe;
         $data_nomor = explode('/', $request->tipe)[1];
         $tipe = explode('-', $data_nomor)[0];

@@ -17,6 +17,11 @@ use Illuminate\Http\Request;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use App\Exports\NcsExport;
+use App\Exports\CustomerExport;
+use App\Exports\SupplierExport;
+
+use Maatwebsite\Excel\Facades\Excel;
 
 class BukuBesarPembantuController extends Controller
 {
@@ -25,31 +30,31 @@ class BukuBesarPembantuController extends Controller
      */
     public function index(Request $request)
 {
-    // Ambil data COA yang aktif
+   
     $coa = Coa::where('status', 'aktif')->get();
 
-    // Dapatkan tahun dan bulan yang dipilih
+   
     $selectedYear = $request->input('year', date('Y'));
     $selectedMonth = $request->input('month', date('m'));
     $selectedCoaId = $request->input('coa_id', 8);
-    $selectedState = $request->input('state', 'customer'); // Dapatkan state (customer/supplier)
-  
-   
-    // Rentang tanggal
+    $selectedState = $request->input('state', 'customer');
+
+    
     $startDate = '2023-01-01';
     $endDate = Carbon::create($selectedYear, $selectedMonth)->endOfMonth()->toDateString();
 
-    // Inisialisasi variabel untuk customer dan supplier
-    $customers = [];
-    $suppliers = [];
+   
+    $customers = collect(); 
+    $suppliers = collect(); 
+    $ncsDetails = [];
+    $ncsDebitTotal = 0; 
+    $ncsKreditTotal = 0; 
 
     // Logika untuk pelanggan (customers)
     if ($selectedState == 'customer') {
-        $customers = Customer::all();
-
+        $customers = Customer::all(); // Menggunakan all() untuk mendapatkan koleksi
         foreach ($customers as $customer) {
             $suratJalan = SuratJalan::where('id_customer', $customer->id)->get();
-
             $debitTotal = 0;
             $kreditTotal = 0;
 
@@ -89,41 +94,62 @@ class BukuBesarPembantuController extends Controller
 
     // Logika untuk pemasok (suppliers)
     if ($selectedState == 'supplier') {
-        $suppliers = Supplier::all();
-    
+        $suppliers = Supplier::all(); // Menggunakan all() untuk mendapatkan koleksi
         foreach ($suppliers as $supplier) {
             $debitTotal = 0;
             $kreditTotal = 0;
-    
+
             // Ambil semua jurnal untuk supplier berdasarkan invoice_external
             $jurnals = Jurnal::where('coa_id', $selectedCoaId)
                 ->whereBetween('tgl', [$startDate, $endDate])
                 ->whereNotNull('invoice_external') // Menambahkan kondisi ini
                 ->get();
-    
+
             foreach ($jurnals as $j) {
                 $transaksi = Transaction::where('invoice_external', $j->invoice_external)
                     ->where('id_supplier', $supplier->id)
                     ->first();
-    
+
                 if ($transaksi && ($j->debit > 0 || $j->kredit > 0)) {
-                  
                     $debitTotal += $j->debit;
                     $kreditTotal += $j->kredit;
                 }
             }
-    
+
             $supplier->debit = $debitTotal;
             $supplier->kredit = $kreditTotal;
         }
     }
+
+    // Logika untuk NCS (Non-Customer/Supplier)
+    if ($selectedState == 'ncs') {
+       
+        $ncsRecords = Jurnal::where('coa_id', $selectedCoaId)
+        ->whereBetween('tgl', [$startDate, $endDate])
+        ->where('invoice','0')
+        ->where('invoice_external', '0')
+        ->get();
     
+        foreach ($ncsRecords as $j) {
+            $ncsDetails[] = [
+                'tgl' => $j->tgl,
+                'keterangan' => $j->keterangan,
+                'debit' => $j->debit,
+                'kredit' => $j->kredit,
+            ];
+
+            // Tambahkan ke total debit dan kredit
+            $ncsDebitTotal += $j->debit;
+            $ncsKreditTotal += $j->kredit;
+        }
+    }
+
 
     // Tentukan tipe (tipe) untuk perhitungan saldo
     $akun = Coa::where('id', $selectedCoaId)
         ->orWhere('no_akun', $selectedCoaId)
         ->get();
-    
+
     $tipe = 'D';
     foreach ($akun as $item) {
         if (in_array(substr($item->no_akun, 0, 1), ['2', '3', '5'])) {
@@ -131,8 +157,11 @@ class BukuBesarPembantuController extends Controller
         }
     }
 
-    return view('jurnal.buku-besar-pembantu', compact('customers', 'suppliers', 'coa', 'selectedYear', 'selectedMonth', 'selectedCoaId', 'tipe', 'selectedState'));
+    return view('jurnal.buku-besar-pembantu', compact('customers', 'suppliers', 'coa', 'selectedYear', 'selectedMonth', 'selectedCoaId', 'tipe', 'selectedState', 'ncsDetails', 'ncsDebitTotal', 'ncsKreditTotal'));
 }
+
+
+
 
 
 
@@ -235,69 +264,139 @@ public function showDetail($id, Request $request)
         'entityName' => $entityName
     ]);
 }
+public function exportNcs(Request $request)
+{
+   
+    $selectedYear = $request->input('year', date('Y'));
+    $selectedMonth = $request->input('month', date('m'));
+    $selectedCoaId = $request->input('coa_id', 8);
+
+   
+    $startDate = '2023-01-01';
+    $endDate = Carbon::create($selectedYear, $selectedMonth)->endOfMonth()->toDateString();
+
+    
+    return Excel::download(new NcsExport($selectedCoaId, $startDate, $endDate), 'ncs_export.xlsx');
+}
+public function exportCustomer(Request $request)
+{
+
+    $coa = Coa::where('status', 'aktif')->get();
+
+ 
+    $selectedYear = $request->input('year', date('Y'));
+    $selectedMonth = $request->input('month', date('m'));
+    $selectedCoaId = $request->input('coa_id', 8);
 
 
+    $startDate = '2023-01-01';
+    $endDate = Carbon::create($selectedYear, $selectedMonth)->endOfMonth()->toDateString();
+
+  
+    $exportData = [];
 
 
+    $customers = Customer::all();
+    foreach ($customers as $customer) {
+        $suratJalan = SuratJalan::where('id_customer', $customer->id)->get();
 
+        foreach ($suratJalan as $sj) {
+            $transaksi = Transaction::where('id_surat_jalan', $sj->id)->get();
 
+            foreach ($transaksi as $tr) {
+                $invoices = Invoice::where('id_transaksi', $tr->id)->get();
 
+                foreach ($invoices as $inv) {
+                
+                    $jurnals = Jurnal::where('invoice', $inv->invoice)
+                        ->where('coa_id', $selectedCoaId)
+                        ->whereBetween('tgl', [$startDate, $endDate])
+                        ->get();
 
+               
+                    foreach ($jurnals as $j) {
+                    
+                        $formattedDate = Carbon::parse($j->tgl)->format('Y-m-d');
+                        $coa = Coa::find($selectedCoaId);
 
+                        
+                        $data = [
+                            'customer_name' => $customer->nama,
+                            'invoice' => $inv->invoice,
+                            'tanggal' => $formattedDate,
+                            'no_akun' => $coa->no_akun ?? '',
+                            'debit' => number_format($j->debit, 2, ',', '.'), 
+                            'kredit' => number_format($j->kredit, 2, ',', '.'), 
+                            'keterangan' => $j->keterangan ?? '', 
+                        ];
 
-
-
-
-
-
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+                        
+                        if (!in_array($data, $exportData)) {
+                            $exportData[] = $data; 
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+
+    return Excel::download(new CustomerExport($exportData), 'customer_export.xlsx');
+}
+public function exportSupplier(Request $request)
+{
+
+    $coa = Coa::where('status', 'aktif')->get();
+
+  
+    $selectedYear = $request->input('year', date('Y'));
+    $selectedMonth = $request->input('month', date('m'));
+    $selectedCoaId = $request->input('coa_id', 8);
+
+ 
+    $startDate = '2023-01-01';
+    $endDate = Carbon::create($selectedYear, $selectedMonth)->endOfMonth()->toDateString();
+
+   
+    $exportData = [];
+
+  
+    $suppliers = Supplier::all();
+    foreach ($suppliers as $supplier) {
+      
+        $jurnals = Jurnal::where('coa_id', $selectedCoaId)
+            ->whereBetween('tgl', [$startDate, $endDate])
+            ->whereNotNull('invoice_external') 
+            ->get();
+
+        foreach ($jurnals as $j) {
+            $transaksi = Transaction::where('invoice_external', $j->invoice_external)
+                ->where('id_supplier', $supplier->id)
+                ->first();
+
+            if ($transaksi) {
+               
+                $formattedDate = Carbon::parse($j->tgl)->format('Y-m-d');
+                $coa = Coa::find($selectedCoaId);
+
+         
+                $exportData[] = [
+                    'customer_name' => $supplier->nama,
+                    'invoice' => $j->invoice_external,
+                    'tanggal' => $formattedDate,
+                    'no_akun' => $coa->no_akun ?? '',
+                    'debit' => number_format($j->debit, 2, ',', '.'), 
+                    'kredit' => number_format($j->kredit, 2, ',', '.'), 
+                    'keterangan' => $j->keterangan ?? '',
+                    
+                ];
+            }
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(BukuBesarPembantu $bukuBesarPembantu)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(BukuBesarPembantu $bukuBesarPembantu)
-    {
-        //
-    }
+    return Excel::download(new SupplierExport($exportData), 'supplier_export.xlsx');
+}
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, BukuBesarPembantu $bukuBesarPembantu)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(BukuBesarPembantu $bukuBesarPembantu)
-    {
-        //
-    }
 }

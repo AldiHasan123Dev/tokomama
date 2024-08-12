@@ -121,6 +121,11 @@ class InvoiceController extends Controller
         return to_route('keuangan.invoice')->with('success', 'Invoice Created Successfully');
     }
 
+    private function autoJurnal()
+    {
+        
+    }
+
     /**
      * Display the specified resource.
      */

@@ -31,5 +31,10 @@ class Jurnal extends Model
     {
         return $this->belongsTo(Coa::class, 'coa_id'); 
     }
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id'); // Sesuaikan nama kolom kunci
+    }
+
     
 }

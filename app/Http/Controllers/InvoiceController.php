@@ -152,13 +152,17 @@ class InvoiceController extends Controller
                 ->where('invoice',$invoice[$i]['invoice'])->get();
                 // untuk debug '088/INV/SB-VI/2024' $invoice[$i]['invoice']
                 
+                $nopol = '';
+                $temp_debit = 0;
                 foreach($result as $item) {
                     // dd($item);
+                    $temp_debit += $result[$i]->subtotal;
+                    $nopol = $item->transaksi->suratJalan->no_pol;
                     Jurnal::create([
                         'coa_id' => 52,
                         'nomor' => $tipe,
                         'tgl' => $tgl,
-                        'keterangan' => 'indonesian',
+                        'keterangan' => 'pembelian barang apa, dari supplier ',
                         'debit' => 0,
                         'kredit' => $result[$i]->subtotal,
                         'invoice' => $invoice[$i]['invoice'],
@@ -168,36 +172,52 @@ class InvoiceController extends Controller
                         'tipe' => 'JNL',
                         'no' => $no
                     ]);
+
                 }
+
+            Jurnal::create([
+                'coa_id' => 8,
+                'nomor' => $tipe,
+                'tgl' => $tgl,
+                'keterangan' => 'indonesian',
+                'debit' => $temp_debit,
+                'kredit' => 0,
+                'invoice' => $invoice[$i]['invoice'],
+                'invoice_external' => null,
+                'nopol' => $nopol,
+                'container' => null,
+                'tipe' => 'JNL',
+                'no' => $no
+            ]);
         }
 
 
-        $dataInv = array();
-        for($i = 0; $i < count($invoice); $i++) {
-            $result = Invoice::with([
-                'transaksi.barang',
-                'transaksi.suratJalan'
-                ])
-                ->where('invoice', $invoice[$i]['invoice'])->get();
-                foreach($result as $item) {
-                    array_push($dataInv, $item);
-                }
-                Jurnal::create([
-                    'coa_id' => 8,
-                    'nomor' => $tipe,
-                    'tgl' => $tgl,
-                    'keterangan' => 'indonesian',
-                    'debit' => $result->max('subtotal'),
-                    'kredit' => 0,
-                    'invoice' => $invoice[$i]['invoice'],
-                    'invoice_external' => null,
-                    'nopol' => $dataInv[$i]->transaksi->suratJalan->no_pol,
-                    'container' => null,
-                    'tipe' => 'JNL',
-                    'no' => $no
-                ]);
+        // $dataInv = array();
+        // for($i = 0; $i < count($invoice); $i++) {
+        //     $result = Invoice::with([
+        //         'transaksi.barang',
+        //         'transaksi.suratJalan'
+        //         ])
+        //         ->where('invoice', $invoice[$i]['invoice'])->get();
+        //         foreach($result as $item) {
+        //             array_push($dataInv, $item);
+        //         }
+        //         Jurnal::create([
+        //             'coa_id' => 8,
+        //             'nomor' => $tipe,
+        //             'tgl' => $tgl,
+        //             'keterangan' => 'indonesian',
+        //             'debit' => $result->max('subtotal'),
+        //             'kredit' => 0,
+        //             'invoice' => $invoice[$i]['invoice'],
+        //             'invoice_external' => null,
+        //             'nopol' => $dataInv[$i]->transaksi->suratJalan->no_pol,
+        //             'container' => null,
+        //             'tipe' => 'JNL',
+        //             'no' => $no
+        //         ]);
             
-        }
+        // }
         
     }
 

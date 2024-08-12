@@ -63,6 +63,7 @@ class CustomerController extends Controller
         // dd($request);
         $data = Customer::find($request->id);
         $data->nama = $request->nama;
+        $data->nama_npwp = $request->nama_npwp;
         $data->npwp = $request->npwp;
         $data->email = $request->email;
         $data->no_telp = $request->no_telp;

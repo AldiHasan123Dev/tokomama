@@ -13,8 +13,8 @@
 
                 <div class="my-auto">
                     <div class="text-center">
-                        <h5 class="font-medium text-gray-700 dark:text-gray-100">Welcome Back !</h5>
-                        <p class="mt-2 mb-4 text-gray-500 dark:text-gray-100/60">Sign in to continue to Minia.</p>
+                        <h5 class="font-medium text-gray-700 dark:text-gray-100">Selamat Datang !</h5>
+                        <p class="mt-2 mb-4 text-gray-500 dark:text-gray-100/60">Login untuk masuk kedalam sistem.</p>
                     </div>
 
                     <form class="pt-2" action="{{ route('login') }}" method="POST">

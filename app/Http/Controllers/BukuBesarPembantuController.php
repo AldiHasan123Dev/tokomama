@@ -128,6 +128,7 @@ class BukuBesarPembantuController extends Controller
         ->whereBetween('tgl', [$startDate, $endDate])
         ->where('invoice','0')
         ->where('invoice_external', '0')
+        ->orderBy('tgl', 'asc')
         ->get();
     
         foreach ($ncsRecords as $j) {
@@ -311,6 +312,7 @@ public function exportCustomer(Request $request)
                     $jurnals = Jurnal::where('invoice', $inv->invoice)
                         ->where('coa_id', $selectedCoaId)
                         ->whereBetween('tgl', [$startDate, $endDate])
+
                         ->get();
 
                
@@ -339,6 +341,10 @@ public function exportCustomer(Request $request)
             }
         }
     }
+    // Mengurutkan $exportData berdasarkan customer_name dan tanggal
+    usort($exportData, function ($a, $b) {
+        return strcmp($a['customer_name'], $b['customer_name']) ?: strcmp($a['tanggal'], $b['tanggal']);
+    });
 
 
     return Excel::download(new CustomerExport($exportData), 'customer_export.xlsx');
@@ -393,7 +399,9 @@ public function exportSupplier(Request $request)
             }
         }
     }
-
+    usort($exportData, function ($a, $b) {
+        return strcmp($a['customer_name'], $b['customer_name']) ?: strcmp($a['tanggal'], $b['tanggal']);
+    });
 
     return Excel::download(new SupplierExport($exportData), 'supplier_export.xlsx');
 }

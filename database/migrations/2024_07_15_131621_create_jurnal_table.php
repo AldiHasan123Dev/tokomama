@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nomor');
             $table->date('tgl');
             $table->string('keterangan');
+            $table->string('keterangan_buku_besar_pembantu');
             $table->double('debit')->default(0);
             $table->double('kredit')->default(0);
             $table->string('invoice')->nullable();

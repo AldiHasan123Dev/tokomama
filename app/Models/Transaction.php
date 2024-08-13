@@ -49,4 +49,10 @@ class Transaction extends Model
     {
         return $this->hasMany(Jurnal::class, 'invoice_external', 'invoice');
     }
+    // Di model Transaksi
+    public function Jurnal()
+    {
+        return $this->hasOne(Jurnal::class, 'id_transaksi', 'id'); // Pastikan ini sesuai dengan struktur database Anda
+    }
+
 }

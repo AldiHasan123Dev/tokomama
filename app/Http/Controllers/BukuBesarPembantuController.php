@@ -121,30 +121,52 @@ class BukuBesarPembantuController extends Controller
         }
     }
 
+   
     // Logika untuk NCS (Non-Customer/Supplier)
     if ($selectedState == 'ncs') {
-       
         $ncsRecords = Jurnal::where('coa_id', $selectedCoaId)
-        ->whereBetween('tgl', [$startDate, $endDate])
-        ->where('invoice','0')
-        ->where('invoice_external', '0')
-        ->orderBy('tgl', 'asc')
-        ->get();
-    
+            ->whereBetween('tgl', [$startDate, $endDate])
+            ->whereNotNull('nomor') 
+            ->whereNotNull('keterangan_buku_besar_pembantu') 
+            ->whereColumn('nomor', 'keterangan_buku_besar_pembantu') 
+            ->orderBy('tgl', 'asc')
+            ->get();
+
+        // Inisialisasi koleksi untuk mengelompokkan data
+        $ncsGrouped = collect();
+
         foreach ($ncsRecords as $j) {
-            $ncsDetails[] = [
-                'tgl' => $j->tgl,
-                'keterangan' => $j->keterangan,
-                'debit' => $j->debit,
-                'kredit' => $j->kredit,
-            ];
+            // Buat kunci unik berdasarkan tanggal dan keterangan
+            $key = $j->tgl . '|' . $j->keterangan_buku_besar_pembantu;
+
+            // Jika kunci sudah ada, tambahkan debit dan kredit
+            if ($ncsGrouped->has($key)) {
+                $existing = $ncsGrouped->get($key);
+                $existing['debit'] += $j->debit;
+                $existing['kredit'] += $j->kredit;
+                $ncsGrouped->put($key, $existing); // Gunakan put untuk memperbarui nilai
+            } else {
+                // Jika kunci belum ada, tambahkan entri baru
+                $ncsGrouped->put($key, [
+                    'tgl' => $j->tgl,
+                    'keterangan_buku_besar_pembantu' => $j->keterangan_buku_besar_pembantu,
+                    'debit' => $j->debit,
+                    'kredit' => $j->kredit,
+                ]);
+            }
+        }
+
+        // Ubah koleksi terkelompok menjadi array untuk ncsDetails
+        foreach ($ncsGrouped as $group) {
+            $ncsDetails[] = $group;
 
             // Tambahkan ke total debit dan kredit
-            $ncsDebitTotal += $j->debit;
-            $ncsKreditTotal += $j->kredit;
+            $ncsDebitTotal += $group['debit'];
+            $ncsKreditTotal += $group['kredit'];
         }
     }
 
+   
 
     // Tentukan tipe (tipe) untuk perhitungan saldo
     $akun = Coa::where('id', $selectedCoaId)
@@ -158,12 +180,8 @@ class BukuBesarPembantuController extends Controller
         }
     }
 
-    return view('jurnal.buku-besar-pembantu', compact('customers', 'suppliers', 'coa', 'selectedYear', 'selectedMonth', 'selectedCoaId', 'tipe', 'selectedState', 'ncsDetails', 'ncsDebitTotal', 'ncsKreditTotal'));
+    return view('jurnal.buku-besar-pembantu', compact('customers', 'suppliers',  'coa', 'selectedYear', 'selectedMonth', 'selectedCoaId', 'tipe', 'selectedState', 'ncsDetails', 'ncsDebitTotal', 'ncsKreditTotal'));
 }
-
-
-
-
 
 
 
@@ -250,13 +268,39 @@ public function showDetail($id, Request $request)
             }
         }
         $entityName = $entity->nama;
+    } elseif ($selectedState == 'ncs') { // Logika untuk NCS (Non-Customer/Supplier)
+        $ncsRecords = Jurnal::where('coa_id', $selectedCoaId)
+            ->whereBetween('tgl', [$startDate, $endDate])
+            ->whereNotNull('nomor') 
+            ->whereNotNull('keterangan_buku_besar_pembantu') 
+            ->whereColumn('nomor', 'keterangan_buku_besar_pembantu') 
+            ->orderBy('tgl', 'asc')
+            ->get();
+    
+        foreach ($ncsRecords as $j) {
+            // Tambahkan detail langsung tanpa pengelompokan
+            if ($j->debit > 0 || $j->kredit > 0) {
+                $details[] = [
+                    'tgl' => $j->tgl,
+                    'nomor' => $j->nomor, // Tambahkan nomor
+                    'keterangan_buku_besar_pembantu' => $j->keterangan_buku_besar_pembantu, // Update keterangan
+                    'keterangan' => $j->keterangan,
+                    'debit' => $j->debit,
+                    'kredit' => $j->kredit,
+                ];
+                $totalDebit += $j->debit;
+                $totalKredit += $j->kredit;
+            }
+        }
+        $entityName = 'NCS'; // Set nama entitas sebagai NCS
     }
+    
 
     // Calculate balance (saldo)
     $view_total = ($coa->tipe == 'K') ? $totalKredit - $totalDebit : $totalDebit - $totalKredit;
 
     return response()->json([
-        'entity' => $entity,
+        'entity' => isset($entity) ? $entity : null,
         'details' => $details,
         'coa' => $coa,
         'totalDebit' => $totalDebit,
@@ -265,6 +309,7 @@ public function showDetail($id, Request $request)
         'entityName' => $entityName
     ]);
 }
+
 public function exportNcs(Request $request)
 {
    
@@ -341,7 +386,7 @@ public function exportCustomer(Request $request)
             }
         }
     }
-    // Mengurutkan $exportData berdasarkan customer_name dan tanggal
+  
     usort($exportData, function ($a, $b) {
         return strcmp($a['customer_name'], $b['customer_name']) ?: strcmp($a['tanggal'], $b['tanggal']);
     });

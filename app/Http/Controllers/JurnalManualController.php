@@ -175,32 +175,36 @@ class JurnalManualController extends Controller
                                         'nomor' => $newNoJurnal,
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
+                                        'keterangan_buku_besar_pembantu' => $request->keterangan_buku_besar_pembantu[$i] ?? null, // Tambahkan kolom baru
                                         'debit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
                                         'nopol' => $request->nopol[$i] ?? null,
                                         'tipe' => $tipe,
-                                        'no' => $maxNomor + 1
+                                        'no' => $maxNomor + 1,
+                                        
                                     ]);
                                 }
-
+    
                                 if ($request->akun_kredit[$i] != 0) {
                                     Jurnal::create([
                                         'coa_id' => $request->akun_kredit[$i],
                                         'nomor' => $newNoJurnal,
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
+                                        'keterangan_buku_besar_pembantu' => $request->keterangan_buku_besar_pembantu[$i] ?? null, // Tambahkan kolom baru
                                         'kredit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
                                         'nopol' => $request->nopol[$i] ?? null,
                                         'tipe' => $tipe,
-                                        'no' => $maxNomor + 1
+                                        'no' => $maxNomor + 1,
+                                       
                                     ]);
                                 }
                             }
                         );
-                    } else {
+                    }else {
                         // dd($request, $i, $nomor, $tipe, $no, $keteranganList[0]);
                         DB::transaction(
                             function () use ($request, $i, $nomor, $tipe, $no, $keteranganList) {
@@ -210,35 +214,38 @@ class JurnalManualController extends Controller
                                         'nomor' => $nomor,
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
+                                        'keterangan_buku_besar_pembantu' => $request->keterangan_buku_besar_pembantu[$i] ?? null, // Tambahkan kolom baru
                                         'debit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
                                         'nopol' => $request->nopol[$i] ?? null,
                                         'tipe' => $tipe,
-                                        'no' => $no
+                                        'no' => $no,
+                                        
                                     ]);
                                 }
-
+    
                                 if ($request->akun_kredit[$i] != 0) {
                                     Jurnal::create([
                                         'coa_id' => $request->akun_kredit[$i],
                                         'nomor' => $nomor,
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
+                                        'keterangan_buku_besar_pembantu' => $request->keterangan_buku_besar_pembantu[$i] ?? null, // Tambahkan kolom baru
                                         'kredit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
                                         'nopol' => $request->nopol[$i] ?? null,
                                         'tipe' => $tipe,
-                                        'no' => $no
+                                        'no' => $no,
+                                       
                                     ]);
                                 }
                             }
-
                         );
-                        
                     }
                 } else {
+                    // Kode untuk tipe selain 'JNL'
                     DB::transaction(
                         function () use ($request, $i, $nomor, $tipe, $no, $keteranganList) {
                             if ($request->akun_debet[$i] != 0) {
@@ -247,12 +254,14 @@ class JurnalManualController extends Controller
                                     'nomor' => $nomor,
                                     'tgl' => $request->tanggal_jurnal,
                                     'keterangan' => $keteranganList[$i],
+                                    'keterangan_buku_besar_pembantu' => $request->keterangan_buku_besar_pembantu[$i] ?? null, // Tambahkan kolom baru
                                     'debit' => $request->nominal[$i],
                                     'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                     'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
                                     'nopol' => $request->nopol[$i] ?? null,
                                     'tipe' => $tipe,
-                                    'no' => $no
+                                    'no' => $no,
+                                    
                                 ]);
                             }
 
@@ -262,12 +271,14 @@ class JurnalManualController extends Controller
                                     'nomor' => $nomor,
                                     'tgl' => $request->tanggal_jurnal,
                                     'keterangan' => $keteranganList[$i],
+                                    'keterangan_buku_besar_pembantu' => $request->keterangan_buku_besar_pembantu[$i] ?? null, // Tambahkan kolom baru
                                     'kredit' => $request->nominal[$i],
                                     'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                     'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
                                     'nopol' => $request->nopol[$i] ?? null,
                                     'tipe' => $tipe,
-                                    'no' => $no
+                                    'no' => $no,
+                                   
                                 ]);
                             }
                         }

@@ -15,6 +15,7 @@ class Jurnal extends Model
         'nomor',
         'tgl',
         'keterangan',
+        'keterangan_buku_besar_pembantu',
         'debit',
         'kredit',
         'invoice',

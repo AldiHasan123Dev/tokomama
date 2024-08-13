@@ -86,6 +86,11 @@
                                             onclick="showDetailModal({{ $customer->id }}, {{ $selectedYear }}, {{ $selectedMonth }}, {{ $selectedCoaId }}, 'customer')">
                                             Detail
                                         </button>
+                                        <button class="bg-green-400 text-white py-1 px-3 rounded hover:bg-green-300"
+                                            onclick="showSummaryModal({{ $customer->id }}, {{ $selectedYear }}, {{ $selectedMonth }}, {{ $selectedCoaId }}, 'customer')">
+                                            Summary
+                                        </button>
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -148,6 +153,10 @@
                                             onclick="showDetailModal({{ $supplier->id }}, {{ $selectedYear }}, {{ $selectedMonth }}, {{ $selectedCoaId }}, 'supplier')">
                                             Detail
                                         </button>
+                                        <button class="bg-green-400 text-white py-1 px-3 rounded hover:bg-green-300"
+                                            onclick="showSummaryModal({{ $supplier->id }}, {{ $selectedYear }}, {{ $selectedMonth }}, {{ $selectedCoaId }}, 'supplier')">
+                                            Summary
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -190,24 +199,32 @@
                                 <th>Debit</th>
                                 <th>Kredit</th>
                                 <th>Saldo</th>
+                                <th>#</th>
                             </tr>
                         </thead>
                         @foreach ($ncsDetails as $key => $ncs)
-                            <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $ncs['tgl'] }}</td>
-                                <td>{{ $ncs['keterangan'] }}</td>
-                                <td>{{ number_format($ncs['debit'], 2, ',', '.') }}</td>
-                                <td>{{ number_format($ncs['kredit'], 2, ',', '.') }}</td>
-                                <td>
-                                    @if ($tipe == 'K')
-                                        {{ number_format($ncs['kredit'] - $ncs['debit'], 2, ',', '.') }}
-                                    @else
-                                        {{ number_format($ncs['debit'] - $ncs['kredit'], 2, ',', '.') }} 
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $ncs['tgl'] }}</td>
+                            <td>{{ $ncs['keterangan_buku_besar_pembantu'] }}</td> 
+                            <td>{{ number_format($ncs['debit'], 2, ',', '.') }}</td>
+                            <td>{{ number_format($ncs['kredit'], 2, ',', '.') }}</td>
+                            <td>
+                                @if ($tipe == 'K')
+                                    {{ number_format($ncs['kredit'] - $ncs['debit'], 2, ',', '.') }}
+                                @else
+                                    {{ number_format($ncs['debit'] - $ncs['kredit'], 2, ',', '.') }} 
+                                @endif
+                            </td>
+                            <td>
+                                <button class="bg-blue-400 text-white py-1 px-3 rounded hover:bg-blue-300"
+                                    onclick="showDetailModal({{ $ncs['nomor'] ?? 'null' }}, '{{ $selectedYear }}', '{{ $selectedMonth }}', {{ $selectedCoaId }}, 'ncs')">
+                                    Detail
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
+
 
                         <tfoot>
                             <tr>
@@ -324,64 +341,139 @@
             return x1 + x2;
         }
 
-        function showDetailModal(entityId, year, month, coaId, state) {
-            $.ajax({
-                url: '{{ route("buku-besar-pembantu.showDetail", ":id") }}'.replace(':id', entityId),
-                method: 'GET',
-                data: {
-                    year: year,
-                    month: month,
-                    coa_id: coaId,
-                    state: state 
-                },
-                success: function(response) {
-                    if (response.coa) {
-                        $('#modalTitle').text('Detail Buku Besar Pembantu: ' + response.entityName + ' || Akun: ' + response.coa.no_akun + ' - ' + response.coa.nama_akun);
-                        $('#modalBody').empty();
+        function showDetailModal(entityId, year, month, coaId, state, keterangan, debit, kredit) {
+    $.ajax({
+        url: '{{ route("buku-besar-pembantu.showDetail", ":id") }}'.replace(':id', entityId),
+        method: 'GET',
+        data: {
+            year: year,
+            month: month,
+            coa_id: coaId,
+            state: state 
+        },
+        success: function(response) {
+            $('#modalTitle').text('Detail Buku Besar Pembantu: ' + response.entityName + ' || Akun: ' + response.coa.no_akun + ' - ' + response.coa.nama_akun);
+            $('#modalBody').empty();
 
-                        
-                        const totalDebit = response.totalDebit;
-                        const totalKredit = response.totalKredit;
-                        const saldo = response.view_total;
+            const totalDebit = response.totalDebit;
+            const totalKredit = response.totalKredit;
+            const saldo = response.view_total;
 
-                        let rows = ''; 
+            let rows = '';
 
-                       
-                        response.details.forEach(detail => {
-                            rows += `<tr>
-                                        <td class="border border-gray-300 px-4 py-2">${detail.tgl}</td>
-                                        <td class="border border-gray-300 px-4 py-2">${state === 'customer' ? detail.invoice : detail.invoice_external}</td>
-                                        <td class="border border-gray-300 px-4 py-2">${number_format(detail.debit)}</td>
-                                        <td class="border border-gray-300 px-4 py-2">${number_format(detail.kredit)}</td>
-                                        <td class="border border-gray-300 px-4 py-2 text-start">${detail.keterangan || '-'}</td>
-                                    </tr>`;
-                        });
+            // Periksa state untuk menampilkan detail yang sesuai
+            if (state === 'ncs') {
+                response.details.forEach(detail => {
+                    rows += `<tr>
+                                <td class="border border-gray-300 px-4 py-2">${detail.tgl}</td>
+                                <td class="border border-gray-300 px-4 py-2">${detail.nomor || '-'}</td>
+                                <td class="border border-gray-300 px-4 py-2">${number_format(detail.debit)}</td>
+                                <td class="border border-gray-300 px-4 py-2">${number_format(detail.kredit)}</td>
+                                <td class="border border-gray-300 px-4 py-2 text-start">${detail.keterangan || '-'}</td>
+                            </tr>`;
+                });
+            } else {
+                response.details.forEach(detail => {
+                    rows += `<tr>
+                                <td class="border border-gray-300 px-4 py-2">${detail.tgl}</td>
+                                <td class="border border-gray-300 px-4 py-2">${state === 'customer' ? detail.invoice : detail.invoice_external}</td>
+                                <td class="border border-gray-300 px-4 py-2">${number_format(detail.debit)}</td>
+                                <td class="border border-gray-300 px-4 py-2">${number_format(detail.kredit)}</td>
+                                <td class="border border-gray-300 px-4 py-2 text-start">${detail.keterangan || '-'}</td>
+                            </tr>`;
+                });
+            }
 
-                     
-                        rows += `<tr>
-                                    <td colspan="2" class="border border-gray-300 px-4 py-2 font-bold">Total</td>
-                                    <td class="border border-gray-300 px-4 py-2 font-bold">${number_format(totalDebit)}</td>
-                                    <td class="border border-gray-300 px-4 py-2 font-bold">${number_format(totalKredit)}</td>
-                                    <td class="border border-gray-300 px-4 py-2 font-bold">SALDO: ${number_format(saldo)}</td>
-                                </tr>`;
+            rows += `<tr>
+                        <td colspan="2" class="border border-gray-300 px-4 py-2 font-bold">Total</td>
+                        <td class="border border-gray-300 px-4 py-2 font-bold">${number_format(totalDebit)}</td>
+                        <td class="border border-gray-300 px-4 py-2 font-bold">${number_format(totalKredit)}</td>
+                        <td class="border border-gray-300 px-4 py-2 font-bold">SALDO: ${number_format(saldo)}</td>
+                    </tr>`;
 
-                       
-                        $('#modalBody').append(rows);
-
-                        
-                        $('#detailModal').removeClass('hidden');
-                    } else {
-                        console.error('Data COA tidak ditemukan dalam respons.');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + error);
-                }
-            });
+            $('#modalBody').append(rows);
+            $('#detailModal').removeClass('hidden');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error: ' + error);
         }
+    });
+}
 
 
 
+        function showSummaryModal(entityId, year, month, coaId, state) {
+    $.ajax({
+        url: '{{ route("buku-besar-pembantu.showDetail", ":id") }}'.replace(':id', entityId),
+        
+        method: 'GET',
+        data: {
+            year: year,
+            month: month,
+            coa_id: coaId,
+            state: state,
+            type: 'summary'  // Tambahkan parameter type
+        },
+        success: function(response) {
+            if (response.coa) {
+                $('#modalTitle').text('Summary Buku Besar Pembantu: ' + response.entityName + ' || Akun: ' + response.coa.no_akun + ' - ' + response.coa.nama_akun);
+                $('#modalBody').empty();
+
+                const totalDebit = response.totalDebit;
+                const totalKredit = response.totalKredit;
+                const saldo = response.view_total;
+
+                let mergedData = {};
+                response.details.forEach(detail => {
+                    let invoice = state === 'customer' ? detail.invoice : detail.invoice_external;
+
+                    if (!mergedData[invoice]) {
+                        mergedData[invoice] = {
+                            tgl: [],
+                            debit: 0,
+                            kredit: 0,
+                            keterangan: []
+                        };
+                    }
+
+                    mergedData[invoice].tgl.push(detail.tgl);
+                    mergedData[invoice].debit += parseFloat(detail.debit);
+                    mergedData[invoice].kredit += parseFloat(detail.kredit);
+                    mergedData[invoice].keterangan.push(detail.keterangan || '-');
+                });
+
+                let rows = '';
+                for (let invoice in mergedData) {
+                    rows += `<tr>
+                                <td class="border border-gray-300 px-4 py-2">${mergedData[invoice].tgl.join(', ')}</td>
+                                <td class="border border-gray-300 px-4 py-2">${invoice}</td>
+                                <td class="border border-gray-300 px-4 py-2">${number_format(mergedData[invoice].debit)}</td>
+                                <td class="border border-gray-300 px-4 py-2">${number_format(mergedData[invoice].kredit)}</td>
+                                <td class="border border-gray-300 px-4 py-2 text-start">${mergedData[invoice].keterangan.join(', <br> ')}</td>
+                            </tr>`;
+                }
+
+                rows += `<tr>
+                            <td colspan="2" class="border border-gray-300 px-4 py-2 font-bold">Total</td>
+                            <td class="border border-gray-300 px-4 py-2 font-bold">${number_format(totalDebit)}</td>
+                            <td class="border border-gray-300 px-4 py-2 font-bold">${number_format(totalKredit)}</td>
+                            <td class="border border-gray-300 px-4 py-2 font-bold">SALDO: ${number_format(saldo)}</td>
+                        </tr>`;
+
+                $('#modalBody').append(rows);
+                $('#detailModal').removeClass('hidden');
+            } else {
+                console.error('Data COA tidak ditemukan dalam respons.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error: ' + error);
+        }
+    });
+}
+
+    
+ 
 
         function closeModal() {
             $('#detailModal').addClass('hidden');

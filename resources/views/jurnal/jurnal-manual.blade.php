@@ -133,6 +133,7 @@
                             <th>Keterangan</th>
                             <th>Nominal</th>
                             <th>Invoice External</th>
+                            <th>Keterangan Buku Besar Pembantu </th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -191,6 +192,16 @@
                                         <option value="{{ $item }}">{{ $item }}</option>
                                     @endforeach
                                 </select>
+                            </td>
+                            <td>
+                            <select name="keterangan_buku_besar_pembantu[0]" id="keterangan_buku_besar_pembantu-1i" class="select select-bordered w-full max-w-xs">
+                                <option selected></option>
+                                <option value="Jurnal - {{ $no_JNL }}/{{'JNL'}}-SB/{{ date('y') }}">Jurnal - {{ $no_JNL }}/{{'JNL'}}-SB/{{ date('y') }}</option>
+                                <option value="Kas Keluar - {{ $no_BKK }}/{{'BKK'}}-SB/{{ date('y') }}">Kas Keluar - {{ $no_BKK }}/{{'BKK'}}-SB/{{ date('y') }}</option>
+                                <option value="Kas Masuk - {{ $no_BKM }}/{{'BKM'}}-SB/{{ date('y') }}">Kas Masuk - {{ $no_BKM }}/{{'BKM'}}-SB/{{ date('y') }}</option>
+                                <option value="Bank Keluar - {{ $no_BBK }}/{{'BBK'}}-SB/{{ date('y') }}">Bank Keluar - {{ $no_BBK }}/{{'BBK'}}-SB/{{ date('y') }}</option>
+                                <option value="Bank Masuk - {{ $no_BBM }}/{{'BBM'}}-SB/{{ date('y') }}">Bank Masuk - {{ $no_BBM }}/{{'BBM'}}-SB/{{ date('y') }}</option>
+                            </select>
                             </td>
                         </tr>
                     </tbody>
@@ -336,6 +347,7 @@
                                         @endforeach
                                     </select>
                                 </td>
+                                
                             </tr>`;
                         
                         // Object.is(response.coa_debit[i], null) ? (response.coa_debit[i] = 0) : (response.coa_debit[i] = response.coa_debit[i]);

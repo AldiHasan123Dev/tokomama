@@ -27,8 +27,10 @@
     <x-keuangan.card-keuangan>
         <x-slot:tittle>Form Jurnal Manual</x-slot:tittle>
         <div class="overflow-x-auto">
-            <form action="{{ route('jurnal-manual.store') }}" method="post">
+            <form action="{{ route('jurnal-manual.store') }}" method="post" id="form-jurnal">
                 @csrf
+                <input type="hidden" name="total_debit" id="total_debit">
+                <input type="hidden" name="total_credit" id="total_credit">
                 <input type="hidden" name="counter" id="counter">
                 <table id="param" class="mb-10">
                     <thead>
@@ -162,7 +164,7 @@
                             </td>
                             <td>
                                 <input type="hidden" name="akun_debet[0]" value="">
-                                <select class="select select-bordered w-36 calc_debit-1" name="akun_debet[0]" id="akun_debet-1i">
+                                <select class="select select-bordered w-36 calc_debit-1 debit-0" name="akun_debet[0]" id="akun_debet-1i">
                                     <option value="0"></option>
                                     @foreach ($coa as $item)
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -171,7 +173,7 @@
                             </td>
                             <td>
                                 <input type="hidden" name="akun_kredit[0]" value="">
-                                <select class="select select-bordered w-36 calc_kredit-1" name="akun_kredit[0]" id="akun_kredit-1i">
+                                <select class="select select-bordered w-36 calc_kredit-1 credit-0" name="akun_kredit[0]" id="akun_kredit-1i">
                                     <option value="0"></option>
                                     @foreach ($coa as $item)
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -182,7 +184,7 @@
                                 <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[0]" id="keterangan-1i" />
                             </td>
                             <td>
-                                <input type="number" onkeyup="calcDebitCredit(1)" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" min="0" name="nominal[0]" id="nominal-1i" />
+                                <input type="number" onkeyup="total()" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal nominal-0" min="0" name="nominal[0]" id="nominal-1i" />
                             </td>
                             <td>
                                 <input type="hidden" name="invoice_external[0]" value="">
@@ -208,7 +210,7 @@
                 <h3 class="font-bold">TOTAL DEBET : <span id="td"></span></h3>
                 <h3 class="font-bold mb-5">TOTAL CREDIT : <span id="tc"></span></h3>
 
-                <button class="btn bg-green-500 text-white w-5/12 ms-10 mb-5">Simpan Jurnal</button>
+                <button type="button" id="simpan" class="btn bg-green-500 text-white w-5/12 ms-10 mb-5">Simpan Jurnal</button>
             </form>
         </div>
     </x-keuangan.card-keuangan>
@@ -220,7 +222,7 @@
     let totaltc = 0;
     let dataTemp = [];
     let debitarr = [];
-    let kreditarr = [];  
+    let kreditarr = [];
 
     $(document).ready(function () {
         $('select.select').select2();
@@ -316,7 +318,7 @@
                                 </td>
                                 <td>
                                     <input type="hidden" name="akun_debet[${no - 1}]" value="">
-                                    <select class="select select-bordered w-36 calc_debit-${no - 1}" name="akun_debet[${no - 1}]" id="akun_debet-${no}">
+                                    <select class="select select-bordered w-36 calc_debit-${no - 1} debit-${no}" name="akun_debet[${no - 1}]" id="akun_debet-${no}i">
                                         <option id="option_debet-${no - 1}" value="0"></option>
                                         @foreach ($coa as $item)
                                         <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -325,7 +327,7 @@
                                 </td>
                                 <td>
                                     <input type="hidden" name="akun_kredit[${no - 1}]" value="">
-                                    <select class="select select-bordered w-36 calc_kredit-${no - 1}" name="akun_kredit[${no - 1}]" id="akun_kredit-${no}">
+                                    <select class="select select-bordered w-36 calc_kredit-${no - 1} credit-${no}" name="akun_kredit[${no - 1}]" id="akun_kredit-${no}i">
                                         <option id="option_kredit-${no - 1}" value="0"></option>
                                         @foreach ($coa as $item)
                                         <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -336,7 +338,7 @@
                                     <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[${no - 1}]" id="keterangan-${no}" value="${response.keterangan[no - 1] ?? ""}" required />
                                 </td>
                                 <td>
-                                    <input type="number" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" min="0" name="nominal[${no - 1}]" id="nominal-${no}" required />
+                                    <input type="number" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal-${no-1}" min="0" name="nominal[${no - 1}]" id="nominal-${no}" required />
                                 </td>
                                 <td>
                                     <input type="hidden" name="invoice_external[${no - 1}]" value="">
@@ -347,11 +349,11 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                
+
                             </tr>`;
-                        
+
                         // Object.is(response.coa_debit[i], null) ? (response.coa_debit[i] = 0) : (response.coa_debit[i] = response.coa_debit[i]);
-                        
+
                     $('#maintable').append(html);
 
                     let param = `
@@ -366,7 +368,7 @@
                             <td><input type="text" name="param8[${no - 1}]" id="param8-${no}" class="w-full py-0"></td>
                         </tr>
                         `;
-                    
+
                     $(`#tableParam`).append(param);
 
                     if (response.coa_debit[i] == null) {
@@ -411,14 +413,14 @@
 
                     bindInvoiceChange(no);
                     bindInvoiceExternalChange(no);
-                    
+
                     $('select.select').select2();
 
                     $('#counter').val(no);
                     no++;
                 }
             },
-            
+
             error: function(xhr, status, error) {
                 console.log('Error:', error);
                 console.log('Status:', status);
@@ -426,7 +428,7 @@
             }
         })
     }
-    
+
     var no = 1;
     $(`#counter`).val(no);
     function bindInvoiceChange(rowId) {
@@ -485,38 +487,81 @@
                     console.log('Status:', status);
                     console.dir(xhr);
                 }
-                
+
             })
         });
     }
 
     function calcDebitCredit(id) {
          totaltd = 0;
-         totaltc = 0; 
-        $(`input[name="nominal[${id - 1}]"]`).each(function() {
-            let value = parseInt($(this).val());
-             console.log(value);
-            if ($(`.calc_debit-${id}`).val() != "0" && $(`.calc_kredit-${id}`).val() != "0") {
-                // masukkan ke array debit dan kredit
-                totaltd += value;
-                totaltc += value;
-            } else if($(`.calc_debit-${id}`).val() != "0" && $(`.calc_kredit-${id}`).val() == "0") {
-                // masukkan ke array debit
-                totaltd += value;
-            } else if($(`.calc_debit-${id}`).val() == "0" && $(`.calc_kredit-${id}`).val() != "0") {
-                // masukkan ke array kredit
-                totaltc += value;
-            }
-        });
+         totaltc = 0;
+        // $(`input[name="nominal[${id - 1}]"]`).each(function() {
+        //     let value = parseInt($(this).val());
+        //      console.log(value);
+        //     if ($(`.calc_debit-${id}`).val() != "0" && $(`.calc_kredit-${id}`).val() != "0") {
+        //         // masukkan ke array debit dan kredit
+        //         totaltd += value;
+        //         totaltc += value;
+        //     } else if($(`.calc_debit-${id}`).val() != "0" && $(`.calc_kredit-${id}`).val() == "0") {
+        //         // masukkan ke array debit
+        //         totaltd += value;
+        //     } else if($(`.calc_debit-${id}`).val() == "0" && $(`.calc_kredit-${id}`).val() != "0") {
+        //         // masukkan ke array kredit
+        //         totaltc += value;
+        //     }
+        // });
 
-        calcUpdate();
+        // calcUpdate();
     }
+
+    $('select').change(function (e) {
+        total();
+    });
+
+    $('.nominal').keyup(function (e) {
+        total();
+    });
+
+    function total(){
+        totaltc = 0;
+        totaltd = 0;
+        for (let i = 0; i < no; i++) {
+            let coa_debit = $(".debit-"+i+"").val();
+            let coa_credit = $(".credit-"+i+"").val();
+            let nominal = parseFloat($(`.nominal-${i}`).val());
+
+            if(coa_debit != 0) {
+                totaltd += nominal;
+            }
+            if (coa_credit != 0) {
+                totaltc += nominal;
+            }
+        }
+        $('#total_debit').val(totaltd);
+        $('#total_credit').val(totaltc);
+        $('#td').html(totaltd.toLocaleString('en-US'));
+        $('#tc').html(totaltc.toLocaleString('en-US'));
+    }
+
+    $('#simpan').click(function (e) {
+        var totaltd = $('#total_debit').val();
+        var totaltc = $('#total_credit').val();
+
+        if(totaltd != totaltc) {
+            alert("Total Debit dan Kredit tidak sama");
+            return
+        }else{
+            if(confirm('are you sure?')){
+                $('#form-jurnal').submit();
+            }
+        }
+    });
 
     function calcUpdate() {
         $(`#td`).text(totaltd);
         $(`#tc`).text(totaltc);
     }
-    
+
 
     $('#addRow').on('click', function() {
         no = $(`#counter`).val();
@@ -551,7 +596,7 @@
             </td>
             <td>
                 <input type="hidden" name="akun_debet[${newRowId - 1}]" value="">
-                <select class="select select-bordered w-36 max-w-xs calc_debit-${newRowId - 1}" name="akun_debet[${newRowId - 1}]" id="akun_debet-${newRowId}">
+                <select class="select select-bordered w-36 max-w-xs calc_debit-${newRowId - 1} debit-${no-1}" onchange="total()" name="akun_debet[${newRowId - 1}]" id="akun_debet-${newRowId}i">
                     @foreach ($coa as $item)
                     <option value="0" selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -560,7 +605,7 @@
             </td>
             <td>
                 <input type="hidden" name="akun_kredit[${newRowId - 1}]" value="">
-                <select class="select select-bordered w-36 max-w-xs calc_kredit-${newRowId}" name="akun_kredit[${newRowId - 1}]" id="akun_kredit-${newRowId}">
+                <select class="select select-bordered w-36 max-w-xs calc_kredit-${newRowId} credit-${no-1}" onchange="total()" name="akun_kredit[${newRowId - 1}]" id="akun_kredit-${newRowId}i">
                     @foreach ($coa as $item)
                     <option value="0" selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -571,7 +616,7 @@
                 <input type="text" class="input input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md" name="keterangan[${newRowId}]" id="keterangan-${newRowId}" value="" required />
             </td>
             <td>
-                <input type="number" onkeyup="calcDebitCredit(${newRowId})" class="input input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md" min="0" name="nominal[${newRowId - 1}]" id="nominal-${newRowId}" value="" required />
+                <input type="number" onkeyup="total()" class="input nominal input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md nominal-${no-1}" min="0" name="nominal[${newRowId - 1}]" id="nominal-${newRowId}" value="" required />
             </td>
             <td>
                 <input type="hidden" name="invoice_external[${newRowId - 1}]" value="">

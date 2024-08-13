@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Http\Resources\SuratJalanResource;
+use App\Models\Invoice;
 use App\Models\SuratJalan;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -19,9 +20,10 @@ class LaporanPpnExport implements FromView
 
     public function view(): View
     {
-        $surat_jalan = SuratJalan::whereBetween('tgl_invoice', [$this->start, $this->end])->orderBy('tgl_invoice')->get();
-        // dd($surat_jalan);
-        return view('export.laporan-ppn', compact('surat_jalan'));
+        $invoices = Invoice::whereBetween("tgl_invoice", [$this->start, $this->end])->groupBy('invoice')->get();
+        // $invoices_of = Invoice::whereBetween("tgl_invoice", [$this->start, $this->end])->groupBy('invoice')->groupBy('id_transaksi')->get();
+        // dd($invoices);
+        return view('export.laporan-ppn', compact('invoices'));
         // return SuratJalan::all();
     }
 }

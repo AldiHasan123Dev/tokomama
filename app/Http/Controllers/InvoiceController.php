@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\Jurnal;
 use App\Models\NSFP;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -32,7 +34,14 @@ class InvoiceController extends Controller
         }
         $array_jumlah = json_encode($array_jumlah);
         $invoice_count = request('invoice_count');
-        return view('invoice.index', compact('transaksi','ids','invoice_count','array_jumlah'));
+
+        $currentMonth = Carbon::now()->month;
+        $noJNL = Jurnal::where('tipe', 'JNL')->whereMonth('tgl', $currentMonth)->orderBy('no', 'desc')->first() ?? 0;
+        $no_JNL =  $noJNL ? $noJNL->no + 1 : 1;
+
+        // dd($no_JNL);
+        
+        return view('invoice.index', compact('transaksi','ids','invoice_count','array_jumlah', 'no_JNL'));
     }
 
     /**
@@ -54,6 +63,7 @@ class InvoiceController extends Controller
         $monthNumber = (int) substr($tgl_inv, 5, 2);
         // dd($monthNumber);
         $data = array();
+        $idtsk = array();
         $array_invoice = array();
         $invoice_count = $request->invoice_count;
         $nsfp = NSFP::where('available', '1')->orderBy('nomor')->take($invoice_count)->get();
@@ -77,6 +87,7 @@ class InvoiceController extends Controller
 
 
         foreach ($request->invoice as $id_transaksi => $invoice) {
+            // dd($id_transaksi);
             foreach ($invoice as $idx => $item) {
                 $data[$id_transaksi]['invoice'][$idx] = $item;
             }
@@ -86,10 +97,14 @@ class InvoiceController extends Controller
                 $data[$id_transaksi]['jumlah'][$idx] = $item;
             }
         }
-
+        foreach ($request->invoice as $id_transaksi => $invoice) {
+            array_push($idtsk, $id_transaksi);
+        }
         
-
-        DB::transaction(function () use($data, $array_invoice, $request) {
+        
+        // dd($idtsk);
+        // dd($array_invoice[0]['invoice']);
+        DB::transaction(function () use($data, $array_invoice, $request, $idtsk) {
             foreach ($data as $id_transaksi => $array_data) {
                 // dd($request->tgl_invoice);
                 for ($i=0; $i < count($array_data['invoice']); $i++) {
@@ -116,9 +131,94 @@ class InvoiceController extends Controller
                     }
                 }
             }
-        });
+            $this->autoJurnal($idtsk, $array_invoice, $request->tipe, $request->tgl_invoice);
+
+        });;
 
         return to_route('keuangan.invoice')->with('success', 'Invoice Created Successfully');
+    }
+
+    private function autoJurnal($idtsk, $invoice, $tipe, $tgl)
+    {
+        // dd($invoice, $idtsk);
+        $no = (int) str_replace(' ', '', explode('-',explode('/', $tipe)[0])[1]);
+        $total_all = array();
+        $temp_total = array();
+        for($i = 0; $i < count($invoice); $i++) {
+            $result = Invoice::with([
+                'transaksi.barang',
+                'transaksi.suratJalan'
+                ])
+                ->where('invoice',$invoice[$i]['invoice'])->get();
+                // untuk debug '088/INV/SB-VI/2024' $invoice[$i]['invoice']
+                
+                $nopol = '';
+                $temp_debit = 0;
+                foreach($result as $item) {
+                    // dd($item);
+                    $temp_debit += $result[$i]->subtotal;
+                    $nopol = $item->transaksi->suratJalan->no_pol;
+                    Jurnal::create([
+                        'coa_id' => 52,
+                        'nomor' => $tipe,
+                        'tgl' => $tgl,
+                        'keterangan' => 'pembelian barang apa, dari supplier ',
+                        'debit' => 0,
+                        'kredit' => $result[$i]->subtotal,
+                        'invoice' => $invoice[$i]['invoice'],
+                        'invoice_external' => null,
+                        'nopol' => $item->transaksi->suratJalan->no_pol,
+                        'container' => null,
+                        'tipe' => 'JNL',
+                        'no' => $no
+                    ]);
+
+                }
+
+            Jurnal::create([
+                'coa_id' => 8,
+                'nomor' => $tipe,
+                'tgl' => $tgl,
+                'keterangan' => 'indonesian',
+                'debit' => $temp_debit,
+                'kredit' => 0,
+                'invoice' => $invoice[$i]['invoice'],
+                'invoice_external' => null,
+                'nopol' => $nopol,
+                'container' => null,
+                'tipe' => 'JNL',
+                'no' => $no
+            ]);
+        }
+
+
+        // $dataInv = array();
+        // for($i = 0; $i < count($invoice); $i++) {
+        //     $result = Invoice::with([
+        //         'transaksi.barang',
+        //         'transaksi.suratJalan'
+        //         ])
+        //         ->where('invoice', $invoice[$i]['invoice'])->get();
+        //         foreach($result as $item) {
+        //             array_push($dataInv, $item);
+        //         }
+        //         Jurnal::create([
+        //             'coa_id' => 8,
+        //             'nomor' => $tipe,
+        //             'tgl' => $tgl,
+        //             'keterangan' => 'indonesian',
+        //             'debit' => $result->max('subtotal'),
+        //             'kredit' => 0,
+        //             'invoice' => $invoice[$i]['invoice'],
+        //             'invoice_external' => null,
+        //             'nopol' => $dataInv[$i]->transaksi->suratJalan->no_pol,
+        //             'container' => null,
+        //             'tipe' => 'JNL',
+        //             'no' => $no
+        //         ]);
+            
+        // }
+        
     }
 
     /**

@@ -185,63 +185,94 @@
 
 
                 <!-- Tabel NCS (Non-Customer/Supplier) -->
-                <div id="ncs-table" class="{{ request('state') == 'ncs' ? '' : 'hidden' }}">
-                <a href="{{ route('export.ncs', ['year' => $selectedYear, 'month' => $selectedMonth, 'coa_id' => $selectedCoaId]) }}" class="btn bg-green-500 text-white mt-3 mb-5  py-4  h-12 w-32 " >
-                <i class="fa-solid fa-file-excel mr-2"></i>
-                    Export  Excel
-                </a>
-                    <table id="table-ncs" class="w-full">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>Tanggal</th>
-                                <th>Keterangan</th>
-                                <th>Debit</th>
-                                <th>Kredit</th>
-                                <th>Saldo</th>
-                                <th>#</th>
-                            </tr>
-                        </thead>
-                        @foreach ($ncsDetails as $key => $ncs)
-                        <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{ $ncs['tgl'] }}</td>
-                            <td>{{ $ncs['keterangan_buku_besar_pembantu'] }}</td> 
-                            <td>{{ number_format($ncs['debit'], 2, ',', '.') }}</td>
-                            <td>{{ number_format($ncs['kredit'], 2, ',', '.') }}</td>
-                            <td>
-                                @if ($tipe == 'K')
-                                    {{ number_format($ncs['kredit'] - $ncs['debit'], 2, ',', '.') }}
-                                @else
-                                    {{ number_format($ncs['debit'] - $ncs['kredit'], 2, ',', '.') }} 
-                                @endif
-                            </td>
-                            <td>
-                                <button class="bg-blue-400 text-white py-1 px-3 rounded hover:bg-blue-300"
-                                    onclick="showDetailModal({{ $ncs['nomor'] ?? 'null' }}, '{{ $selectedYear }}', '{{ $selectedMonth }}', {{ $selectedCoaId }}, 'ncs')">
-                                    Detail
-                                </button>
-                            </td>
-                        </tr>
-                    @endforeach
+<div id="ncs-table" class="{{ request('state') == 'ncs' ? '' : 'hidden' }}">
+    <a href="{{ route('export.ncs', ['year' => $selectedYear, 'month' => $selectedMonth, 'coa_id' => $selectedCoaId]) }}" class="btn bg-green-500 text-white mt-3 mb-5 py-4 h-12 w-32">
+        <i class="fa-solid fa-file-excel mr-2"></i>
+        Export Excel
+    </a>
+    <table id="table-ncs" class="w-full">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Tanggal Awal</th>
+                <th>Nomor Awal</th>
+                <th>Keterangan Awal</th>
+                <th>Debit</th>
+                <th>Kredit</th>
+                <th>Saldo</th>
+                <th>Tanggal Selanjutnya</th>
+                <th>Nomor Selanjutnya</th>
+                <th>>Keterangan Tanggal Selanjutnya</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($ncsDetails as $key => $ncs)
+            <tr>
+                <td>{{ $key + 1 }}</td>
+                <!-- Bagian Kiri -->
+                <td>{{ $ncs['tgl'] }}</td>
+                <td>{{ $ncs['nomor'] }}</td>
+                <td>{{ $ncs['keterangan'] }}</td>
+                <td>{{ number_format($ncs['debit'], 2, ',', '.') }}</td>
+                <td>{{ number_format($ncs['kredit'], 2, ',', '.') }}</td>
+                <td>
+                    @if ($tipe == 'K')
+                        {{ number_format($ncs['kredit'] - $ncs['debit'], 2, ',', '.') }}
+                    @else
+                        {{ number_format($ncs['debit'] - $ncs['kredit'], 2, ',', '.') }}
+                    @endif
+                </td>
+                <!-- Bagian Kanan hanya menampilkan data selanjutnya -->
+                <td>
+                    @if (isset($ncs['details']) && count($ncs['details']) > 0)
+                        @foreach ($ncs['details'] as $detail)
+                            <div>{{ $detail['tgl'] }}</div>
+                        @endforeach
+                    @else
+                        <!-- Kosong jika tidak ada entri berikutnya -->
+                        <div>-</div>
+                    @endif
+                </td>
+                <td>
+                    @if (isset($ncs['details']) && count($ncs['details']) > 0)
+                        @foreach ($ncs['details'] as $detail)
+                            <div>{{ $detail['nomor'] }}</div>
+                        @endforeach
+                    @else
+                        <div>-</div>
+                    @endif
+                </td>
+                <td>
+                    @if (isset($ncs['details']) && count($ncs['details']) > 0)
+                        @foreach ($ncs['details'] as $detail)
+                            <div>{{ $detail['keterangan'] }}</div>
+                        @endforeach
+                    @else
+                        <div>-</div>
+                    @endif
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <th colspan="4" class="text-center">Total</th>
+                <th>{{ number_format($ncsDebitTotal, 2, ',', '.') }}</th>
+                <th>{{ number_format($ncsKreditTotal, 2, ',', '.') }}</th>
+                <th>
+                    @php
+                        $totalSaldo = $tipe == 'K' ? $ncsKreditTotal - $ncsDebitTotal : $ncsDebitTotal - $ncsKreditTotal;
+                    @endphp
+                    {{ number_format($totalSaldo, 2, ',', '.') }}
+                </th>
+                <th colspan="3"></th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
 
 
-                        <tfoot>
-                            <tr>
-                                <th colspan="3" class="text-center">Total</th>
-                                <th>{{ number_format($ncsDebitTotal, 2, ',', '.') }}</th>
-                                <th>{{ number_format($ncsKreditTotal, 2, ',', '.') }}</th>
-                                <th>
-                                @if ($tipe == 'K')
-                                    {{ number_format($ncsKreditTotal - $ncsDebitTotal, 2, ',', '.') }}
-                                @else
-                                    {{ number_format($ncsDebitTotal - $ncsKreditTotal, 2, ',', '.') }}
-                                @endif
-                                </th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
 
 
            
@@ -370,6 +401,7 @@
                                 <td class="border border-gray-300 px-4 py-2">${number_format(detail.debit)}</td>
                                 <td class="border border-gray-300 px-4 py-2">${number_format(detail.kredit)}</td>
                                 <td class="border border-gray-300 px-4 py-2 text-start">${detail.keterangan || '-'}</td>
+                                <td class="border border-gray-300 px-4 py-2 text-start">${detail.keterangan_buku_besar_pembantu || '-'}</td>
                             </tr>`;
                 });
             } else {

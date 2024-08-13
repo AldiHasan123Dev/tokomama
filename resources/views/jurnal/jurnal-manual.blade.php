@@ -195,12 +195,10 @@
                             </td>
                             <td>
                             <select name="keterangan_buku_besar_pembantu[0]" id="keterangan_buku_besar_pembantu-1i" class="select select-bordered w-full max-w-xs">
-                                <option selected></option>
-                                <option value="Jurnal - {{ $no_JNL }}/{{'JNL'}}-SB/{{ date('y') }}">Jurnal - {{ $no_JNL }}/{{'JNL'}}-SB/{{ date('y') }}</option>
-                                <option value="Kas Keluar - {{ $no_BKK }}/{{'BKK'}}-SB/{{ date('y') }}">Kas Keluar - {{ $no_BKK }}/{{'BKK'}}-SB/{{ date('y') }}</option>
-                                <option value="Kas Masuk - {{ $no_BKM }}/{{'BKM'}}-SB/{{ date('y') }}">Kas Masuk - {{ $no_BKM }}/{{'BKM'}}-SB/{{ date('y') }}</option>
-                                <option value="Bank Keluar - {{ $no_BBK }}/{{'BBK'}}-SB/{{ date('y') }}">Bank Keluar - {{ $no_BBK }}/{{'BBK'}}-SB/{{ date('y') }}</option>
-                                <option value="Bank Masuk - {{ $no_BBM }}/{{'BBM'}}-SB/{{ date('y') }}">Bank Masuk - {{ $no_BBM }}/{{'BBM'}}-SB/{{ date('y') }}</option>
+                                <option value=""></option>
+                                @foreach($uniqueNomors as $nomor)
+                                    <option value="{{ $nomor }}">{{ $nomor }}</option>
+                                @endforeach
                             </select>
                             </td>
                         </tr>

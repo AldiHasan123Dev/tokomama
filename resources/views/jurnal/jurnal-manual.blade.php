@@ -196,6 +196,7 @@
                                 </select>
                             </td>
                             <td>
+                            <input type="hidden" name="keterangan_buku_besar_pembantu[0]" value="">
                             <select name="keterangan_buku_besar_pembantu[0]" id="keterangan_buku_besar_pembantu-1i" class="select select-bordered w-full max-w-xs">
                                 <option value=""></option>
                                 @foreach($uniqueNomors as $nomor)
@@ -247,6 +248,7 @@
                 $('#keterangan-1i').prop('readonly', false);
                 $('#nominal-1i').prop('readonly', false);
                 $('#invoice_external-1i').prop('disabled', false);
+                $('#keterangan_buku_besar_pembantu-1i').prop('disabled', false);
             } else {
                 $('#invoice-1i').prop('disabled', true);
                 $('#nopol-1i').prop('disabled', true);
@@ -255,6 +257,7 @@
                 $('#keterangan-1i').prop('readonly', true);
                 $('#nominal-1i').prop('readonly', true);
                 $('#invoice_external-1i').prop('disabled', true);
+                $('#keterangan_buku_besar_pembantu-1i').prop('disabled', true);
                 $('#nominal-1i').val(0);
                 //updateTotalDebit(1);
                 //updateTotalKredit(1);
@@ -335,7 +338,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[${no - 1}]" id="keterangan-${no}" value="${response.keterangan[no - 1] ?? ""}" required />
+                                    <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[${no - 1}]" id="keterangan-${no}" value="${response.keterangan[i] ?? ""}" required />
                                 </td>
                                 <td>
                                     <input type="number" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal-${no-1}" min="0" name="nominal[${no - 1}]" id="nominal-${no}" required />
@@ -349,6 +352,15 @@
                                         @endforeach
                                     </select>
                                 </td>
+                                <td>
+                                    <input type="hidden" name="keterangan_buku_besar_pembantu[${no - 1}]" value="">
+                                    <select name="keterangan_buku_besar_pembantu[${no - 1}]" id="keterangan_buku_besar_pembantu-${no}" class="select select-bordered w-full max-w-xs">
+                                        <option value=""></option>
+                                        @foreach($uniqueNomors as $nomor)
+                                            <option value="{{ $nomor }}">{{ $nomor }}</option>
+                                        @endforeach
+                                    </select>
+                            </td>
 
                             </tr>`;
 
@@ -397,6 +409,7 @@
                             $(`#keterangan-${currentNo}`).prop('readonly', false);
                             $(`#nominal-${currentNo}`).prop('readonly', false);
                             $(`#invoice_external-${currentNo}`).prop('disabled', false);
+                            $(`#keterangan_buku_besar_pembantu-${currentNo}`).prop('disabled', false);
                         } else {
                             $(`#invoice-${currentNo}`).prop('disabled', true);
                             $(`#nopol-${currentNo}`).prop('disabled', true);
@@ -405,6 +418,7 @@
                             $(`#keterangan-${currentNo}`).prop('readonly', true);
                             $(`#nominal-${currentNo}`).prop('readonly', true);
                             $(`#invoice_external-${currentNo}`).prop('disabled', true);
+                            $(`#keterangan_buku_besar_pembantu-${currentNo}`).prop('disabled', true);
                             $(`#nominal-${currentNo}`).val(0);
                             updateTotalDebit(no - 1);
                             updateTotalKredit(no - 1);
@@ -627,6 +641,15 @@
                     @endforeach
                 </select>
             </td>
+            <td>
+                <input type="hidden" name="keterangan_buku_besar_pembantu[${newRowId - 1}]" value="">
+                <select name="keterangan_buku_besar_pembantu[${newRowId - 1}]" id="keterangan_buku_besar_pembantu-${newRowId}" class="select select-bordered w-full max-w-xs">
+                    <option value=""></option>
+                    @foreach($uniqueNomors as $nomor)
+                        <option value="{{ $nomor }}">{{ $nomor }}</option>
+                    @endforeach
+                </select>
+            </td>
         </tr>
         `;
         $(`#tableBody`).append(html);
@@ -662,6 +685,7 @@
                 $(`#keterangan-${newRowId}`).prop('readonly', false);
                 $(`#nominal-${newRowId}`).prop('readonly', false);
                 $(`#invoice_external-${newRowId}`).prop('disabled', false);
+                $(`#keterangan_buku_besar_pembantu-${newRowId}`).prop('disabled', false);
             } else {
                 $(`#invoice-${newRowId}`).prop('disabled', true);
                 $(`#nopol-${newRowId}`).prop('disabled', true);
@@ -670,6 +694,7 @@
                 $(`#keterangan-${newRowId}`).prop('readonly', true);
                 $(`#nominal-${newRowId}`).prop('readonly', true);
                 $(`#invoice_external-${newRowId}`).prop('disabled', true);
+                $(`#keterangan_buku_besar_pembantu-${newRowId}`).prop('disabled', true);
                 $(`#nominal-${newRowId}`).val(0);
                 //updateTotalDebit(newRowId);
                 //updateTotalKredit(newRowId);

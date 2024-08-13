@@ -146,8 +146,8 @@ class InvoiceController extends Controller
         $temp_total = array();
         for($i = 0; $i < count($invoice); $i++) {
             $result = Invoice::with([
-                'transaksi.barang',
-                'transaksi.suratJalan'
+                'transaksi.barang.satuan',
+                'transaksi.suratJalan.customer'
                 ])
                 ->where('invoice',$invoice[$i]['invoice'])->get();
                 // untuk debug '088/INV/SB-VI/2024' $invoice[$i]['invoice']
@@ -163,7 +163,7 @@ class InvoiceController extends Controller
                         'coa_id' => 52,
                         'nomor' => $tipe,
                         'tgl' => $tgl,
-                        'keterangan' => 'pembelian barang apa, dari supplier ',
+                        'keterangan' => 'Pendapatan ' . $item->transaksi->barang->nama . ' (' . $item->jumlah . ' ' . $item->transaksi->satuan_jual . ' Harsat ' . $item->transaksi->harga_jual . ')',
                         'debit' => 0,
                         'kredit' => $item->subtotal, // $result[$i]->subtotal,
                         'invoice' => $invoice[$i]['invoice'],
@@ -180,7 +180,7 @@ class InvoiceController extends Controller
                 'coa_id' => 8,
                 'nomor' => $tipe,
                 'tgl' => $tgl,
-                'keterangan' => 'indonesian',
+                'keterangan' => 'Piutang ' . $result[$i]->transaksi->suratJalan->customer->nama,
                 'debit' => $temp_debit,
                 'kredit' => 0,
                 'invoice' => $invoice[$i]['invoice'],

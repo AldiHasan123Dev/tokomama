@@ -68,9 +68,14 @@ class JurnalManualController extends Controller
             $procTransactionNumber = $invoiceNumber . '_' . $transactionCounts[$invoiceNumber];
             $procTransactions[] = $procTransactionNumber;
         }
+        $uniqueNomors = DB::table('jurnal')
+        ->whereNotNull('nomor')
+      
+        ->distinct()
+        ->pluck('nomor');
 
         // dd($procTransactions);
-        return view('jurnal.jurnal-manual', compact('templates', 'nopol', 'coa', 'no_JNL', 'no_BKK', 'no_BKM', 'no_BBK', 'no_BBM', 'invoices', 'processedInvoices', 'procTransactions', 'transaksi'));
+        return view('jurnal.jurnal-manual', compact('templates', 'nopol', 'coa', 'no_JNL', 'no_BKK', 'no_BKM', 'no_BBK', 'no_BBM', 'invoices', 'processedInvoices', 'procTransactions', 'transaksi','uniqueNomors'));
     }
 
     /**
@@ -175,7 +180,8 @@ class JurnalManualController extends Controller
                                         'nomor' => $newNoJurnal,
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
-                                        'keterangan_buku_besar_pembantu' => $request->keterangan_buku_besar_pembantu[$i] ?? null, // Tambahkan kolom baru
+                                        'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $newNoJurnal,
+ // Tambahkan kolom baru
                                         'debit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
@@ -192,7 +198,9 @@ class JurnalManualController extends Controller
                                         'nomor' => $newNoJurnal,
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
-                                        'keterangan_buku_besar_pembantu' => $request->keterangan_buku_besar_pembantu[$i] ?? null, // Tambahkan kolom baru
+                                        'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $newNoJurnal,
+
+ // Tambahkan kolom baru
                                         'kredit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
@@ -214,7 +222,9 @@ class JurnalManualController extends Controller
                                         'nomor' => $nomor,
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
-                                        'keterangan_buku_besar_pembantu' => $request->keterangan_buku_besar_pembantu[$i] ?? null, // Tambahkan kolom baru
+                                        'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $nomor,
+
+ // Tambahkan kolom baru
                                         'debit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
@@ -231,7 +241,9 @@ class JurnalManualController extends Controller
                                         'nomor' => $nomor,
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
-                                        'keterangan_buku_besar_pembantu' => $request->keterangan_buku_besar_pembantu[$i] ?? null, // Tambahkan kolom baru
+                                        'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $nomor,
+
+ // Tambahkan kolom baru
                                         'kredit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
@@ -254,7 +266,9 @@ class JurnalManualController extends Controller
                                     'nomor' => $nomor,
                                     'tgl' => $request->tanggal_jurnal,
                                     'keterangan' => $keteranganList[$i],
-                                    'keterangan_buku_besar_pembantu' => $request->keterangan_buku_besar_pembantu[$i] ?? null, // Tambahkan kolom baru
+                                    'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $nomor,
+
+ // Tambahkan kolom baru
                                     'debit' => $request->nominal[$i],
                                     'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                     'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
@@ -271,7 +285,9 @@ class JurnalManualController extends Controller
                                     'nomor' => $nomor,
                                     'tgl' => $request->tanggal_jurnal,
                                     'keterangan' => $keteranganList[$i],
-                                    'keterangan_buku_besar_pembantu' => $request->keterangan_buku_besar_pembantu[$i] ?? null, // Tambahkan kolom baru
+                                    'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $nomor,
+
+ // Tambahkan kolom baru
                                     'kredit' => $request->nominal[$i],
                                     'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                     'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,

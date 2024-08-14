@@ -164,7 +164,7 @@
                             </td>
                             <td>
                                 <input type="hidden" name="akun_debet[0]" value="">
-                                <select class="select select-bordered w-36 calc_debit-1 debit-0" name="akun_debet[0]" id="akun_debet-1i">
+                                <select class="select select-bordered w-36 calc_debit-1 1debit-0" name="akun_debet[0]" id="akun_debet-1i">
                                     <option value="0"></option>
                                     @foreach ($coa as $item)
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -173,7 +173,7 @@
                             </td>
                             <td>
                                 <input type="hidden" name="akun_kredit[0]" value="">
-                                <select class="select select-bordered w-36 calc_kredit-1 credit-0" name="akun_kredit[0]" id="akun_kredit-1i">
+                                <select class="select select-bordered w-36 calc_kredit-1 1credit-0" name="akun_kredit[0]" id="akun_kredit-1i">
                                     <option value="0"></option>
                                     @foreach ($coa as $item)
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -184,7 +184,7 @@
                                 <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[0]" id="keterangan-1i" />
                             </td>
                             <td>
-                                <input type="number" onkeyup="total()" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal nominal-0" min="0" name="nominal[0]" id="nominal-1i" />
+                                <input type="number" onkeyup="total()" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal 1nominal-0" min="0" name="nominal[0]" id="nominal-1i" />
                             </td>
                             <td>
                                 <input type="hidden" name="invoice_external[0]" value="">
@@ -196,13 +196,12 @@
                                 </select>
                             </td>
                             <td>
+                            <input type="hidden" name="keterangan_buku_besar_pembantu[0]" value="">
                             <select name="keterangan_buku_besar_pembantu[0]" id="keterangan_buku_besar_pembantu-1i" class="select select-bordered w-full max-w-xs">
-                                <option selected></option>
-                                <option value="Jurnal - {{ $no_JNL }}/{{'JNL'}}-SB/{{ date('y') }}">Jurnal - {{ $no_JNL }}/{{'JNL'}}-SB/{{ date('y') }}</option>
-                                <option value="Kas Keluar - {{ $no_BKK }}/{{'BKK'}}-SB/{{ date('y') }}">Kas Keluar - {{ $no_BKK }}/{{'BKK'}}-SB/{{ date('y') }}</option>
-                                <option value="Kas Masuk - {{ $no_BKM }}/{{'BKM'}}-SB/{{ date('y') }}">Kas Masuk - {{ $no_BKM }}/{{'BKM'}}-SB/{{ date('y') }}</option>
-                                <option value="Bank Keluar - {{ $no_BBK }}/{{'BBK'}}-SB/{{ date('y') }}">Bank Keluar - {{ $no_BBK }}/{{'BBK'}}-SB/{{ date('y') }}</option>
-                                <option value="Bank Masuk - {{ $no_BBM }}/{{'BBM'}}-SB/{{ date('y') }}">Bank Masuk - {{ $no_BBM }}/{{'BBM'}}-SB/{{ date('y') }}</option>
+                                <option value=""></option>
+                                @foreach($uniqueNomors as $nomor)
+                                    <option value="{{ $nomor }}">{{ $nomor }}</option>
+                                @endforeach
                             </select>
                             </td>
                         </tr>
@@ -249,6 +248,7 @@
                 $('#keterangan-1i').prop('readonly', false);
                 $('#nominal-1i').prop('readonly', false);
                 $('#invoice_external-1i').prop('disabled', false);
+                $('#keterangan_buku_besar_pembantu-1i').prop('disabled', false);
             } else {
                 $('#invoice-1i').prop('disabled', true);
                 $('#nopol-1i').prop('disabled', true);
@@ -257,6 +257,7 @@
                 $('#keterangan-1i').prop('readonly', true);
                 $('#nominal-1i').prop('readonly', true);
                 $('#invoice_external-1i').prop('disabled', true);
+                $('#keterangan_buku_besar_pembantu-1i').prop('disabled', true);
                 $('#nominal-1i').val(0);
                 //updateTotalDebit(1);
                 //updateTotalKredit(1);
@@ -320,7 +321,7 @@
                                 </td>
                                 <td>
                                     <input type="hidden" name="akun_debet[${no - 1}]" value="">
-                                    <select class="select select-bordered w-36 calc_debit-${no - 1} debit-${no}" name="akun_debet[${no - 1}]" id="akun_debet-${no}i">
+                                    <select class="select select-bordered w-36 calc_debit-${no - 1} debit-${(no)}" onchange="total()" name="akun_debet[${no - 1}]" id="akun_debet-${no}i">
                                         <option id="option_debet-${no - 1}" value="0"></option>
                                         @foreach ($coa as $item)
                                         <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -329,7 +330,7 @@
                                 </td>
                                 <td>
                                     <input type="hidden" name="akun_kredit[${no - 1}]" value="">
-                                    <select class="select select-bordered w-36 calc_kredit-${no - 1} credit-${no}" name="akun_kredit[${no - 1}]" id="akun_kredit-${no}i">
+                                    <select class="select select-bordered w-36 calc_kredit-${no} credit-${(no - 1)}" onchange="total()" name="akun_kredit[${no - 1}]" id="akun_kredit-${no}i">
                                         <option id="option_kredit-${no - 1}" value="0"></option>
                                         @foreach ($coa as $item)
                                         <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -337,10 +338,10 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[${no - 1}]" id="keterangan-${no}" value="${response.keterangan[no - 1] ?? ""}" required />
+                                    <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[${no - 1}]" id="keterangan-${no}" value="${response.keterangan[i] ?? ""}" required />
                                 </td>
                                 <td>
-                                    <input type="number" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal-${no-1}" min="0" name="nominal[${no - 1}]" id="nominal-${no}" required />
+                                    <input type="number" onkeyup="total()" class="nominal input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal-${(no)}" min="0" name="nominal[${no - 1}]" id="nominal-${no}" required />
                                 </td>
                                 <td>
                                     <input type="hidden" name="invoice_external[${no - 1}]" value="">
@@ -351,6 +352,15 @@
                                         @endforeach
                                     </select>
                                 </td>
+                                <td>
+                                    <input type="hidden" name="keterangan_buku_besar_pembantu[${no - 1}]" value="">
+                                    <select name="keterangan_buku_besar_pembantu[${no - 1}]" id="keterangan_buku_besar_pembantu-${no}" class="select select-bordered w-full max-w-xs">
+                                        <option value=""></option>
+                                        @foreach($uniqueNomors as $nomor)
+                                            <option value="{{ $nomor }}">{{ $nomor }}</option>
+                                        @endforeach
+                                    </select>
+                            </td>
 
                             </tr>`;
 
@@ -399,6 +409,7 @@
                             $(`#keterangan-${currentNo}`).prop('readonly', false);
                             $(`#nominal-${currentNo}`).prop('readonly', false);
                             $(`#invoice_external-${currentNo}`).prop('disabled', false);
+                            $(`#keterangan_buku_besar_pembantu-${currentNo}`).prop('disabled', false);
                         } else {
                             $(`#invoice-${currentNo}`).prop('disabled', true);
                             $(`#nopol-${currentNo}`).prop('disabled', true);
@@ -407,9 +418,10 @@
                             $(`#keterangan-${currentNo}`).prop('readonly', true);
                             $(`#nominal-${currentNo}`).prop('readonly', true);
                             $(`#invoice_external-${currentNo}`).prop('disabled', true);
+                            $(`#keterangan_buku_besar_pembantu-${currentNo}`).prop('disabled', true);
                             $(`#nominal-${currentNo}`).val(0);
-                            updateTotalDebit(no - 1);
-                            updateTotalKredit(no - 1);
+                            // updateTotalDebit(no - 1);
+                            // updateTotalKredit(no - 1);
                         }
                     });
 
@@ -421,6 +433,20 @@
                     $('#counter').val(no);
                     no++;
                 }
+
+                $('#simpan').click(function (e) {
+                    var totaltd = $('#total_debit').val();
+                    var totaltc = $('#total_credit').val();
+
+                    if(totaltd != totaltc) {
+                        alert("Total Debit dan Kredit tidak sama");
+                        return
+                    } else {
+                        if (confirm('are you sure?')) {
+                            $('#form-jurnal').submit();
+                        }
+                    }
+                });
             },
 
             error: function(xhr, status, error) {
@@ -428,7 +454,7 @@
                 console.log('Status:', status);
                 console.dir(xhr);
             }
-        })
+        });
     }
 
     var no = 1;
@@ -525,8 +551,36 @@
     });
 
     function total(){
+        console.log('total running')
         totaltc = 0;
         totaltd = 0;
+        console.log("no : " + no);
+        for (let i = 0; i < no; i++) {
+            let coa_debit = $(".1debit-"+i+"").val();
+            let coa_credit = $(".1credit-"+i+"").val();
+            let nominal = parseFloat($(`.1nominal-${i}`).val());
+
+            if(coa_debit != 0) {
+                totaltd += nominal;
+            }
+            if (coa_credit != 0) {
+                totaltc += nominal;
+            }
+            console.log("Coa Debit: " + i + ": " + coa_debit);
+            console.log("Coa Kredit: " + i + ": " + coa_debit);
+            console.log("Nominal: " + i + ": " + coa_debit);
+        }
+        $('#total_debit').val(totaltd);
+        $('#total_credit').val(totaltc);
+        $('#td').html(totaltd.toLocaleString('en-US'));
+        $('#tc').html(totaltc.toLocaleString('en-US'));
+    }
+
+    function doTotal(){
+        console.log('total running')
+        totaltc = 0;
+        totaltd = 0;
+        console.log("no : " + no);
         for (let i = 0; i < no; i++) {
             let coa_debit = $(".debit-"+i+"").val();
             let coa_credit = $(".credit-"+i+"").val();
@@ -538,6 +592,9 @@
             if (coa_credit != 0) {
                 totaltc += nominal;
             }
+            console.log("Coa Debit: " + i + ": " + coa_debit);
+            console.log("Coa Kredit: " + i + ": " + coa_debit);
+            console.log("Nominal: " + i + ": " + coa_debit);
         }
         $('#total_debit').val(totaltd);
         $('#total_credit').val(totaltc);
@@ -598,7 +655,7 @@
             </td>
             <td>
                 <input type="hidden" name="akun_debet[${newRowId - 1}]" value="">
-                <select class="select select-bordered w-36 max-w-xs calc_debit-${newRowId - 1} debit-${no-1}" onchange="total()" name="akun_debet[${newRowId - 1}]" id="akun_debet-${newRowId}i">
+                <select class="select select-bordered w-36 max-w-xs calc_debit-${newRowId - 1} debit-${no - 1}" onchange="total()" name="akun_debet[${newRowId - 1}]" id="akun_debet-${newRowId}i">
                     @foreach ($coa as $item)
                     <option value="0" selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -607,7 +664,7 @@
             </td>
             <td>
                 <input type="hidden" name="akun_kredit[${newRowId - 1}]" value="">
-                <select class="select select-bordered w-36 max-w-xs calc_kredit-${newRowId} credit-${no-1}" onchange="total()" name="akun_kredit[${newRowId - 1}]" id="akun_kredit-${newRowId}i">
+                <select class="select select-bordered w-36 max-w-xs calc_kredit-${newRowId} credit-${no - 1}" onchange="total()" name="akun_kredit[${newRowId - 1}]" id="akun_kredit-${newRowId}i">
                     @foreach ($coa as $item)
                     <option value="0" selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -618,7 +675,7 @@
                 <input type="text" class="input input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md" name="keterangan[${newRowId}]" id="keterangan-${newRowId}" value="" required />
             </td>
             <td>
-                <input type="number" onkeyup="total()" class="input nominal input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md nominal-${no-1}" min="0" name="nominal[${newRowId - 1}]" id="nominal-${newRowId}" value="" required />
+                <input type="number" onkeyup="total()" class="input nominal input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md nominal-${no - 1}" min="0" name="nominal[${newRowId - 1}]" id="nominal-${newRowId}" value="" required />
             </td>
             <td>
                 <input type="hidden" name="invoice_external[${newRowId - 1}]" value="">
@@ -626,6 +683,15 @@
                     @foreach ($procTransactions as $item)
                         <option disabled selected></option>
                         <option value="{{ $item }}">{{ $item }}</option>
+                    @endforeach
+                </select>
+            </td>
+            <td>
+                <input type="hidden" name="keterangan_buku_besar_pembantu[${newRowId - 1}]" value="">
+                <select name="keterangan_buku_besar_pembantu[${newRowId - 1}]" id="keterangan_buku_besar_pembantu-${newRowId}" class="select select-bordered w-full max-w-xs">
+                    <option value=""></option>
+                    @foreach($uniqueNomors as $nomor)
+                        <option value="{{ $nomor }}">{{ $nomor }}</option>
                     @endforeach
                 </select>
             </td>
@@ -664,6 +730,7 @@
                 $(`#keterangan-${newRowId}`).prop('readonly', false);
                 $(`#nominal-${newRowId}`).prop('readonly', false);
                 $(`#invoice_external-${newRowId}`).prop('disabled', false);
+                $(`#keterangan_buku_besar_pembantu-${newRowId}`).prop('disabled', false);
             } else {
                 $(`#invoice-${newRowId}`).prop('disabled', true);
                 $(`#nopol-${newRowId}`).prop('disabled', true);
@@ -672,6 +739,7 @@
                 $(`#keterangan-${newRowId}`).prop('readonly', true);
                 $(`#nominal-${newRowId}`).prop('readonly', true);
                 $(`#invoice_external-${newRowId}`).prop('disabled', true);
+                $(`#keterangan_buku_besar_pembantu-${newRowId}`).prop('disabled', true);
                 $(`#nominal-${newRowId}`).val(0);
                 //updateTotalDebit(newRowId);
                 //updateTotalKredit(newRowId);

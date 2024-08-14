@@ -84,79 +84,81 @@
                 </tbody>
               </table>
 
-
+              @php
+                  $coa = isset($_GET['coa']) ? urlencode(trim($_GET['coa'])) : urlencode('1');
+              @endphp
             <div class="mb-16 mt-8 flex">
                 <label for="month" class="font-bold">Bulan:</label>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="1">
                     <input type="hidden" name="year" id="y1" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c1">
+                    <input type="hidden" name="coa" id="c1" value="{{ $coa }}">
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 1) bg-green-500 text-white @endif">Jan</button>
                 </form>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="2">
                     <input type="hidden" name="year" id="y2" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c2">
+                    <input type="hidden" name="coa" id="c2" value="{{ $coa }}">
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 2) bg-green-500 text-white @endif">Feb</button>
                 </form>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="3">
                     <input type="hidden" name="year" id="y3" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c3">
+                    <input type="hidden" name="coa" id="c3" value="{{ $coa }}">
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 3) bg-green-500 text-white @endif">Mar</button>
                 </form>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="4">
                     <input type="hidden" name="year" id="y4" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c4">
+                    <input type="hidden" name="coa" id="c4" value="{{ $coa }}">
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 4) bg-green-500 text-white @endif">Apr</button>
                 </form>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="5">
                     <input type="hidden" name="year" id="y5" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c5">
+                    <input type="hidden" name="coa" id="c5" value="{{ $coa }}">
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 5) bg-green-500 text-white @endif">Mei</button>
                 </form>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="6">
                     <input type="hidden" name="year" id="y6" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c6">
+                    <input type="hidden" name="coa" id="c6" value="{{ $coa }}">
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 6) bg-green-500 text-white @endif">Jun</button>
                 </form>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="7">
                     <input type="hidden" name="year" id="y7" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c7">
+                    <input type="hidden" name="coa" id="c7" value="{{ $coa }}">
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 7) bg-green-500 text-white @endif">Jul</button>
                 </form>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="8">
                     <input type="hidden" name="year" id="y8" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c8">
+                    <input type="hidden" name="coa" id="c8" value="{{ $coa }}">
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 8) bg-green-500 text-white @endif">Agu</button>
                 </form>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="9">
                     <input type="hidden" name="year" id="y9" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c9">
+                    <input type="hidden" name="coa" id="c9" value="{{ $coa }}">
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 9) bg-green-500 text-white @endif">Sep</button>
                 </form>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="10">
                     <input type="hidden" name="year" id="y10" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c10">
+                    <input type="hidden" name="coa" id="c10" value="{{ $coa }}">
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 10) bg-green-500 text-white @endif">Okt</button>
                 </form>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="11">
                     <input type="hidden" name="year" id="y11" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c11">
+                    <input type="hidden" name="coa" id="c11" value="{{ $coa }}">
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1" @if(isset($_GET['month']) && $_GET['month'] == 11) bg-green-500 text-white @endif>Nov</button>
                 </form>
                 <form action="" method="GET">
                     <input type="hidden" name="month" value="12">
                     <input type="hidden" name="year" id="y12" value="{{ date('Y') }}">
-                    <input type="hidden" name="coa" id="c12">
+                    <input type="hidden" name="coa" id="c12" value="{{ $coa }}">
                     <button class="px-4 py-3 border-2 border-green-600 hover:bg-green-600 hover:text-white duration-300 rounded-xl mx-1 @if(isset($_GET['month']) && $_GET['month'] == 12) bg-green-500 text-white @endif">Des</button>
                 </form>
             </div>
@@ -259,6 +261,13 @@
             let coa = searchParams.get("coa");
 
             var table = $('#table-buku-besar').DataTable();
+
+            function submitForm() {
+                var form = document.getElementById('myForm');
+                var coaInput = document.getElementById('c1');
+                coaInput.value = encodeURIComponent(coaInput.value);
+                form.submit();
+            }
         });
     </script>
 </x-Layout.layout>

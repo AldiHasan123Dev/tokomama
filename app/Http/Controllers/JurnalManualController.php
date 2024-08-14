@@ -181,7 +181,6 @@ class JurnalManualController extends Controller
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
                                         'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $newNoJurnal,
-
  // Tambahkan kolom baru
                                         'debit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,

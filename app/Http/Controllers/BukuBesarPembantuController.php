@@ -19,7 +19,10 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\Exports\NcsExport;
 use App\Exports\CustomerExport;
+
 use App\Exports\SupplierExport;
+
+
 
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -318,18 +321,71 @@ public function showDetail($id, Request $request)
 
 public function exportNcs(Request $request)
 {
-   
     $selectedYear = $request->input('year', date('Y'));
     $selectedMonth = $request->input('month', date('m'));
     $selectedCoaId = $request->input('coa_id', 8);
-
-   
     $startDate = '2023-01-01';
     $endDate = Carbon::create($selectedYear, $selectedMonth)->endOfMonth()->toDateString();
 
-    
-    return Excel::download(new NcsExport($selectedCoaId, $startDate, $endDate), 'ncs_export.xlsx');
+    $exportData = [];
+    $ncsRecords = Jurnal::where('coa_id', $selectedCoaId)
+        ->whereBetween('tgl', [$startDate, $endDate])
+        ->orderBy('tgl', 'asc')
+        ->get(['tgl', 'nomor', 'keterangan', 'debit', 'kredit', 'keterangan_buku_besar_pembantu']);
+
+    $ncsDetails = [];
+    foreach ($ncsRecords as $j) {
+        $formattedDate = Carbon::parse($j->tgl)->format('Y-m-d');
+        $coa = Coa::find($selectedCoaId);
+
+        // Initialize or update the main entry
+        if (!isset($ncsDetails[$j->keterangan_buku_besar_pembantu])) {
+            $ncsDetails[$j->keterangan_buku_besar_pembantu] = [
+                'tgl' => $formattedDate,
+                'nomor' => $j->nomor,
+                'keterangan' => $j->keterangan,
+                'debit' => $j->debit,
+                'kredit' => $j->kredit,
+                'saldo' => $j->kredit - $j->debit,
+                'details' => []
+            ];
+        } else {
+            $ncsDetails[$j->keterangan_buku_besar_pembantu]['debit'] += $j->debit;
+            $ncsDetails[$j->keterangan_buku_besar_pembantu]['kredit'] += $j->kredit;
+            $ncsDetails[$j->keterangan_buku_besar_pembantu]['saldo'] = $ncsDetails[$j->keterangan_buku_besar_pembantu]['kredit'] - $ncsDetails[$j->keterangan_buku_besar_pembantu]['debit'];
+        }
+
+        // Add detail information
+        $ncsDetails[$j->keterangan_buku_besar_pembantu]['details'][] = [
+            'tgl' => $formattedDate,
+            'nomor' => $j->nomor,
+            'keterangan' => $j->keterangan
+        ];
+    }
+
+    // Convert associative array to numeric array for easier processing
+    $ncsDetails = array_values($ncsDetails);
+
+    foreach ($ncsDetails as $key => $ncs) {
+        // Add main entry
+        $exportData[] = [
+            'no' => $key + 1,
+            'tanggal' => $ncs['tgl'],
+            'nomor' => $ncs['nomor'],
+            'keterangan' => $ncs['keterangan'],
+            'debit' => number_format($ncs['debit'], 2, ',', '.'),
+            'kredit' => number_format($ncs['kredit'], 2, ',', '.'),
+            'saldo' => number_format($ncs['saldo'], 2, ',', '.'),
+            'tanggal_detail' => implode("\n", array_column($ncs['details'], 'tgl')),
+            'nomor_detail' => implode("\n", array_column($ncs['details'], 'nomor')),
+            'keterangan_detail' => implode("\n", array_column($ncs['details'], 'keterangan'))
+        ];
+    }
+
+    return Excel::download(new NcsExport($exportData), 'ncs_export.xlsx');
 }
+
+
 public function exportCustomer(Request $request)
 {
 

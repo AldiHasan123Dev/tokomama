@@ -321,7 +321,7 @@
                                 </td>
                                 <td>
                                     <input type="hidden" name="akun_debet[${no - 1}]" value="">
-                                    <select class="select select-bordered w-36 calc_debit-${no - 1} debit-${no}" name="akun_debet[${no - 1}]" id="akun_debet-${no}i">
+                                    <select class="select select-bordered w-36 calc_debit-${no - 1} debit-${(no)}" onchange="total()" name="akun_debet[${no - 1}]" id="akun_debet-${no}i">
                                         <option id="option_debet-${no - 1}" value="0"></option>
                                         @foreach ($coa as $item)
                                         <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -330,7 +330,7 @@
                                 </td>
                                 <td>
                                     <input type="hidden" name="akun_kredit[${no - 1}]" value="">
-                                    <select class="select select-bordered w-36 calc_kredit-${no - 1} credit-${no}" name="akun_kredit[${no - 1}]" id="akun_kredit-${no}i">
+                                    <select class="select select-bordered w-36 calc_kredit-${no - 1} credit-${(no)}" onchange="total()" name="akun_kredit[${no - 1}]" id="akun_kredit-${no}i">
                                         <option id="option_kredit-${no - 1}" value="0"></option>
                                         @foreach ($coa as $item)
                                         <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -341,7 +341,7 @@
                                     <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[${no - 1}]" id="keterangan-${no}" value="${response.keterangan[i] ?? ""}" required />
                                 </td>
                                 <td>
-                                    <input type="number" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal-${no-1}" min="0" name="nominal[${no - 1}]" id="nominal-${no}" required />
+                                    <input type="number" onkeyup="total()" class="nominal input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal-${(no)}" min="0" name="nominal[${no - 1}]" id="nominal-${no}" required />
                                 </td>
                                 <td>
                                     <input type="hidden" name="invoice_external[${no - 1}]" value="">
@@ -433,6 +433,20 @@
                     $('#counter').val(no);
                     no++;
                 }
+
+                $('#simpan').click(function (e) {
+                    var totaltd = $('#total_debit').val();
+                    var totaltc = $('#total_credit').val();
+
+                    if(totaltd != totaltc) {
+                        alert("Total Debit dan Kredit tidak sama");
+                        return
+                    } else {
+                        if (confirm('are you sure?')) {
+                            $('#form-jurnal').submit();
+                        }
+                    }
+                });
             },
 
             error: function(xhr, status, error) {
@@ -440,7 +454,7 @@
                 console.log('Status:', status);
                 console.dir(xhr);
             }
-        })
+        });
     }
 
     var no = 1;
@@ -537,6 +551,7 @@
     });
 
     function total(){
+        console.log('total running')
         totaltc = 0;
         totaltd = 0;
         for (let i = 0; i < no; i++) {
@@ -550,6 +565,9 @@
             if (coa_credit != 0) {
                 totaltc += nominal;
             }
+            console.log("Coa Debit: " + i + ": " + coa_debit);
+            console.log("Coa Kredit: " + i + ": " + coa_debit);
+            console.log("Nominal: " + i + ": " + coa_debit);
         }
         $('#total_debit').val(totaltd);
         $('#total_credit').val(totaltc);

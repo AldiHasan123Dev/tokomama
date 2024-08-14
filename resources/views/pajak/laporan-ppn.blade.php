@@ -12,15 +12,15 @@
 
             <form action="{{ route('pajak.export.ppnexc') }}" method="post">
               @csrf
-              <input type="hidden" name="start" id="startex">
-              <input type="hidden" name="end" id="endex">
+              <input type="hidden" name="start" id="startex" value="{{ date('Y-m-d') }}" required>
+              <input type="hidden" name="end" id="endex" value="{{ date('Y-m-d') }}" required>
               <button type="submit" class="btn w-28 font-semibold text-white bg-green-500 hover:bg-green-400" id="excel">Export Excel</button>
           </form>
 
           <form action="{{ route('pajak.export.ppncsv') }}" method="post">
               @csrf
-              <input type="hidden" name="start" id="startcs">
-              <input type="hidden" name="end" id="endcs">
+              <input type="hidden" name="start" id="startcs" value="{{ date('Y-m-d') }}" required>
+              <input type="hidden" name="end" id="endcs" value="{{ date('Y-m-d') }}" required>
               <button type="submit" class="btn w-28 font-semibold text-white bg-blue-500 hover:bg-blue-400" id="csv">Export CSV</button>
           </form>
 

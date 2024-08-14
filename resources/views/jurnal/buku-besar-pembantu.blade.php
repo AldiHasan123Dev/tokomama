@@ -194,15 +194,15 @@
         <thead>
             <tr>
                 <th>No.</th>
-                <th>Tanggal Awal</th>
-                <th>Nomor Awal</th>
-                <th>Keterangan Awal</th>
+                <th>Tanggal </th>
+                <th>Nomor </th>
+                <th>Keterangan </th>
                 <th>Debit</th>
                 <th>Kredit</th>
                 <th>Saldo</th>
-                <th>Tanggal Selanjutnya</th>
-                <th>Nomor Selanjutnya</th>
-                <th>>Keterangan Tanggal Selanjutnya</th>
+                <th>Tanggal </th>
+                <th>Nomor </th>
+                <th>Keterangan </th>
             </tr>
         </thead>
         <tbody>
@@ -229,7 +229,7 @@
                             <div>{{ $detail['tgl'] }}</div>
                         @endforeach
                     @else
-                        <!-- Kosong jika tidak ada entri berikutnya -->
+                     
                         <div>-</div>
                     @endif
                 </td>

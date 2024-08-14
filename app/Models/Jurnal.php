@@ -37,5 +37,10 @@ class Jurnal extends Model
         return $this->belongsTo(Customer::class, 'customer_id'); // Sesuaikan nama kolom kunci
     }
 
+    public function invoice()
+    {
+        return $this->hasMany(Invoice::class, 'invoice');
+    }
+
     
 }

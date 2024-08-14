@@ -7,6 +7,7 @@ use App\Http\Resources\OmzetResurce;
 use App\Http\Resources\TransactionResource;
 use App\Models\Barang;
 use App\Models\Invoice;
+use App\Models\Jurnal;
 use App\Models\NSFP;
 use App\Models\Satuan;
 use App\Models\SuratJalan;
@@ -157,27 +158,12 @@ class KeuanganController extends Controller
                 }
             })
             ->make();
-
-        // $query = SuratJalan::query();
-        // if (request('invoice')) {
-        //     $query->whereNotNull('invoice');
-        // }
-        // $data = $query->orderBy('nomor_surat', 'desc');
-        // return DataTables::of($data)
-        //     ->addIndexColumn()
-        //     ->addColumn('aksi', function ($row) {
-        //         return '<div class="flex gap-3 mt-2">
-        //                         <a target="_blank" href="' . route('surat-jalan.cetak', $row) . '" class="text-green-500 font-semibold mb-3 self-end"><i class="fa-solid fa-print mt-2"></i></a>
-        //                         <button onclick="getData(' . $row->id . ', \'' . addslashes($row->invoice) . '\', \'' . addslashes($row->nomor_surat) . '\', \'' . addslashes($row->kepada) . '\', \'' . addslashes($row->jumlah) . '\', \'' . addslashes($row->satuan) . '\', \'' . addslashes($row->jenis_barang) . '\', \'' . addslashes($row->nama_kapal) . '\', \'' . addslashes($row->no_cont) . '\', \'' . addslashes($row->no_seal) . '\', \'' . addslashes($row->no_pol) . '\', \'' . addslashes($row->no_job) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>
-        //                         <button onclick="deleteData(' . $row->id . ')"  id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>
-        //                     </div>';
-        //     })
-        //     ->rawColumns(['aksi'])
-        //     ->make();
     }
 
     public function omzet()
     {
+        $Jurnal = Jurnal::with(['invoice'])->get();
+        // dd($Jurnal);
         return view('keuangan.omzet');
     }
 
@@ -187,6 +173,7 @@ class KeuanganController extends Controller
         $query = Invoice::get();
         $data = OmzetResurce::collection($query);
         $res = $data->toArray(request());
+        // dd($res);
         return DataTables::of($res)
             ->addIndexColumn()
             ->toJson();

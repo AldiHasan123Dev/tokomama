@@ -77,23 +77,33 @@ class KeuanganController extends Controller
     }
 
     public function cetakInvoice()
-    {
-        $invoice = request('invoice');
-        $data = Invoice::where('invoice', request('invoice'))->get();
-        $dateTime = new DateTime($data[0]->tgl_invoice);
-        $formattedDate = $dateTime->format('d F Y');
-        $id_transaksi = $data[0]->transaksi->id;
-        $transaksi = Transaction::where('id', $id_transaksi)->first(); //keteran
-        // dd($transaksi);
-        $id_barang = $transaksi->id_barang;
-        $barang = Barang::where('id', $id_barang)->first();
-        // dd($barang->id_satuan);
-        $satuan = Satuan::where('id', $barang->id_satuan)->first();
-        // dd($satuan->nama_satuan);
-        // dd($data, $invoice, $barang, $formattedDate, $transaksi, $satuan->nama_satuan, $transaksi->satuan_jual, $transaksi->keterangan);
-        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data', 'invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
-        return $pdf->stream('invoice_pdf.pdf');
-    }
+{
+    $invoice = request('invoice');
+    $data = Invoice::where('invoice', $invoice)->get();
+    $dateTime = new DateTime($data[0]->tgl_invoice);
+    $formattedDate = $dateTime->format('d F Y');
+    
+    $id_transaksi = $data[0]->transaksi->id;
+    $transaksi = Transaction::where('id', $id_transaksi)->first(); //keteran
+    
+    // Mencari id_surat_jalan dari transaksi
+    $id_surat_jalan = $transaksi->id_surat_jalan;
+    
+    // Mencari no_count dari tabel surat_jalan berdasarkan id_surat_jalan
+    $suratJalan = SuratJalan::where('id', $id_surat_jalan)->first();
+    $no_cont = $suratJalan ? $suratJalan->no_cont : null;
+    
+    $id_barang = $transaksi->id_barang;
+    $barang = Barang::where('id', $id_barang)->first();
+    
+    $satuan = Satuan::where('id', $barang->id_satuan)->first();
+    
+    // Pass $no_count ke view
+    $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data', 'invoice', 'barang', 'formattedDate', 'transaksi', 'satuan', 'no_cont'))->setPaper('a4', 'potrait');
+    return $pdf->stream('invoice_pdf.pdf');
+}
+
+
     public function cetakInvoicesp()
     {
         $invoice = request('invoice');

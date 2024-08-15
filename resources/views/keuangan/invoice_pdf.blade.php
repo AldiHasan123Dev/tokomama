@@ -216,6 +216,48 @@
                             <td class="text-center border border-black">{{ number_format($item->harga * $item->jumlah, 2, ',', '.') }}</td>
                         </tr>
                     @endfor
+                    <tr>
+                    <td class="text-center border border-black"></td>
+                    <td class="text-center border border-black"></td>
+                    <td class="text-center border border-black"></td>
+                    <td class="text-center border border-black"></td>
+                    <td class="text-center border border-black"></td>
+                    <td class="border border-black">
+                        DPP
+                        <br>
+                        @if($barang->status_ppn == 'ya')
+                        PPN 11%
+                        @else
+                        PPN 11% (DIBEBASKAN)
+                        @endif
+                    </td>
+                    <td class="border border-black text-center" >
+                        {{ number_format($total)  }}
+                        <br>
+                        @if($barang->status_ppn == 'ya')
+                        {{ number_format(($barang->value_ppn / 100) * $total) }}
+                        @else
+                        -
+                        @endif
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center border border-black"></td>
+                    <td class="text-center border border-black"></td>
+                    <td class="text-center border border-black"></td>
+                    <td class="text-center border border-black"></td>
+                    <td class="text-center border border-black"></td>
+                    <td class="border border-black">
+                        <b>TOTAL</b>
+                    </td>
+                    <td class="border border-black text-center" >
+                        @if($barang->status_ppn == 'ya')
+                        <b>{{ number_format(($total * 0.11) + ($total)) }}</b>
+                        @else
+                        <b>{{ number_format($total) }}</b>
+                        @endif
+                    </td>
+                </tr>
                 </tbody>
             </table>
 

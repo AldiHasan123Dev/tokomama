@@ -64,13 +64,39 @@ Route::middleware('auth')->group(function () {
     Route::post('/surat-jalan-delete', [SuratJalanController::class, 'destroy'])->name('surat-jalan.data.delete');
     Route::resource('surat-jalan', SuratJalanController::class);
     Route::resource('invoice-transaksi', InvoiceController::class);
-    Route::resource('jurnal', JurnalController::class);
-    Route::post('jurnal-sj-wherejob', [JurnalController::class, 'getInvoiceWhereNoInv'])->name('jurnal.sj.whereInv');
+//    Route::resource('jurnal', JurnalController::class);
+    Route::get('/jurnal', [JurnalController::class, 'index'])->name('jurnal.index');
+    Route::get('/jurnal-edit', [JurnalController::class, 'edit'])->name('jurnal.edit');
+    Route::get('/jurnal-merger', [JurnalController::class, 'merger'])->name('jurnal.jurnal-merger');
+    Route::post('/jurnal-merger', [JurnalController::class, 'merger_store'])->name('jurnal.jurnal-merger');
+    Route::post('/jurnal-update', [JurnalController::class, 'update'])->name('jurnal.edit.update');
+    Route::post('/jurnal-delete', [JurnalController::class, 'destroy'])->name('jurnal.item.delete');
+    Route::post('/jurnal-tgl-update', [JurnalController::class, 'tglUpdate'])->name('jurnal.edit.tglupdate');
+    Route::get('/jurnal-edit-list', [JurnalController::class, 'datatableEdit'])->name('jurnal.edit.list');
+    Route::resource('jurnal-manual', JurnalManualController::class);
+    Route::post('/jurnal-manual-template', [JurnalManualController::class, 'terapanTemplateJurnal'])->name('jurnal.template.terapan');
+    Route::post('jurnal-sj-wherejob', [JurnalManualController::class, 'getInvoiceWhereNoInv'])->name('jurnal.sj.whereInv');
+    Route::post('jurnal-sj-whereinvext', [JurnalManualController::class, 'getInvoiceWhereNoInvExt'])->name('jurnal.sj.whereInvExt');
     Route::post('ekspedisi-data', [EkspedisiController::class, 'dataTable'])->name('ekspedisi.data');
     Route::post('transaction-data', [TransactionController::class, 'dataTable'])->name('transaksi.data');
     Route::put('transaction-update', [TransactionController::class, 'update'])->name('transaksi.update');
+    // Route::get('coa', [CoaController::class,'index'])->name('jurnal.coa');
+    // Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
     Route::get('coa', [CoaController::class,'index'])->name('jurnal.coa');
-    Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
+Route::post('coa', [CoaController::class,'store'])->name('jurnal.coa.store');
+Route::put('coa/{coa}', [CoaController::class,'update'])->name('jurnal.coa.update');
+Route::delete('coa/{coa}', [CoaController::class,'destroy'])->name('jurnal.coa.destroy');
+Route::get('coa/data', [CoaController::class, 'dataTable'])->name('jurnal.coa.data');
+
+    Route::post('coa', [CoaController::class,'store'])->name('jurnal.coa.store');
+    Route::put('coa/{coa}', [CoaController::class,'update'])->name('jurnal.coa.update');
+    Route::delete('coa/{coa}', [CoaController::class,'destroy'])->name('jurnal.coa.destroy');
+    Route::get('coa/data', [CoaController::class, 'dataTable'])->name('jurnal.coa.data');
+    
+    Route::post('/jurnal/coa/store', [CoaController::class, 'store'])->name('jurnal.coa.store');
+    Route::post('coa-delete', [CoaController::class,'hapusCoa'])->name('jurnal.coa.delete');
+
+    Route::post('/jurnal/coa/store', [CoaController::class, 'store'])->name('jurnal.coa.store');
     Route::get('template-jurnal', [TemplateJurnalController::class,'index'])->name('jurnal.template-jurnal');
     Route::get('template-jurnal-list', [TemplateJurnalController::class,'datatable'])->name('jurnal.template-jurnal.data');
     Route::get('template-jurnal-create', [TemplateJurnalController::class,'create'])->name('jurnal.template-jurnal.create');
@@ -81,11 +107,17 @@ Route::middleware('auth')->group(function () {
     Route::post('template-jurnal-delete', [TemplateJurnalController::class,'destroy'])->name('jurnal.template-jurnal.delete');
     Route::post('/omzet-data', [KeuanganController::class, 'dataTableOmzet'])->name('keuangan.omzet.data');
     Route::resource('buku-besar', BukuBesarController::class);
+    Route::get('/export/buku-besar', [BukuBesarController::class, 'export'])->name('buku-besar.export');
     Route::get('buku-besar/{month}/{year}', [BukuBesarController::class, 'datatableDefault'])->name('buku-besar.dataf');
     Route::get('bb-data/{month}/{year}/{coa}', [BukuBesarController::class, 'datatable'])->name('buku-besar.data');
     Route::resource('neraca', Neraca::class);
     Route::resource('laba-rugi', LabaRugi::class);
     Route::resource('buku-besar-pembantu', BukuBesarPembantuController::class);
+    Route::get('buku-besar-pembantu/{id}/detail', [BukuBesarPembantuController::class, 'showDetail'])->name('buku-besar-pembantu.showDetail');
+    Route::get('/export-ncs', [BukuBesarPembantuController::class, 'exportNcs'])->name('export.ncs');
+    Route::get('/export-customers', [BukuBesarPembantuController::class, 'exportCustomer'])->name('export.customers');
+    Route::get('/export-supplier', [BukuBesarPembantuController::class, 'exportSupplier'])->name('export.supplier');
+
     Route::resource('invoice-external', InvoiceExternalController::class);
 });
 

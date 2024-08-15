@@ -45,8 +45,8 @@ class OmzetResurce extends JsonResource
             'supplier' => $this->Transaksi->Suppliers->nama ?? '-',
             'harga_beli' => $this->Transaksi->harga_beli ?? '-',
             'total' => $this->Transaksi->harga_beli * $this->Transaksi->jumlah_beli ?? '-',
-            'tgl_pembayaran' => '-',
-            'no_vocher' => '-',
+            'tgl_pembayaranpbl' => $this->jurnal ? (($this->jurnal->invoice_external != 0) ? $this->jurnal->tgl : '-')  : '-',
+            'no_vocherpbl' =>   $this->jurnal ? (($this->jurnal->invoice_external != 0 && $this->jurnal->coa_id == 5 || $this->jurnal->coa_id == 1) ? $this->jurnal->nomor : '-')  : '-',
             'harga_jual_ppn' => ($this->Transaksi->harga_jual + ($this->Transaksi->harga_jual * 0.11)) *  $this->Transaksi->jumlah_beli ?? '-',
             'harga_beli_ppn' => ($this->Transaksi->harga_beli + ($this->Transaksi->harga_beli * 0.11)) *  $this->Transaksi->jumlah_beli ?? '-',
             'margin_ppn' => (($this->Transaksi->harga_jual * 0.11) * $this->Transaksi->jumlah_beli) - (($this->Transaksi->harga_beli * 0.11) * $this->Transaksi->jumlah_beli) ?? '-',
@@ -56,5 +56,7 @@ class OmzetResurce extends JsonResource
             'beli' => ($this->Transaksi->satuan_beli == $this->Transaksi->Barang->Satuan->nama_satuan) ? $this->Transaksi->harga_beli : $this->Transaksi->harga_beli / $this->Transaksi->Barang->value ?? '-',
             'jual' => ($this->Transaksi->satuan_beli == $this->Transaksi->Barang->Satuan->nama_satuan) ? $this->Transaksi->harga_jual : $this->Transaksi->harga_jual / $this->Transaksi->Barang->value ?? '-'
         ];
+
+
     }
 }

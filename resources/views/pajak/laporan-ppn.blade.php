@@ -7,8 +7,7 @@
     <x-pajak.card>
         <x-slot:tittle>Laporan PPN</x-slot:tittle>
         <div class="grid grid-cols-7">
-            <a href=""><button class="btn w-28 font-semibold btn-primary">Tambah Faktur</button></a>
-            <a href=""><button class="btn w-28 font-semibold text-white btn-warning">Bukpot</button></a>
+            
 
             <form action="{{ route('pajak.export.ppnexc') }}" method="post">
               @csrf

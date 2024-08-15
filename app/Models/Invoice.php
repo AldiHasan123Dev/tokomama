@@ -29,9 +29,9 @@ class Invoice extends Model
     {
         return $this->belongsTo(Transaction::class, 'id_transaksi', 'id');
     }
-    public function jurnal()
+    public function Jurnal()
     {
-        return $this->hasMany(Jurnal::class, 'invoice'); // Sesuaikan dengan nama kolom yang tepat
+        return $this->belongsTo(Jurnal::class, 'invoice'); // Sesuaikan dengan nama kolom yang tepat
     }
     
 }

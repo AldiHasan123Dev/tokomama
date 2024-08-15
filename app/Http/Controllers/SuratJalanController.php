@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\Customer;
 use App\Models\Ekspedisi;
+use App\Models\Jurnal;
 use App\Models\Nopol;
 use App\Models\Satuan;
 use App\Models\Supplier;
 use App\Models\SuratJalan;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class SuratJalanController extends Controller
@@ -30,7 +33,7 @@ class SuratJalanController extends Controller
     public function create()
     {
         $barang = Barang::join('satuan', 'barang.id_satuan', '=', 'satuan.id')->select('barang.*', 'satuan.nama_satuan')->where('barang.status', 'AKTIF')->get();
-    
+
         // dd($barang);
         $nopol = Nopol::where('status', 'aktif')->get();
         $customer = Customer::all();
@@ -144,10 +147,63 @@ class SuratJalanController extends Controller
     }
 
     public function updateInvoiceExternal(Request $request)
-    {   
+    {
+        // dd($request->all());
         Transaction::where('id_surat_jalan', $request->id_surat_jalan)->where('id_supplier', $request->id_supplier)->update(['invoice_external' => $request->invoice_external]);
 
+        $this->autoInvoiceExternalJurnal($request);
+
         return redirect()->route('invoice-external.index');
+    }
+
+    private function autoInvoiceExternalJurnal($request)
+    {
+        $currentYear = Carbon::now()->year;
+        $noBBK = Jurnal::where('tipe', 'BBK')->whereYear('tgl', $currentYear)->orderBy('no', 'desc')->first() ?? 0;
+        $no_BBK =  $noBBK ? $noBBK->no + 1 : 1;
+
+        $nomor_surat = "Bank Keluar - " . "$no_BBK/BBK-SB/" . date('y');
+        // dd($request->invoice_external);
+        //untuk debug 'LJA02' | $request->invoice_external
+        $data = Transaction::where('invoice_external', 'LJA02')
+            ->with([
+                'barang',
+                'suratJalan.customer'
+            ])->get();
+
+        DB::transaction(function () use ($data, $request, $no_BBK, $nomor_surat) {
+            foreach ($data as $item) {
+                // dd($item);
+                Jurnal::create([
+                    'coa_id' => 63,
+                    'nomor' => $nomor_surat, 
+                    'tgl' => date('Y-m-d'),
+                    'keterangan' => 'Pembelian ' . $item->barang->nama . ' (' . $item->jumlah_jual . ' ' . $item->satuan_jual . ' Harsat ' . $item->harga_jual . ') untuk ' . $item->suratJalan->customer->nama,
+                    'debit' => $item->harga_jual * $item->jumlah_jual,
+                    'kredit' => 0,
+                    'invoice' => null,
+                    'invoice_external' => $request->invoice_external,
+                    'nopol' => $item->suratJalan->no_pol,
+                    'container' => null,
+                    'tipe' => 'BBK', 
+                    'no' => $no_BBK
+                ]);
+                Jurnal::create([
+                    'coa_id' => 5,
+                    'nomor' => $nomor_surat,
+                    'tgl' => date('Y-m-d'),
+                    'keterangan' => 'Pembelian ' . $item->barang->nama . ' (' . $item->jumlah_jual . ' ' . $item->satuan_jual . ' Harsat ' . $item->harga_jual . ') untuk ' . $item->suratJalan->customer->nama,
+                    'debit' => 0,
+                    'kredit' => $item->harga_jual * $item->jumlah_jual,
+                    'invoice' => null,
+                    'invoice_external' => $request->invoice_external,
+                    'nopol' => $item->suratJalan->no_pol,
+                    'container' => null,
+                    'tipe' => 'BBK', 
+                    'no' => $no_BBK
+                ]);
+            }
+        });
     }
 
     /**
@@ -205,7 +261,7 @@ class SuratJalanController extends Controller
                 }
                 return '<div class="flex gap-3 mt-2">
                                 <a target="_blank" href="' . route('surat-jalan.cetak', $row) . '" class="text-green-500 font-semibold mb-3 self-end"><i class="fa-solid fa-print mt-2"></i></a>
-                                '.$action.'
+                                ' . $action . '
                             </div>';
             })
             ->rawColumns(['profit'])
@@ -231,9 +287,9 @@ class SuratJalanController extends Controller
             ->addColumn('aksi', function ($row) {
                 $action = '';
                 $action = '<button onclick="getData(' . $row->id_surat_jalan . ', \'' . addslashes($row->suratJalan->nomor_surat) . '\', ' . $row->id_supplier . ', \'' . addslashes($row->suppliers->nama) . '\', \'' . addslashes($row->invoice_external) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>';
-                
+
                 return '<div class="flex gap-3 mt-2">
-                            '.$action.'
+                            ' . $action . '
                         </div>';
             })
             ->rawColumns(['aksi'])

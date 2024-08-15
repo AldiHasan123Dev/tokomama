@@ -164,7 +164,7 @@
                             </td>
                             <td>
                                 <input type="hidden" name="akun_debet[0]" value="">
-                                <select class="select select-bordered w-36 calc_debit-1 debit-0" name="akun_debet[0]" id="akun_debet-1i">
+                                <select class="select select-bordered w-36 calc_debit-1 1debit-0 debit-1" name="akun_debet[0]" id="akun_debet-1i">
                                     <option value="0"></option>
                                     @foreach ($coa as $item)
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -173,7 +173,7 @@
                             </td>
                             <td>
                                 <input type="hidden" name="akun_kredit[0]" value="">
-                                <select class="select select-bordered w-36 calc_kredit-1 credit-0" name="akun_kredit[0]" id="akun_kredit-1i">
+                                <select class="select select-bordered w-36 calc_kredit-1 1credit-0 credit-1" name="akun_kredit[0]" id="akun_kredit-1i">
                                     <option value="0"></option>
                                     @foreach ($coa as $item)
                                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -184,7 +184,7 @@
                                 <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[0]" id="keterangan-1i" />
                             </td>
                             <td>
-                                <input type="number" onkeyup="total()" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal nominal-0" min="0" name="nominal[0]" id="nominal-1i" />
+                                <input type="number" onkeyup="total()" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal 1nominal-0 nominal-1" min="0" name="nominal[0]" id="nominal-1i" />
                             </td>
                             <td>
                                 <input type="hidden" name="invoice_external[0]" value="">
@@ -224,6 +224,7 @@
     let dataTemp = [];
     let debitarr = [];
     let kreditarr = [];
+    let num = 1;
 
     $(document).ready(function () {
         $('select.select').select2();
@@ -292,8 +293,8 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function(response) {
                 for (let i = 0; i < response.count; i++) {
-                    console.log("no : " + no);
                     let currentNo = no;
+                    num++;
 
                     let html = '';
                     html += `<tr id="table-row">
@@ -321,7 +322,7 @@
                                 </td>
                                 <td>
                                     <input type="hidden" name="akun_debet[${no - 1}]" value="">
-                                    <select class="select select-bordered w-36 calc_debit-${no - 1} debit-${(no)}" onchange="total()" name="akun_debet[${no - 1}]" id="akun_debet-${no}i">
+                                    <select class="select select-bordered w-36 calc_debit-${no - 1} debit-${num}" onchange="total()" name="akun_debet[${no - 1}]" id="akun_debet-${no}i">
                                         <option id="option_debet-${no - 1}" value="0"></option>
                                         @foreach ($coa as $item)
                                         <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -330,7 +331,7 @@
                                 </td>
                                 <td>
                                     <input type="hidden" name="akun_kredit[${no - 1}]" value="">
-                                    <select class="select select-bordered w-36 calc_kredit-${no - 1} credit-${(no)}" onchange="total()" name="akun_kredit[${no - 1}]" id="akun_kredit-${no}i">
+                                    <select class="select select-bordered w-36 calc_kredit-${no} credit-${num}" onchange="total()" name="akun_kredit[${no - 1}]" id="akun_kredit-${no}i">
                                         <option id="option_kredit-${no - 1}" value="0"></option>
                                         @foreach ($coa as $item)
                                         <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -341,7 +342,7 @@
                                     <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[${no - 1}]" id="keterangan-${no}" value="${response.keterangan[i] ?? ""}" required />
                                 </td>
                                 <td>
-                                    <input type="number" onkeyup="total()" class="nominal input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal-${(no)}" min="0" name="nominal[${no - 1}]" id="nominal-${no}" required />
+                                    <input type="number" onkeyup="total()" class="nominal input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal-${num}" min="0" name="nominal[${no}]" id="nominal-${no}" required />
                                 </td>
                                 <td>
                                     <input type="hidden" name="invoice_external[${no - 1}]" value="">
@@ -420,8 +421,8 @@
                             $(`#invoice_external-${currentNo}`).prop('disabled', true);
                             $(`#keterangan_buku_besar_pembantu-${currentNo}`).prop('disabled', true);
                             $(`#nominal-${currentNo}`).val(0);
-                            updateTotalDebit(no - 1);
-                            updateTotalKredit(no - 1);
+                            // updateTotalDebit(no - 1);
+                            // updateTotalKredit(no - 1);
                         }
                     });
 
@@ -551,9 +552,31 @@
     });
 
     function total(){
+        totaltc = 0;
+        totaltd = 0;
+        for (let i = 1; i <= num; i++) {
+            let coa_debit = $(".debit-"+i+"").val();
+            let coa_credit = $(".credit-"+i+"").val();
+            let nominal = parseFloat($(`.nominal-${i}`).val());
+
+            if(coa_debit != 0) {
+                totaltd += nominal;
+            }
+            if (coa_credit != 0) {
+                totaltc += nominal;
+            }
+        }
+        $('#total_debit').val(totaltd);
+        $('#total_credit').val(totaltc);
+        $('#td').html(totaltd.toLocaleString('en-US'));
+        $('#tc').html(totaltc.toLocaleString('en-US'));
+    }
+
+    function doTotal(){
         console.log('total running')
         totaltc = 0;
         totaltd = 0;
+        console.log("no : " + no);
         for (let i = 0; i < no; i++) {
             let coa_debit = $(".debit-"+i+"").val();
             let coa_credit = $(".credit-"+i+"").val();
@@ -599,6 +622,7 @@
         no = $(`#counter`).val();
         console.log("no_first: " + no);
         no++;
+        num++;
         $(`#counter`).val(no);
         let newRowId = no;
 
@@ -628,7 +652,7 @@
             </td>
             <td>
                 <input type="hidden" name="akun_debet[${newRowId - 1}]" value="">
-                <select class="select select-bordered w-36 max-w-xs calc_debit-${newRowId - 1} debit-${no-1}" onchange="total()" name="akun_debet[${newRowId - 1}]" id="akun_debet-${newRowId}i">
+                <select class="select select-bordered w-36 max-w-xs calc_debit-${newRowId - 1} debit-${num}" onchange="total()" name="akun_debet[${newRowId - 1}]" id="akun_debet-${newRowId}i">
                     @foreach ($coa as $item)
                     <option value="0" selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -637,7 +661,7 @@
             </td>
             <td>
                 <input type="hidden" name="akun_kredit[${newRowId - 1}]" value="">
-                <select class="select select-bordered w-36 max-w-xs calc_kredit-${newRowId} credit-${no-1}" onchange="total()" name="akun_kredit[${newRowId - 1}]" id="akun_kredit-${newRowId}i">
+                <select class="select select-bordered w-36 max-w-xs calc_kredit-${newRowId} credit-${num}" onchange="total()" name="akun_kredit[${newRowId - 1}]" id="akun_kredit-${newRowId}i">
                     @foreach ($coa as $item)
                     <option value="0" selected></option>
                     <option value="{{ $item->id }}">{{ $item->no_akun }} - {{ $item->nama_akun }}</option>
@@ -648,7 +672,7 @@
                 <input type="text" class="input input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md" name="keterangan[${newRowId}]" id="keterangan-${newRowId}" value="" required />
             </td>
             <td>
-                <input type="number" onkeyup="total()" class="input nominal input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md nominal-${no-1}" min="0" name="nominal[${newRowId - 1}]" id="nominal-${newRowId}" value="" required />
+                <input type="number" onkeyup="total()" class="input nominal input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md nominal-${num}" min="0" name="nominal[${newRowId - 1}]" id="nominal-${newRowId}" value="" required />
             </td>
             <td>
                 <input type="hidden" name="invoice_external[${newRowId - 1}]" value="">

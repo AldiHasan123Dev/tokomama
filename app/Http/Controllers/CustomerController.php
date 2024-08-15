@@ -63,6 +63,7 @@ class CustomerController extends Controller
         // dd($request);
         $data = Customer::find($request->id);
         $data->nama = $request->nama;
+        $data->nama_npwp = $request->nama_npwp;
         $data->npwp = $request->npwp;
         $data->email = $request->email;
         $data->no_telp = $request->no_telp;
@@ -73,7 +74,7 @@ class CustomerController extends Controller
         if ($data->save()) {
             return redirect()->route('master.customer', $data)->with('success', 'Data Master Customer berhasil diubah!');
         } else {
-            return redirect()->route('master.customer', $data)->with('error', 'Data Master Customer berhasil diubah!');
+            return redirect()->route('master.customer', $data)->with('error', 'Data Master Customer gagal diubah!');
         }
 
         return redirect()->route('master.customer');

@@ -7,14 +7,14 @@
             <div class="flex h-[90vh] flex-col">
                 <div class="mx-auto mb-12">
                     <a href="index.html" class="">
-                        <img src="assets/images/logo-sm.svg" alt="" class="inline h-7"> <span class="text-xl font-medium align-middle ltr:ml-1.5 rtl:mr-1.5 dark:text-white">Minia</span>
+                        <img src="{{ asset('/logo_sb.svg') }}" alt="" class="inline h-7"> <span class="text-xl font-medium align-middle ltr:ml-1.5 rtl:mr-1.5 dark:text-white">Sarana Bahagia</span>
                     </a>
                 </div>
 
                 <div class="my-auto">
                     <div class="text-center">
-                        <h5 class="font-medium text-gray-700 dark:text-gray-100">Welcome Back !</h5>
-                        <p class="mt-2 mb-4 text-gray-500 dark:text-gray-100/60">Sign in to continue to Minia.</p>
+                        <h5 class="font-medium text-gray-700 dark:text-gray-100">Selamat Datang !</h5>
+                        <p class="mt-2 mb-4 text-gray-500 dark:text-gray-100/60">Login untuk masuk kedalam sistem.</p>
                     </div>
 
                     <form class="pt-2" action="{{ route('login') }}" method="POST">
@@ -53,7 +53,7 @@
 
                         </div>
                         <div class="mb-3">
-                            <x-primary-button class="w-full py-2 text-white border-transparent shadow-md btn bg-violet-500 w-100 waves-effect waves-light shadow-violet-200 dark:shadow-zinc-600" show_spinner="true">{{ __('Log in') }}</x-primary-button>
+                            <x-primary-button class="w-full py-2 text-white border-transparent shadow-md btn bg-green-500 w-100 waves-effect waves-light shadow-green-200 dark:shadow-zinc-600" show_spinner="true">{{ __('Log in') }}</x-primary-button>
                         </div>
                     </form>
 

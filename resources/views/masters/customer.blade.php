@@ -15,6 +15,7 @@
             <th>No.Telp</th>
             <th>Alamat</th>
             <th>Kota</th>
+            <th>Nama NPWP</th>
             <th>Alamat NPWP</th>
             <th>Aksi</th>
           </tr>
@@ -112,6 +113,7 @@
                 { data: 'no_telp', name: 'no_telp' },
                 { data: 'alamat', name: 'alamat' },
                 { data: 'kota', name: 'kota' },
+                { data: 'nama_npwp', name: 'nama_npwp' },
                 { data: 'alamat_npwp', name: 'alamat_npwp' },
                 { data: 'aksi', name: 'aksi' },
                 { data: 'id', name: 'id', visible:false},

@@ -15,9 +15,11 @@ class Jurnal extends Model
         'nomor',
         'tgl',
         'keterangan',
+        'keterangan_buku_besar_pembantu',
         'debit',
         'kredit',
         'invoice',
+        'invoice_external',
         'nopol',
         'container',
         'tipe',
@@ -25,4 +27,20 @@ class Jurnal extends Model
         'created_by',
         'updated_by',
     ];
+
+    public function coa()
+    {
+        return $this->belongsTo(Coa::class, 'coa_id'); 
+    }
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id'); // Sesuaikan nama kolom kunci
+    }
+
+    public function invoice()
+    {
+        return $this->hasMany(Invoice::class, 'invoice');
+    }
+
+    
 }

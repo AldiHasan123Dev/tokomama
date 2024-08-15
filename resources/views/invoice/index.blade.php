@@ -10,6 +10,7 @@
             @csrf
             
             <input type="date" name="tgl_invoice" value="{{ date('Y-m-d') }}">
+            <input type="text" value="Jurnal - {{ $no_JNL }}/{{'JNL'}}-SB/{{ date('y') }}" name="tipe" readonly>
             <input type="hidden" name="invoice_count" value="{{ $invoice_count }}">
             {{-- <label for="invoice_count">Masukan Jumlah Invoice</label>
             <input type="number" onchange="invoice_counts()" onkeyup="invoice_counts()" name="invoice_count" id="invoice_count" min="1" value="1" class="form-control w-full text-center rounded-sm"> --}}

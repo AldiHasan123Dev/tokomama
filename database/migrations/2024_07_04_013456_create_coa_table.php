@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama_akun')->nullable();
             $table->string('status')->default('non-aktif')->nullable();
             $table->timestamps();
+            $table->string('tabel');
         });
     }
 

@@ -1,26 +1,29 @@
 <x-Layout.layout>
     <!-- <link rel="stylesheet" href="{{ asset('assets/css/table.css')}}"> -->
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets/css/ui.jqgrid-bootstrap5.css') }}" />
     <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.5.2/css/dataTables.dateTime.min.css">
+    <style>
+      
+    </style>
     <x-pajak.card>
         <x-slot:tittle>Laporan PPN</x-slot:tittle>
         <div class="grid grid-cols-7">
             <a href=""><button class="btn w-28 font-semibold btn-primary">Tambah Faktur</button></a>
             <a href=""><button class="btn w-28 font-semibold text-white btn-warning">Bukpot</button></a>
 
-            <form action="{{route('pajak.export.ppnexc')}}" method="post">
+            <form action="{{ route('pajak.export.ppnexc') }}" method="post">
               @csrf
-              <input type="hidden" name="start" id="startex" >
-              <input type="hidden" name="end" id="endex" >
+              <input type="hidden" name="start" id="startex" value="{{ date('Y-m-d') }}" required>
+              <input type="hidden" name="end" id="endex" value="{{ date('Y-m-d') }}" required>
               <button type="submit" class="btn w-28 font-semibold text-white bg-green-500 hover:bg-green-400" id="excel">Export Excel</button>
-            </form>
-            
-            <form action="{{route('pajak.export.ppncsv')}}" method="post">
+          </form>
+
+          <form action="{{ route('pajak.export.ppncsv') }}" method="post">
               @csrf
-              <input type="hidden" name="start" id="startcs" >
-              <input type="hidden" name="end" id="endcs" >
-              <button class="btn w-28 font-semibold text-white bg-green-500" id="csv">Excel CSV</button>
-            </form>
+              <input type="hidden" name="start" id="startcs" value="{{ date('Y-m-d') }}" required>
+              <input type="hidden" name="end" id="endcs" value="{{ date('Y-m-d') }}" required>
+              <button type="submit" class="btn w-28 font-semibold text-white bg-blue-500 hover:bg-blue-400" id="csv">Export CSV</button>
+          </form>
+
         </div>
         <hr>
         <div class="overflow-x-auto">
@@ -36,7 +39,7 @@
                 </tr>
               </tbody>
             </table>
-            <table class="table" id="table-ppn">
+            <table class="cell-border hover nowrap" id="table-ppn">
               <thead>
                 <tr>
                   <th>No.</th>
@@ -53,14 +56,6 @@
                   <th>Sub Total</th> <!-- invoice -->
                   <th>PPN</th>  <!-- pasti 11% -->
                   <th>Total</th> <!-- sub total + ppn -->
-                  <th>PPH</th> 
-                  <th>Job</th> <!-- surat jalan  -->
-                  <th>No Bupot</th>
-                  <th>Masa Pajak</th>
-                  <th>Bupot</th>
-                  <th>Tanggal Bupot</th>
-                  <th>Selisih Bupot</th>
-                  <th>Jurnal Bupot</th>
                 </tr>
               </thead>
               <tbody>
@@ -73,117 +68,81 @@
     <x-slot:script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
       <script src="https://cdn.datatables.net/datetime/1.5.2/js/dataTables.dateTime.min.js"></script>
-        <script>
-          
-            
+      <!-- <script src="https://cdn.datatables.net/2.1.0/js/dataTables.tailwindcss.js"></script> -->
+      <script>
+    let minDate, maxDate;
 
-          let minDate, maxDate;
-          DataTable.ext.search.push(function (settings, data, dataIndex) {
-              let min = minDate.val();
-              let max = maxDate.val();
-              let date = new Date(data[7]);
-          
-              if (
-                  (min === null && max === null) ||
-                  (min === null && date <= max) ||
-                  (min <= date && max === null) ||
-                  (min <= date && date <= max)
-              ) {
-                  return true;
-              }
-              return false;
-          });
+    DataTable.ext.search.push(function (settings, data, dataIndex) {
+        let min = minDate.val();
+        let max = maxDate.val();
+        let date = new Date(data[7]);
 
-          // Create date inputs
-          minDate = new DateTime('#min', {
-              format: 'YYYY-M-D'
-          });
+        if (
+            (min === null && max === null) ||
+            (min === null && date <= max) ||
+            (min <= date && max === null) ||
+            (min <= date && date <= max)
+        ) {
+            return true;
+        }
+        return false;
+    });
 
-          maxDate = new DateTime('#max', {
-              format: 'YYYY-M-D'
-          });
-          
-        
-          let table = $('#table-ppn').DataTable({
-              ajax:{
-                  url: "{{ route('pajak.laporan-ppn.data') }}",
-                  dataSrc: "data",
-                   // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-              },
-              columns: [
-                { data: 'DT_RowIndex', name: 'number'},
-                { data: 'invoice', name: 'invoice' },
-                { data: 'npwp', name: 'npwp' },
-                { data: 'nik', name: 'nik' },
-                { data: 'nama_customer', name: 'nama_customer' },
-                { data: 'nama_npwp', name: 'nama_npwp' },
-                { data: 'alamat_npwp', name: 'alamat_npwp' },
-                { data: 'tgl_invoice', name: 'tgl_faktur' },
-                { data: 'tujuan', name: 'tujuan' },
-                { data: 'keterangan', name: 'uraian' },
-                { data: 'nomor_nsfp', name: 'faktur' },
-                { data: 'total', name: 'total' },
-                { data: 'ppn', name: 'ppn' },
-                { data: 'total_all', name: 'total_all' },
-                { data: 'pph', name: 'pph' },
-                { data: 'job', name: 'job' },
-                { data: 'no_bupot', name: 'no_bupot' },
-                { data: 'masa_pajak', name: 'masa_pajak' },
-                { data: 'bupot', name: 'bupot' },
-                { data: 'tanggal_bupot', name: 'tanggal_bupot' },
-                { data: 'selisih_bupot', name: 'selisih_bupot' },
-                { data: 'jurnal_bupot', name: 'jurnal_bupot' },
-                { data: 'id', name: 'id', visible:false},  
-            ]
-          });
+    // Create date inputs
+    minDate = new DateTime('#min', {
+        format: 'YYYY-M-D'
+    });
 
-           // Refilter the table
-           document.querySelectorAll('#min, #max').forEach((el) => {
-              el.addEventListener('change', () => table.draw());
-          });
+    maxDate = new DateTime('#max', {
+        format: 'YYYY-M-D'
+    });
 
-          $("#min").on({
-            change: function () {
-              var inputValue = $(this).val();
-              $('#startex').val(inputValue);
-              $('#startcs').val(inputValue);
-              console.log(inputValue); 
-            }
-          });
+    let table = $('#table-ppn').DataTable({
+        ajax: {
+            url: "{{ route('pajak.laporan-ppn.data') }}",
+            dataSrc: "data",
+        },
+        autoWidth: false,
+        columns: [
+            { data: 'DT_RowIndex', name: 'number' },
+            { data: 'invoice', name: 'invoice' },
+            { data: 'npwp', name: 'npwp' },
+            { data: 'nik', name: 'nik' },
+            { data: 'nama', name: 'nama' },
+            { data: 'nama_npwp', name: 'nama npwp' },
+            { data: 'alamat_npwp', name: 'alamat npwp' },
+            { data: 'tgl_invoice', name: 'tanggal invoice' },
+            { data: 'tujuan', name: 'tujuan' },
+            { data: 'uraian', name: 'uraian' },
+            { data: 'faktur', name: 'faktur' },
+            { data: 'subtotal', name: 'subtotal' },
+            { data: 'ppn', name: 'ppn' },
+            { data: 'total', name: 'total' },
+            { data: 'id', name: 'id', visible: false },
+        ]
+    });
 
-          $('#max').on({
-            change: function () {
-              var inputValue = $(this).val();
-              $('#endex').val(inputValue);
-              $('#endcs').val(inputValue);
-            }
-          });
+    // Refilter the table when date inputs change
+    document.querySelectorAll('#min, #max').forEach((el) => {
+        el.addEventListener('change', () => table.draw());
+    });
 
-          // $('#excel').on('click', function() {
-          //   if (confirm('Apakah anda ingin melakukan export data?')) 
-          //   {
-          //       $.ajax
-          //       ({
-          //           method: 'post',
-          //           url: "{{ route('pajak.export.ppnexc') }}",
-          //           data: {
-          //             start: $('#min').val(),
-          //             end: $('#max').val()
-          //           },
-          //           headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-          //           success: function(response) 
-          //           {
-          //               table.ajax.reload();
-          //           },
-          //           error: function(xhr, status, error) 
-          //           {
-          //               console.log('Error:', error);
-          //               console.log('Status:', status);
-          //               console.dir(xhr);
-          //           }
-          //       })
-          //   }
-          // })
-        </script>
+    $("#min").on({
+        change: function () {
+            var inputValue = $(this).val();
+            $('#startex').val(inputValue); // Set value for Excel export
+            $('#startcs').val(inputValue); // Set value for CSV export
+        }
+    });
+
+    $('#max').on({
+        change: function () {
+            var inputValue = $(this).val();
+            $('#endex').val(inputValue); // Set value for Excel export
+            $('#endcs').val(inputValue); // Set value for CSV export
+        }
+    });
+</script>
+
     </x-slot:script>
 </x-Layout.layout>

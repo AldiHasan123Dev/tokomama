@@ -2,16 +2,21 @@
 
 use App\Http\Controllers\Api\NSFPController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\BukuBesarController;
+use App\Http\Controllers\BukuBesarPembantuController;
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\InvoiceExternalController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\JurnalManualController;
 use App\Http\Controllers\NSFPController as nsfp;
 use App\Http\Controllers\KeuanganController;
+use App\Http\Controllers\LabaRugi;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\Neraca;
 use App\Http\Controllers\NopolController;
 use App\Http\Controllers\PajakController;
 use App\Http\Controllers\ProfileController;
@@ -28,6 +33,8 @@ use App\Models\Customer;
 use App\Models\Jurnal;
 use App\Models\NSFP as ModelsNSFP;
 use App\Models\SuratJalan;
+use App\Models\TemplateJurnal;
+use App\Models\TemplateJurnalItem;
 use Illuminate\Support\Facades\Route;
 
 
@@ -51,19 +58,67 @@ Route::middleware('auth')->group(function () {
     Route::get('/surat-jalan-cetak/{surat_jalan}', [SuratJalanController::class, 'cetak'])->name('surat-jalan.cetak');
     Route::get('/surat-jalan-tarif-barang', [SuratJalanController::class, 'tarif'])->name('surat-jalan.barang');
     Route::post('/surat-jalan-data', [SuratJalanController::class, 'dataTable'])->name('surat-jalan.data');
+    Route::post('/surat-jalan-supplier-data', [SuratJalanController::class, 'dataTableSupplier'])->name('surat-jalan-supplier.data');
     Route::post('/surat-jalan-edit', [SuratJalanController::class, 'update'])->name('surat-jalan.data.edit');
+    Route::post('/surat-jalan-external-edit', [SuratJalanController::class, 'updateInvoiceExternal'])->name('surat-jalan-external.data.edit');
     Route::post('/surat-jalan-delete', [SuratJalanController::class, 'destroy'])->name('surat-jalan.data.delete');
     Route::resource('surat-jalan', SuratJalanController::class);
     Route::resource('invoice-transaksi', InvoiceController::class);
-    Route::resource('jurnal', JurnalController::class);
+//    Route::resource('jurnal', JurnalController::class);
+    Route::get('/jurnal', [JurnalController::class, 'index'])->name('jurnal.index');
+    Route::get('/jurnal-edit', [JurnalController::class, 'edit'])->name('jurnal.edit');
+    Route::get('/jurnal-merger', [JurnalController::class, 'merger'])->name('jurnal.jurnal-merger');
+    Route::post('/jurnal-merger', [JurnalController::class, 'merger_store'])->name('jurnal.jurnal-merger');
+    Route::post('/jurnal-update', [JurnalController::class, 'update'])->name('jurnal.edit.update');
+    Route::post('/jurnal-delete', [JurnalController::class, 'destroy'])->name('jurnal.item.delete');
+    Route::post('/jurnal-tgl-update', [JurnalController::class, 'tglUpdate'])->name('jurnal.edit.tglupdate');
+    Route::get('/jurnal-edit-list', [JurnalController::class, 'datatableEdit'])->name('jurnal.edit.list');
+    Route::resource('jurnal-manual', JurnalManualController::class);
+    Route::post('/jurnal-manual-template', [JurnalManualController::class, 'terapanTemplateJurnal'])->name('jurnal.template.terapan');
+    Route::post('jurnal-sj-wherejob', [JurnalManualController::class, 'getInvoiceWhereNoInv'])->name('jurnal.sj.whereInv');
+    Route::post('jurnal-sj-whereinvext', [JurnalManualController::class, 'getInvoiceWhereNoInvExt'])->name('jurnal.sj.whereInvExt');
     Route::post('ekspedisi-data', [EkspedisiController::class, 'dataTable'])->name('ekspedisi.data');
     Route::post('transaction-data', [TransactionController::class, 'dataTable'])->name('transaksi.data');
     Route::put('transaction-update', [TransactionController::class, 'update'])->name('transaksi.update');
+    // Route::get('coa', [CoaController::class,'index'])->name('jurnal.coa');
+    // Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
     Route::get('coa', [CoaController::class,'index'])->name('jurnal.coa');
-    Route::post('coa', [CoaController::class,'statusCoa'])->name('jurnal.coa');
+Route::post('coa', [CoaController::class,'store'])->name('jurnal.coa.store');
+Route::put('coa/{coa}', [CoaController::class,'update'])->name('jurnal.coa.update');
+Route::delete('coa/{coa}', [CoaController::class,'destroy'])->name('jurnal.coa.destroy');
+Route::get('coa/data', [CoaController::class, 'dataTable'])->name('jurnal.coa.data');
+
+    Route::post('coa', [CoaController::class,'store'])->name('jurnal.coa.store');
+    Route::put('coa/{coa}', [CoaController::class,'update'])->name('jurnal.coa.update');
+    Route::delete('coa/{coa}', [CoaController::class,'destroy'])->name('jurnal.coa.destroy');
+    Route::get('coa/data', [CoaController::class, 'dataTable'])->name('jurnal.coa.data');
+    
+    Route::post('/jurnal/coa/store', [CoaController::class, 'store'])->name('jurnal.coa.store');
+    Route::post('coa-delete', [CoaController::class,'hapusCoa'])->name('jurnal.coa.delete');
+
+    Route::post('/jurnal/coa/store', [CoaController::class, 'store'])->name('jurnal.coa.store');
     Route::get('template-jurnal', [TemplateJurnalController::class,'index'])->name('jurnal.template-jurnal');
+    Route::get('template-jurnal-list', [TemplateJurnalController::class,'datatable'])->name('jurnal.template-jurnal.data');
     Route::get('template-jurnal-create', [TemplateJurnalController::class,'create'])->name('jurnal.template-jurnal.create');
+    Route::post('template-jurnal-edit', [TemplateJurnalController::class,'edit'])->name('jurnal.template-jurnal.edit');
+    // Route::get('template-jurnal-editView', [TemplateJurnalController::class,'edit'])->name('jurnal.template-jurnal.editView');
+    Route::post('template-jurnal-add', [TemplateJurnalController::class,'store'])->name('jurnal.template-jurnal.add');
+    Route::post('template-jurnal-update', [TemplateJurnalController::class,'update'])->name('jurnal.template-jurnal.update');
+    Route::post('template-jurnal-delete', [TemplateJurnalController::class,'destroy'])->name('jurnal.template-jurnal.delete');
     Route::post('/omzet-data', [KeuanganController::class, 'dataTableOmzet'])->name('keuangan.omzet.data');
+    Route::resource('buku-besar', BukuBesarController::class);
+    Route::get('/export/buku-besar', [BukuBesarController::class, 'export'])->name('buku-besar.export');
+    Route::get('buku-besar/{month}/{year}', [BukuBesarController::class, 'datatableDefault'])->name('buku-besar.dataf');
+    Route::get('bb-data/{month}/{year}/{coa}', [BukuBesarController::class, 'datatable'])->name('buku-besar.data');
+    Route::resource('neraca', Neraca::class);
+    Route::resource('laba-rugi', LabaRugi::class);
+    Route::resource('buku-besar-pembantu', BukuBesarPembantuController::class);
+    Route::get('buku-besar-pembantu/{id}/detail', [BukuBesarPembantuController::class, 'showDetail'])->name('buku-besar-pembantu.showDetail');
+    Route::get('/export-ncs', [BukuBesarPembantuController::class, 'exportNcs'])->name('export.ncs');
+    Route::get('/export-customers', [BukuBesarPembantuController::class, 'exportCustomer'])->name('export.customers');
+    Route::get('/export-supplier', [BukuBesarPembantuController::class, 'exportSupplier'])->name('export.supplier');
+
+    Route::resource('invoice-external', InvoiceExternalController::class);
 });
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {
@@ -75,6 +130,7 @@ Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('au
     Route::post('draf-invoice/{surat_jalan}', 'submitInvoice')->name('keuangan.invoice.submit');
     Route::get('draf-invoice/{surat_jalan}', 'invoiceDraf')->name('keuangan.invoice.draf');
     Route::get('cetak-invoice', 'cetakInvoice')->name('keuangan.invoice.cetak');
+    Route::get('cetak-invoicesp', 'cetakInvoicesp')->name('keuangan.invoicesp.cetak');
     Route::get('omzet', 'omzet')->name('keuangan.omzet');
     Route::get('omzet-list', 'dataTableOmzet')->name('keuangan.omzet.datatable');
     Route::post('omzet-export', 'OmzetExportExcel')->name('keuangan.omzet.exportexcel');
@@ -153,6 +209,7 @@ Route::get('/invoice', function () {
 });
 
 Route::get('/invoice_pdf/{id}', [KeuanganController::class, 'generatePDF'])->name('invoice.print');
+Route::get('/sp_pdf/{id}', [KeuanganController::class, 'generatePDF'])->name('sp.print');
 
 
 require __DIR__ . '/auth.php';

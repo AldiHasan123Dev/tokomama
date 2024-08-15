@@ -7,6 +7,7 @@ use App\Http\Resources\OmzetResurce;
 use App\Http\Resources\TransactionResource;
 use App\Models\Barang;
 use App\Models\Invoice;
+use App\Models\Jurnal;
 use App\Models\NSFP;
 use App\Models\Satuan;
 use App\Models\SuratJalan;
@@ -90,10 +91,27 @@ class KeuanganController extends Controller
         $satuan = Satuan::where('id', $barang->id_satuan)->first();
         // dd($satuan->nama_satuan);
         // dd($data, $invoice, $barang, $formattedDate, $transaksi, $satuan->nama_satuan, $transaksi->satuan_jual, $transaksi->keterangan);
-        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
+        $pdf = Pdf::loadView('keuangan/invoice_pdf', compact('data', 'invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
         return $pdf->stream('invoice_pdf.pdf');
     }
-
+    public function cetakInvoicesp()
+    {
+        $invoice = request('invoice');
+        $data = Invoice::where('invoice', request('invoice'))->get();
+        $dateTime = new DateTime($data[0]->tgl_invoice);
+        $formattedDate = $dateTime->format('d F Y');
+        $id_transaksi = $data[0]->transaksi->id;
+        $transaksi = Transaction::where('id', $id_transaksi)->first(); //keteran
+        // dd($transaksi);
+        $id_barang = $transaksi->id_barang;
+        $barang = Barang::where('id', $id_barang)->first();
+        // dd($barang->id_satuan);
+        $satuan = Satuan::where('id', $barang->id_satuan)->first();
+        // dd($satuan->nama_satuan);
+        // dd($data, $invoice, $barang, $formattedDate, $transaksi, $satuan->nama_satuan, $transaksi->satuan_jual, $transaksi->keterangan);
+        $pdf = Pdf::loadView('keuangan/sp_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
+        return $pdf->stream('sp_pdf.pdf');
+    }
     function generatePDF($id)
     {
         $surat_jalan = SuratJalan::where('id', $id)->get();
@@ -122,53 +140,40 @@ class KeuanganController extends Controller
                 $transaksi = Transaction::where('id', $id_transaksi)->get();
                 $id_barang = $transaksi[0]->id_barang;
                 $barang = Barang::where('id', $id_barang)->first();
-                if($barang->status_ppn == 'ya'){
+                if ($barang->status_ppn == 'ya') {
                     return number_format($row->sum('subtotal') * ($barang->value_ppn / 100));
-                }else{
+                } else {
                     return 0;
                 }
-                
             })
             ->addColumn('total', function ($row) {
                 $id_transaksi = $row->first()->transaksi->id;
                 $transaksi = Transaction::where('id', $id_transaksi)->get();
                 $id_barang = $transaksi[0]->id_barang;
                 $barang = Barang::where('id', $id_barang)->first();
-                if($barang->status_ppn == 'ya'){
+                if ($barang->status_ppn == 'ya') {
                     return number_format($row->sum('subtotal') * ($barang->value_ppn / 100) + $row->sum('subtotal'));
-                }else{
+                } else {
                     return number_format($row->sum('subtotal'));
-                } 
+                }
             })
             ->make();
-
-        // $query = SuratJalan::query();
-        // if (request('invoice')) {
-        //     $query->whereNotNull('invoice');
-        // }
-        // $data = $query->orderBy('nomor_surat', 'desc');
-        // return DataTables::of($data)
-        //     ->addIndexColumn()
-        //     ->addColumn('aksi', function ($row) {
-        //         return '<div class="flex gap-3 mt-2">
-        //                         <a target="_blank" href="' . route('surat-jalan.cetak', $row) . '" class="text-green-500 font-semibold mb-3 self-end"><i class="fa-solid fa-print mt-2"></i></a>
-        //                         <button onclick="getData(' . $row->id . ', \'' . addslashes($row->invoice) . '\', \'' . addslashes($row->nomor_surat) . '\', \'' . addslashes($row->kepada) . '\', \'' . addslashes($row->jumlah) . '\', \'' . addslashes($row->satuan) . '\', \'' . addslashes($row->jenis_barang) . '\', \'' . addslashes($row->nama_kapal) . '\', \'' . addslashes($row->no_cont) . '\', \'' . addslashes($row->no_seal) . '\', \'' . addslashes($row->no_pol) . '\', \'' . addslashes($row->no_job) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>
-        //                         <button onclick="deleteData(' . $row->id . ')"  id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>
-        //                     </div>';
-        //     })
-        //     ->rawColumns(['aksi'])
-        //     ->make();
     }
 
-    public function omzet() {
+    public function omzet()
+    {
+        $Jurnal = Jurnal::with(['invoice'])->get();
+        // dd($Jurnal);
         return view('keuangan.omzet');
     }
 
-    public function dataTableOmzet() {
+    public function dataTableOmzet()
+    {
 
         $query = Invoice::get();
         $data = OmzetResurce::collection($query);
         $res = $data->toArray(request());
+        // dd($res);
         return DataTables::of($res)
             ->addIndexColumn()
             ->toJson();
@@ -176,7 +181,7 @@ class KeuanganController extends Controller
 
     public function OmzetExportExcel(Request $request)
     {
-        if($request->start == null || $request->end == null){
+        if ($request->start == null || $request->end == null) {
             return back()->with('error', 'Silahkan atur nilai rentang data.');
         }
         return Excel::download(new OmzetExport($request->start, $request->end), 'laporan-omzet.xlsx');

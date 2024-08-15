@@ -48,6 +48,7 @@
                   <th>Invoice External</th>
                   <th>Nopol</th>
                   <th>Tipe</th>
+                  <th>Keterangan Buku Besar Pembantu</th>
                   
                 </tr>
               </thead>

@@ -24,7 +24,18 @@
         </tr>
     </thead>
     <tbody>
+        @php
+            $total = 0;
+        @endphp
         @foreach ($invoices as $item)
+            @php
+                $invoice_of = App\Models\Invoice::where('invoice', $item->invoice)->get();
+                // dd($invoice_of[0]->transaksi->harga_jual);
+
+                foreach ($invoice_of as $of) {
+                    $total += $of->transaksi->harga_jual * $of->transaksi->jumlah_jual;
+                }
+            @endphp
             <tr>
                 <td>FK</td>
                 <td>
@@ -34,18 +45,23 @@
                         080
                     @endif
                 </td>
-                <td></td>
-                <td>{{ $item->nsfp->nomor }}</td>
-                <td>{{ date('m', strtotime($item->tgl_invoice)) }}</td>
+                <td>0</td>
+                <td>{{ substr($item->nsfp->nomor, 6) }}</td>
+                <td>{{ date('n', strtotime($item->tgl_invoice)) }}</td>
                 <td>{{ date('Y', strtotime($item->tgl_invoice)) }}</td>
                 <td>{{ date('d/m/Y', strtotime($item->tgl_invoice)) }}</td>
                 <td>{{ $item->transaksi->suratJalan->customer->npwp }}</td>
-                <td>{{ $item->transaksi->suratJalan->customer->nama_npwp }}</td>
-                <td>{{ $item->transaksi->suratJalan->customer->alamat_npwp }}</td>
-                <td>{{ $invoices->sum('subtotal') }}</td>
+                <td>"{{ $item->transaksi->suratJalan->customer->nama_npwp }}"</td>
+                <td>"{{ $item->transaksi->suratJalan->customer->alamat_npwp }}"</td>
+                <td>{{ $total }}</td>
+                @php
+                    $total = 0;
+                @endphp
                 <td>
                     @if ($item->transaksi->barang->status_ppn == 'ya')
                         {{ $invoices->sum('subtotal') * ($item->transaksi->barang->value_ppn / 100) }}
+                    @else
+                        0
                     @endif
                 </td>
                 <td></td>
@@ -54,23 +70,19 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>{{ $item->invoice }}</td>
+                <td>"{{ $item->invoice }}"</td>
                 <td></td>
             </tr>
 
-            @php
-                $invoice_of = App\Models\Invoice::where('invoice', $item->invoice)->get();
-                // dd($invoice_of[0]->transaksi->harga_jual);
-            @endphp
             @foreach ($invoice_of as $of)
                 <tr>
                     <td>OF</td>
-                    <td>{{ $of->transaksi->barang->kode_objek }}</td>
-                    <td>{{ $of->transaksi->barang->nama }}</td>
+                    <td>""</td>
+                    <td>"{{ $of->transaksi->barang->nama }}"</td>
                     <td>{{ $of->transaksi->harga_jual }}</td>
                     <td>{{ $of->transaksi->jumlah_jual }}</td>
                     <td>{{ $of->transaksi->harga_jual * $of->transaksi->jumlah_jual }}</td>
-                    <td></td>
+                    <td>0</td>
                     <td>{{ $of->transaksi->harga_jual * $of->transaksi->jumlah_jual }}</td>
                     <td>
                         @if ($of->transaksi->status_ppn == 'ya')
@@ -84,6 +96,9 @@
                 </tr>
             @endforeach
         @endforeach
-
     </tbody>
 </table>
+
+<script>
+
+</script>

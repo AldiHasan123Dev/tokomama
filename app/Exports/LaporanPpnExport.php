@@ -2,16 +2,16 @@
 
 namespace App\Exports;
 
-use App\Http\Resources\SuratJalanResource;
 use App\Models\Invoice;
-use App\Models\SuratJalan;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 
-class LaporanPpnExport implements FromView
+class LaporanPpnExport implements FromView, WithCustomCsvSettings
 {
     private $start;
     private $end;
+
     public function __construct($start, $end)
     {
         $this->start = $start;
@@ -22,8 +22,16 @@ class LaporanPpnExport implements FromView
     {
         $invoices = Invoice::whereBetween("tgl_invoice", [$this->start, $this->end])->groupBy('invoice')->get();
         // $invoices_of = Invoice::whereBetween("tgl_invoice", [$this->start, $this->end])->groupBy('invoice')->groupBy('id_transaksi')->get();
-        // dd($invoices);
+        // dd($invoices[0]->transaksi->jumlah_jual);
         return view('export.laporan-ppn', compact('invoices'));
         // return SuratJalan::all();
+    }
+
+    public function getCsvSettings(): array {
+        return [
+            'delimiter' => ',',
+            'enclosure' => '',
+            'escape' => '\\',
+        ];
     }
 }

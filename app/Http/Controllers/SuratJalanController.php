@@ -222,7 +222,7 @@ class SuratJalanController extends Controller
         $ekspedisi = Ekspedisi::find($surat_jalan->id_ekspedisi);
         $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'))->setPaper('a4', 'potrait');
         return $pdf->stream('surat_jalan.pdf');
-        return view('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
+        // return view('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
     }
 
     public function tarif()
@@ -294,5 +294,19 @@ class SuratJalanController extends Controller
             })
             ->rawColumns(['aksi'])
             ->make();
+    }
+
+    public function editBarang() {
+        $transactions = Transaction::orderBy('id_surat_jalan', 'desc')->get();
+        return view('surat_jalan.editBarang', compact('transactions'));
+    }
+
+    public function editBarangPost(Request $request) {
+        Transaction::where('id', $request->id)->update([
+            'jumlah_jual' => $request->jumlah_jual,
+            'jumlah_beli' => $request->jumlah_jual,
+            'sisa' => $request->jumlah_jual,
+        ]);
+        return redirect()->back()->with('success','Data jumlah jual & jumlah beli berhasil diubah.');
     }
 }

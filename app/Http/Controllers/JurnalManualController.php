@@ -175,16 +175,23 @@ class JurnalManualController extends Controller
                         DB::transaction(
                             function () use ($request, $i, $tipe, $keteranganList, $maxNomor, $newNoJurnal) {
                                 if ($request->akun_debet[$i] != 0) {
+                                    if($request->invoice != 0) {
+                                        $invc = explode('_', $request->invoice[$i])[0];
+                                        $result = Invoice::where('invoice', $invc)->get();
+                                    } else if($request->invoice_external != 0) {
+                                        $invx = explode('_', $request->invoice_external[$i])[0];
+                                        $result = Invoice::where('invoice', $invx)->get();
+                                    }
                                     Jurnal::create([
                                         'coa_id' => $request->akun_debet[$i],
                                         'nomor' => $newNoJurnal,
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
                                         'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $newNoJurnal,
- // Tambahkan kolom baru
                                         'debit' => $request->nominal[$i],
-                                        'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
+                                        'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : 0,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
+                                        'id_transaksi' => $result[$i]['id_transaksi'] ?? null,
                                         'nopol' => $request->nopol[$i] ?? null,
                                         'tipe' => $tipe,
                                         'no' => $maxNomor + 1,
@@ -193,17 +200,23 @@ class JurnalManualController extends Controller
                                 }
     
                                 if ($request->akun_kredit[$i] != 0) {
+                                    if($request->invoice != 0) {
+                                        $invc = explode('_', $request->invoice[$i])[0];
+                                        $result = Invoice::where('invoice', $invc)->get();
+                                    } else if($request->invoice_external != 0) {
+                                        $invx = explode('_', $request->invoice_external[$i])[0];
+                                        $result = Invoice::where('invoice', $invx)->get();
+                                    }
                                     Jurnal::create([
                                         'coa_id' => $request->akun_kredit[$i],
                                         'nomor' => $newNoJurnal,
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
                                         'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $newNoJurnal,
-
- // Tambahkan kolom baru
                                         'kredit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
+                                        'id_transaksi' => $result[$i]['id_transaksi'] ?? null,
                                         'nopol' => $request->nopol[$i] ?? null,
                                         'tipe' => $tipe,
                                         'no' => $maxNomor + 1,
@@ -217,17 +230,23 @@ class JurnalManualController extends Controller
                         DB::transaction(
                             function () use ($request, $i, $nomor, $tipe, $no, $keteranganList) {
                                 if ($request->akun_debet[$i] != 0) {
+                                    if($request->invoice != 0) {
+                                        $invc = explode('_', $request->invoice[$i])[0];
+                                        $result = Invoice::where('invoice', $invc)->get();
+                                    } else if($request->invoice_external != 0) {
+                                        $invx = explode('_', $request->invoice_external[$i])[0];
+                                        $result = Invoice::where('invoice', $invx)->get();
+                                    }
                                     Jurnal::create([
                                         'coa_id' => $request->akun_debet[$i],
                                         'nomor' => $nomor,
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
                                         'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $nomor,
-
- // Tambahkan kolom baru
                                         'debit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
+                                        'id_transaksi' => $result[$i]['id_transaksi'] ?? null,
                                         'nopol' => $request->nopol[$i] ?? null,
                                         'tipe' => $tipe,
                                         'no' => $no,
@@ -236,17 +255,23 @@ class JurnalManualController extends Controller
                                 }
     
                                 if ($request->akun_kredit[$i] != 0) {
+                                    if($request->invoice != 0) {
+                                        $invc = explode('_', $request->invoice[$i])[0];
+                                        $result = Invoice::where('invoice', $invc)->get();
+                                    } else if($request->invoice_external != 0) {
+                                        $invx = explode('_', $request->invoice_external[$i])[0];
+                                        $result = Invoice::where('invoice', $invx)->get();
+                                    }
                                     Jurnal::create([
                                         'coa_id' => $request->akun_kredit[$i],
                                         'nomor' => $nomor,
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
                                         'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $nomor,
-
- // Tambahkan kolom baru
                                         'kredit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
+                                        'id_transaksi' => $result[$i]['id_transaksi'] ?? null,
                                         'nopol' => $request->nopol[$i] ?? null,
                                         'tipe' => $tipe,
                                         'no' => $no,
@@ -261,17 +286,23 @@ class JurnalManualController extends Controller
                     DB::transaction(
                         function () use ($request, $i, $nomor, $tipe, $no, $keteranganList) {
                             if ($request->akun_debet[$i] != 0) {
+                                if($request->invoice != 0) {
+                                    $invc = explode('_', $request->invoice[$i])[0];
+                                    $result = Invoice::where('invoice', $invc)->get();
+                                } else if($request->invoice_external != 0) {
+                                    $invx = explode('_', $request->invoice_external[$i])[0];
+                                    $result = Invoice::where('invoice', $invx)->get();
+                                }
                                 Jurnal::create([
                                     'coa_id' => $request->akun_debet[$i],
                                     'nomor' => $nomor,
                                     'tgl' => $request->tanggal_jurnal,
                                     'keterangan' => $keteranganList[$i],
                                     'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $nomor,
-
- // Tambahkan kolom baru
                                     'debit' => $request->nominal[$i],
                                     'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                     'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
+                                    'id_transaksi' => $result[$i]['id_transaksi'] ?? null,
                                     'nopol' => $request->nopol[$i] ?? null,
                                     'tipe' => $tipe,
                                     'no' => $no,
@@ -280,17 +311,23 @@ class JurnalManualController extends Controller
                             }
 
                             if ($request->akun_kredit[$i] != 0) {
+                                if($request->invoice != 0) {
+                                    $invc = explode('_', $request->invoice[$i])[0];
+                                    $result = Invoice::where('invoice', $invc)->get();
+                                } else if($request->invoice_external != 0) {
+                                    $invx = explode('_', $request->invoice_external[$i])[0];
+                                    $result = Invoice::where('invoice', $invx)->get();
+                                }
                                 Jurnal::create([
                                     'coa_id' => $request->akun_kredit[$i],
                                     'nomor' => $nomor,
                                     'tgl' => $request->tanggal_jurnal,
                                     'keterangan' => $keteranganList[$i],
                                     'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $nomor,
-
- // Tambahkan kolom baru
                                     'kredit' => $request->nominal[$i],
                                     'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                     'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
+                                    'id_transaksi' => $result[$i]['id_transaksi'] ?? null,
                                     'nopol' => $request->nopol[$i] ?? null,
                                     'tipe' => $tipe,
                                     'no' => $no,

@@ -148,6 +148,7 @@
                     <th>Keterangan</th>
                     <th>Invoice External</th>
                     <th>Nopol</th>
+                    <th>keterangan buku besar pembantu</th>
                     <th class="hidden">no</th>
                 </tr>
                 </thead>
@@ -165,6 +166,7 @@
                         <td>{{ $d->keterangan }}</td>
                         <td>{{ $d->invoice_external }}</td>
                         <td>{{ $d->nopol }}</td>
+                        <td>{{ $d->keterangan_buku_besar_pembantu }}</td>
                         <td class="hidden">{{ $d->no }}</td>
                     </tr>
                     @endforeach
@@ -230,7 +232,7 @@
                 const row =  table.row( this ).data();
                 console.log(row);
                 $('#tipe').val(row[1]);
-                $('#no').val(row[11]);
+                $('#no').val(row[12]);
                 $('#tgl').val(row[0]);
                 $('.btn').removeClass('hidden');
                 $('#print').attr('href', "{{ route('invoice.print', ['id' => ':id']) }}".replace(':id', row.id));

@@ -48,13 +48,14 @@
                   <th>Invoice External</th>
                   <th>Nopol</th>
                   <th>Tipe</th>
+                  <th>Keterangan Buku Besar Pembantu</th>
                   
                 </tr>
               </thead>
               <tbody>
                 @foreach ($data as $item)
                   <tr>
-                    <td><button class="text-yellow-400" onclick="editJurnal( '{{$item->id}}', '{{$item->nomor}}', '{{$item->tgl}}', '{{$item->debit}}', '{{$item->kredit}}', '{{$item->keterangan}}', '{{$item->invoice}}', '{{$item->invoice_external}}', '{{$item->nopol}}', '{{$item->tipe}}', '{{$item->coa_id}}', '{{$item->nama_akun}}', '{{$item->no_akun}}')"><i class="fa-solid fa-pencil"></i></button> |
+                    <td><button class="text-yellow-400" onclick="editJurnal( '{{$item->id}}', '{{$item->nomor}}', '{{$item->tgl}}', '{{$item->debit}}', '{{$item->kredit}}', '{{$item->keterangan}}', '{{$item->invoice}}', '{{$item->invoice_external}}', '{{$item->nopol}}', '{{$item->tipe}}', '{{$item->coa_id}}', '{{$item->nama_akun}}', '{{$item->no_akun}}', '{{$item->keterangan_buku_besar_pembantu}}')"><i class="fa-solid fa-pencil"></i></button> |
                     <button id="delete-faktur-all" onclick="deleteItemJurnal('{{$item->id}}')" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button></td>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->nomor ?? '-' }}</td>
@@ -67,6 +68,7 @@
                     <td>{{ $item->invoice_external ?? '-' }}</td>
                     <td>{{ $item->nopol ?? '-' }}</td>
                     <td>{{ $item->tipe ?? '-' }}</td>
+                    <td>{{ $item->keterangan_buku_besar_pembantu ?? '-'}}</td>
                     
                 </tr>
                 @endforeach
@@ -94,7 +96,7 @@
 
             let table = $(`#table-editj`).DataTable({});
 
-            function editJurnal(id, nomor, tgl, debit, kredit, keterangan, invoice, invoice_external, nopol, tipe, coa_id, nama_akun, no_akun) {
+            function editJurnal(id, nomor, tgl, debit, kredit, keterangan, invoice, invoice_external, nopol, tipe, coa_id, nama_akun, no_akun, keterangan_buku_besar_pembantu) {
                 $("#dialog").html(`
                     <dialog id="my_modal_3" class="modal">
                         <div class="modal-box w-11/12 max-w-2xl pl-10 py-9">
@@ -172,6 +174,11 @@
                                         <option class="z-10" value="{{ $in }}">{{$in}}</option>
                                         @endforeach
                                     </select>
+                                </label>
+                                 <label class="form-control w-full mt-3">
+                                    <input name="keterangan_buku_besar_pembantu" type="text" class="input-border rounded-md w-full" class="grow" value="${keterangan_buku_besar_pembantu}" />
+                                    <div class="label">
+                                    </div>
                                 </label>
                                 <button type="submit" class="btn w-full bg-green-500 text-white mt-3">Edit</button>
                             </form>

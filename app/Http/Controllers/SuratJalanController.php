@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Ekspedisi;
 use App\Models\Jurnal;
 use App\Models\Nopol;
+use App\Models\Invoice;
 use App\Models\Satuan;
 use App\Models\Supplier;
 use App\Models\SuratJalan;
@@ -16,6 +17,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Log;
 
 class SuratJalanController extends Controller
 {
@@ -141,6 +143,8 @@ class SuratJalanController extends Controller
         $data->no_seal = $request->no_seal;
         $data->no_pol = $request->no_pol;
         $data->no_job = $request->no_job;
+        
+        $data->tgl_sj = $request->tgl_sj;
         $data->save();
 
         return redirect()->route('surat-jalan.index');
@@ -171,6 +175,7 @@ class SuratJalanController extends Controller
                 'suratJalan.customer'
             ])->get();
 
+            // dd($data);
         DB::transaction(function () use ($data, $request, $no_BBK, $nomor_surat) {
             foreach ($data as $item) {
                 // dd($item);
@@ -181,8 +186,9 @@ class SuratJalanController extends Controller
                     'keterangan' => 'Pembelian ' . $item->barang->nama . ' (' . $item->jumlah_jual . ' ' . $item->satuan_jual . ' Harsat ' . $item->harga_jual . ') untuk ' . $item->suratJalan->customer->nama,
                     'debit' => $item->harga_jual * $item->jumlah_jual,
                     'kredit' => 0,
-                    'invoice' => null,
+                    'invoice' => 0,
                     'invoice_external' => $request->invoice_external,
+                    'id_transaksi' => $item->id,
                     'nopol' => $item->suratJalan->no_pol,
                     'container' => null,
                     'tipe' => 'BBK', 
@@ -195,8 +201,9 @@ class SuratJalanController extends Controller
                     'keterangan' => 'Pembelian ' . $item->barang->nama . ' (' . $item->jumlah_jual . ' ' . $item->satuan_jual . ' Harsat ' . $item->harga_jual . ') untuk ' . $item->suratJalan->customer->nama,
                     'debit' => 0,
                     'kredit' => $item->harga_jual * $item->jumlah_jual,
-                    'invoice' => null,
+                    'invoice' => 0,
                     'invoice_external' => $request->invoice_external,
+                    'id_transaksi' => $item->id,
                     'nopol' => $item->suratJalan->no_pol,
                     'container' => null,
                     'tipe' => 'BBK', 
@@ -209,12 +216,37 @@ class SuratJalanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy()
+    public function destroy(Request $request)
     {
-        Transaction::destroy(request('id'));
-        SuratJalan::destroy(request('id'));
-        return route('surat-jalan.index');
+        $id = $request->input('id');
+        
+        if (!$id) {
+            return response()->json(['message' => 'ID is required'], 400);
+        }
+        try {
+            // Hapus data terkait di tabel invoice
+            $relatedInvoices = Invoice::where('id_transaksi', $id)->get();
+            foreach ($relatedInvoices as $invoice) {
+                $invoice->delete();
+            }
+    
+            $transaction = Transaction::find($id);
+            if ($transaction) {
+                $transaction->delete();
+            }
+            
+            $suratJalan = SuratJalan::find($id);
+            if ($suratJalan) {
+                $suratJalan->delete();
+            }
+    
+            return response()->json(['message' => 'Data deleted successfully']);
+        } catch (\Exception $e) {
+            Log::error('Error deleting data: ' . $e->getMessage());
+            return response()->json(['message' => 'Error deleting data', 'error' => $e->getMessage()], 500);
+        }
     }
+
 
     public function cetak(SuratJalan $surat_jalan)
     {
@@ -256,7 +288,7 @@ class SuratJalanController extends Controller
                 $action = '';
                 $sisa = $row->transactions->sum('sisa');
                 if ($sisa > 0) {
-                    $action = '<button onclick="getData(' . $row->id . ', \'' . addslashes($row->invoice) . '\', \'' . addslashes($row->nomor_surat) . '\', \'' . addslashes($row->kepada) . '\', \'' . addslashes($row->jumlah) . '\', \'' . addslashes($row->satuan) . '\', \'' . addslashes($row->nama_kapal) . '\', \'' . addslashes($row->no_cont) . '\', \'' . addslashes($row->no_seal) . '\', \'' . addslashes($row->no_pol) . '\', \'' . addslashes($row->no_job) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>
+                    $action = '<button onclick="getData(' . $row->id . ', \'' . addslashes($row->invoice) . '\', \'' . addslashes($row->nomor_surat) . '\', \'' . addslashes($row->kepada) . '\', \'' . addslashes($row->jumlah) . '\', \'' . addslashes($row->satuan) . '\', \'' . addslashes($row->nama_kapal) . '\', \'' . addslashes($row->no_cont) . '\', \'' . addslashes($row->no_seal) . '\', \'' . addslashes($row->no_pol) . '\', \'' . addslashes($row->no_job) . '\',  \'' . addslashes($row->tgl_sj) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>
                                 <button onclick="deleteData(' . $row->id . ')"  id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>';
                 }
                 return '<div class="flex gap-3 mt-2">

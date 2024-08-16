@@ -103,7 +103,7 @@ class InvoiceController extends Controller
         
         
         // dd($idtsk);
-        // dd($array_invoice[0]['invoice']);
+        // dd($array_invoice);
         DB::transaction(function () use($data, $array_invoice, $request, $idtsk) {
             foreach ($data as $id_transaksi => $array_data) {
                 // dd($request->tgl_invoice);
@@ -142,9 +142,11 @@ class InvoiceController extends Controller
     {
         // dd($invoice[1]['invoice']);
         $no = (int) str_replace(' ', '', explode('-',explode('/', $tipe)[0])[1]);
+        // dd($no);
         $total_all = array();
         $temp_total = array();
         for($i = 0; $i < count($invoice); $i++) {
+            // dd(count($invoice));
             $result = Invoice::with([
                 'transaksi.barang.satuan',
                 'transaksi.suratJalan.customer'
@@ -155,8 +157,10 @@ class InvoiceController extends Controller
                 $nopol = '';
                 $temp_debit = 0;
                 // dd($result);
+                // dd($invoice[$i]['invoice']);
                 foreach($result as $item) {
                     // dd($item);
+                    // dd($invoice[$i]['invoice']);
                     $temp_debit +=  $item->subtotal; //$result[$i]->subtotal;
                     $nopol = $item->transaksi->suratJalan->no_pol;
                     Jurnal::create([
@@ -166,25 +170,27 @@ class InvoiceController extends Controller
                         'keterangan' => 'Pendapatan ' . $item->transaksi->barang->nama . ' (' . $item->jumlah . ' ' . $item->transaksi->satuan_jual . ' Harsat ' . $item->transaksi->harga_jual . ')',
                         'debit' => 0,
                         'kredit' => $item->subtotal, // $result[$i]->subtotal,
-                        'invoice' => $invoice[$i]['invoice'],
-                        'invoice_external' => null,
+                        'invoice' => $item->invoice,
+                        'invoice_external' => 0,
+                        'id_transaksi' => $item->id_transaksi,
                         'nopol' => $item->transaksi->suratJalan->no_pol,
                         'container' => null,
                         'tipe' => 'JNL',
                         'no' => $no
                     ]);
-
                 }
 
+            // dd($result);
             Jurnal::create([
                 'coa_id' => 8,
                 'nomor' => $tipe,
                 'tgl' => $tgl,
-                'keterangan' => 'Piutang ' . $result[$i]->transaksi->suratJalan->customer->nama,
+                'keterangan' => 'Piutang ' . $result[0]->transaksi->suratJalan->customer->nama,
                 'debit' => $temp_debit,
                 'kredit' => 0,
                 'invoice' => $invoice[$i]['invoice'],
-                'invoice_external' => null,
+                'invoice_external' => 0,
+                'id_transaksi' => null,
                 'nopol' => $nopol,
                 'container' => null,
                 'tipe' => 'JNL',

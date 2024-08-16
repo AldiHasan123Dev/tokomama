@@ -55,5 +55,4 @@ class Transaction extends Model
         return $this->hasOne(Jurnal::class, 'id_transaksi', 'id'); // Pastikan ini sesuai dengan struktur database Anda
     }
     
-
 }

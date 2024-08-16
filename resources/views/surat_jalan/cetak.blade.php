@@ -179,8 +179,9 @@
                             </td>
                             @if ($i == $start)
                                 <td class="border border-black text-center" rowspan="{{ 5 + $end - $start }}">
-                                    {{ $surat_jalan->customer->alamat && $surat_jalan->customer->alamat !== '-' ? $surat_jalan->customer->alamat : '' }} <br>
-                                    {{ $surat_jalan->customer->nama && $surat_jalan->customer->nama !== '-' ? $surat_jalan->customer->nama : '-' }}
+                                    
+                                    {{ $surat_jalan->customer->nama && $surat_jalan->customer->nama !== '-' ? $surat_jalan->customer->nama : '-' }} <br>
+                                    {{ $surat_jalan->customer->kota && $surat_jalan->customer->kota !== '-' ? $surat_jalan->customer->kota : '' }} 
                                 </td>
                             @endif
                         </tr>

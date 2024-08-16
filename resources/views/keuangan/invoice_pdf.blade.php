@@ -210,7 +210,7 @@
                                     {{ $item->transaksi->keterangan }} @endif)
                                 @endif
                             </td>
-                            <td class="text-center border border-black">{{ $item->transaksi->kontainer->kontainer ?? '-' }}</td>
+                            <td class="text-center border border-black">{{ $no_cont ?? '-' }}</td>
                             <td class="text-center border border-black">{{ $item->jumlah }} {{ $item->transaksi->satuan_jual }}</td>
                             <td class="text-center border border-black">{{ number_format($item->harga, 2, ',', '.') }}</td>
                             <td class="text-center border border-black">{{ number_format($item->harga * $item->jumlah, 2, ',', '.') }}</td>

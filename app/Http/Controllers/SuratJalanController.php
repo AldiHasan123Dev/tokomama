@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Ekspedisi;
 use App\Models\Jurnal;
 use App\Models\Nopol;
+use App\Models\Invoice;
 use App\Models\Satuan;
 use App\Models\Supplier;
 use App\Models\SuratJalan;
@@ -16,6 +17,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Log;
 
 class SuratJalanController extends Controller
 {
@@ -211,12 +213,40 @@ class SuratJalanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy()
+    public function destroy(Request $request)
     {
-        Transaction::destroy(request('id'));
-        SuratJalan::destroy(request('id'));
-        return route('surat-jalan.index');
+        $id = $request->input('id');
+        
+        if (!$id) {
+            return response()->json(['message' => 'ID is required'], 400);
+        }
+
+        try {
+            // Hapus data terkait di tabel invoice
+            $relatedInvoices = Invoice::where('id_transaksi', $id)->get();
+            foreach ($relatedInvoices as $invoice) {
+                $invoice->delete();
+            }
+
+            // Hapus data dari tabel Transaction
+            $transaction = Transaction::find($id);
+            if ($transaction) {
+                $transaction->delete();
+            }
+            
+            // Hapus data dari tabel SuratJalan
+            $suratJalan = SuratJalan::find($id);
+            if ($suratJalan) {
+                $suratJalan->delete();
+            }
+
+            return response()->json(['message' => 'Data deleted successfully']);
+        } catch (\Exception $e) {
+            Log::error('Error deleting data: ' . $e->getMessage());
+            return response()->json(['message' => 'Error deleting data', 'error' => $e->getMessage()], 500);
+        }
     }
+
 
     public function cetak(SuratJalan $surat_jalan)
     {

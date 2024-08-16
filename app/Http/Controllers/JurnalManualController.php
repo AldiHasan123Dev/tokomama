@@ -189,7 +189,7 @@ class JurnalManualController extends Controller
                                         'keterangan' => $keteranganList[$i],
                                         'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $newNoJurnal,
                                         'debit' => $request->nominal[$i],
-                                        'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
+                                        'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : 0,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
                                         'id_transaksi' => $result[$i]['id_transaksi'] ?? null,
                                         'nopol' => $request->nopol[$i] ?? null,

@@ -43,7 +43,7 @@
                         <th rowspan="2">JENIS BARANG</th>
                         <th rowspan="2">QUANTITY</th>
                         <th rowspan="2">SATUAN</th>
-                        <th colspan="5" class="text-center border" style="border-left: 1px solid black; border-right: 1px solid black;">PENJUALAN (EXCL. PPN)</th>
+                        <th colspan="7" class="text-center border" style="border-left: 1px solid black; border-right: 1px solid black;">PENJUALAN (EXCL. PPN)</th>
                         <!-- <th>CUSTOMER</th>
                         <th>TUJUAN (Kota Cust)</th>
                         <th>HARGA JUAL</th>
@@ -79,7 +79,9 @@
                         <th>CUSTOMER</th>
                         <th>TUJUAN (Kota Cust)</th>
                         <th>HARSAT JUAL</th>
-                        <th style="border-right: 1px solid black;">TOTAL</th>
+                        <th>TOTAL</th>
+                        <th>TGL. PEMBAYARAN</th>
+                        <th style="border-right: 1px solid black;">NO.VOCHER</th>
                         <th>SUPPLIER</th>
                         <th>HARSAT BELI</th>
                         <th>TOTAL</th>
@@ -164,6 +166,8 @@
                     { data: 'kota_cust', name: 'Kota Customer' },
                     { data: 'harga_jual', name: 'Harsat Jual', render: $.fn.dataTable.render.number('.') },
                     { data: 'total_tagihan', name: 'Total Tagihan', render: $.fn.dataTable.render.number('.') },
+                    { data: 'tgl_penjualan', name: 'Tgl Penjualan'},
+                    { data: 'no_vocherpenj', name: 'No Vocher Penjualan'},
                     { data: 'supplier', name: 'Supplier' },
                     { data: 'harga_beli', name: 'Harsat Beli', render: $.fn.dataTable.render.number('.') },
                     { data: 'total', name: 'hb x qty', render: $.fn.dataTable.render.number('.') },

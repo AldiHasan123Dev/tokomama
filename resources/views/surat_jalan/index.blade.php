@@ -104,28 +104,30 @@
             }
 
             function deleteData(id) {
-                if (confirm('Are you sure you want to delete this data?'))
-            {
-              $.ajax
-              ({
-                method: 'post',
-                url: "{{ route('surat-jalan.data.delete') }}",
-                data: {id: id},
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                success: function(response)
-                {
-                    alert("Data Surat Jalan berhasil dihapus!");
-                    table.ajax.reload();
-                },
-                error: function(xhr, status, error)
-                {
-                  console.log('Error:', error);
-                  console.log('Status:', status);
-                  console.dir(xhr);
+                if (confirm('Are you sure you want to delete this data?')) {
+                    $.ajax({
+                        method: 'DELETE',
+                        url: "{{ route('surat-jalan.data.delete') }}",
+                        data: { id: id },
+                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                        success: function(response) {
+                            alert("Data Surat Jalan berhasil dihapus!");
+                            table.ajax.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('Error:', error);
+                            console.log('Status:', status);
+                            console.dir(xhr);
+                            console.log('Response:', xhr.responseJSON);
+                        }
+                    });
                 }
-              })
             }
-            }
+
+
+
+
+
 
         </script>
     </x-slot:script>

@@ -143,6 +143,8 @@ class SuratJalanController extends Controller
         $data->no_seal = $request->no_seal;
         $data->no_pol = $request->no_pol;
         $data->no_job = $request->no_job;
+        
+        $data->tgl_sj = $request->tgl_sj;
         $data->save();
 
         return redirect()->route('surat-jalan.index');
@@ -221,26 +223,23 @@ class SuratJalanController extends Controller
         if (!$id) {
             return response()->json(['message' => 'ID is required'], 400);
         }
-
         try {
             // Hapus data terkait di tabel invoice
             $relatedInvoices = Invoice::where('id_transaksi', $id)->get();
             foreach ($relatedInvoices as $invoice) {
                 $invoice->delete();
             }
-
-            // Hapus data dari tabel Transaction
+    
             $transaction = Transaction::find($id);
             if ($transaction) {
                 $transaction->delete();
             }
             
-            // Hapus data dari tabel SuratJalan
             $suratJalan = SuratJalan::find($id);
             if ($suratJalan) {
                 $suratJalan->delete();
             }
-
+    
             return response()->json(['message' => 'Data deleted successfully']);
         } catch (\Exception $e) {
             Log::error('Error deleting data: ' . $e->getMessage());
@@ -289,7 +288,7 @@ class SuratJalanController extends Controller
                 $action = '';
                 $sisa = $row->transactions->sum('sisa');
                 if ($sisa > 0) {
-                    $action = '<button onclick="getData(' . $row->id . ', \'' . addslashes($row->invoice) . '\', \'' . addslashes($row->nomor_surat) . '\', \'' . addslashes($row->kepada) . '\', \'' . addslashes($row->jumlah) . '\', \'' . addslashes($row->satuan) . '\', \'' . addslashes($row->nama_kapal) . '\', \'' . addslashes($row->no_cont) . '\', \'' . addslashes($row->no_seal) . '\', \'' . addslashes($row->no_pol) . '\', \'' . addslashes($row->no_job) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>
+                    $action = '<button onclick="getData(' . $row->id . ', \'' . addslashes($row->invoice) . '\', \'' . addslashes($row->nomor_surat) . '\', \'' . addslashes($row->kepada) . '\', \'' . addslashes($row->jumlah) . '\', \'' . addslashes($row->satuan) . '\', \'' . addslashes($row->nama_kapal) . '\', \'' . addslashes($row->no_cont) . '\', \'' . addslashes($row->no_seal) . '\', \'' . addslashes($row->no_pol) . '\', \'' . addslashes($row->no_job) . '\',  \'' . addslashes($row->tgl_sj) . '\')"   id="edit" class="text-yellow-400 font-semibold mb-3 self-end"><i class="fa-solid fa-pencil"></i></button>
                                 <button onclick="deleteData(' . $row->id . ')"  id="delete-faktur-all" class="text-red-600 font-semibold mb-3 self-end"><i class="fa-solid fa-trash"></i></button>';
                 }
                 return '<div class="flex gap-3 mt-2">

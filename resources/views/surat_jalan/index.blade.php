@@ -54,7 +54,8 @@
                 ]
             });
 
-            function getData(id, invoice, nomor_surat, kepada, jumlah, satuan, nama_kapal, no_cont, no_seal, no_pol, no_job) {
+            function getData(id, invoice, nomor_surat, kepada, jumlah, satuan, nama_kapal, no_cont, no_seal, no_pol, no_job, tgl_sj) {
+                
                 $('#dialog').html(`<dialog id="my_modal_5" class="modal">
                 <div class="modal-box w-11/12 max-w-2xl pl-10">
                 <form method="dialog">
@@ -96,6 +97,10 @@
                         Nomor Seal:
                         <input type="text" name="no_job" value="${no_job}" class="border-none" />
                     </label>
+                    <label class="input border flex items-center gap-2 mt-3">
+                        Tanggal Surat Jalan
+                        <input type="date" name="tgl_sj" value="${tgl_sj}" class="border-none" />
+                    </label>
                     <button type="submit" class="btn bg-green-400 text-white font-semibold w-72 mt-2">Edit</button>
                     </form>
                 </div>
@@ -106,9 +111,11 @@
             function deleteData(id) {
                 if (confirm('Are you sure you want to delete this data?')) {
                     $.ajax({
-                        method: 'DELETE',
+                        method: 'POST',
                         url: "{{ route('surat-jalan.data.delete') }}",
-                        data: { id: id },
+                        data: { 
+                            id: id
+                        },
                         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                         success: function(response) {
                             alert("Data Surat Jalan berhasil dihapus!");
@@ -123,6 +130,9 @@
                     });
                 }
             }
+
+    
+
 
 
 

@@ -140,7 +140,7 @@ class InvoiceController extends Controller
 
     private function autoJurnal($idtsk, $invoice, $tipe, $tgl)
     {
-        // dd($invoice[1]['invoice']);
+        // dd($idtsk);
         $no = (int) str_replace(' ', '', explode('-',explode('/', $tipe)[0])[1]);
         $total_all = array();
         $temp_total = array();
@@ -155,8 +155,11 @@ class InvoiceController extends Controller
                 $nopol = '';
                 $temp_debit = 0;
                 // dd($result);
+                // dd($idtsk[$i]);
+                $inc = 0;
                 foreach($result as $item) {
                     // dd($item);
+                    // dd($idtsk[$i]);
                     $temp_debit +=  $item->subtotal; //$result[$i]->subtotal;
                     $nopol = $item->transaksi->suratJalan->no_pol;
                     Jurnal::create([
@@ -168,12 +171,13 @@ class InvoiceController extends Controller
                         'kredit' => $item->subtotal, // $result[$i]->subtotal,
                         'invoice' => $invoice[$i]['invoice'],
                         'invoice_external' => null,
+                        'id_transaksi' => $item->id_transaksi,
                         'nopol' => $item->transaksi->suratJalan->no_pol,
                         'container' => null,
                         'tipe' => 'JNL',
                         'no' => $no
                     ]);
-
+                    $inc++;
                 }
 
             Jurnal::create([
@@ -185,6 +189,7 @@ class InvoiceController extends Controller
                 'kredit' => 0,
                 'invoice' => $invoice[$i]['invoice'],
                 'invoice_external' => null,
+                'id_transaksi' => null,
                 'nopol' => $nopol,
                 'container' => null,
                 'tipe' => 'JNL',

@@ -20,6 +20,7 @@ class Jurnal extends Model
         'kredit',
         'invoice',
         'invoice_external',
+        'id_transaksi',
         'nopol',
         'container',
         'tipe',
@@ -42,5 +43,9 @@ class Jurnal extends Model
         return $this->hasMany(Invoice::class, 'invoice');
     }
 
+    public function transaksi()
+    {
+        return $this->belongsTo(Transaction::class, 'id_transaksi');
+    }
     
 }

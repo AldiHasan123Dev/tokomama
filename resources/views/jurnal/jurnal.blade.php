@@ -232,7 +232,7 @@
                 const row =  table.row( this ).data();
                 console.log(row);
                 $('#tipe').val(row[1]);
-                $('#no').val(row[11]);
+                $('#no').val(row[12]);
                 $('#tgl').val(row[0]);
                 $('.btn').removeClass('hidden');
                 $('#print').attr('href', "{{ route('invoice.print', ['id' => ':id']) }}".replace(':id', row.id));

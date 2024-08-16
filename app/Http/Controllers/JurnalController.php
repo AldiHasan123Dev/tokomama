@@ -82,6 +82,7 @@ class JurnalController extends Controller
     public function edit()
     {
         // dd($_GET['tipe']);
+        // dd($data[0]->nomor);
         $data = Jurnal::where('tipe', $_GET['tipe'])->where('no', $_GET['no'])->join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
         $coa = Coa::where('status', 'aktif')->get();
         $tgl = $_GET['tgl'];
@@ -202,6 +203,7 @@ class JurnalController extends Controller
                 $data->debit = $request->debit;
                 $data->kredit = $request->kredit;
                 $data->keterangan = $keteranganNow;
+                $data->keterangan_buku_besar_pembantu = $request->keterangan_buku_besar_pembantu;
                 $data->invoice = $inv;
                 $data->invoice_external = $request->invoice_external;
                 $data->nopol = $request->nopol;
@@ -271,6 +273,7 @@ class JurnalController extends Controller
                 $data->debit = $request->debit;
                 $data->kredit = $request->kredit;
                 $data->keterangan = $keteranganNow;
+                $data->keterangan_buku_besar_pembantu = $request->keterangan_buku_besar_pembantu;
                 $data->invoice_external = $request->invoice_external;
                 $data->nopol = $request->nopol;
                 $data->tipe = $tipe;
@@ -338,6 +341,7 @@ class JurnalController extends Controller
                 $data->debit = $request->debit;
                 $data->kredit = $request->kredit;
                 $data->keterangan = $keteranganNow;
+                $data->keterangan_buku_besar_pembantu = $request->keterangan_buku_besar_pembantu;
                 $data->invoice_external = $invext;
                 $data->nopol = $request->nopol;
                 $data->tipe = $tipe;
@@ -402,6 +406,7 @@ class JurnalController extends Controller
                 $data->debit = $request->debit;
                 $data->kredit = $request->kredit;
                 $data->keterangan = $keteranganNow;
+                $data->keterangan_buku_besar_pembantu = $request->keterangan_buku_besar_pembantu;
                 $data->invoice_external = $request->invoice_external;
                 $data->nopol = $request->nopol;
                 $data->tipe = $tipe;

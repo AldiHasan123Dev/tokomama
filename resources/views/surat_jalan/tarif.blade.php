@@ -147,13 +147,13 @@
                 ]
             });
 
-            function inputTarif(id_transaksi, jual, beli, margin, qty, nama_barang){
+            function inputTarif(id_transaksi, jual, beli, margin, qty, nama_barang, satuan_jual){
                 id = id_transaksi;
                 jumlah = qty;
                 $('#harga_jual').val(jual);
                 $('#harga_beli').val(beli);
                 $('#profit').val(margin);
-                document.getElementById('barang').innerHTML = nama_barang;
+                document.getElementById('barang').innerHTML = nama_barang + ' (' + satuan_jual + ')';
                 my_modal_5.showModal();
             }
 

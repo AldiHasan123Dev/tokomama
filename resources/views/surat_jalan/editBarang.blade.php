@@ -29,6 +29,12 @@
                             <td>
                                 @if ($trans->sisa > 0)
                                     <button onclick="getData({{ $trans->id }}, {{ $trans->jumlah_jual }})" class="text-yellow-300"><i class="fa-solid fa-pencil"></i></button>
+                                    <form action="{{ route('surat-jalan.hapusBarang') }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <input type="hidden" name="id" value="{{ $trans->id }}">
+                                        <button type="submit"><i class="fa-solid fa-trash text-red-500"></i></button>
+                                    </form>
                                 @endif
                             </td>
                             <td>{{ $trans->suratJalan->nomor_surat }}</td>
@@ -74,6 +80,29 @@
                 </div>
                 </dialog>`);
                 my_modal_5.showModal();
+            }
+
+            function deleteData(id) {
+                if (confirm('Are you sure you want to delete this data?')) {
+                    $.ajax({
+                        method: 'POST',
+                        url: "{{ route('surat-jalan.hapusBarang') }}",
+                        data: { 
+                            id: id
+                        },
+                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                        success: function(response) {
+                            alert("Data Surat Jalan berhasil dihapus!");
+                            table.ajax.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('Error:', error);
+                            console.log('Status:', status);
+                            console.dir(xhr);
+                            console.log('Response:', xhr.responseJSON);
+                        }
+                    });
+                }
             }
         </script>
     </x-slot:script>

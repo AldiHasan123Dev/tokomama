@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/surat-jalan-tarif-barang', [SuratJalanController::class, 'tarif'])->name('surat-jalan.barang');
     Route::get('/surat-jalan/editBarang', [SuratJalanController::class, 'editBarang'])->name('surat-jalan.editBarang');
     Route::post('/surat-jalan/editBarang', [SuratJalanController::class, 'editBarangPost'])->name('surat-jalan.editBarang');
+    Route::delete('/surat-jalan/hapusBarang/', [SuratJalanController::class, 'hapusBarang'])->name('surat-jalan.hapusBarang');
     Route::post('/surat-jalan-data', [SuratJalanController::class, 'dataTable'])->name('surat-jalan.data');
     Route::post('/surat-jalan-supplier-data', [SuratJalanController::class, 'dataTableSupplier'])->name('surat-jalan-supplier.data');
     Route::post('/surat-jalan-edit', [SuratJalanController::class, 'update'])->name('surat-jalan.data.edit');

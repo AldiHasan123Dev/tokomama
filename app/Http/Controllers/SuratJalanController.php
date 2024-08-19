@@ -341,4 +341,9 @@ class SuratJalanController extends Controller
         ]);
         return redirect()->back()->with('success','Data jumlah jual & jumlah beli berhasil diubah.');
     }
+
+    public function hapusBarang(Request $request) {
+        Transaction::where('id', $request->id)->delete();
+        return redirect()->back()->with('success','Data barang berhasil dihapus.');
+    }
 }

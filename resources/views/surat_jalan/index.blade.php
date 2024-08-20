@@ -4,6 +4,7 @@
 
     <x-keuangan.card-keuangan>
         <x-slot:tittle>List Surat Jalan</x-slot:tittle>
+        <a href="{{ route('surat-jalan.editBarang') }}" class="my-3 px-3 py-3 bg-blue-500 text-white w-fit rounded-lg">Edit by Barang</a>
         <div class="overflow-x-auto">
             <table class="table" id="table-getfaktur">
                 <!-- head -->

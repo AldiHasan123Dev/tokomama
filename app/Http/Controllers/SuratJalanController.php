@@ -175,6 +175,7 @@ class SuratJalanController extends Controller
                 'suratJalan.customer'
             ])->get();
 
+            // dd($data);
         DB::transaction(function () use ($data, $request, $no_BBK, $nomor_surat) {
             foreach ($data as $item) {
                 // dd($item);
@@ -185,8 +186,9 @@ class SuratJalanController extends Controller
                     'keterangan' => 'Pembelian ' . $item->barang->nama . ' (' . $item->jumlah_jual . ' ' . $item->satuan_jual . ' Harsat ' . $item->harga_jual . ') untuk ' . $item->suratJalan->customer->nama,
                     'debit' => $item->harga_jual * $item->jumlah_jual,
                     'kredit' => 0,
-                    'invoice' => null,
+                    'invoice' => 0,
                     'invoice_external' => $request->invoice_external,
+                    'id_transaksi' => $item->id,
                     'nopol' => $item->suratJalan->no_pol,
                     'container' => null,
                     'tipe' => 'BBK', 
@@ -199,8 +201,9 @@ class SuratJalanController extends Controller
                     'keterangan' => 'Pembelian ' . $item->barang->nama . ' (' . $item->jumlah_jual . ' ' . $item->satuan_jual . ' Harsat ' . $item->harga_jual . ') untuk ' . $item->suratJalan->customer->nama,
                     'debit' => 0,
                     'kredit' => $item->harga_jual * $item->jumlah_jual,
-                    'invoice' => null,
+                    'invoice' => 0,
                     'invoice_external' => $request->invoice_external,
+                    'id_transaksi' => $item->id,
                     'nopol' => $item->suratJalan->no_pol,
                     'container' => null,
                     'tipe' => 'BBK', 
@@ -251,7 +254,7 @@ class SuratJalanController extends Controller
         $ekspedisi = Ekspedisi::find($surat_jalan->id_ekspedisi);
         $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'))->setPaper('a4', 'potrait');
         return $pdf->stream('surat_jalan.pdf');
-        return view('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
+        // return view('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
     }
 
     public function tarif()
@@ -323,5 +326,24 @@ class SuratJalanController extends Controller
             })
             ->rawColumns(['aksi'])
             ->make();
+    }
+
+    public function editBarang() {
+        $transactions = Transaction::orderBy('id_surat_jalan', 'desc')->get();
+        return view('surat_jalan.editBarang', compact('transactions'));
+    }
+
+    public function editBarangPost(Request $request) {
+        Transaction::where('id', $request->id)->update([
+            'jumlah_jual' => $request->jumlah_jual,
+            'jumlah_beli' => $request->jumlah_jual,
+            'sisa' => $request->jumlah_jual,
+        ]);
+        return redirect()->back()->with('success','Data jumlah jual & jumlah beli berhasil diubah.');
+    }
+
+    public function hapusBarang(Request $request) {
+        Transaction::where('id', $request->id)->delete();
+        return redirect()->back()->with('success','Data barang berhasil dihapus.');
     }
 }

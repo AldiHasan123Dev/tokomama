@@ -47,7 +47,7 @@ class Transaction extends Model
     }
     public function jurnals()
     {
-        return $this->hasMany(Jurnal::class, 'invoice_external', 'invoice');
+        return $this->hasMany(Jurnal::class, 'id_transaksi', 'id');
     }
     // Di model Transaksi
     public function Jurnal()

@@ -26,7 +26,7 @@ class Neraca extends Controller
         $endDate = now()->create($tahun . '-' . $bulan . '-01')->endOfMonth()->toDateString();
     
         $coa1 = Coa::where('no_akun', 'not like', '1.2%')->where('no_akun', 'like', '1%')->orderBy('no_akun')->get();
-        $coa2 = Coa::where('no_akun', ' ')->orderBy('no_akun')->get();
+        $coa2 = Coa::where('no_akun', 'like', '1.2%')->orderBy('no_akun')->get();
         $coa3 = Coa::where('no_akun', 'like', '2%')->orderBy('no_akun')->get();
         $coa4 = Coa::where('no_akun', 'like', '3%')->orderBy('no_akun')->get();
     

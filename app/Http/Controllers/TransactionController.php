@@ -84,7 +84,7 @@ class TransactionController extends Controller
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
                 if (Invoice::where('id_transaksi', $row->id)->get() == "[]") {
-                    return '<button type="button" class="modal-toggle btn-sm btn text-semibold text-white bg-green-500 col-span-4" onclick="inputTarif(' . $row->id . ',' . $row->harga_jual . ',' . $row->harga_beli . ',' . $row->margin . ',' . $row->jumlah_jual . ', \'' . addslashes($row->barang->nama) . '\')">Edit Harga</button>';
+                    return '<button type="button" class="modal-toggle btn-sm btn text-semibold text-white bg-green-500 col-span-4" onclick="inputTarif(' . $row->id . ',' . $row->harga_jual . ',' . $row->harga_beli . ',' . $row->margin . ',' . $row->jumlah_jual . ', \'' . addslashes($row->barang->nama) . '\', \'' . addslashes($row->satuan_jual) . '\')">Edit Harga</button>';
                 } else {
                     return "-";
                 }

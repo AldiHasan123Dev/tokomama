@@ -77,7 +77,7 @@
                 <table class="table-auto w-full text-xs mt-5">
                     <thead>
                         <tr>
-                            <th colspan="3" class="px-4 py-2 text-left">AKTIVA TETAP</th>
+                            <th colspan="3" class="px-4 py-2 text-left">AKTIVA TAK LANCAR</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,7 +92,7 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <td colspan="2" class="border px-4 py-2 font-bold">TOTAL AKTIVA TETAP</td>
+                            <td colspan="2" class="border px-4 py-2 font-bold">TOTAL AKTIVA TAK LANCAR</td>
                             <td class="border px-4 py-2 font-bold text-right">{{ number_format($totalB, 2, ',', '.') }}</td>
                         </tr>
                     </tbody>
@@ -137,24 +137,15 @@
                             @endphp
                             <tr>
                                 <td class="border px-4 py-2">{{ $item->no_akun }}</td>
-                                <td class="border px-4 py-2">{{ $item->nama_akun }}</td>
-                                @php
-                                    if ($item->no_akun == '3.3') {
-                                        $totalD += $lr;
-                                    } 
-                                @endphp
-                                @if ($item->no_akun == '3.3')
-                                    <td class="border px-4 py-2 text-right">{{ number_format($lr, 2, ',', '.') }}</td>
-                                @else
-                                    <td class="border px-4 py-2 text-right">{{ number_format($total['selisih'], 2, ',', '.') }}</td>
-                                @endif
+                                <td class="border px-4 py-2">{{ $item->nama_akun }}</td>                               
+                                <td class="border px-4 py-2 text-right">{{ number_format($total['selisih'], 2, ',', '.') }}</td>
                             </tr>
                         @endforeach
                         <tr>
                             <td colspan="2" class="border px-4 py-2 font-bold">TOTAL MODAL</td>
                             <td class="border px-4 py-2 font-bold text-right">{{ number_format($totalD, 2, ',', '.') }}</td>
                         </tr>
-                    </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>

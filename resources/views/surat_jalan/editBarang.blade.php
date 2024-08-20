@@ -1,6 +1,41 @@
 <x-Layout.layout>
 
     <div id="dialog"></div>
+    <dialog id="my_modal_3" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModal()">✕</button>
+            </form>
+            <h1 class="text-lg mb-3">Form Tambah Barang Surat Jalan</h1>
+            <form action="{{ route('surat-jalan.tambahBarang') }}" method="post">
+                @csrf
+                <input type="hidden" id="modal_data" name="id_surat_jalan" value="" readonly>
+                <label for="id_barang" class="label">Barang</label>
+                <select class="js-example-basic-single w-full" name="id_barang" id="id_barang">
+                    @foreach ($barangs as $bar)
+                        <option value="{{ $bar->id }}">{{ $bar->nama }}</option>
+                    @endforeach
+                </select>
+                <label for="id_supplier" class="label">Supplier</label>
+                <select class="js-example-basic-single w-full" name="id_supplier" id="id_supplier">
+                    @foreach ($suppliers as $sup)
+                        <option value="{{ $sup->id }}">{{ $sup->nama }}</option>
+                    @endforeach
+                </select>
+                <label for="jumlah_jual" class="label">Jumlah Jual & Jumlah Beli</label>
+                <input type="number" name="jumlah_jual" id="jumlah_jual" class="input input-sm w-full">
+                <label for="satuan_jual" class="label">Satuan Jual & Satuan Beli</label>
+                <select class="js-example-basic-single w-full" name="satuan_jual" id="satuan_jual">
+                    @foreach ($satuans as $satu)
+                        <option value="{{ $satu->nama_satuan }}">{{ $satu->nama_satuan }}</option>
+                    @endforeach
+                </select>
+                <label for="keterangan" class="label">Keterangan</label>
+                <input type="text" name="keterangan" id="keterangan" class="input input-sm w-full">
+                <button type="submit" class="btn btn-sm bg-green-400 text-white font-semibold w-full">Tambah Barang</button>
+            </form>
+        </div>
+    </dialog>
 
     <x-keuangan.card-keuangan>
         <x-slot:tittle>Edit By Barang</x-slot:tittle>
@@ -28,6 +63,7 @@
                         <tr>
                             <td>
                                 @if ($trans->sisa > 0)
+                                    <button onclick="openModal({{ $trans->suratJalan->id }})"><i class="fa-solid fa-plus text-green-500 mr-5"></i></button>
                                     <button onclick="getData({{ $trans->id }}, {{ $trans->jumlah_jual }})" class="text-yellow-300"><i class="fa-solid fa-pencil"></i></button>
                                     <form action="{{ route('surat-jalan.hapusBarang') }}" method="post">
                                         @csrf
@@ -80,6 +116,30 @@
                 </div>
                 </dialog>`);
                 my_modal_5.showModal();
+            }
+
+            function openModal(data) {
+                // Set the data to the hidden input field
+                document.getElementById('modal_data').value = data;
+                // Show the modal
+                document.getElementById('my_modal_3').showModal();
+
+                $('#id_barang').select2({
+                    dropdownParent: $(`#my_modal_3`),
+                });
+
+                $('#id_supplier').select2({
+                    dropdownParent: $(`#my_modal_3`),
+                });
+
+                $('#satuan_jual').select2({
+                    dropdownParent: $(`#my_modal_3`),
+                });
+            }
+
+            function closeModal() {
+                // Close the modal
+                document.getElementById('my_modal_3').close();
             }
 
             function deleteData(id) {

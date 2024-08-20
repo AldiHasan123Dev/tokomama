@@ -330,7 +330,11 @@ class SuratJalanController extends Controller
 
     public function editBarang() {
         $transactions = Transaction::orderBy('id_surat_jalan', 'desc')->get();
-        return view('surat_jalan.editBarang', compact('transactions'));
+        $satuans = Satuan::all();
+        $barangs = Barang::where('status', 'AKTIF')->get();
+        $suppliers = Supplier::all();
+        // dd($transactions[0]->suppliers);
+        return view('surat_jalan.editBarang', compact('transactions', 'satuans', 'barangs', 'suppliers'));
     }
 
     public function editBarangPost(Request $request) {
@@ -345,5 +349,25 @@ class SuratJalanController extends Controller
     public function hapusBarang(Request $request) {
         Transaction::where('id', $request->id)->delete();
         return redirect()->back()->with('success','Data barang berhasil dihapus.');
+    }
+
+    public function tambahBarang(Request $request) {
+        // dd($request->id_surat_jalan);
+        Transaction::create([
+            'id_surat_jalan' => $request->id_surat_jalan,
+            'id_barang' => $request->id_barang,
+            'id_supplier' => $request->id_supplier,
+            'jumlah_jual' => $request->jumlah_jual,
+            'jumlah_beli' => $request->jumlah_jual,
+            'sisa' => $request->jumlah_jual,
+            'satuan_jual' => $request->satuan_jual,
+            'satuan_beli' => $request->satuan_jual,
+            'harga_jual' => 0,
+            'harga_beli' => 0,
+            'margin' => 0,
+            'keterangan' => $request->keterangan,
+        ]);
+
+        return redirect()->back()->with('success','Data barang berhasil ditambahkan.');
     }
 }

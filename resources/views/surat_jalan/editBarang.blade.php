@@ -13,7 +13,7 @@
                 <label for="id_barang" class="label">Barang</label>
                 <select class="js-example-basic-single w-full" name="id_barang" id="id_barang">
                     @foreach ($barangs as $bar)
-                        <option value="{{ $bar->id }}">{{ $bar->nama }}</option>
+                        <option value="{{ $bar->id }}">{{ $bar->nama }} || {{ $bar->satuan->nama_satuan }} || {{ $bar->value }}</option>
                     @endforeach
                 </select>
                 <label for="id_supplier" class="label">Supplier</label>

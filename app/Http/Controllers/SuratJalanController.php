@@ -331,9 +331,9 @@ class SuratJalanController extends Controller
     public function editBarang() {
         $transactions = Transaction::orderBy('id_surat_jalan', 'desc')->get();
         $satuans = Satuan::all();
-        $barangs = Barang::where('status', 'AKTIF')->get();
+        $barangs = Barang::where('status', 'AKTIF')->with(['satuan'])->get();
         $suppliers = Supplier::all();
-        // dd($transactions[0]->suppliers);
+        // dd($barangs);
         return view('surat_jalan.editBarang', compact('transactions', 'satuans', 'barangs', 'suppliers'));
     }
 

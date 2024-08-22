@@ -2,6 +2,12 @@
     
     <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.5.2/css/dataTables.dateTime.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.0/css/buttons.dataTables.css">
+    <style>
+        .red-row {
+            background-color: yellow !important;
+            color: black;
+        }
+    </style>
     <x-keuangan.card-keuangan>
         <x-slot:tittle>Laporan Omzet</x-slot:tittle>
         <form action="{{route('keuangan.omzet.exportexcel')}}" method="post" class="self-end">
@@ -184,6 +190,19 @@
                     { data: 'id_invoice', name: 'id', visible:false},
                 ]
             });
+
+            table.on('draw', function() {
+                table.rows().every(function() {
+                    let data = this.data();
+                    let margin = data.margin;
+
+                    if(margin == 0) {
+                        $(this.node()).addClass('red-row');
+                    } else {
+                        $(this.node()).removeClass('red-row');
+                    }
+                })
+            })
 
             document.querySelectorAll('#min, #max').forEach((el) => {
               el.addEventListener('change', () => table.draw());

@@ -121,8 +121,11 @@
 
     <div class="content">
         @php
-            $items_per_page = 13;
+            $items_per_page = 17;
             $total_items = $surat_jalan->transactions->count();
+            if($total_items % 17 == 0) {
+                $total_items += 1;
+            }
             $pages = ceil($total_items / $items_per_page);
         @endphp
 
@@ -145,46 +148,62 @@
                 <tbody>
                     @for ($i = $start; $i < $end; $i++)
                         @php
-                            $item = $surat_jalan->transactions[$i];
+                            $item = $surat_jalan->transactions[$i] ?? null;
                         @endphp
-                        <tr>
-                            <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
-                                <span>{{ $i + 1 }}</span><br>
-                            </td>
-                            <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
-                                <span>{{ number_format($item->jumlah_beli) }}</span>
-                            </td>
-                            <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
-                                <span>{{ $item->satuan_beli }}</span><br>
-                            </td>
-                            <td class="px-2" style="padding: 0px 5px">
-                                <div class="flex justify-between mt-3">
-                                    <span>{{ $item->barang->nama_singkat }}</span>
-                                    <span>({{ number_format($item->jumlah_jual) }} {{ $item->satuan_jual }})</span>
-                                </div>
-                                @if (str_contains($item->satuan_jual, $item->barang->satuan->nama_satuan))
-                                    @php
-                                        $t = (int)$item->jumlah_jual;
-                                    @endphp
-                                @else
-                                    @php
-                                        $t = (double)$item->barang->value * (int)$item->jumlah_jual;
-                                    @endphp
+                        @if (is_null($item))
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                @if ($i == $start)
+                                    <td class="border border-black text-center" rowspan="{{ 5 + $end - $start }}">
+                                        
+                                        {{ $surat_jalan->customer->nama && $surat_jalan->customer->nama !== '-' ? $surat_jalan->customer->nama : '-' }} <br>
+                                        {{ $surat_jalan->customer->kota && $surat_jalan->customer->kota !== '-' ? $surat_jalan->customer->kota : '' }} 
+                                    </td>
                                 @endif
-                                @if($item->satuan_jual != $item->barang->satuan->nama_satuan )
-                                    (Total {{ number_format($t) }} {{ $item->barang->satuan->nama_satuan }} {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }})
-                                @else
-                                    {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }}
-                                @endif
-                            </td>
-                            @if ($i == $start)
-                                <td class="border border-black text-center" rowspan="{{ 5 + $end - $start }}">
-                                    
-                                    {{ $surat_jalan->customer->nama && $surat_jalan->customer->nama !== '-' ? $surat_jalan->customer->nama : '-' }} <br>
-                                    {{ $surat_jalan->customer->kota && $surat_jalan->customer->kota !== '-' ? $surat_jalan->customer->kota : '' }} 
+                            </tr>
+                        @else     
+                            <tr>
+                                <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
+                                    <span>{{ $i + 1 }}</span><br>
                                 </td>
-                            @endif
-                        </tr>
+                                <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
+                                    <span>{{ number_format($item->jumlah_beli) }}</span>
+                                </td>
+                                <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
+                                    <span>{{ $item->satuan_beli }}</span><br>
+                                </td>
+                                <td class="px-2" style="padding: 0px 5px">
+                                    <div class="flex justify-between mt-3">
+                                        <span>{{ $item->barang->nama_singkat }}</span>
+                                        <span>({{ number_format($item->jumlah_jual) }} {{ $item->satuan_jual }})</span>
+                                    </div>
+                                    @if (str_contains($item->satuan_jual, $item->barang->satuan->nama_satuan))
+                                        @php
+                                            $t = (int)$item->jumlah_jual;
+                                        @endphp
+                                    @else
+                                        @php
+                                            $t = (double)$item->barang->value * (int)$item->jumlah_jual;
+                                        @endphp
+                                    @endif
+                                    @if($item->satuan_jual != $item->barang->satuan->nama_satuan )
+                                        (Total {{ number_format($t) }} {{ $item->barang->satuan->nama_satuan }} {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }})
+                                    @else
+                                        {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }}
+                                    @endif
+                                </td>
+                                @if ($i == $start)
+                                    <td class="border border-black text-center" rowspan="{{ 5 + $end - $start }}">
+                                        
+                                        {{ $surat_jalan->customer->nama && $surat_jalan->customer->nama !== '-' ? $surat_jalan->customer->nama : '-' }} <br>
+                                        {{ $surat_jalan->customer->kota && $surat_jalan->customer->kota !== '-' ? $surat_jalan->customer->kota : '' }} 
+                                    </td>
+                                @endif
+                            </tr>
+                        @endif
                     @endfor
 
                     @if ($page == $pages)
@@ -220,37 +239,36 @@
             <p class="page-number" style="  align-items:bottom ; right: 10px; bottom: -20px; margin: 0; font-size: 0.8rem;">Halaman: {{ $page }} dari {{ $pages }}</p>
             </div>
             <div class="footer-content">
-                    @if ($page == $pages)
-                        <p>Note &nbsp; : &nbsp; Barang yang diterima dalam keadaan baik dan lengkap</p>
-                        <table>
-                            <tr>
-                                <th style="width: 50%;"></th>
-                                <th style="width: 50%; text-align: right; font-weight: normal !important; padding-right:20px">
-                                    {{ $surat_jalan->kota_pengirim }}, {{ date('d M Y', strtotime($surat_jalan->tgl_sj)) }}
-                                </th>
-                            </tr>
-                            <tr>
-                                <td style="height: 10px"></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th><b>PENERIMA</b></th>
-                                <th><b>PENGIRIM</b></th>
-                            </tr>
-                            <tr>
-                                <td style="height: 15px;"></td>
-                            <tr>
-                                <th style="height: 30px"> </th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <th>({{ $surat_jalan->nama_penerima }})</th>
-                                <th>({{ $surat_jalan->nama_pengirim }})</th>
-                            </tr>
-                        </table>
-                    @endif
-                    
-                </div>
+                @if ($page == $pages)
+                    <p>Note &nbsp; : &nbsp; Barang yang diterima dalam keadaan baik dan lengkap</p>
+                    <table>
+                        <tr>
+                            <th style="width: 50%;"></th>
+                            <th style="width: 50%; text-align: right; font-weight: normal !important; padding-right:20px">
+                                {{ $surat_jalan->kota_pengirim }}, {{ date('d M Y', strtotime($surat_jalan->tgl_sj)) }}
+                            </th>
+                        </tr>
+                        <tr>
+                            <td style="height: 10px"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th><b>PENERIMA</b></th>
+                            <th><b>PENGIRIM</b></th>
+                        </tr>
+                        <tr>
+                            <td style="height: 15px;"></td>
+                        <tr>
+                            <th style="height: 30px"> </th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th>({{ $surat_jalan->nama_penerima }})</th>
+                            <th>({{ $surat_jalan->nama_pengirim }})</th>
+                        </tr>
+                    </table>
+                @endif    
+            </div>
 
             @if ($page < $pages)
                 <div class="page-break"></div>

@@ -60,7 +60,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 76px; /* Same as bottom margin of @page */
+            height: 66px; /* Same as bottom margin of @page */
            
             text-align: center;
             width: 100%;
@@ -68,6 +68,7 @@
 
         .footer-content {
             position:fixed;
+            bottom: -30px;
             padding-top:14px;
             margin-left:15px;
             width:100%;
@@ -121,7 +122,7 @@
 
     <div class="content">
         @php
-            $items_per_page = 13;
+            $items_per_page = 17;
             $total_items = $surat_jalan->transactions->count();
             $pages = ceil($total_items / $items_per_page);
         @endphp
@@ -216,8 +217,7 @@
             </table>
             
             <div class="footer" >
-                
-            <p class="page-number" style="  align-items:bottom ; right: 10px; bottom: -20px; margin: 0; font-size: 0.8rem;">Halaman: {{ $page }} dari {{ $pages }}</p>
+                <p class="page-number" style="  align-items:bottom ; right: 10px; bottom: -40px; margin: 0; font-size: 0.8rem;">Halaman: {{ $page }} dari {{ $pages }}</p>
             </div>
             <div class="footer-content">
                     @if ($page == $pages)
@@ -250,7 +250,7 @@
                         </table>
                     @endif
                     
-                </div>
+            </div>
 
             @if ($page < $pages)
                 <div class="page-break"></div>

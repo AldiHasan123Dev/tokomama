@@ -10,6 +10,7 @@ use App\Models\Invoice;
 use App\Models\Jurnal;
 use App\Models\NSFP;
 use App\Models\Satuan;
+
 use App\Models\SuratJalan;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -79,19 +80,26 @@ class KeuanganController extends Controller
     public function cetakInvoice()
 {
     $invoice = request('invoice');
-    $data = Invoice::where('invoice', $invoice)->get();
+    $data = Invoice::where('invoice', $invoice)
+   
+    ->get();
     $dateTime = new DateTime($data[0]->tgl_invoice);
     $formattedDate = $dateTime->format('d F Y');
     
     $id_transaksi = $data[0]->transaksi->id;
-    $transaksi = Transaction::where('id', $id_transaksi)->first(); //keteran
+    $transaksi = Transaction::where('id', $id_transaksi)
+    
+    ->first(); //keteran
     
     // Mencari id_surat_jalan dari transaksi
     $id_surat_jalan = $transaksi->id_surat_jalan;
     
     // Mencari no_count dari tabel surat_jalan berdasarkan id_surat_jalan
-    $suratJalan = SuratJalan::where('id', $id_surat_jalan)->first();
+    $suratJalan = SuratJalan::where('id', $id_surat_jalan)
+    
+    ->first();
     $no_cont = $suratJalan ? $suratJalan->no_cont : null;
+    
     
     $id_barang = $transaksi->id_barang;
     $barang = Barang::where('id', $id_barang)->first();

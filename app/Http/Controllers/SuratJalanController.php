@@ -144,7 +144,7 @@ class SuratJalanController extends Controller
         $data->no_seal = $request->no_seal;
         $data->no_pol = $request->no_pol;
         $data->no_job = $request->no_job;
-        
+
         $data->tgl_sj = $request->tgl_sj;
         $data->save();
 
@@ -170,19 +170,19 @@ class SuratJalanController extends Controller
         $nomor_surat = "Bank Keluar - " . "$no_BBK/BBK-SB/" . date('y');
         // dd($request->invoice_external);
         //untuk debug 'LJA02' | $request->invoice_external
-        $data = Transaction::where('invoice_external', 'LJA02')
+        $data = Transaction::where('invoice_external', $request->invoice_external)
             ->with([
                 'barang',
                 'suratJalan.customer'
             ])->get();
 
-            // dd($data);
+        // dd($data);
         DB::transaction(function () use ($data, $request, $no_BBK, $nomor_surat) {
             foreach ($data as $item) {
                 // dd($item);
                 Jurnal::create([
                     'coa_id' => 63,
-                    'nomor' => $nomor_surat, 
+                    'nomor' => $nomor_surat,
                     'tgl' => date('Y-m-d'),
                     'keterangan' => 'Pembelian ' . $item->barang->nama . ' (' . $item->jumlah_jual . ' ' . $item->satuan_jual . ' Harsat ' . $item->harga_jual . ') untuk ' . $item->suratJalan->customer->nama,
                     'debit' => $item->harga_jual * $item->jumlah_jual,
@@ -192,7 +192,7 @@ class SuratJalanController extends Controller
                     'id_transaksi' => $item->id,
                     'nopol' => $item->suratJalan->no_pol,
                     'container' => null,
-                    'tipe' => 'BBK', 
+                    'tipe' => 'BBK',
                     'no' => $no_BBK
                 ]);
                 Jurnal::create([
@@ -207,7 +207,7 @@ class SuratJalanController extends Controller
                     'id_transaksi' => $item->id,
                     'nopol' => $item->suratJalan->no_pol,
                     'container' => null,
-                    'tipe' => 'BBK', 
+                    'tipe' => 'BBK',
                     'no' => $no_BBK
                 ]);
             }
@@ -220,7 +220,7 @@ class SuratJalanController extends Controller
     public function destroy(Request $request)
     {
         $id = $request->input('id');
-        
+
         if (!$id) {
             return response()->json(['message' => 'ID is required'], 400);
         }
@@ -230,17 +230,17 @@ class SuratJalanController extends Controller
             foreach ($relatedInvoices as $invoice) {
                 $invoice->delete();
             }
-    
+
             $transaction = Transaction::find($id);
             if ($transaction) {
                 $transaction->delete();
             }
-            
+
             $suratJalan = SuratJalan::find($id);
             if ($suratJalan) {
                 $suratJalan->delete();
             }
-    
+
             return response()->json(['message' => 'Data deleted successfully']);
         } catch (\Exception $e) {
             Log::error('Error deleting data: ' . $e->getMessage());
@@ -254,7 +254,7 @@ class SuratJalanController extends Controller
         // PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
         $ekspedisi = Ekspedisi::find($surat_jalan->id_ekspedisi);
         $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'))->setPaper('a4', 'potrait');
-        
+
         return $pdf->stream('surat_jalan.pdf');
         // return view('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
     }
@@ -330,7 +330,8 @@ class SuratJalanController extends Controller
             ->make();
     }
 
-    public function editBarang() {
+    public function editBarang()
+    {
         $transactions = Transaction::orderBy('id_surat_jalan', 'desc')->get();
         $satuans = Satuan::all();
         $barangs = Barang::where('status', 'AKTIF')->get();
@@ -339,21 +340,24 @@ class SuratJalanController extends Controller
         return view('surat_jalan.editBarang', compact('transactions', 'satuans', 'barangs', 'suppliers'));
     }
 
-    public function editBarangPost(Request $request) {
+    public function editBarangPost(Request $request)
+    {
         Transaction::where('id', $request->id)->update([
             'jumlah_jual' => $request->jumlah_jual,
             'jumlah_beli' => $request->jumlah_jual,
             'sisa' => $request->jumlah_jual,
         ]);
-        return redirect()->back()->with('success','Data jumlah jual & jumlah beli berhasil diubah.');
+        return redirect()->back()->with('success', 'Data jumlah jual & jumlah beli berhasil diubah.');
     }
 
-    public function hapusBarang(Request $request) {
+    public function hapusBarang(Request $request)
+    {
         Transaction::where('id', $request->id)->delete();
-        return redirect()->back()->with('success','Data barang berhasil dihapus.');
+        return redirect()->back()->with('success', 'Data barang berhasil dihapus.');
     }
 
-    public function tambahBarang(Request $request) {
+    public function tambahBarang(Request $request)
+    {
         // dd($request->id_surat_jalan);
         Transaction::create([
             'id_surat_jalan' => $request->id_surat_jalan,
@@ -370,6 +374,6 @@ class SuratJalanController extends Controller
             'keterangan' => $request->keterangan,
         ]);
 
-        return redirect()->back()->with('success','Data barang berhasil ditambahkan.');
+        return redirect()->back()->with('success', 'Data barang berhasil ditambahkan.');
     }
 }

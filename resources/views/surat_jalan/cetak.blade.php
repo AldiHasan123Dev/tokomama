@@ -102,7 +102,7 @@
                     <td>{{ $surat_jalan->kepada }}</td>
                 </tr>
                 <tr>
-                    <td>Telp: 031-123456</td>
+                    <td>Telp: 031-7495507</td>
                     <td></td>
                     <td>{{ $ekspedisi->alamat }}</td>
                 </tr>

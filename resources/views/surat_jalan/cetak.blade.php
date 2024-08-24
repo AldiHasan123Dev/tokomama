@@ -124,6 +124,9 @@
         @php
             $items_per_page = 17;
             $total_items = $surat_jalan->transactions->count();
+            if($total_items % 17 == 0) {
+                $total_items += 1;
+            }
             $pages = ceil($total_items / $items_per_page);
         @endphp
 
@@ -146,46 +149,62 @@
                 <tbody>
                     @for ($i = $start; $i < $end; $i++)
                         @php
-                            $item = $surat_jalan->transactions[$i];
+                            $item = $surat_jalan->transactions[$i] ?? null;
                         @endphp
-                        <tr>
-                            <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
-                                <span>{{ $i + 1 }}</span><br>
-                            </td>
-                            <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
-                                <span>{{ number_format($item->jumlah_beli) }}</span>
-                            </td>
-                            <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
-                                <span>{{ $item->satuan_beli }}</span><br>
-                            </td>
-                            <td class="px-2" style="padding: 0px 5px">
-                                <div class="flex justify-between mt-3">
-                                    <span>{{ $item->barang->nama_singkat }}</span>
-                                    <span>({{ number_format($item->jumlah_jual) }} {{ $item->satuan_jual }})</span>
-                                </div>
-                                @if (str_contains($item->satuan_jual, $item->barang->satuan->nama_satuan))
-                                    @php
-                                        $t = (int)$item->jumlah_jual;
-                                    @endphp
-                                @else
-                                    @php
-                                        $t = (double)$item->barang->value * (int)$item->jumlah_jual;
-                                    @endphp
+                        @if (is_null($item))
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                @if ($i == $start)
+                                    <td class="border border-black text-center" rowspan="{{ 5 + $end - $start }}">
+                                        
+                                        {{ $surat_jalan->customer->nama && $surat_jalan->customer->nama !== '-' ? $surat_jalan->customer->nama : '-' }} <br>
+                                        {{ $surat_jalan->customer->kota && $surat_jalan->customer->kota !== '-' ? $surat_jalan->customer->kota : '' }} 
+                                    </td>
                                 @endif
-                                @if($item->satuan_jual != $item->barang->satuan->nama_satuan )
-                                    (Total {{ number_format($t) }} {{ $item->barang->satuan->nama_satuan }} {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }})
-                                @else
-                                    {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }}
-                                @endif
-                            </td>
-                            @if ($i == $start)
-                                <td class="border border-black text-center" rowspan="{{ 5 + $end - $start }}">
-                                    
-                                    {{ $surat_jalan->customer->nama && $surat_jalan->customer->nama !== '-' ? $surat_jalan->customer->nama : '-' }} <br>
-                                    {{ $surat_jalan->customer->kota && $surat_jalan->customer->kota !== '-' ? $surat_jalan->customer->kota : '' }} 
+                            </tr>
+                        @else     
+                            <tr>
+                                <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
+                                    <span>{{ $i + 1 }}</span><br>
                                 </td>
-                            @endif
-                        </tr>
+                                <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
+                                    <span>{{ number_format($item->jumlah_beli) }}</span>
+                                </td>
+                                <td class="text-center" style="vertical-align: top; border-right: 1px solid black">
+                                    <span>{{ $item->satuan_beli }}</span><br>
+                                </td>
+                                <td class="px-2" style="padding: 0px 5px">
+                                    <div class="flex justify-between mt-3">
+                                        <span>{{ $item->barang->nama_singkat }}</span>
+                                        <span>({{ number_format($item->jumlah_jual) }} {{ $item->satuan_jual }})</span>
+                                    </div>
+                                    @if (str_contains($item->satuan_jual, $item->barang->satuan->nama_satuan))
+                                        @php
+                                            $t = (int)$item->jumlah_jual;
+                                        @endphp
+                                    @else
+                                        @php
+                                            $t = (double)$item->barang->value * (int)$item->jumlah_jual;
+                                        @endphp
+                                    @endif
+                                    @if($item->satuan_jual != $item->barang->satuan->nama_satuan )
+                                        (Total {{ number_format($t) }} {{ $item->barang->satuan->nama_satuan }} {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }})
+                                    @else
+                                        {{ ($item->keterangan != '' || !is_null($item->keterangan)) ? '= '.$item->keterangan:'' }}
+                                    @endif
+                                </td>
+                                @if ($i == $start)
+                                    <td class="border border-black text-center" rowspan="{{ 5 + $end - $start }}">
+                                        
+                                        {{ $surat_jalan->customer->nama && $surat_jalan->customer->nama !== '-' ? $surat_jalan->customer->nama : '-' }} <br>
+                                        {{ $surat_jalan->customer->kota && $surat_jalan->customer->kota !== '-' ? $surat_jalan->customer->kota : '' }} 
+                                    </td>
+                                @endif
+                            </tr>
+                        @endif
                     @endfor
 
                     @if ($page == $pages)
@@ -249,7 +268,6 @@
                             </tr>
                         </table>
                     @endif
-                    
             </div>
 
             @if ($page < $pages)

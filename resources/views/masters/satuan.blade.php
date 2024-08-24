@@ -37,6 +37,7 @@
       <x-slot:script>
         <script>
           let table = $('#table-satuan').DataTable({
+            pageLength: 100,
             ajax: {
               url: "{{route('master.satuan.data')}}",
               type: "GET"

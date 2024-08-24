@@ -95,6 +95,7 @@
     <x-slot:script>
         <script>
             let table = $('#table-supplier').DataTable({
+            pageLength: 100,
             ajax: {
               url: "{{route('master.supplier.datatable')}}",
               

@@ -97,6 +97,7 @@
     });
 
     let table = $('#table-ppn').DataTable({
+        pageLength: 100,
         ajax: {
             url: "{{ route('pajak.laporan-ppn.data') }}",
             dataSrc: "data",

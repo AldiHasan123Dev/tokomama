@@ -25,6 +25,7 @@
     <x-slot:script>
         <script>
             let table = $(`#table-supplier`).DataTable({
+                pageLength: 100,
                 ajax: {
                     method:"POST",
                     url: "{{route('surat-jalan-supplier.data')}}",

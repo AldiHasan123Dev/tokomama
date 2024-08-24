@@ -148,6 +148,7 @@
           
 
             let table = $(`#table-omzet`).DataTable({
+                pageLength: 100,
                 ajax: {
                     url: "{{route('keuangan.omzet.datatable')}}",
                     dataSrc: "data"

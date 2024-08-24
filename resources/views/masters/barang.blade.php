@@ -90,6 +90,7 @@
   <x-slot:script>
   <script>
         let table = new DataTable('#table-barang', {
+          pageLength: 100,
           ajax: {
             url: "{{route('master.barang.list')}}",
             data:{

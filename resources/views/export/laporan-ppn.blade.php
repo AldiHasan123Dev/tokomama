@@ -46,30 +46,36 @@
                     @endif
                 </td>
                 <td>0</td>
-                <td>{{ substr($item->nsfp->nomor, 6) }}</td>
+                @php
+                    $new_nsfp_nomor = str_replace(['.', '-'], '', $item->nsfp->nomor);
+                @endphp
+                <td>{{ substr($new_nsfp_nomor, 6) }}</td>
                 <td>{{ date('n', strtotime($item->tgl_invoice)) }}</td>
                 <td>{{ date('Y', strtotime($item->tgl_invoice)) }}</td>
                 <td>{{ date('d/m/Y', strtotime($item->tgl_invoice)) }}</td>
-                <td>{{ $item->transaksi->suratJalan->customer->npwp }}</td>
+                @php
+                    $new_customer_npwp = str_replace(['.', '-'], '', $item->transaksi->suratJalan->customer->npwp);
+                @endphp
+                <td>{{ $new_customer_npwp }}</td>
                 <td>"{{ $item->transaksi->suratJalan->customer->nama_npwp }}"</td>
                 <td>"{{ $item->transaksi->suratJalan->customer->alamat_npwp }}"</td>
                 <td>{{ $total }}</td>
-                @php
-                    $total = 0;
-                @endphp
                 <td>
                     @if ($item->transaksi->barang->status_ppn == 'ya')
-                        {{ $invoices->sum('subtotal') * ($item->transaksi->barang->value_ppn / 100) }}
+                        {{ round($total * ($item->transaksi->barang->value_ppn / 100)) }}
                     @else
                         0
                     @endif
                 </td>
+                @php
+                    $total = 0;
+                @endphp
+                <td>0</td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
                 <td>"{{ $item->invoice }}"</td>
                 <td></td>
             </tr>
@@ -85,11 +91,7 @@
                     <td>0</td>
                     <td>{{ $of->transaksi->harga_jual * $of->transaksi->jumlah_jual }}</td>
                     <td>
-                        @if ($of->transaksi->status_ppn == 'ya')
-                            {{ ($of->transaksi->harga_jual * $of->transaksi->jumlah_jual) * ($item->transaksi->value_ppn / 100) }}
-                        @else
-                            0
-                        @endif
+                        {{ round(($of->transaksi->harga_jual * $of->transaksi->jumlah_jual) * ($item->transaksi->barang->value_ppn / 100)) }}
                     </td>
                     <td></td>
                     <td></td>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\LaporanPpnExport;
+use App\Exports\LaporanPpnExportExcel;
 use App\Http\Resources\SuratJalanResource;
 use App\Models\Invoice;
 use App\Models\NSFP;
@@ -38,7 +39,7 @@ class PajakController extends Controller
     public function PPNExportExcel(Request $request)
     {
         // dd($request->start);
-        return Excel::download(new LaporanPpnExport($request->start, $request->end), 'laporan-ppn.xlsx');
+        return Excel::download(new LaporanPpnExportExcel($request->start, $request->end), 'laporan-ppn.xlsx');
     }
 
     public function PPNExportCsv(Request $request)

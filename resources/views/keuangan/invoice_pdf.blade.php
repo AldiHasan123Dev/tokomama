@@ -9,7 +9,7 @@
     <style>
         @page {
             size: 21.59cm 13.97cm;
-            margin: 145px 0px 70px 0px; /* Adjust bottom margin to make space for footer */
+            margin: 120px 0px 70px 0px; /* Adjust bottom margin to make space for footer */
         }
 
         body {
@@ -33,7 +33,7 @@
 
         table {
             border-collapse: collapse;
-            width: 90%;            
+            width: 95%;            
             margin:0 auto;
         }
 
@@ -58,7 +58,7 @@
 
         .footer {
             position:fixed;
-            padding-top:10px;
+            margin-top:-10px;
             margin-left:15px;
             width:100%;
         }
@@ -285,7 +285,7 @@
     @endif
     
 </div>
-<p class="page-number" style=" position: fixed; align-items:bottom ; right: 10px; bottom: -40px; margin: 0; font-size: 0.8rem;">Halaman: {{ $page }} dari {{ $pages }}</p>
+<p class="page-number" style=" position: fixed; align-items:bottom ; left: 10px; bottom: -50px; margin: 0; font-size: 0.8rem;">Halaman: {{ $page }} dari {{ $pages }}</p>
 
 
             

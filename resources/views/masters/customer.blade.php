@@ -98,6 +98,7 @@
   <x-slot:script>
     <script>
       let table = $('#table-customer').DataTable({
+            pageLength: 100,
             ajax: {
               url: "{{route('master.customer.list')}}",
               

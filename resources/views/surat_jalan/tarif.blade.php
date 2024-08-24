@@ -93,6 +93,7 @@
             let id = null;
             let jumlah = 0;
             let table1 = $(`#table-tarif`).DataTable({
+                pageLength: 100,
                 ajax: {
                     method:"POST",
                     url: "{{route('transaksi.data')}}",
@@ -120,6 +121,7 @@
                 ]
             });
             let table2 = $(`#table-non-tarif`).DataTable({
+                pageLength: 100,
                 ajax: {
                     method:"POST",
                     url: "{{route('transaksi.data')}}",

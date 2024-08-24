@@ -186,6 +186,8 @@
                             table1.ajax.reload();
                             table2.ajax.reload();
                             alert("Update Berhasil!")
+                            my_modal_5.close();
+                            location.reload();
                         }
                     });
                 }

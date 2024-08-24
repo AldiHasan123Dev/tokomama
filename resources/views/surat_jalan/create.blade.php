@@ -31,7 +31,7 @@
             padding: 0px;
         }
     </style>
-    <form action="{{ route('surat-jalan.store') }}" method="post" class="grid grid-cols-3 gap-3" id="reset">
+    <form action="{{ route('surat-jalan.store') }}" target="_blank" method="post" class="grid grid-cols-3 gap-3" id="reset">
         <div class="card w-fit bg-base-100 shadow-xl">
             <div class="card-body">
                 <h2 class="card-title">Form Surat Jalan</h2>

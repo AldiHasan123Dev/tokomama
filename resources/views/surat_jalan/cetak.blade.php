@@ -60,7 +60,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 76px; /* Same as bottom margin of @page */
+            height: 66px; /* Same as bottom margin of @page */
            
             text-align: center;
             width: 100%;
@@ -68,6 +68,7 @@
 
         .footer-content {
             position:fixed;
+            bottom: -30px;
             padding-top:14px;
             margin-left:15px;
             width:100%;
@@ -235,39 +236,38 @@
             </table>
             
             <div class="footer" >
-                
-            <p class="page-number" style="  align-items:bottom ; right: 10px; bottom: -20px; margin: 0; font-size: 0.8rem;">Halaman: {{ $page }} dari {{ $pages }}</p>
+                <p class="page-number" style="  align-items:bottom ; right: 10px; bottom: -40px; margin: 0; font-size: 0.8rem;">Halaman: {{ $page }} dari {{ $pages }}</p>
             </div>
             <div class="footer-content">
-                @if ($page == $pages)
-                    <p>Note &nbsp; : &nbsp; Barang yang diterima dalam keadaan baik dan lengkap</p>
-                    <table>
-                        <tr>
-                            <th style="width: 50%;"></th>
-                            <th style="width: 50%; text-align: right; font-weight: normal !important; padding-right:20px">
-                                {{ $surat_jalan->kota_pengirim }}, {{ date('d M Y', strtotime($surat_jalan->tgl_sj)) }}
-                            </th>
-                        </tr>
-                        <tr>
-                            <td style="height: 10px"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th><b>PENERIMA</b></th>
-                            <th><b>PENGIRIM</b></th>
-                        </tr>
-                        <tr>
-                            <td style="height: 15px;"></td>
-                        <tr>
-                            <th style="height: 30px"> </th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <th>({{ $surat_jalan->nama_penerima }})</th>
-                            <th>({{ $surat_jalan->nama_pengirim }})</th>
-                        </tr>
-                    </table>
-                @endif    
+                    @if ($page == $pages)
+                        <p>Note &nbsp; : &nbsp; Barang yang diterima dalam keadaan baik dan lengkap</p>
+                        <table>
+                            <tr>
+                                <th style="width: 50%;"></th>
+                                <th style="width: 50%; text-align: right; font-weight: normal !important; padding-right:20px">
+                                    {{ $surat_jalan->kota_pengirim }}, {{ date('d M Y', strtotime($surat_jalan->tgl_sj)) }}
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="height: 10px"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th><b>PENERIMA</b></th>
+                                <th><b>PENGIRIM</b></th>
+                            </tr>
+                            <tr>
+                                <td style="height: 15px;"></td>
+                            <tr>
+                                <th style="height: 30px"> </th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th>({{ $surat_jalan->nama_penerima }})</th>
+                                <th>({{ $surat_jalan->nama_pengirim }})</th>
+                            </tr>
+                        </table>
+                    @endif
             </div>
 
             @if ($page < $pages)

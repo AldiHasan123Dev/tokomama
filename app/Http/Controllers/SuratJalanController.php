@@ -107,6 +107,7 @@ class SuratJalanController extends Controller
             }
         }
         return redirect()->route('surat-jalan.cetak', $sj);
+        // return redirect back()->route('surat-jalan.cetak', $sj);
     }
 
     /**
@@ -253,6 +254,7 @@ class SuratJalanController extends Controller
         // PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
         $ekspedisi = Ekspedisi::find($surat_jalan->id_ekspedisi);
         $pdf = Pdf::loadView('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'))->setPaper('a4', 'potrait');
+        
         return $pdf->stream('surat_jalan.pdf');
         // return view('surat_jalan.cetak', compact('surat_jalan', 'ekspedisi'));
     }
@@ -331,9 +333,9 @@ class SuratJalanController extends Controller
     public function editBarang() {
         $transactions = Transaction::orderBy('id_surat_jalan', 'desc')->get();
         $satuans = Satuan::all();
-        $barangs = Barang::where('status', 'AKTIF')->with(['satuan'])->get();
+        $barangs = Barang::where('status', 'AKTIF')->get();
         $suppliers = Supplier::all();
-        // dd($barangs);
+        // dd($transactions[0]->suppliers);
         return view('surat_jalan.editBarang', compact('transactions', 'satuans', 'barangs', 'suppliers'));
     }
 

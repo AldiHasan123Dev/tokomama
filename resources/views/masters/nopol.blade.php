@@ -40,6 +40,7 @@
   <x-slot:script>
     <script>
       let table = $('#table-nopol').DataTable({
+            pageLength: 100,
             ajax: {
               url: "{{route('master.nopol.list')}}",
               

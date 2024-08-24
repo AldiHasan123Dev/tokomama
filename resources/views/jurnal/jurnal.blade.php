@@ -222,6 +222,7 @@
     <script>
         $(document).ready(function () {
             var table = $('#coa_table').DataTable({
+                pageLength: 100,
                 select: true,
                 
             });

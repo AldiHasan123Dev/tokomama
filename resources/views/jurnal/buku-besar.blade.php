@@ -260,7 +260,9 @@
             let year = searchParams.get("year");
             let coa = searchParams.get("coa");
 
-            var table = $('#table-buku-besar').DataTable();
+            var table = $('#table-buku-besar').DataTable({
+                pageLength: 100,
+            });
 
             function submitForm() {
                 var form = document.getElementById('myForm');

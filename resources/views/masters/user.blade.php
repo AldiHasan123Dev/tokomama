@@ -70,6 +70,7 @@
     <x-slot:script>
         <script>
             let table = $('#table-user').DataTable({
+                pageLength: 100,
                 ajax: {
                 url: "{{route('master.user.data')}}",
                 method: 'get',

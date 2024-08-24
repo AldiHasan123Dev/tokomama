@@ -51,6 +51,7 @@
         <script src="https://cdn.datatables.net/select/2.0.3/js/select.dataTables.js"></script> --}}
         <script>
             let table = $(`#table-getfaktur`).DataTable({
+                pageLength: 100,
                 ajax: {
                     url: "{{route('invoice.pre-invoice')}}",
                     dataSrc: "data"

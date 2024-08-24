@@ -37,6 +37,7 @@
     <script>
         $(document).ready(function () {
             var table = $('#surat_jalan_table').DataTable({
+                pageLength: 100,
                 serverSide: true,
                 select:true,
                 ajax: {

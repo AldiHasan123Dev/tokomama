@@ -24,6 +24,7 @@
     <x-slot:script>
         <script>
           let table = $('#table-templateJurnal').DataTable({
+            pageLength: 100,
             columnDefs: [
               {"className": "dt-center"}
             ],

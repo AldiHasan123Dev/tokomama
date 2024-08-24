@@ -84,6 +84,7 @@
   <x-slot:script>
     <script>
       let table = $('#table-ekspedisi').DataTable({
+            pageLength: 100,
             ajax: {
               url: "{{route('ekspedisi.data')}}",
               method: 'POST',

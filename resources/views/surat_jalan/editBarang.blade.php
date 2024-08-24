@@ -94,6 +94,7 @@
     <x-slot:script>
         <script>
             let table = new DataTable('#editBarang', {
+                pageLength: 100,
                 order: [[1, 'desc']]
             });
 

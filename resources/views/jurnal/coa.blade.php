@@ -68,6 +68,7 @@
     <x-slot:script>
         <script>
             let table = $('#table-coa').DataTable({
+                pageLength: 100,
                 ajax: {
                     url: "{{ route('jurnal.coa.data') }}",
                     type: "GET"

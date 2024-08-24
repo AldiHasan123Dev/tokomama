@@ -70,6 +70,7 @@
       <script>
         // table available invoice
           let table = $('#table-available').DataTable({
+              pageLength: 100,
               ajax:{
                   url: "{{ route('nsfp.data') }}",
                   dataSrc: "data",
@@ -126,6 +127,7 @@
 
         // table invoice with nomor faktur
         let tableDone = $(`#table-done`).DataTable({
+          pageLength: 100,
           ajax: {
             url: "{{ route('nsfp.done') }}",
             dataSrc: "data",

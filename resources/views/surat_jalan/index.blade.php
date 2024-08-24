@@ -32,6 +32,7 @@
     <x-slot:script>
         <script>
             let table = $(`#table-getfaktur`).DataTable({
+                pageLength: 100,
                 ajax: {
                     method:"POST",
                     url: "{{route('surat-jalan.data')}}",

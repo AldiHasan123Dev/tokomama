@@ -261,9 +261,19 @@
                 </tbody>
             </table>
 
-            <div class="footer">
+        <div class="footer">
     @if ($page == $pages)
-        <p style="font-weight: bold;padding-left:30px; font-size: 0.8rem">TERBILANG: {{ strtoupper(terbilang($total)) }} RUPIAH</p>
+        <p style="font-weight: bold;padding-left:30px; font-size: 0.8rem"> 
+            Terbilang: 
+            @if($barang->status_ppn == 'ya')
+                {{ ucwords(strtolower(terbilang(round($total * 1.11)))) }} Rupiah
+            @else
+                {{ ucwords(strtolower(terbilang(round($total)))) }} Rupiah
+            @endif
+        </p>
+
+
+
         <table style="font-size: 0.8rem;">
         <tr>
             <th style="text-align: left; padding-left: 50px; font-style: italic;">Pembayaran ke rekening:</th>

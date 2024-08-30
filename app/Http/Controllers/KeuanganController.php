@@ -87,9 +87,7 @@ class KeuanganController extends Controller
     $formattedDate = $dateTime->format('d F Y');
     
     $id_transaksi = $data[0]->transaksi->id;
-    $transaksi = Transaction::where('id', $id_transaksi)
-    
-    ->first(); //keteran
+    $transaksi = Transaction::where('id', $id_transaksi) ->first(); //keteran
     
     // Mencari id_surat_jalan dari transaksi
     $id_surat_jalan = $transaksi->id_surat_jalan;
@@ -121,13 +119,19 @@ class KeuanganController extends Controller
         $id_transaksi = $data[0]->transaksi->id;
         $transaksi = Transaction::where('id', $id_transaksi)->first(); //keteran
         // dd($transaksi);
+        // Mencari id_surat_jalan dari transaksi
+        $id_surat_jalan = $transaksi->id_surat_jalan;
+        // Mencari no_count dari tabel surat_jalan berdasarkan id_surat_jalan
+        $suratJalan = SuratJalan::where('id', $id_surat_jalan) ->first();
+        $no_cont = $suratJalan ? $suratJalan->no_cont : null;
+
         $id_barang = $transaksi->id_barang;
         $barang = Barang::where('id', $id_barang)->first();
         // dd($barang->id_satuan);
         $satuan = Satuan::where('id', $barang->id_satuan)->first();
         // dd($satuan->nama_satuan);
         // dd($data, $invoice, $barang, $formattedDate, $transaksi, $satuan->nama_satuan, $transaksi->satuan_jual, $transaksi->keterangan);
-        $pdf = Pdf::loadView('keuangan/sp_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi', 'satuan'))->setPaper('a4', 'potrait');
+        $pdf = Pdf::loadView('keuangan/sp_pdf', compact('data','invoice', 'barang', 'formattedDate', 'transaksi', 'satuan', 'no_cont'))->setPaper('a4', 'potrait');
         return $pdf->stream('sp_pdf.pdf');
     }
     function generatePDF($id)

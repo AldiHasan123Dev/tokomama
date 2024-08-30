@@ -210,8 +210,8 @@
                             </td>
                             <td class="text-center border border-black">{{ $no_cont ?? '-' }}</td>
                             <td class="text-center border border-black">{{ $item->jumlah }} {{ $item->transaksi->satuan_jual }}</td>
-                            <td class="border border-black" style="text-align: right;">{{ number_format($item->harga, 2, ',', '.') }}</td>
-                            <td class="border border-black" style="text-align: right;">{{ number_format($item->harga * $item->jumlah, 2, ',', '.') }}</td>
+                            <td class="border border-black" style="text-align: right;">{{ number_format($item->harga, 0, ',', '.') }}</td>
+                            <td class="border border-black" style="text-align: right;">{{ number_format($item->harga * $item->jumlah, 0, ',', '.') }}</td>
                         </tr>
                     @endfor
                     <tr>
@@ -230,10 +230,10 @@
                         @endif
                     </td>
                     <td class="border border-black" style="text-align: right;">
-                    {{ number_format($total, 2, ',', '.') }}
+                    {{ number_format($total, 0, ',', '.') }}
                     <br>
                     @if($barang->status_ppn == 'ya')
-                        {{ number_format(($barang->value_ppn / 100) * $total, 2, ',', '.') }}
+                        {{ number_format(($barang->value_ppn / 100) * $total, 0, ',', '.') }}
                     @else
                         -
                     @endif
@@ -251,9 +251,9 @@
                     </td>
                     <td class="border border-black" style="text-align: right;">
                     @if($barang->status_ppn == 'ya')
-                        <b>{{ number_format(($total * 0.11) + ($total), 2, ',', '.') }}</b>
+                        <b>{{ number_format(($total * 0.11) + ($total), 0, ',', '.') }}</b>
                     @else
-                        <b>{{ number_format($total, 2, ',', '.') }}</b>
+                        <b>{{ number_format($total, 0, ',', '.') }}</b>
                     @endif
                     </td>
                 </tr>

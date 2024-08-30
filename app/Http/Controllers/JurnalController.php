@@ -439,7 +439,7 @@ class JurnalController extends Controller
 
     public function dataTable()
     {
-        $jurnal = Jurnal::join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->orderBy('tgl', 'asc')->orderBy('nomor', 'asc')->orderBy('tipe', 'asc')->get();
+        $jurnal = Jurnal::join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->orderBy('tgl', 'desc')->orderBy('nomor', 'asc')->orderBy('tipe', 'asc')->get();
 
         return DataTables::of($jurnal)
             ->addIndexColumn()

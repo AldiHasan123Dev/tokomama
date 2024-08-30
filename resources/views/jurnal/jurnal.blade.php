@@ -222,6 +222,7 @@
     <script>
         $(document).ready(function () {
             var table = $('#coa_table').DataTable({
+                order: [[0, 'desc']],
                 pageLength: 100,
                 select: true,
                 

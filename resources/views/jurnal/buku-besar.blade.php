@@ -82,7 +82,7 @@
                       @endforeach
                   </tr>
                 </tbody>
-              </table>
+            </table>
 
               @php
                   $coa = isset($_GET['coa']) ? urlencode(trim($_GET['coa'])) : urlencode('1');
@@ -206,9 +206,9 @@
                         <td>{{ $item->nopol }}</td>
                         <td>{{ $item->invoice }}</td>
                         <td>{{ $item->keterangan }}</td>
-                        <td>{{ number_format($item->debit,2,',','.') }}</td>
-                        <td>{{ number_format($item->kredit,2,',','.') }}</td>
-                        <td>{{ number_format($saldo_awal,2,',','.') }}</td>
+                        <td style="text-align: right;">{{ number_format($item->debit,2,',','.') }}</td>
+                        <td style="text-align: right;">{{ number_format($item->kredit,2,',','.') }}</td>
+                        <td style="text-align: right;">{{ number_format($saldo_awal,2,',','.') }}</td>
                     </tr>
                 @endforeach
                 </tbody>

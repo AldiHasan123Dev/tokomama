@@ -161,8 +161,8 @@
                         <td>{{ $d->no_akun }}</td>
                         <td>{{ $d->nama_akun }}</td>
                         <td>{{ $d->invoice }}</td>
-                        <td>{{ $d->debit }}</td>
-                        <td>{{ $d->kredit }}</td>
+                        <td>{{ number_format($d->debit, 0, ',', '.') }}</td>
+                        <td>{{ number_format($d->kredit, 0, ',', '.') }}</td>
                         <td>{{ $d->keterangan }}</td>
                         <td>{{ $d->invoice_external }}</td>
                         <td>{{ $d->nopol }}</td>

@@ -214,6 +214,7 @@
                             <td class="border border-black" style="text-align: right;">{{ number_format($item->harga * $item->jumlah, 0, ',', '.') }}</td>
                         </tr>
                     @endfor
+                    @if ($page == $pages)
                     <tr>
                     <td class="text-center border border-black"></td>
                     <td class="text-center border border-black"></td>
@@ -257,6 +258,7 @@
                     @endif
                     </td>
                 </tr>
+                @endif
                 </tbody>
             </table>
 

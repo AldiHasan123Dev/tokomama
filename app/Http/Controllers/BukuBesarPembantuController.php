@@ -60,40 +60,44 @@ class BukuBesarPembantuController extends Controller
             $suratJalan = SuratJalan::where('id_customer', $customer->id)->get();
             $debitTotal = 0;
             $kreditTotal = 0;
-
+            $processedInvoices = []; // Inisialisasi di luar loop surat jalan
+    
             foreach ($suratJalan as $sj) {
                 $transaksi = Transaction::where('id_surat_jalan', $sj->id)->get();
-                $processedInvoices = [];
-
+    
                 foreach ($transaksi as $tr) {
                     $invoices = Invoice::where('id_transaksi', $tr->id)->get();
-
+    
                     foreach ($invoices as $inv) {
+                        // Cek apakah invoice sudah diproses sebelumnya
                         if (in_array($inv->invoice, $processedInvoices)) {
-                            continue;
+                            continue; // Skip jika invoice sudah diproses
                         }
-
+    
                         $jurnals = Jurnal::where('invoice', $inv->invoice)
                             ->where('coa_id', $selectedCoaId)
                             ->whereBetween('tgl', [$startDate, $endDate])
                             ->get();
-
+    
                         foreach ($jurnals as $j) {
                             if ($j->debit > 0 || $j->kredit > 0) {
                                 $debitTotal += $j->debit;
                                 $kreditTotal += $j->kredit;
                             }
                         }
-
+    
+                        // Tambahkan invoice ke dalam list yang sudah diproses
                         $processedInvoices[] = $inv->invoice;
                     }
                 }
             }
-
+    
+            // Update debit dan kredit untuk customer
             $customer->debit = $debitTotal;
             $customer->kredit = $kreditTotal;
         }
     }
+    
 
     // Logika untuk pemasok (suppliers)
     if ($selectedState == 'supplier') {
@@ -214,44 +218,53 @@ public function showDetail($id, Request $request)
     if ($selectedState == 'customer') {
         $entity = Customer::findOrFail($id);
         $suratJalan = SuratJalan::where('id_customer', $id)->get();
-
+        $totalDebit = 0;
+        $totalKredit = 0;
+        $details = [];
+        $processedInvoices = []; // Inisialisasi di luar loop surat jalan agar hanya diproses sekali per customer
+    
         foreach ($suratJalan as $sj) {
             $transaksi = Transaction::where('id_surat_jalan', $sj->id)->get();
-            $processedInvoices = [];
-
+    
             foreach ($transaksi as $tr) {
                 $invoices = Invoice::where('id_transaksi', $tr->id)->get();
-
+    
                 foreach ($invoices as $inv) {
+                    // Cek apakah invoice sudah diproses sebelumnya
                     if (in_array($inv->invoice, $processedInvoices)) {
-                        continue;
+                        continue; 
                     }
-
+    
                     $jurnals = Jurnal::where('invoice', $inv->invoice)
                         ->where('coa_id', $selectedCoaId)
                         ->whereBetween('tgl', [$startDate, $endDate])
                         ->get();
-
+    
                     foreach ($jurnals as $j) {
                         if ($j->debit > 0 || $j->kredit > 0) {
+                        
                             $details[] = [
                                 'tgl' => $j->tgl,
                                 'invoice' => $inv->invoice,
                                 'debit' => $j->debit,
                                 'kredit' => $j->kredit,
-                                'keterangan' => $j->keterangan // Menambahkan keterangan
+                                'keterangan' => $j->keterangan 
                             ];
+                
                             $totalDebit += $j->debit;
                             $totalKredit += $j->kredit;
                         }
                     }
-
+    
+                
                     $processedInvoices[] = $inv->invoice;
                 }
             }
         }
+    
         $entityName = $entity->nama;
-    } elseif ($selectedState == 'supplier') {
+        
+    }elseif ($selectedState == 'supplier') {
         $entity = Supplier::findOrFail($id);
 
         $jurnals = Jurnal::where('coa_id', $selectedCoaId)

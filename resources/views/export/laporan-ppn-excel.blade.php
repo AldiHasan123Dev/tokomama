@@ -32,8 +32,18 @@
                 <th>{{ $item->transaksi->barang->nama }}</th>
                 <th>{{ $item->nsfp->nomor }}</th>
                 <th>{{ $item->subtotal }}</th>
-                <th>{{ $item->transaksi->barang->value_ppn }}%</th>
-                <th>{{ $item->subtotal * ($item->transaksi->barang->value_ppn / 100) }}</th>
+
+                @if ($item->transaksi->barang->status_ppn == 'ya')
+                    <th>{{ $item->transaksi->barang->value_ppn }}%</th>
+                @else
+                    <th>0%</th>
+                @endif
+
+                @if ($item->transaksi->barang->status_ppn == 'ya')
+                    <th>{{ round($item->subtotal + ($item->subtotal * ($item->transaksi->barang->value_ppn / 100))) }}</th>
+                @else
+                    <th>{{ $item->subtotal }}</th>
+                @endif
             </tr>
         @endforeach
     </tbody>

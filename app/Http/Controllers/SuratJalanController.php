@@ -155,6 +155,7 @@ class SuratJalanController extends Controller
     {
         // dd($request->all());
 
+        // mengambil data invoice_external sebelum update
         $check = Transaction::where('id_surat_jalan', $request->id_surat_jalan)->where('id_supplier', $request->id_supplier)->get();
         $inext = null;
         foreach ($check as $c) {
@@ -168,6 +169,8 @@ class SuratJalanController extends Controller
             Transaction::where('id_surat_jalan', $request->id_surat_jalan)->where('id_supplier', $request->id_supplier)->update(['invoice_external' => '-']);
         } else {
             Transaction::where('id_surat_jalan', $request->id_surat_jalan)->where('id_supplier', $request->id_supplier)->update(['invoice_external' => $request->invoice_external]);
+
+            Jurnal::where('invoice_external', $inext)->update(['invoice_external' => $request->invoice_external]);
         }
 
         // $this->autoInvoiceExternalJurnal($request);

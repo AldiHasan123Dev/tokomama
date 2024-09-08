@@ -163,7 +163,7 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="hidden" name="akun_debet[0]" value="">
+                                <input type="hidden" name="akun_debet[0]" value="0">
                                 <select class="select select-bordered w-36 calc_debit-1 1debit-0 debit-1" name="akun_debet[0]" id="akun_debet-1i">
                                     <option value="0"></option>
                                     @foreach ($coa as $item)
@@ -172,7 +172,7 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="hidden" name="akun_kredit[0]" value="">
+                                <input type="hidden" name="akun_kredit[0]" value="0">
                                 <select class="select select-bordered w-36 calc_kredit-1 1credit-0 credit-1" name="akun_kredit[0]" id="akun_kredit-1i">
                                     <option value="0"></option>
                                     @foreach ($coa as $item)
@@ -184,7 +184,7 @@
                                 <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[0]" id="keterangan-1i" />
                             </td>
                             <td>
-                                <input type="number" onkeyup="total()" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal 1nominal-0 nominal-1" min="0" name="nominal[0]" id="nominal-1i" />
+                                <input type="number" onkeyup="total()" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal 1nominal-0 nominal-1" min="0" name="nominal[0]" id="nominal-1i" value="0" />
                             </td>
                             <td>
                                 <input type="hidden" name="invoice_external[0]" value="">
@@ -321,7 +321,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="hidden" name="akun_debet[${no - 1}]" value="">
+                                    <input type="hidden" name="akun_debet[${no - 1}]" value="0">
                                     <select class="select select-bordered w-36 calc_debit-${no - 1} debit-${num}" onchange="total()" name="akun_debet[${no - 1}]" id="akun_debet-${no}i">
                                         <option id="option_debet-${no - 1}" value="0"></option>
                                         @foreach ($coa as $item)
@@ -342,7 +342,7 @@
                                     <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[${no - 1}]" id="keterangan-${no}" value="${response.keterangan[i] ?? ""}" required />
                                 </td>
                                 <td>
-                                    <input type="number" onkeyup="total()" class="nominal input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal-${num}" min="0" name="nominal[${no}]" id="nominal-${no}" required />
+                                    <input type="number" onkeyup="total()" class="nominal input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal-${num}" min="0" name="nominal[${no}]" id="nominal-${no}" value="0" required />
                                 </td>
                                 <td>
                                     <input type="hidden" name="invoice_external[${no - 1}]" value="">

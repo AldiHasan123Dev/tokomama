@@ -181,7 +181,7 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[0]" id="keterangan-1i" />
+                                <input type="text" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md" name="keterangan[0]" id="keterangan-1i" required />
                             </td>
                             <td>
                                 <input type="number" onkeyup="total()" class="input input-sm input-bordered w-32 h-6 bg-transparent rounded-md nominal 1nominal-0 nominal-1" min="0" name="nominal[0]" id="nominal-1i" value="0" />
@@ -669,7 +669,7 @@
                 </select>
             </td>
             <td>
-                <input type="text" class="input input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md" name="keterangan[${newRowId}]" id="keterangan-${newRowId}" value="" required />
+                <input type="text" class="input input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md" name="keterangan[${newRowId - 1}]" id="keterangan-${newRowId}" value="" required />
             </td>
             <td>
                 <input type="number" onkeyup="total()" class="input nominal input-sm input-bordered w-32 h-6 max-w-xs bg-transparent rounded-md nominal-${num}" min="0" name="nominal[${newRowId - 1}]" id="nominal-${newRowId}" value="" required />

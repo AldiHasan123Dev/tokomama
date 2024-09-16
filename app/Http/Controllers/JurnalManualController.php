@@ -121,45 +121,49 @@ class JurnalManualController extends Controller
         $newNoJurnal = $title . ' - ' . $maxNomor + 1 . '/' . $sec2 . '/' . $sec3;
 
         $keteranganList = [];
+        $ket_arr = [];
+        foreach ($request->keterangan as $key => $ket) {
+            array_push($ket_arr, $ket);
+        }
 
         for ($i = 0; $i < $request->counter; $i++) {
-            $keterangan = $request->keterangan[$i];
-            if (str_contains($request->keterangan[$i], '[1]')) {
+            $keterangan = $ket_arr[$i];
+            if (str_contains($ket_arr[$i], '[1]')) {
                 if ($request->param1[$i] != null) {
                     $keterangan = str_replace('[1]', $request->param1[$i], $keterangan);
                 }
             }
-            if (str_contains($request->keterangan[$i], '[2]')) {
+            if (str_contains($ket_arr[$i], '[2]')) {
                 if ($request->param2[$i] != null) {
                     $keterangan = str_replace('[2]', $request->param2[$i], $keterangan);
                 }
             }
-            if (str_contains($request->keterangan[$i], '[3]')) {
+            if (str_contains($ket_arr[$i], '[3]')) {
                 if ($request->param3[$i] != null) {
                     $keterangan = str_replace('[3]', $request->param3[$i], $keterangan);
                 }
             }
-            if (str_contains($request->keterangan[$i], '[4]')) {
+            if (str_contains($ket_arr[$i], '[4]')) {
                 if ($request->param4[$i] != null) {
                     $keterangan = str_replace('[4]', $request->param4[$i], $keterangan);
                 }
             }
-            if (str_contains($request->keterangan[$i], '[5]')) {
+            if (str_contains($ket_arr[$i], '[5]')) {
                 if ($request->param5[$i] != null) {
                     $keterangan = str_replace('[5]', $request->param5[$i], $keterangan);
                 }
             }
-            if (str_contains($request->keterangan[$i], '[6]')) {
+            if (str_contains($ket_arr[$i], '[6]')) {
                 if ($request->param6[$i] != null) {
                     $keterangan = str_replace('[6]', $request->param6[$i], $keterangan);
                 }
             }
-            if (str_contains($request->keterangan[$i], '[7]')) {
+            if (str_contains($ket_arr[$i], '[7]')) {
                 if ($request->param7[$i] != null) {
                     $keterangan = str_replace('[7]', $request->param7[$i], $keterangan);
                 }
             }
-            if (str_contains($request->keterangan[$i], '[8]')) {
+            if (str_contains($ket_arr[$i], '[8]')) {
                 if ($request->param8[$i] != null) {
                     $keterangan = str_replace('[8]', $request->param8[$i], $keterangan);
                 }

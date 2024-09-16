@@ -205,7 +205,7 @@ class InvoiceController extends Controller
                     Jurnal::create([
                         'coa_id' => 52,
                         'nomor' => $tipe,
-                        'tgl' => $tgl,
+                        'tgl' => date('Y-m-d'),
                         'keterangan' => 'Pendapatan ' . $item->transaksi->barang->nama . ' (' . $item->jumlah . ' ' . $item->transaksi->satuan_jual . ' Harsat ' . $item->transaksi->harga_jual . ')',
                         'debit' => 0,
                         'kredit' => $item->subtotal, // $result[$i]->subtotal,
@@ -224,7 +224,7 @@ class InvoiceController extends Controller
             Jurnal::create([
                 'coa_id' => 8,
                 'nomor' => $tipe,
-                'tgl' => $tgl,
+                'tgl' => date('Y-m-d'),
                 'keterangan' => 'Piutang ' . $result[0]->transaksi->suratJalan->customer->nama,
                 'debit' => $temp_debit,
                 'kredit' => 0,

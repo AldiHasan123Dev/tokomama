@@ -263,38 +263,73 @@
                     </tbody>
                 </table>
 
-                <div class="footer">
+            <div class="footer">
+    @if ($page == $pages)
+        <p style="font-weight: bold;padding-left:30px; font-size: 0.8rem">
+        Terbilang: 
+                @if($barang->status_ppn == 'ya')
+                    {{ ucwords(strtolower(terbilang(round($total * 1.11)))) }} Rupiah
+                @else
+                    {{ ucwords(strtolower(terbilang(round($total)))) }} Rupiah
+                @endif
+        </p>
+        <table style="font-size: 0.8rem;">
+        <tr>
+            <th style="text-align: left; padding-left: 50px; font-style: italic;">Pembayaran ke rekening:</th>
+            <td style="align-items:right ;text-align: center;">Surabaya, {{ $formattedDate }}</td>
+        </tr>
+        <tr>
+            <th style="text-align: left; padding-left: 50px; font-style: italic;">CV. Sarana Bahagia</th>
+            <td style="text-align: center;">Hormat Kami</td>
+        </tr>
+        <tr>
+            <th style="text-align: left; padding-left: 50px; font-style: italic;">Mandiri (Cab.Indrapura) : 14.000.45006.005</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th style="text-align: left; padding-left: 50px;"></th>
+            <th style="padding-top:30px">(Dwi Satria Wardana)</th>
+        </tr>
+    </table>
+    @endif
+    
+</div>
+<p class="page-number" style=" position: fixed; align-items:bottom ; left: 10px; bottom: -50px; margin: 0; font-size: 0.8rem;">Halaman: {{ $page }} dari {{ $pages }}</p>
+    <div class="footer">
         @if ($page == $pages)
-            <p style="font-weight: bold;padding-left:30px; font-size: 0.8rem">
-            Terbilang: 
-                    @if($barang->status_ppn == 'ya')
-                        {{ ucwords(strtolower(terbilang(round($total * 1.11)))) }} Rupiah
-                    @else
-                        {{ ucwords(strtolower(terbilang(round($total)))) }} Rupiah
-                    @endif
+            <p style="font-weight: bold;padding-left:30px; font-size: 0.8rem"> 
+                Terbilang: 
+                @if($barang->status_ppn == 'ya')
+                    {{ ucwords(strtolower(terbilang(round($total * 1.11)))) }} Rupiah
+                @else
+                    {{ ucwords(strtolower(terbilang(round($total)))) }} Rupiah
+                @endif
             </p>
+
+
+
             <table style="font-size: 0.8rem;">
-            <tr>
-                <th style="text-align: left; padding-left: 50px; font-style: italic;">Pembayaran ke rekening:</th>
-                <td style="align-items:right ;text-align: center;">Surabaya, {{ $formattedDate }}</td>
-            </tr>
-            <tr>
-                <th style="text-align: left; padding-left: 50px; font-style: italic;">CV. Sarana Bahagia</th>
-                <td style="text-align: center;">Hormat Kami</td>
-            </tr>
-            <tr>
-                <th style="text-align: left; padding-left: 50px; font-style: italic;">Mandiri (Cab.Indrapura) : 14.000.45006.005</th>
-                <th></th>
-            </tr>
-            <tr>
-                <th style="text-align: left; padding-left: 50px;"></th>
-                <th style="padding-top:30px">(Dwi Satria Wardana)</th>
-            </tr>
-        </table>
+                <tr>
+                    <th style="text-align: left; padding-left: 50px; font-style: italic;">Pembayaran ke rekening:</th>
+                    <td style="align-items:right ;text-align: center;">Surabaya, {{ $formattedDate }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left; padding-left: 50px; font-style: italic;">CV. Sarana Bahagia</th>
+                    <td style="text-align: center;">Hormat Kami</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left; padding-left: 50px; font-style: italic;">Mandiri (Cab.Indrapura) : 14.000.45006.005</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th style="text-align: left; padding-left: 50px;"></th>
+                    <th style="padding-top:30px">(Dwi Satria Wardana)</th>
+                </tr>
+            </table>
         @endif
-        
-        </div>
-            <p class="page-number" style=" position: fixed; align-items:bottom ; left: 10px; bottom: -50px; margin: 0; font-size: 0.8rem;">Halaman: {{ $page }} dari {{ $pages }}</p>
+    
+    </div>
+    <p class="page-number" style=" position: fixed; align-items:bottom ; left: 10px; bottom: -50px; margin: 0; font-size: 0.8rem;">Halaman: {{ $page }} dari {{ $pages }}</p>
 
 
                 

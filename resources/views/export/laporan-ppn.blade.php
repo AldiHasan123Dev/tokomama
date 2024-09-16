@@ -91,7 +91,11 @@
                     <td>0</td>
                     <td>{{ $of->transaksi->harga_jual * $of->transaksi->jumlah_jual }}</td>
                     <td>
-                        {{ round(($of->transaksi->harga_jual * $of->transaksi->jumlah_jual) * ($item->transaksi->barang->value_ppn / 100)) }}
+                        @if ($of->transaksi->barang->status_ppn == 'ya')
+                            {{ round(($of->transaksi->harga_jual * $of->transaksi->jumlah_jual) * ($item->transaksi->barang->value_ppn / 100)) }}
+                        @else
+                            0
+                        @endif
                     </td>
                     <td></td>
                     <td></td>

@@ -32,7 +32,10 @@ class JurnalController extends Controller
         }
 
         if(isset($_GET['month']) && isset($_GET['year'])) {
-            $MonJNL = Jurnal::whereMonth('tgl', $_GET['month'])->whereYear('tgl', $_GET['year'])->join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
+            $MonJNL = Jurnal::whereYear('tgl', $_GET['year'])
+            // ->whereMonth('tgl', $_GET['month'])
+            ->join('coa', 'jurnal.coa_id', '=', 'coa.id')
+            ->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
             $balance = Jurnal::select('nomor', 
                               DB::raw('SUM(debit) as total_debit'), 
                               DB::raw('SUM(kredit) as total_kredit'))
@@ -40,7 +43,12 @@ class JurnalController extends Controller
             ->whereYear('tgl', $_GET['year'])
             ->groupBy('nomor')
             ->get();
-            $LastJNL = Jurnal::whereMonth('tgl', $_GET['month'])->whereYear('tgl',  $_GET['year'])->where('tipe', 'JNL')->join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
+            $LastJNL = Jurnal::whereYear('tgl',  $_GET['year'])
+            // ->whereMonth('tgl', $_GET['month'])
+            ->where('tipe', 'JNL')
+            ->join('coa', 'jurnal.coa_id', '=', 'coa.id')
+            ->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')
+            ->get();
 
             $notBalance = [];
 
@@ -51,15 +59,22 @@ class JurnalController extends Controller
             }
 
         } else {
-            $MonJNL = Jurnal::whereMonth('tgl', date('m'))->whereYear('tgl', date('Y'))->join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
+            $MonJNL = Jurnal::whereYear('tgl', date('Y')) 
+            // ->whereMonth('tgl', date('m'))
+            ->join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
             $balance = Jurnal::select('nomor', 
                               DB::raw('SUM(debit) as total_debit'), 
                               DB::raw('SUM(kredit) as total_kredit'))
-            ->whereMonth('tgl', date('m'))
+            // ->whereMonth('tgl', date('m'))
             ->whereYear('tgl', date('Y'))
             ->groupBy('nomor')
             ->get();
-            $LastJNL = Jurnal::whereMonth('tgl', date('m'))->whereYear('tgl', date('Y'))->where('tipe', 'JNL')->join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->get();
+            $LastJNL = Jurnal::whereYear('tgl', date('Y'))
+            // ->whereMonth('tgl', date('m'))
+            ->where('tipe', 'JNL')
+            ->join('coa', 'jurnal.coa_id', '=', 'coa.id')
+            ->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')
+            ->get();
 
             $notBalance = [];
             
@@ -439,7 +454,7 @@ class JurnalController extends Controller
 
     public function dataTable()
     {
-        $jurnal = Jurnal::join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->orderBy('tgl', 'asc')->orderBy('nomor', 'asc')->orderBy('tipe', 'asc')->get();
+        $jurnal = Jurnal::join('coa', 'jurnal.coa_id', '=', 'coa.id')->select('jurnal.*', 'coa.no_akun', 'coa.nama_akun')->orderBy('tgl', 'desc')->orderBy('nomor', 'asc')->orderBy('tipe', 'asc')->get();
 
         return DataTables::of($jurnal)
             ->addIndexColumn()

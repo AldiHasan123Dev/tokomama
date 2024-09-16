@@ -120,18 +120,18 @@
         </table>
     </div>
 
-    <div class="content">
+<div class="content">
     @php
-        $items_per_page = 17;
+        $items_per_page = 16; // Mengubah jumlah item per halaman menjadi 16
         $total_items = $surat_jalan->transactions->count();
-
+        
         // Calculate the number of pages
         $pages = ceil($total_items / $items_per_page);
 
         // Calculate remaining items after the first page
-        $remaining_items = $total_items - $items_per_page;
+        $remaining_items = $total_items % $items_per_page;
 
-        // Adjust page count if the last page has more than 7 items
+        // Sesuaikan jumlah halaman jika halaman terakhir memiliki lebih dari 7 item
         if ($remaining_items > 7) {
             $pages++;
         }
@@ -143,8 +143,8 @@
                 // Halaman pertama dan tengah mengambil item secara normal
                 $start = ($page - 1) * $items_per_page;
                 $end = min($start + $items_per_page, $total_items);
-                
-                // Pastikan halaman kedua tidak melebihi item ke-33
+
+              
                 if ($page == $pages - 1 && $remaining_items > 7) {
                     $end = $total_items - 1;
                 }
@@ -290,6 +290,8 @@
         @endif
     @endfor
 </div>
+
+
 
 
 </body>

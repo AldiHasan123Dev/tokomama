@@ -20,12 +20,12 @@ class InvoiceController extends Controller
         $ids = explode(',', request('id_transaksi'));
         $transaksi = Transaction::whereIn('id', $ids)->get();
         $count = $transaksi->groupBy('suratJalan.id_customer');
-        if($count->count()>1){
+        if ($count->count() > 1) {
             return back()->with('error', 'Invoice hanya bisa dibuat untuk 1 customer');
         }
         $invoice_count = request('invoice_count');
         $nsfp = NSFP::where('available', '1')->orderBy('nomor')->take($invoice_count)->get();
-        if($nsfp->count() < $invoice_count) {
+        if ($nsfp->count() < $invoice_count) {
             return back()->with('error', 'NSFP Belum Tersedia, pastikan nomor NSFP tersedia.');
         }
         $array_jumlah = [];
@@ -40,8 +40,8 @@ class InvoiceController extends Controller
         $no_JNL =  $noJNL ? $noJNL->no + 1 : 1;
 
         // dd($no_JNL);
-        
-        return view('invoice.index', compact('transaksi','ids','invoice_count','array_jumlah', 'no_JNL'));
+
+        return view('invoice.index', compact('transaksi', 'ids', 'invoice_count', 'array_jumlah', 'no_JNL'));
     }
 
     /**
@@ -67,7 +67,7 @@ class InvoiceController extends Controller
         $array_invoice = array();
         $invoice_count = $request->invoice_count;
         $nsfp = NSFP::where('available', '1')->orderBy('nomor')->take($invoice_count)->get();
-        if($nsfp->count() < $invoice_count) {
+        if ($nsfp->count() < $invoice_count) {
             return back()->with('error', 'NSFP Belum Tersedia, pastikan nomor NSFP tersedia.');
         }
 
@@ -76,7 +76,7 @@ class InvoiceController extends Controller
             $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
             $month_number = $monthNumber;
             $month_roman = $roman_numerals[$month_number];
-            $inv= sprintf('%03d', $no) . '/INV/SB-' . $month_roman . '/' . date('Y');
+            $inv = sprintf('%03d', $no) . '/INV/SB-' . $month_roman . '/' . date('Y');
             array_push($array_invoice, [
                 'id_nsfp' => $item->id,
                 'invoice' => $inv,
@@ -100,14 +100,14 @@ class InvoiceController extends Controller
         foreach ($request->invoice as $id_transaksi => $invoice) {
             array_push($idtsk, $id_transaksi);
         }
-        
-        
+
+
         // dd($idtsk);
         // dd($array_invoice);
-        DB::transaction(function () use($data, $array_invoice, $request, $idtsk) {
+        DB::transaction(function () use ($data, $array_invoice, $request, $idtsk) {
             foreach ($data as $id_transaksi => $array_data) {
                 // dd($request->tgl_invoice);
-                for ($i=0; $i < count($array_data['invoice']); $i++) {
+                for ($i = 0; $i < count($array_data['invoice']); $i++) {
                     if ((int)$array_data['jumlah'][$i] > 0) {
                         $trx = Transaction::find($id_transaksi);
 
@@ -132,7 +132,6 @@ class InvoiceController extends Controller
                 }
             }
             $this->autoJurnal($idtsk, $array_invoice, $request->tipe, $request->tgl_invoice);
-
         });;
 
         return to_route('keuangan.invoice')->with('success', 'Invoice Created Successfully');
@@ -141,28 +140,68 @@ class InvoiceController extends Controller
     private function autoJurnal($idtsk, $invoice, $tipe, $tgl)
     {
         // dd($invoice[1]['invoice']);
-        $no = (int) str_replace(' ', '', explode('-',explode('/', $tipe)[0])[1]);
+        $no = (int) str_replace(' ', '', explode('-', explode('/', $tipe)[0])[1]);
         // dd($no);
         $total_all = array();
         $temp_total = array();
-        for($i = 0; $i < count($invoice); $i++) {
+        for ($i = 0; $i < count($invoice); $i++) {
             // dd(count($invoice));
             $result = Invoice::with([
                 'transaksi.barang.satuan',
                 'transaksi.suratJalan.customer'
-                ])
-                ->where('invoice',$invoice[$i]['invoice'])->get();
-                // untuk debug '088/INV/SB-VI/2024' $invoice[$i]['invoice']
-                
-                $nopol = '';
-                $temp_debit = 0;
-                // dd($result);
+            ])
+                ->where('invoice', $invoice[$i]['invoice'])->get();
+            // untuk debug '088/INV/SB-VI/2024' $invoice[$i]['invoice']
+
+            $nopol = '';
+            $temp_debit = 0;
+            // dd($result);
+            // dd($invoice[$i]['invoice']);
+            foreach ($result as $item) {
+                // dd($item);
                 // dd($invoice[$i]['invoice']);
-                foreach($result as $item) {
-                    // dd($item);
-                    // dd($invoice[$i]['invoice']);
-                    $temp_debit +=  $item->subtotal; //$result[$i]->subtotal;
-                    $nopol = $item->transaksi->suratJalan->no_pol;
+                $nopol = $item->transaksi->suratJalan->no_pol;
+
+                // if untuk ketika barang terdapat ppn maka ada record ppn dimana ditambahkan di kredit yang nominalnya sama dengan kredit barang yg ada ppnya yaitu pendapatan + ppn
+                if ($item->transaksi->barang->status_ppn == 'ya') {
+
+                    $temp_debit +=  ($item->subtotal * 0.11) + $item->subtotal; //$result[$i]->subtotal;
+
+                    Jurnal::create([
+                        'coa_id' => 52,
+                        'nomor' => $tipe,
+                        'tgl' => $tgl,
+                        'keterangan' => 'Pendapatan ' . $item->transaksi->barang->nama . ' (' . $item->jumlah . ' ' . $item->transaksi->satuan_jual . ' Harsat ' . $item->transaksi->harga_jual . ')',
+                        'debit' => 0,
+                        'kredit' => $item->subtotal, // $result[$i]->subtotal,
+                        'invoice' => $item->invoice,
+                        'invoice_external' => 0,
+                        'id_transaksi' => $item->id_transaksi,
+                        'nopol' => $item->transaksi->suratJalan->no_pol,
+                        'container' => null,
+                        'tipe' => 'JNL',
+                        'no' => $no
+                    ]);
+
+                    Jurnal::create([
+                        'coa_id' => 12,
+                        'nomor' => $tipe,
+                        'tgl' => $tgl,
+                        'keterangan' => 'PPN Keluaran ' . $item->transaksi->suratJalan->customer->nama . ' (FP: --)',
+                        'debit' => 0,
+                        'kredit' => $item->subtotal * 0.11, // $result[$i]->subtotal,
+                        'invoice' => $item->invoice,
+                        'invoice_external' => 0,
+                        'id_transaksi' => $item->id_transaksi,
+                        'nopol' => $item->transaksi->suratJalan->no_pol,
+                        'container' => null,
+                        'tipe' => 'JNL',
+                        'no' => $no
+                    ]);
+                } else {
+
+                    $temp_debit +=  $item->subtotal;
+
                     Jurnal::create([
                         'coa_id' => 52,
                         'nomor' => $tipe,
@@ -179,6 +218,7 @@ class InvoiceController extends Controller
                         'no' => $no
                     ]);
                 }
+            }
 
             // dd($result);
             Jurnal::create([
@@ -197,7 +237,6 @@ class InvoiceController extends Controller
                 'no' => $no
             ]);
         }
-        
     }
 
     /**

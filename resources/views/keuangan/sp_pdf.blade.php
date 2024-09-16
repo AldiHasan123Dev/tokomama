@@ -208,12 +208,13 @@
                                     {{ $item->transaksi->keterangan }} @endif)
                                 @endif
                             </td>
-                            <td class="text-center border border-black">{{ $item->transaksi->kontainer->kontainer ?? '-' }}</td>
+                            <td class="text-center border border-black">{{ $no_cont ?? '-' }}</td>
                             <td class="text-center border border-black">{{ $item->jumlah }} {{ $item->transaksi->satuan_jual }}</td>
-                            <td class="text-center border border-black">{{ number_format($item->harga, 2, ',', '.') }}</td>
-                            <td class="text-center border border-black">{{ number_format($item->harga * $item->jumlah, 2, ',', '.') }}</td>
+                            <td class="border border-black" style="text-align: right;">{{ number_format($item->harga, 0, ',', '.') }}</td>
+                            <td class="border border-black" style="text-align: right;">{{ number_format($item->harga * $item->jumlah, 0, ',', '.') }}</td>
                         </tr>
                     @endfor
+                    @if ($page == $pages)
                     <tr>
                     <td class="text-center border border-black"></td>
                     <td class="text-center border border-black"></td>
@@ -229,14 +230,15 @@
                         PPN 11% (DIBEBASKAN)
                         @endif
                     </td>
-                    <td class="border border-black text-center" >
-                        {{ number_format($total)  }}
-                        <br>
-                        @if($barang->status_ppn == 'ya')
-                        {{ number_format(($barang->value_ppn / 100) * $total) }}
-                        @else
+                    <td class="border border-black" style="text-align: right;">
+                    {{ number_format($total, 0, ',', '.') }}
+                    <br>
+                    @if($barang->status_ppn == 'ya')
+                        {{ number_format(($barang->value_ppn / 100) * $total, 0, ',', '.') }}
+                    @else
                         -
-                        @endif
+                    @endif
+
                     </td>
                 </tr>
                 <tr>
@@ -248,20 +250,28 @@
                     <td class="border border-black">
                         <b>TOTAL</b>
                     </td>
-                    <td class="border border-black text-center" >
-                        @if($barang->status_ppn == 'ya')
-                        <b>{{ number_format(($total * 0.11) + ($total)) }}</b>
-                        @else
-                        <b>{{ number_format($total) }}</b>
-                        @endif
+                    <td class="border border-black" style="text-align: right;">
+                    @if($barang->status_ppn == 'ya')
+                        <b>{{ number_format(($total * 0.11) + ($total), 0, ',', '.') }}</b>
+                    @else
+                        <b>{{ number_format($total, 0, ',', '.') }}</b>
+                    @endif
                     </td>
                 </tr>
+                @endif
                 </tbody>
             </table>
 
             <div class="footer">
                 @if ($page == $pages)
-                    <p style="font-weight: bold; padding-left:30px; font-size: 0.8rem">TERBILANG: {{ strtoupper(terbilang($total)) }} RUPIAH</p>
+                    <p style="font-weight: bold; padding-left:30px; font-size: 0.8rem">
+                    Terbilang: 
+                @if($barang->status_ppn == 'ya')
+                    {{ ucwords(strtolower(terbilang(round($total * 1.11)))) }} Rupiah
+                @else
+                    {{ ucwords(strtolower(terbilang(round($total)))) }} Rupiah
+                @endif
+                    </p>
                     <table style="font-size: 0.8rem;">
                     <tr>
                         <th style="text-align: left; padding-left: 50px; font-style: italic;">Pembayaran ke rekening:</th>

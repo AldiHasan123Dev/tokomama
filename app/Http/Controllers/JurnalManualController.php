@@ -126,6 +126,7 @@ class JurnalManualController extends Controller
             array_push($ket_arr, $ket);
         }
 
+        // dd($request->keterangan);
         for ($i = 0; $i < $request->counter; $i++) {
             $keterangan = $ket_arr[$i];
             if (str_contains($ket_arr[$i], '[1]')) {
@@ -172,6 +173,7 @@ class JurnalManualController extends Controller
             $keteranganList[$i] = $keterangan;
         }
 
+        // dd($request->nominal);
         for ($i = 0; $i < $request->counter; $i++) {
             if ($request->check[$i] == 1) {
                 if ($tipe == 'JNL') {
@@ -193,6 +195,7 @@ class JurnalManualController extends Controller
                                         'keterangan' => $keteranganList[$i],
                                         'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $newNoJurnal,
                                         'debit' => $request->nominal[$i],
+                                        'kredit' => 0,
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : 0,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
                                         'id_transaksi' => $result[$i]['id_transaksi'] ?? null,
@@ -217,6 +220,7 @@ class JurnalManualController extends Controller
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
                                         'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $newNoJurnal,
+                                        'debit' => 0,
                                         'kredit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
@@ -248,6 +252,7 @@ class JurnalManualController extends Controller
                                         'keterangan' => $keteranganList[$i],
                                         'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $nomor,
                                         'debit' => $request->nominal[$i],
+                                        'kredit' => 0,
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
                                         'id_transaksi' => $result[$i]['id_transaksi'] ?? null,
@@ -272,6 +277,7 @@ class JurnalManualController extends Controller
                                         'tgl' => $request->tanggal_jurnal,
                                         'keterangan' => $keteranganList[$i],
                                         'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $nomor,
+                                        'debit' => 0,
                                         'kredit' => $request->nominal[$i],
                                         'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                         'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
@@ -304,6 +310,7 @@ class JurnalManualController extends Controller
                                     'keterangan' => $keteranganList[$i],
                                     'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $nomor,
                                     'debit' => $request->nominal[$i],
+                                    'kredit' => 0,
                                     'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                     'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,
                                     'id_transaksi' => $result[$i]['id_transaksi'] ?? null,
@@ -328,6 +335,7 @@ class JurnalManualController extends Controller
                                     'tgl' => $request->tanggal_jurnal,
                                     'keterangan' => $keteranganList[$i],
                                     'keterangan_buku_besar_pembantu' => !empty($request->keterangan_buku_besar_pembantu[$i]) ? $request->keterangan_buku_besar_pembantu[$i] : $nomor,
+                                    'debit' => 0,
                                     'kredit' => $request->nominal[$i],
                                     'invoice' => $request->invoice ? explode('_', $request->invoice[$i])[0] : null,
                                     'invoice_external' => $request->invoice_external ? explode('_', $request->invoice_external[$i])[0] : null,

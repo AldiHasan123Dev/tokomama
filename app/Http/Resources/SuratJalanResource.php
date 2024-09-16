@@ -14,6 +14,17 @@ class SuratJalanResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
+        $ppn = '0%';
+        if($this->transaksi->barang->status_ppn == 'ya') {
+            $ppn = $this->transaksi->barang->value_ppn . '%';
+        }
+
+        $total = $this->subtotal;
+        if($this->transaksi->barang->status_ppn == 'ya') {
+            $total = ($this->subtotal * 0.11) + $this->subtotal;
+        }
+
         return [
             'id' => $this->id,
             'invoice' => $this->invoice,
@@ -27,8 +38,8 @@ class SuratJalanResource extends JsonResource
             'uraian' => $this->transaksi->barang->nama,
             'faktur' => $this->nsfp->nomor,
             'subtotal' => $this->subtotal,
-            'ppn' => $this->transaksi->barang->value_ppn . '%',
-            'total' => $this->subtotal * 0.11,
+            'ppn' => $ppn,
+            'total' => $total,
             'none' => '-',
         ];
     }

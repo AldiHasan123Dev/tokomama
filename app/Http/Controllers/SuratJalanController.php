@@ -156,7 +156,8 @@ class SuratJalanController extends Controller
         // dd($request->all());
 
         // mengambil data invoice_external sebelum update
-        $check = Transaction::where('id_surat_jalan', $request->id_surat_jalan)->where('id_supplier', $request->id_supplier)->get();
+        $id_surat_jalan = $request->id_surat_jalan;
+        $check = Transaction::where('id_surat_jalan', $id_surat_jalan)->where('id_supplier', $request->id_supplier)->get();
         $inext = null;
         foreach ($check as $c) {
             if ($c->invoice_external != null) {
@@ -166,11 +167,13 @@ class SuratJalanController extends Controller
         }
 
         if ($inext != null && $request->invoice_external == null) {
-            Transaction::where('id_surat_jalan', $request->id_surat_jalan)->where('id_supplier', $request->id_supplier)->update(['invoice_external' => '-']);
+            Transaction::where('id_surat_jalan', $id_surat_jalan)->where('id_supplier', $request->id_supplier)->update(['invoice_external' => '-']);
         } else {
-            Transaction::where('id_surat_jalan', $request->id_surat_jalan)->where('id_supplier', $request->id_supplier)->update(['invoice_external' => $request->invoice_external]);
-
-            Jurnal::where('invoice_external', $inext)->update(['invoice_external' => $request->invoice_external]);
+            Transaction::where('id_surat_jalan', $id_surat_jalan)->where('id_supplier', $request->id_supplier)->update(['invoice_external' => $request->invoice_external]);
+            Jurnal::whereHas('transaksi', function($q) use($id_surat_jalan){
+                $q->where('id_surat_jalan', $id_surat_jalan);
+            })->update(['invoice_external' => $request->invoice_external]);
+            // Jurnal::where('invoice_external', $inext)->update(['invoice_external' => $request->invoice_external]);
         }
 
         // $this->autoInvoiceExternalJurnal($request);

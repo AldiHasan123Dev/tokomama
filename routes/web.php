@@ -71,6 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/barang-masuk/monitor-stock', [StockController::class, 'monitor_stock'])->name('monitor-stock');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/surat-jalan-cetak/{surat_jalan}', [SuratJalanController::class, 'cetak'])->name('surat-jalan.cetak');
+   Route::get('/keuangan/invoice-pending/cetak', [KeuanganController::class, 'cetakDraftInv'])->name('draft-invoice.cetak');
     Route::get('/surat-jalan-tarif-barang', [SuratJalanController::class, 'tarif'])->name('surat-jalan.barang');
     Route::get('/barang-masuk/harga-beli', [SuratJalanController::class, 'harga_beli'])->name('harga_beli');
     Route::get('/surat-jalan/editBarang', [SuratJalanController::class, 'editBarang'])->name('surat-jalan.editBarang');
@@ -91,6 +92,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('surat-jalan', SuratJalanController::class);
     Route::resource('invoice-transaksi', InvoiceController::class);
     Route::match(['get', 'post'], '/preview-invoice', [InvoiceController::class, 'preview'])->name('preview.invoice');
+    Route::match(['get', 'post'], '/keuangan/invoice-pending/pre-draft-invoice', [KeuanganController::class, 'previewDraftInv'])->name('pending.invoice.preview_DraftInv');
     Route::resource('jurnal', JurnalController::class);
     Route::get('/stock/cetak/{id}', [StockController::class, 'cetak'])->name('stock.cetak');
     Route::post('/update-lock/{id}', [StockController::class, 'updateLock']);
@@ -164,8 +166,11 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {
     Route::get('', 'index')->name('keuangan');
+    Route::get('invoice-pending', 'pendingInvoice')->name('pending.invoice');
+    Route::get('invoice-pending/harga-jual', 'inputHargaJual')->name('pending.invoice.harga_jual');
     Route::get('surat-jalan', 'suratJalan')->name('keuangan.surat-jalan');
     Route::post('surat-jalan', 'suratJalanStore')->name('keuangan.surat-jalan');
+    Route::post('invoice-pending/cetak-draft-invoice', 'storeDraftInv')->name('pending.invoice.draft_invoice.cetak');
     Route::get('invoice', 'invoice')->name('keuangan.invoice');
     Route::get('pre-invoice', 'preInvoice')->name('keuangan.pre-invoice');
     Route::get('jurnal-bayar', 'jurnalBayar')->name('keuangan.jurnal-bayar');

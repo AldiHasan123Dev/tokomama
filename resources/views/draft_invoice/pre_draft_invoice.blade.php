@@ -1,6 +1,6 @@
 <x-Layout.layout>
     <x-keuangan.card-keuangan>
-        <x-slot:tittle>Preview Invoice</x-slot:tittle <div class="header">
+        <x-slot:tittle>Preview Draft Invoice</x-slot:tittle <div class="header">
         <div style=" display: flex; border: solid; justify-content: space-between; padding: 5px; margin-top: 30px;">
             <table style="width: 50%; border-collapse: collapse;" border="1">
                 <thead>
@@ -40,7 +40,7 @@
                 <table style="width: 100%; border: solid; border-collapse: collapse; margin-top: 10px;" border="1">
                     <thead>
                         <tr>
-                            <td style="font-weight: bold; text-align: center">SALES INVOICE </td>
+                            <td style="font-weight: bold; text-align: center">DRAFT INVOICE </td>
                         </tr>
                     </thead>
                 </table>
@@ -53,7 +53,7 @@
                                 <tr>
                                     <th
                                         style="font-weight: bold; border: solid; padding: 8px; min-width: 150px; text-align: left; white-space: nowrap;">
-                                        Tgl Invoice : {{ $tgl_inv2 }}
+                                        Tgl Draft Invoice : {{ $tgl_inv2 }}
                                     </th>
                                 </tr>
                             </thead>
@@ -478,7 +478,7 @@
                 </table>
 
             </div>
-            <form action="{{ route('invoice-transaksi.store') }}" method="post" id="form">
+            <form action="{{ route('pending.invoice.draft_invoice.cetak') }}" method="post" target="_blank" id="form">
                 @csrf
                 @foreach ($data as $id_transaksi => $items)
                     @if (isset($items['invoice']))
@@ -490,12 +490,12 @@
                             <input type="hidden" name="invoice_count" value="{{ $invoice_count }}">
                             <input type="hidden" name="data[{{ $id_transaksi }}][jumlah][]"
                                 value="{{ $items['jumlah'][$idx] ?? 0 }}">
-                            <input type="hidden" name="data[{{ $id_transaksi }}][id_sj][]"
-                                value="{{ $items['id_sj'][$idx] ?? 0 }}">
                             <input type="hidden" name="data[{{ $id_transaksi }}][satuan_jual][]"
                                 value="{{ $items['satuan_jual'][$idx] ?? '' }}">
                             <input type="hidden" name="data[{{ $id_transaksi }}][harga_jual][]"
                                 value="{{ $items['harga_jual'][$idx] ?? 0 }}">
+                            <input type="hidden" name="data[{{ $id_transaksi }}][id_surat_jalan][]"
+                                value="{{ $items['id_surat_jalan'][$idx] ?? 0 }}">
                             <input type="hidden" name="data[{{ $id_transaksi }}][jumlah_jual][]"
                                 value="{{ $items['jumlah_jual'][$idx] ?? 0 }}">
                             <input type="hidden" name="data[{{ $id_transaksi }}][keterangan][]"
@@ -524,9 +524,8 @@
                     onclick="window.history.back();">
                     Kembali
                 </button>
-                <button class="btn bg-green-500 font-semibold justify-align-center text-white w-300 mt-3"
-                    onclick="return confirm('MOHON DICEK DENGAN CERMAT. KEKELIRUAN PADA PROSES INVOICING INI AKAN BERDAMPAK KOMPLEKS, MEMERLUKAN WAKTU PANJANG UNTUK PEMULIHAN. PENGECEKAN MELIPUTI QTY BARANG,HARGA JUAL, TANGGAL INVOICE DAN PENGECEKAN SATUAN.')" type="submit">
-                    Submit Invoice
+                <button class="btn bg-green-500 font-semibold justify-align-center text-white w-300 mt-3"type="submit">
+                    Cetak Draft Invoice
                 </button>
             </form>
 

@@ -9,6 +9,7 @@ use App\Models\Jurnal;
 use App\Models\Nopol;
 use App\Models\Invoice;
 use App\Models\Satuan;
+use App\Models\DraftInvoice;
 use DateTime;
 use App\Models\Supplier;
 use App\Models\SuratJalan;
@@ -762,17 +763,17 @@ class SuratJalanController extends Controller
         $ppn = 0;
         $subtotal = $row->avg_harga_beli * $row->total_jumlah_beli;
        // Ambil array ID dari hasil GROUP_CONCAT
-$list_id = explode(',', $row->list_id_transaksi);
+    $list_id = explode(',', $row->list_id_transaksi);
 
-// Ambil jurnal berdasarkan id_transaksi (bukan invoice_external)
-$journal = Jurnal::whereIn('id_transaksi', $list_id)
-    ->where('tipe', 'JNL')
-    ->whereNull('deleted_at')
-    ->where('kredit', '>', 0)
-    ->where('coa_id', 35)
-    ->first();
+    // Ambil jurnal berdasarkan id_transaksi (bukan invoice_external)
+    $journal = Jurnal::whereIn('id_transaksi', $list_id)
+        ->where('tipe', 'JNL')
+        ->whereNull('deleted_at')
+        ->where('kredit', '>', 0)
+        ->where('coa_id', 35)
+        ->first();
 
-
+ 
         // Tentukan tanggal, gunakan yang pertama jika ada, atau tanggal default (hari ini) jika tidak ada
         $barang = Barang::where('id', $row->id_barang)->first();
         
@@ -905,10 +906,13 @@ public function getStock($id)
             $qty = $stock->sisa + $request->kurangi;
             $jumlah_jual = $trx->jumlah_jual - $request->kurangi;
         }        
+
+
+
         if ($qty < 0) { // Jika stok tidak mencukupi
             return redirect()->back()->with(
                 'error',
-                'Stok tidak mencukupi! Barang: ' . (optional($tstock->barang)->nama ?? 'Tidak diketahui') . 
+                'Stok tidak mencukupi! Barang: ' . (optional($stock->barang)->nama ?? 'Tidak diketahui') . 
                 ', Sisa Stok: ' . ($stock->sisa ?? 0)
             );
         }
@@ -919,7 +923,9 @@ public function getStock($id)
             'jumlah_jual' => $jumlah_jual_stock
         ]);
         // Update transaksi yang diedit
-        Transaction::where('id', $request->id)->update([
+        $trx = Transaction::findOrFail($request->id); // Ambil data dulu
+
+        $trx->update([
             'jumlah_jual' => $jumlah_jual,
             'jumlah_beli' => $stock->jumlah_beli,
             'sisa' => $jumlah_jual,
@@ -927,6 +933,22 @@ public function getStock($id)
             'satuan_jual' => $stock->satuan_jual,
             'keterangan' => $request->keterangan,
         ]);
+
+        // Cek hasil
+        
+        // Cari draft invoice yang berkaitan
+        $draft_invoice = DraftInvoice::where('id_transaksi', $trx->id)
+        ->where('id_sj', $trx->id_surat_jalan)
+        ->whereNull('invoice_id')
+        ->first();
+
+        if ($draft_invoice) {
+        $draft_invoice->update([
+            'jumlah' => $jumlah_jual,
+            'subtotal' => $jumlah_jual * $trx->harga_jual
+        ]);
+        }
+
     
         return redirect()->back()->with('success', 'Data berhasil diupdate!!');
     }
@@ -961,7 +983,7 @@ public function getStock($id)
         $trans = Transaction::find($ppn ?? $noppn);
         $sisa = $trans->sisa - $request->jumlah_jual;
         $bkeluar = $request->jumlah_jual + $trans->jumlah_jual;
-        Transaction::create([
+        $sj = Transaction::create([
             'id_surat_jalan' => $request->id_surat_jalan,
             'id_barang' => $trans->id_barang,
             'id_supplier' => $trans->id_supplier,
@@ -977,6 +999,20 @@ public function getStock($id)
             'stts' => $trans->stts,
             'keterangan' => $request->keterangan
         ]);
+        $draft_invoice = DraftInvoice::where('id_sj', $request->id_surat_jalan)
+        ->whereNull('invoice_id')
+        ->first();
+        if($draft_invoice){
+            DraftInvoice::create([
+                'id_sj' => $request->id_surat_jalan,
+                'id_transaksi' => $sj->id,
+                'jumlah' => $request->jumlah_jual,
+                'draft_no' => $draft_invoice->draft_no,
+                'no' => $draft_invoice->no,
+                'tanggal' => $draft_invoice->tanggal
+            ]);
+        }
+
         $trans->update([
             'sisa' => $sisa,
             'jumlah_jual' => $bkeluar,

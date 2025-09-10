@@ -37,5 +37,10 @@ class Invoice extends Model
     {
         return $this->hasMany(Jurnal::class, 'invoice', 'invoice'); 
     }
+
+    public function draftInvoices()
+    {
+        return $this->hasMany(DraftInvoice::class, 'invoice_id', 'id');
+    }
     
 }

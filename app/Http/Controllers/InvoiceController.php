@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Models\Jurnal;
 use App\Models\NSFP;
 use App\Models\Transaction;
+use App\Models\DraftInvoice;
 use App\Models\Barang;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -22,6 +23,9 @@ class InvoiceController extends Controller
     {
         $ids = explode(',', request('id_transaksi'));
         $transaksi = Transaction::whereIn('id', $ids)->get();
+        foreach ($transaksi as $item) {
+            $draft_inv = DraftInvoice::where('id_transaksi',$item->id)->where('id_sj',$item->id_surat_jalan)->value('tanggal');
+        }
         $count = $transaksi->groupBy('suratJalan.id_customer');
         if($count->count()>1){
             return back()->with('error', 'Invoice hanya bisa dibuat untuk 1 customer');
@@ -43,7 +47,7 @@ class InvoiceController extends Controller
         $no_JNL =  $noJNL ? $noJNL->no + 1 : 1;
 
         
-        return view('invoice.index', compact('transaksi','ids','invoice_count','array_jumlah', 'no_JNL'));
+        return view('invoice.index', compact('transaksi','ids','invoice_count','array_jumlah', 'no_JNL','draft_inv'));
     }
 
     public function preview(Request $request)
@@ -133,6 +137,7 @@ class InvoiceController extends Controller
                     $data[$id_transaksi]['keterangan'][$idx] = $trx->keterangan;
 
                     if ($suratJalan){
+                        $data[$id_transaksi]['id_sj'][$idx] = $suratJalan->id;
                         $data[$id_transaksi]['no_cont'][$idx] = $suratJalan->no_cont;
                         $data[$id_transaksi]['no_po'][$idx] = $suratJalan->no_po;
                         $data[$id_transaksi]['tgl_sj'][$idx] = $suratJalan->tgl_sj;
@@ -194,7 +199,6 @@ class InvoiceController extends Controller
                             }
                         }
                     }
-                    
                 }
             }
         }
@@ -243,6 +247,7 @@ $validatedData = $request->validate([
             'data.*.satuan' => 'nullable|array',
             'data.*.id_nsfp' => 'required|string',
             'data.*.no' => 'required|string',
+            'data.*.id_sj' => 'required',
         ]);
 
         
@@ -260,6 +265,7 @@ $validatedData = $request->validate([
             foreach ($data as $id_transaksi => $items) {
                 // Mengambil data dari items
                 $jumlah = $items['jumlah'][0]; // Ambil nilai pertama
+                $id_sj = $items['id_sj'][0] ?? null;
                 $satuan_jual = $items['satuan_jual'][0];
                 $harga_jual = $items['harga_jual'][0];
                 $keterangan = $items['keterangan'][0] ?? null;
@@ -268,6 +274,10 @@ $validatedData = $request->validate([
     
             // Hitung subtotal
             $subtotal = $jumlah * $harga_jual;
+
+            $draft_inv = DraftInvoice::where('id_sj',$id_sj)
+            ->where('id_transaksi',$id_transaksi)
+            ->first();
     
             // Simpan Invoice
             $invoiceRecord = Invoice::create([
@@ -280,6 +290,15 @@ $validatedData = $request->validate([
                 'no' => $no,
                 'tgl_invoice' => $tgl_invoice,
             ]);
+
+            $draft_inv->update([
+                'invoice_id' => $invoiceRecord->id,
+                'jumlah' => $jumlah,
+                'harga' => $harga_jual,
+                'subtotal' => $subtotal
+            ]);
+
+            
     
             // Update transaksi
             $trx = Transaction::find($id_transaksi); // Pastikan untuk mengambil transaksi

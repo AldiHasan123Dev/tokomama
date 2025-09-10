@@ -26,4 +26,8 @@ class SuratJalan extends Model
     {
         return $this->hasMany(Transaction::class, 'id_surat_jalan');
     }
+    public function draftInvoices()
+    {
+        return $this->hasMany(DraftInvoice::class, 'id_sj', 'id');
+    }
 }

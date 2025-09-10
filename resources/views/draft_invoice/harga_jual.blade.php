@@ -12,16 +12,15 @@
                 box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
             }
         </style>
-        <x-slot:tittle>Pengambilan Nomor Faktur Untuk Invoice</x-slot:tittle>
-        <form action="{{ route('preview.invoice') }}" method="post" id="form">
+        <x-slot:tittle>Input Harga Jual untuk Draft Invoice</x-slot:tittle>
+        <form action="{{ route('pending.invoice.preview_DraftInv') }}" method="post" id="form">
             @csrf
-            {{-- <p class="server-time">
-                Silakan pilih Tgl Invoice, sebab Tgl dan Jam Server adalah : <span id="server-time">{{ now()->format('Y-m-d H:i:s') }}</span>
-            </p> --}}
-              <input type="date" disabled  value="{{ $draft_inv }}">
-            <input type="hidden" name="tgl_invoice"  value="{{ $draft_inv }}">
-            <input type="text" value="{{ $no_JNL }}/TM/{{ date('y') }}" name="tipe" readonly>
-            <input type="hidden" name="invoice_count" value="{{ $invoice_count }}">
+            <p class="server-time">
+                Silakan pilih Tgl Draft Invoice, sebab Tgl dan Jam Server adalah : <span id="server-time">{{ now()->format('Y-m-d H:i:s') }}</span>
+            </p>
+            <input type="date" name="tgl_draft_invoice" value="{{ date('Y-m-d') }}">
+          
+            <input type="hidden" name="draft_invoice_count" value="{{ $invoice_count }}">
             
             <div style="overflow-x: auto; margin-top: 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
                 <table style="border-collapse: collapse; width: 100%; margin: 0 auto;">
@@ -45,7 +44,7 @@
                             <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">{{ $item->barang->nama }}</td>
                             <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">{{ $item->satuan_jual }}</td>
                             <td hidden style="border: 1px solid #ddd; padding: 12px; text-align: center;" class="invoice-{{ $item->id }}">
-                                <select hidden name="invoice[{{ $item->id }}][]" class="select w-full">
+                                <select hidden name="draft_invoice[{{ $item->id }}][]" class="select w-full">
                                     <option value="1" selected>Invoice Ke - 1</option>
                                     @for ($i = 2; $i <= $loop->index + 1; $i++)
                                         <option value="{{ $i }}" {{ $i == $loop->index + 1 ? 'selected' : '' }}>Invoice Ke - {{ $i }}</option>
@@ -54,6 +53,7 @@
                             </td>                       
                             <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
                                 <input type="hidden" id="qty-{{ $item->id }}-1" name="jumlah[{{ $item->id }}][]" value="{{ $item->sisa }}">
+                                 <input type="hidden" id="surat_jalan-{{ $item->id }}-1" name="surat_jalan[{{ $item->id }}][]" value="{{ $item->suratJalan->nomor_surat }}">
                                 {{ $item->sisa }}
                             </td>
                             <td style="border: 1px solid #ddd; padding: 12px; text-align: end;" id="harga_beli_ppn-{{ $item->id }}-1">
@@ -107,7 +107,7 @@
                 </table>
             </div>
 
-            <button  class="btn bg-green-500 font-semibold justify-align-center text-white w-full mt-3" type="submit">Preview Invoice</button>
+            <button  class="btn bg-green-500 font-semibold justify-align-center text-white w-full mt-3" type="submit">Preview Draft Invoice</button>
         </form>
     </x-keuangan.card-keuangan>
 

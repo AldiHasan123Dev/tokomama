@@ -10,16 +10,16 @@
     <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets/css/ui.jqgrid-bootstrap5.css') }}" />
 
     <x-keuangan.card-keuangan>
-        <x-slot:tittle>Draft Invoice ready to Invoice Final</x-slot:tittle>
+        <x-slot:tittle>SJ siapp draft invoice</x-slot:tittle>
         <x-slot:button>
-            <form action="{{ route('invoice-transaksi.index') }}" method="get" id="form">
+            <form action="{{ route('pending.invoice.harga_jual') }}" method="get" id="form">
                 <input type="hidden" name="id_transaksi" id="id_transaksi">
                 <div class="flex gap-2">
                     <div class="flex-gap-2">
                         <input type="hidden" name="invoice_count" id="count" value="1"
                             class="rounded-md form-control text-center" min="1" style="height: 28px">
                     </div>
-                    <button type="submit" class="btn font-semibold bg-green-500 btn-sm text-white mt-4">Buat
+                    <button type="submit" class="btn font-semibold bg-green-500 btn-sm text-white mt-4">Buat Draf
                         Invoice</button>
                 </div>
             </form>
@@ -45,7 +45,7 @@
             $(document).ready(function() {
                 // Inisialisasi jqGrid
                 let table = $("#table-getfaktur").jqGrid({
-                    url: "{{ route('invoice.pre-invoice1') }}", // Ganti dengan URL API yang benar
+                    url: "{{ route('invoice.pre-invoice') }}", // Ganti dengan URL API yang benar
                     mtype: "GET",
                     datatype: "json",
                     colModel: [{
@@ -68,8 +68,8 @@
                         },
                         {
                             search: true,
-                            name: 'draft_no',
-                            index: 'draft_no',
+                            name: 'nomor_surat',
+                            index: 'nomor_surat',
                             width: 130,
                             label: 'Nomor Surat',
                             align: 'center'
@@ -163,8 +163,8 @@
                             align: 'center'
                         },
                         {
-                            name: 'id_transaksi',
-                            index: 'id_transaksi',
+                            name: 'id',
+                            index: 'id',
                             hidden: true
                         },
                     ],

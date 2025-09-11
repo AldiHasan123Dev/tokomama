@@ -316,6 +316,7 @@
                                     foreach ($items['invoice'] as $idx => $invoice) {
                                         // Jika salah satu item memiliki status PPN 'ya', set $has_ppn menjadi true
                                         if ($items['status_ppn'][$idx] == 'ya') {
+                                            $total = $total * 1.11;
                                             $has_ppn = true;
                                             break 2; // Keluar dari kedua loop jika status PPN ditemukan
                                         }
@@ -324,7 +325,7 @@
                             }
 
                             // Hitung total PPN jika ada
-                            $total_with_ppn = $has_ppn ? $total + $total_ppn : $total;
+                            $total_with_ppn = $total;
                         @endphp
                         @if ($barang->status_ppn == 'ya')
                             {{ ucwords(strtolower(terbilang(round($total_with_ppn)))) }}
@@ -446,7 +447,7 @@
                         }
 
                         // Hitung total PPN jika ada
-                        $total_with_ppn = $has_ppn ? $total + $total_ppn : $total;
+                        $total_with_ppn = $total;
                     @endphp
 
                     {{-- Menampilkan total --}}

@@ -277,9 +277,8 @@
                             </td>
                             <td>
                                 <select name="tipe[0]" class="select select-bordered w-full">
-                                    <option value="" selected>Pilih Tujuan Rek</option>
+                                    <option value="BBMN" selected>Rekening Baru / xxx.xxx.xxx6.008</option>
                                     <option value="BBM">Rekening Lama / xxx.xxx.xxx6.005</option>
-                                    <option value="BBMN">Rekening Baru / xxx.xxx.xxx6.008</option>
                                 </select>
                             </td>
                             <td>

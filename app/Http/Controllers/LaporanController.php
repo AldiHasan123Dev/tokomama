@@ -618,11 +618,13 @@ private function calculateSisa($row)
                     }
 
                     $nominal = preg_replace('/[^0-9]/', '', $request->nominal[$key]);
+                    $tipe = $request->tipe[$key];
 
                     BiayaInv::create([
                         'id_inv'       => $invoiceId,
                         'id_trans'     => $invoice->id_transaksi, // ✅ pastikan field ini dikirim
                         'tgl_pembayar' => $request->tanggal_bayar,
+                        'tipe' => $tipe,
                         'nominal'      => $nominal,
                     ]);
                 }
@@ -644,6 +646,8 @@ private function calculateSisa($row)
             $tipe_null = request('tipe_null');
             $tipe_bbmn = request('tipe_bbmn');
             $tipe_bbm = request('tipe_bbm');
+             $tipe_bbm1 = request('tipe_bbm1');
+              $tipe_bbmn1 = request('tipe_bbmn1');
         
 $query = BiayaInv::with(['invoice', 'transaksi.suratJalan.customer'])
     ->join('invoice', 'biaya_inv.id_inv', '=', 'invoice.id')
@@ -677,7 +681,6 @@ if ($tipe_bbmn){
 if (request()->filled('tgl_pembayar1') || request()->filled('tgl_pembayar1') && request()->filled('inv1')) {
     $query->whereDate('biaya_inv.tgl_pembayar', request('tgl_pembayar1'))->where('invoice.invoice', 'LIKE', '%' . request('inv1') . '%');
 }
-
 }
 
 if ($tipe_bbm){
@@ -686,6 +689,23 @@ if (request()->filled('tgl_pembayar2') || request()->filled('tgl_pembayar2') && 
     $query->whereDate('biaya_inv.tgl_pembayar', request('tgl_pembayar2'))->where('invoice.invoice', 'LIKE', '%' . request('inv2') . '%');
 }
 
+}
+
+
+if ($tipe_bbm1) {
+    $query->where('tipe','BBM');
+    if (request()->filled('tgl_pembayar3') && request()->filled('inv3')) {
+        $query->whereDate('biaya_inv.tgl_pembayar', request('tgl_pembayar3'))
+              ->where('invoice.invoice', 'LIKE', '%' . request('inv3') . '%');
+    }
+}
+
+if ($tipe_bbmn1) {
+    $query->where('tipe','BBMN');
+    if (request()->filled('tgl_pembayar5') || request()->filled('inv5')) {
+              $query->whereDate('biaya_inv.tgl_pembayar', request('tgl_pembayar5'))
+              ->where('invoice.invoice', 'LIKE', '%' . request('inv5') . '%');
+    }
 }
 
 // Ambil semua data
@@ -711,6 +731,7 @@ $invoices = $query->get();
                 $totalNominal = $items->sum('nominal');
                 $ids = $items->pluck('id')->implode(',');
                 $nominal = $items->pluck('nominal')->implode(',');
+                $noRek = $first->tipe === 'BBM' ? 'Rekening Lama / xxx.xxx.xxxx6.005' : 'Rekening Baru / xxx.xxx.xxxx6.008';
             
                 return [
                     'id'           => $ids,
@@ -720,6 +741,7 @@ $invoices = $query->get();
                     'customer'     => optional(optional($first->transaksi)->suratJalan)->customer->nama ?? '-',
                     'invoice'      => $invoice,
                     'bayar'        => $totalNominal,
+                    'no_rek'       => $noRek,
                     'list_nominal' => $nominal,
                 ];
             })->values();

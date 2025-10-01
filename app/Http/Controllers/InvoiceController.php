@@ -564,10 +564,7 @@ $validatedData = $request->validate([
                  
                     //Jurnal Hutang No PPN
                     
-                    // Simpan jurnal setelah semua data dikumpulkan
-                    foreach ($supplierJournals as $jurnalData) {
-                        Jurnal::create($jurnalData);
-                    }                    
+                    // Simpan jurnal setelah semua data dikumpulkan            
                              //coa 6.2.1 = Biaya Operasional Trading Bulan Berjalan(Debit)
                              foreach ($result as $item) {
                                 Jurnal::create([

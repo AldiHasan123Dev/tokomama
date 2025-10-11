@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-harga', [DirectSaleController::class, 'getHarga']);
     Route::post('/master/blokir',  [CustomerController::class, 'blokir'])->name('master.customer.blokir.update');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profileUpdate/{id}', [ProfileController::class, 'update1'])->name('profile.update1');
     Route::get('/master/blokir-customer', [CustomerController::class, 'blokir_cust'])->name('blokir.cust');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/barang-masuk/monitor-stock', [StockController::class, 'monitor_stock'])->name('monitor-stock');

@@ -133,7 +133,7 @@
             my_modal_6.showModal();
           });
 
-          function getData(id, name_user, email, id_role, phone, address, name_role) {
+          function getData(id, name_user, email, id_role, phone, address, name_role, password) {
             $('#dialog').html(`<dialog id="my_modal_7" class="modal">
               <div class="modal-box  w-11/12 max-w-2xl pl-10 py-9 ">
               <form method="dialog">
@@ -160,6 +160,10 @@
                   <label class="input border flex items-center gap-2 mt-3">
                     Email:
                     <input type="text" name="email" value="${email}" class="border-none" />
+                  </label>
+                   <label class="input border flex items-center gap-2 mt-3">
+                    Password:
+                    <input type="text" name="password" value="" class="border-none" />
                   </label>
                   <label class="input border flex items-center gap-2 mt-3">
                     Phone :

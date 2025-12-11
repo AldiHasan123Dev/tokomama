@@ -223,7 +223,7 @@
                     <button class="btn bg-orange-500 text-white font-bold hover:bg-gray-700">Verifikasi Rekap Bayar</button>
                 </a>
                  <a href="{{ route('jurnal.code') }}">
-                    <button class="btn bg-pink-500 text-white font-bold hover:bg-gray-700">Isi Kode</button>
+                    <button class="btn bg-pink-500 text-white font-bold hover:bg-gray-700">Isi Kode Jurnal Balik</button>
                 </a>
                  <a href="{{ route('jurnal.balik') }}">
                     <button class="btn bg-purple-500 text-white font-bold hover:bg-gray-700">Jurnal Balik</button>

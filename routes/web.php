@@ -19,6 +19,8 @@ use App\Http\Controllers\LabaRugi;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\AlatBeratController;
+use App\Http\Controllers\TarifController;
 use App\Http\Controllers\Neraca;
 use App\Http\Controllers\NopolController;
 use App\Http\Controllers\PajakController;
@@ -77,12 +79,21 @@ Route::middleware('auth')->group(function () {
 
 
     Route::put('/profileUpdate/{id}', [ProfileController::class, 'update1'])->name('profile.update1');
+    Route::get('jurnal-code', [JurnalController::class, 'code'])->name('jurnal.code');
+    Route::get('/jurnal-balik/cari', [JurnalController::class, 'JurnalBalikcari'])
+    ->name('jurnal-balik.cari');
+    Route::get('jurnal-balik', [JurnalController::class, 'balik'])->name('jurnal.balik');
     Route::get('/master/blokir-customer', [CustomerController::class, 'blokir_cust'])->name('blokir.cust');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/barang-masuk/monitor-stock', [StockController::class, 'monitor_stock'])->name('monitor-stock');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/jurnal/kode/list', [JurnalController::class, 'listKodeJurnal'])
+    ->name('jurnal.kode.list');
+    Route::post('jurnal-balik/proses', [JurnalController::class, 'prosesJurnalBalik'])
+    ->name('jurnal-balik.proses');
+    Route::post('/jurnal/simpan-kode', [JurnalController::class, 'simpanKode'])->name('jurnal.simpanKode');
     Route::get('/surat-jalan-cetak/{surat_jalan}', [SuratJalanController::class, 'cetak'])->name('surat-jalan.cetak');
-   Route::get('/keuangan/invoice-pending/cetak', [KeuanganController::class, 'cetakDraftInv'])->name('draft-invoice.cetak');
+    Route::get('/keuangan/invoice-pending/cetak', [KeuanganController::class, 'cetakDraftInv'])->name('draft-invoice.cetak');
     Route::get('/surat-jalan-tarif-barang', [SuratJalanController::class, 'tarif'])->name('surat-jalan.barang');
     Route::get('/barang-masuk/harga-beli', [SuratJalanController::class, 'harga_beli'])->name('harga_beli');
     Route::get('/surat-jalan/editBarang', [SuratJalanController::class, 'editBarang'])->name('surat-jalan.editBarang');
@@ -238,6 +249,22 @@ Route::prefix('master')->controller(BarangController::class)->middleware('auth')
     Route::post('barang_add', 'store')->name('master.barang.add');
     Route::post('barang_edit', 'update')->name('master.barang.edit');
     Route::post('barang_delete', 'destroy')->name('master.barang.delete');
+});
+
+Route::prefix('master')->controller(AlatBeratController::class)->middleware('auth')->group(function () {
+    Route::get('alat-berat', 'index')->name('master.alat_berat');
+    Route::get('alat-berat_list', 'datatable')->name('master.alat_berat.list');
+    Route::post('alat-berat_add', 'store')->name('master.alat_berat.add');
+    Route::post('alat-berat_edit', 'update')->name('master.alat_berat.edit');
+    Route::post('alat-berat_delete', 'destroy')->name('master.alat_berat.delete');
+});
+
+Route::prefix('master')->controller(TarifController::class)->middleware('auth')->group(function () {
+    Route::get('tarif', 'index')->name('master.tarif');
+    Route::get('tarif_list', 'datatable')->name('master.tarif.list');
+    Route::post('tarif_add', 'store')->name('master.tarif.add');
+    Route::post('tarif_edit', 'update')->name('master.tarif.edit');
+    Route::post('tarif_delete', 'destroy')->name('master.tarif.delete');
 });
 
 Route::prefix('master')->controller(NopolController::class)->middleware('auth')->group(function () {

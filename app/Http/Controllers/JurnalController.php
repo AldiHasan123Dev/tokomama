@@ -89,7 +89,371 @@ class JurnalController extends Controller
         // Return ke view
         return view('jurnal.jurnal', compact('data', 'MonJNL', 'notBalance', 'LastJNL'));
     }
+
+   public function listKodeJurnal(Request $request)
+{
+    $month = $request->month_is ?? date('m');
+    $kredit = $request->kredit_is;
+    $debit = $request->debit_is;
+    $coa = $request->coa_id ?? 5;
+    $coa = (int)$coa;
+    $year  = $request->year_is ?? date('Y');
+    $type  = $request->tipe ?? 'bank';
+    $query = Jurnal::query()
+        ->select(
+            'jurnal.id',
+            'jurnal.kode',
+            'jurnal.tgl',
+            'jurnal.nomor',
+            'jurnal.invoice_external',
+            'jurnal.invoice',
+            'jurnal.container',
+            'jurnal.keterangan',
+            'jurnal.debit',
+            'jurnal.kredit',
+
+            // --- ambil coa_id
+            'jurnal.coa_id',
+
+            // --- ambil nama coa & nomor akun pakai AS
+            'coa.nama_akun as nama_akun',
+            'coa.no_akun as coa_no_akun'
+        )
+        ->leftJoin('coa', 'coa.id', '=', 'jurnal.coa_id');
+
+
+
+    // Filter tipe jurnal
+    if (!empty($type)) {
+        if ($type === 'kas') {
+            $query->whereIn('tipe', ['BKM', 'BKK']);
+        } elseif ($type === 'bank') {
+            $query->whereIn('tipe', ['BBK', 'BBM', 'BBKN', 'BBMN']);
+        } elseif ($type === 'ocbc') {
+            $query->whereIn('tipe', ['BBKO', 'BBMO']);
+        } else {
+            $query->where('tipe', $type);
+        }
+
+        // Filter bulan & tahun hanya jika tipe dipilih
+        if (!empty($month)) {
+            $query->whereMonth('tgl', $month);
+        }
+        if (!empty($year)) {
+            $query->whereYear('tgl', $year);
+        }
+        if (!empty($debit)) {
+            $query->where('debit', '>', 0);
+        }
+        if (!empty($kredit)) {
+            $query->where('kredit', '>', 0);
+        }
+         if (!empty($coa)) {
+            $query->where('coa_id', $coa);
+        }
+    }
+
+    $query->orderBy('tgl', 'DESC');
+
+
+    // --- PAGINATION SESUAI jqGrid --- //
+    $page   = $request->page ?? 1;
+    $limit  = $request->rows ?? 500;
+
+    $count  = $query->count();
+    $totalPages = ($count > 0) ? ceil($count / $limit) : 1;
+
+    if ($page > $totalPages) {
+        $page = $totalPages;
+    }
+
+    $start = ($page - 1) * $limit;
+    if ($start < 0) $start = 0;
+
+    $rows = $query->skip($start)->take($limit)->get();
+
+    return response()->json([
+        'page'    => $page,
+        'total'   => $totalPages,
+        'records' => $count,
+        'rows'    => $rows
+    ]);
+}
+
+
+
+    public function code(){
+        $now = Carbon::now()->addMonths(1)->format('Y-m-d');
+        $last = Carbon::now()->subMonths(3)->format('Y-m-d');
+
+        $cacheKey = 'jurnal_unbalance_' . $last . '_' . $now;
+
+        $month = request('month') ?? date('m');
+        $year = request('year') ?? date('Y');
+        return view('jurnal.jurnal-code', compact('month', 'year'));
+    }
+
+        public function simpanKode(Request $request)
+    {
+        $data = $request->input('data');
+        foreach ($data as $row) {
+            DB::table('jurnal')
+                ->where('id', $row['id'])
+                ->update(['kode' => $row['kode']]); // pastikan kolom 'kode' ada
+        }
+
+        return response()->json(['status' => 'success']);
+    }
     
+
+        public function balik()
+    {
+        $coa = Coa::where('status', 'aktif')->orderBy('no_akun')->get();
+        $journals = Jurnal::select('kode', \DB::raw('MAX(id) AS id'))
+        ->whereIn('kode', function($query) {
+            $query->select(\DB::raw('DISTINCT kode'))
+                ->from('jurnal')
+                ->whereNotNull('kode');
+        })
+        ->whereNull('jurnal_balik')
+        ->groupBy('kode')
+        ->orderBy('kode')
+        ->get();
+        $no = Jurnal::where('tipe', 'BKK')->whereYear('tgl',date('Y'))->orderBy('no', 'desc')->first() ?? 0;
+        $no =  $no ? $no->no + 1 : 1;
+        $nomor = $no .'/BKK-TM' . '/' . date('Y');
+
+        return view('jurnal.jurnal-balik', 
+        compact('coa','journals','nomor','no')
+    );
+    }
+
+   
+        public function prosesJurnalBalik(Request $r)
+    {
+        $dataToInsert = [];
+        $no  = $r->no;
+        $nomor = $r->nomor;
+        $new_ket = $r->new_keterengan ?? "";
+        $jurnal = $r->jurnal;
+        $coa_tujuan_d = $r->tujuan_debit;
+        $coa_tujuan_k = $r->tujuan_credit;
+        $coa_awal_d = $r->awal_debit;
+        $coa_awal_k = $r->awal_credit;
+        $kode = $r->kode;
+
+        $new_coa = $coa_tujuan_d ?? $coa_tujuan_k;
+        $total = 0;
+
+    $lastJurnalLama = null; // untuk menyimpan jurnal lama terakhir
+
+foreach ($jurnal as $item) {
+
+    $id = $item['id'];
+
+    // Ambil jurnal lama jika ID ada
+    $jurnalLama = ($id !== null) ? Jurnal::find($id) : null;
+
+    // ============================
+    // 1. Jika ID NULL → jurnal baru
+    // ============================
+    if ($id === null) {
+
+        // Gunakan Jurnal Lama Terakhir
+        if ($lastJurnalLama) {
+            $dataToInsert[] = [
+                'coa_id'     => $new_coa,
+                'tgl'        => now()->toDateString(),
+                'debit'      => $item['debit'],
+                'kredit'     => $item['kredit'],
+                // ambil dari jurnalLama terakhir
+                'invoice'           => $lastJurnalLama->invoice,
+                'invoice_external'  => $lastJurnalLama->invoice_external,
+                'jurnal_balik'      => $lastJurnalLama->id,
+                'kode'              => $lastJurnalLama->kode,
+                'nopol'      => $lastJurnalLama->nopol,
+                'container'  => $lastJurnalLama->container,
+                'keterangan' => $new_ket,
+                'no'         => $no,
+                'nomor'      => $nomor,
+                'keterangan_buku_besar_pembantu' => $nomor,
+                'tipe'       => $r->tipe,
+            ];
+        }
+
+        continue;
+    }
+
+    // Jika sampai sini berarti ID ADA → simpan sebagai last jurnal lama
+    $lastJurnalLama = $jurnalLama;
+
+    // ============================
+    // Hitung total
+    // ============================
+    $total += $coa_awal_d
+        ? $jurnalLama->debit
+        : $jurnalLama->kredit;
+
+    // ============================
+    // 2. Tambah jurnal balik
+    // ============================
+    if ($coa_tujuan_k) {
+        $dataToInsert[] = [
+            'coa_id'     => $jurnalLama->coa_id,
+            'tgl'        => now()->toDateString(),
+            'kredit'     => $jurnalLama->debit,
+            'debit'      => $jurnalLama->kredit,
+            'invoice'    => $jurnalLama->invoice,
+            'invoice_external'  => $jurnalLama->invoice_external,
+            'jurnal_balik' => $jurnalLama->id,
+            'kode'       => $jurnalLama->kode,
+            'keterangan' => $jurnalLama->keterangan,
+            'no'         => $no,
+            'nomor'      => $nomor,
+            'nopol'      => $jurnalLama->nopol,
+            'container'  => $jurnalLama->container,
+            'keterangan_buku_besar_pembantu' => $nomor,
+            'tipe'       => $r->tipe,
+        ];
+    } else {
+        $dataToInsert[] = [
+            'coa_id'     => $jurnalLama->coa_id,
+            'tgl'        => now()->toDateString(),
+            'kredit'     => $jurnalLama->debit,
+            'debit'      => $jurnalLama->kredit,
+            'invoice'    => $jurnalLama->invoice,
+            'invoice_external'  => $jurnalLama->invoice_external,
+            'jurnal_balik' => $jurnalLama->id,
+            'kode'       => $jurnalLama->kode,
+            'keterangan' => $jurnalLama->keterangan,
+            'no'         => $no,
+            'nomor'      => $nomor,
+            'nopol'      => $jurnalLama->nopol,
+            'container'  => $jurnalLama->container,
+            'keterangan_buku_besar_pembantu' => $nomor,
+            'tipe'       => $r->tipe,
+        ];
+    }
+}
+
+
+    DB::beginTransaction();
+
+    try {
+        // Step 1: Insert data secara bertahap (hindari limit MySQL)
+        foreach (array_chunk($dataToInsert, 50) as $batch) {
+            Jurnal::insert($batch);
+        }
+
+        // Step 2: Ambil ulang data yang baru dimasukkan
+        $insertedJurnal = Jurnal::where('nomor', $request->nomor ?? $nomor)
+                                ->whereNotNull('jurnal_balik')
+                                ->orderBy('id', 'asc')
+                                ->get();
+
+        if ($insertedJurnal->count() !== count($dataToInsert)) {
+            throw new \Exception('Jumlah data yang dimasukkan tidak sesuai.');
+        }
+
+        // Step 3: Update jurnal lama dengan referensi balik
+        foreach ($insertedJurnal as $index => $j) {
+            $original = $dataToInsert[$index];
+            if (!empty($original['jurnal_balik'])) {
+                Jurnal::where('id', $original['jurnal_balik'])
+                      ->update(['jurnal_balik' => $j->id]);
+            }
+        }
+
+        DB::commit();
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+
+        \Log::error('Gagal menyimpan jurnal balik', [
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+
+       
+    }
+
+        // ✔ PROSES BARIS TERAKHIR (INDEX TERAKHIR ARRAY)
+
+        return response()->json([
+            'status' => 'success',
+            'msg' => 'Data diterima',
+            'coa_id_kredit' => $coa_tujuan_k,
+            'coa_id_debit' => $coa_tujuan_d,
+            'no' => $no,
+            'nomor' => $nomor,
+            'jumlah_data' => count($jurnal),
+            'data' => $dataToInsert
+        ]);
+    }
+
+
+
+public function JurnalBalikcari(Request $req)
+{
+    $q = Jurnal::query()
+        ->leftJoin('coa', 'jurnal.coa_id', '=', 'coa.id')
+        ->whereNull('jurnal_balik')
+        ->select(
+            'jurnal.*',
+            'coa.no_akun',
+            'coa.nama_akun'
+        );
+    $coa_tujuan = Coa::find($req->coa4 ?? $req->coa3);
+
+    if ($req->tanggal_awal && $req->tanggal_akhir) {
+        $q->whereBetween('jurnal.tgl', [$req->tanggal_awal, $req->tanggal_akhir]);
+    }
+
+    if ($req->kode) {
+        $q->where('jurnal.kode', $req->kode);
+    }
+
+    if ($req->coa1) {
+        $q->where('jurnal.coa_id', $req->coa1);
+    }
+
+    if ($req->coa2) {
+        $q->where('jurnal.coa_id', $req->coa2);
+    }
+
+    // ==== CLONE QUERY UNTUK HITUNG SUM ====
+    $sumQuery = clone $q;
+
+    // === DAPATKAN DATA DETAIL ===
+    $data = $q->orderBy('jurnal.tgl')->get()->map(function ($item,$coa_tujuan) {
+        return [
+            'id'               => $item->id,
+            'nomor'            => $item->nomor,
+            'tgl'              => $item->tgl,
+            'kode'             => $item->kode,
+            'invoice'          => $item->invoice,
+            'invoice_external' => $item->invoice_external,
+            'keterangan'       => $item->keterangan,
+            'debit'            => number_format($item->debit, 0, ',', '.'),
+            'kredit'           => number_format($item->kredit, 0, ',', '.'),
+            'coa_id'           => $item->coa_id,
+            'akun'             => $item->no_akun . ' - ' . $item->nama_akun,
+        ];
+    });
+
+    // === SUM DARI DATABASE ===
+    $sumDebit  = $sumQuery->sum('jurnal.debit');
+    $sumKredit = $sumQuery->sum('jurnal.kredit');
+    $totalRecord = $sumQuery->count();
+
+    return response()->json([
+        'data'         => $data,
+        'sum_debit'    => $sumDebit,
+        'sum_kredit'   => $sumKredit,
+        'total_record' => $totalRecord
+    ]);
+}
+
 
 
 

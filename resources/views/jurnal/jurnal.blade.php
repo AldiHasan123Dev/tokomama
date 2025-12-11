@@ -222,6 +222,12 @@
                 <a href="{{ route('keuangan.jurnal-bayar') }}">
                     <button class="btn bg-orange-500 text-white font-bold hover:bg-gray-700">Verifikasi Rekap Bayar</button>
                 </a>
+                 <a href="{{ route('jurnal.code') }}">
+                    <button class="btn bg-pink-500 text-white font-bold hover:bg-gray-700">Genarate Code Jurnal Balik</button>
+                </a>
+                 <a href="{{ route('jurnal.balik') }}">
+                    <button class="btn bg-purple-500 text-white font-bold hover:bg-gray-700">Jurnal Balik</button>
+                </a>
 
             <div class="flex flex-row mb-16 mt-8">
                 <label for="month" class="font-bold mt-2">Bulan:</label>

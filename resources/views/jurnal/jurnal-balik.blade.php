@@ -192,8 +192,8 @@
                 </div>
 
                 <div class="flex flex-col w-[280px]">
-                    <label class="font-bold">COA Kredit Tujuan:</label>
-                    <select id="filter-coa-3" class="border rounded-lg w-[280px]">
+                    <label class="font-bold">COA Debit Tujuan:</label>
+                    <select id="filter-coa-4" class="border rounded-lg w-[280px]">
                         <option value=""></option>
                         @foreach ($coa as $c)
                             <option value="{{ $c->id }}">{{ $c->no_akun }} - {{ $c->nama_akun }}</option>
@@ -202,8 +202,8 @@
                 </div>
 
                 <div class="flex flex-col w-[280px]">
-                    <label class="font-bold">COA Debit Tujuan:</label>
-                    <select id="filter-coa-4" class="border rounded-lg w-[280px]">
+                    <label class="font-bold">COA Kredit Tujuan:</label>
+                    <select id="filter-coa-3" class="border rounded-lg w-[280px]">
                         <option value=""></option>
                         @foreach ($coa as $c)
                             <option value="{{ $c->id }}">{{ $c->no_akun }} - {{ $c->nama_akun }}</option>
@@ -221,7 +221,6 @@
             <div id="result-table" class="hidden mt-4 p-5 bg-white border rounded-xl shadow-lg">
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-xl font-bold">Hasil Pencarian Jurnal</h2>
-                    <button id="btn-simpan-penampungan" class="btn-hijau">Simpan Ke Penampungan</button>
                 </div>
 
                 <div id="summary-hasil" class="hidden mb-3 p-3 border rounded-lg bg-gray-50 flex gap-10 font-semibold">
@@ -246,6 +245,9 @@
                         </thead>
                         <tbody></tbody>
                     </table>
+                    <div class="flex items-end justify-end mt-3 mb-3 ml-2 mr-2">
+                        <button id="btn-simpan-penampungan" class="btn-hijau">Simpan Ke Penampungan</button>
+                    </div>
                 </div>
             </div>
 
@@ -254,17 +256,7 @@
                 <div class="flex items-center justify-between mb-3">
                     <div>
                         <h2 class="text-xl font-bold">Pre-View Jurnal Balik</h2>
-
-                        <!-- INPUT DISABLED UNTUK MENAMPILKAN NOMOR -->
-                        <input type="text" class="mt-2 border rounded px-3 py-1 bg-gray-100"
-                            value="{{ $nomor }}" disabled>
-
-                        <!-- INPUT HIDDEN UNTUK KIRIM NILAI ASLI -->
-                        <input type="hidden" id ="no" name="no" value="{{ $no }}">
-                        <input type="hidden" id ="nomor" name="nomor" value="{{ $nomor }}">
                     </div>
-
-                    <button id="btn-simpan-jurnal-balik" class="btn-hijau">Jurnal Balik</button>
                 </div>
 
 
@@ -289,6 +281,15 @@
                         </thead>
                         <tbody></tbody>
                     </table>
+                    <div class="flex items-center justify-between mt-3 mb-3 ml-2 mr-2">
+                        <input type="text" class="mt-2 border rounded px-3 py-1 bg-gray-100"
+                            value="{{ $nomor }}" disabled>
+
+                        <!-- INPUT HIDDEN UNTUK KIRIM NILAI ASLI -->
+                        <input type="hidden" id ="no" name="no" value="{{ $no }}">
+                        <input type="hidden" id ="nomor" name="nomor" value="{{ $nomor }}">
+                        <button id="btn-simpan-jurnal-balik" class="btn-hijau">Proses Jurnal Balik</button>
+                    </div>
                 </div>
             </div>
 
@@ -311,8 +312,13 @@
         $(document).ready(function() {
 
             // INIT SELECT2
-            $('#filter-code, #filter-coa-1, #filter-coa-2, #filter-coa-3, #filter-coa-4').select2({
+            $('#filter-coa-1, #filter-coa-2, #filter-coa-3, #filter-coa-4').select2({
                 placeholder: "Pilih COA",
+                allowClear: true,
+                width: 'resolve'
+            });
+            $('#filter-code').select2({
+                placeholder: "Pilih Kode Jurnal",
                 allowClear: true,
                 width: 'resolve'
             });
@@ -602,6 +608,37 @@
             let tujuan_debit = $("#filter-coa-4").val();
             let kode = $("#filter-code").val();
             let new_keterangan = $("#keterangan_new").val() || "";
+
+            if (!no) {
+                alert("Terjadi kesalahan dalam mengambil data, silahkan tekan tombol cari jurnal ulang!");
+                $("#loading-overlay").removeClass("active");
+                return;
+            }
+            if (!nomor) {
+                alert("Terjadi kesalahan dalam mengambil data, silahkan tekan tombol cari jurnal ulang!");
+                $("#loading-overlay").removeClass("active");
+                return;
+            }
+            if (!kode) {
+                alert("Terjadi kesalahan dalam mengambil data, silahkan tekan tombol cari jurnal ulang!");
+                $("#loading-overlay").removeClass("active");
+                return;
+            }
+            if (!awal_debit && !awal_credit) {
+                alert("COA awal wajib dipilih (debit atau kredit)!");
+                $("#loading-overlay").removeClass("active");
+                return;
+            }
+            if (!tujuan_debit && !tujuan_credit) {
+                alert("COA tujuan wajib dipilih (debit atau kredit)!");
+                $("#loading-overlay").removeClass("active");
+                return;
+            }
+             if (!new_keterangan) {
+                alert("Keterangan wajib diisi pada baris kosong!");
+                $("#loading-overlay").removeClass("active");
+                return;
+            }
 
             // Kumpulkan semua data di penampungan
             let dataJurnal = [];

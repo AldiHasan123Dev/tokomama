@@ -686,6 +686,7 @@
                     // Optional: reset tabel penampungan
                     $("#tabel-penampungan tbody").empty();
                     $("#summary-penampungan").addClass("hidden");
+                    location.reload(); 
                 },
 
                 error: function() {

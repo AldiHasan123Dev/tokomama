@@ -47,6 +47,7 @@ Route::post('/coa', [CoaController::class, 'dataTable'])->name('coa.data');
 Route::post('/jurnal-data', [JurnalController::class, 'dataTable'])->name('jurnal.data');
 
 Route::get('/pre-invoice', [InvoiceController::class, 'dataTable'])->name('invoice.pre-invoice');
+Route::get('/pre-invoice-ab', [InvoiceController::class, 'dataTable2'])->name('invoice.pre-invoice-ab');
 Route::get('/pre-invoice1', [InvoiceController::class, 'dataTable1'])->name('invoice.pre-invoice1');
 Route::post('/pre-invoice', [InvoiceController::class, 'ambil'])->name('invoice.pre-invoice.ambil');
 

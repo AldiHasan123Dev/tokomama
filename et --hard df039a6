@@ -1,0 +1,259 @@
+[33m12a85a2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to HEAD~1
+[33mdf039a6[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{1}: commit: update: master customer ab.tarif.alat berat
+[33m12a85a2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{2}: commit: update : jurnal balik
+[33m4249f0a[m HEAD@{3}: commit: update: jurnal balik view
+[33m1608f32[m HEAD@{4}: commit: update: jurnal balik dan code 3
+[33m3aa6704[m HEAD@{5}: commit: update: jurnal balik dan jurnal kode
+[33m76e29da[m HEAD@{6}: commit: update: new fitur jurnal balik dan jurnal code
+[33mec41fb5[m HEAD@{7}: commit: update: fix login
+[33mc22961d[m HEAD@{8}: commit: update: register non aktif
+[33m8045c47[m HEAD@{9}: commit: update: create sj tambah label sales
+[33m08fd890[m HEAD@{10}: commit: update: profile route
+[33m10b13df[m HEAD@{11}: commit: update : data user
+[33mcead9f4[m HEAD@{12}: commit: update: update profile
+[33ma2db8bf[m HEAD@{13}: commit: update: jurnal merger validasi
+[33m83a63b1[m HEAD@{14}: commit: update: erorr untuk pembuatan inv dan jurnal di bulan lalu untuk bulan skearang
+[33m4c993e9[m HEAD@{15}: commit: update: rekap pembayaran invoice
+[33m6f9c1ab[m HEAD@{16}: commit: update: rekap pembayaran inv
+[33m386217c[m HEAD@{17}: commit: update: perbaikan pre inv dan pre draft inv
+[33m33f432b[m HEAD@{18}: commit: update menu draft invoices
+[33m895f817[m HEAD@{19}: commit: update : tampilan invoice, menambahkan colom customer
+[33m8ad87d7[m HEAD@{20}: commit: update: editbarang supportkoma
+[33m58057fe[m HEAD@{21}: commit: update: invoice pdf
+[33m09c6a95[m HEAD@{22}: commit: update: tes
+[33me18bde1[m HEAD@{23}: pull --tags origin main: Merge made by the 'ort' strategy.
+[33m37cf1a9[m HEAD@{24}: commit: update: rekap piutang
+[33m98c94d8[m HEAD@{25}: commit: update: tipe jurnal
+[33md2175b3[m HEAD@{26}: commit: update: pencarian stock2
+[33mfc4b849[m HEAD@{27}: commit: update: pencarian stock
+[33me8c16ca[m HEAD@{28}: commit: update: jurnal new tipe
+[33m93e0087[m HEAD@{29}: commit: update: monitor stock
+[33m384e9de[m HEAD@{30}: commit: update: monitor stock
+[33m1876de4[m HEAD@{31}: commit: update: rekap piutang pencarian nominal dan reminders minimum stock
+[33me489bf1[m HEAD@{32}: commit: update: invoice
+[33mb34d7b2[m HEAD@{33}: commit: update: invoice rekening
+[33m608f339[m HEAD@{34}: commit: update: sales
+[33m63f7dbe[m HEAD@{35}: commit: update: master sales dan invoice
+[33meae797f[m HEAD@{36}: commit: update: invoice pdf
+[33m658a5fc[m HEAD@{37}: commit: update: ds-monitor
+[33md472a35[m HEAD@{38}: commit: update: customer blokir hingga di sj
+[33m06733bd[m HEAD@{39}: commit: update: rekap biaya inv, laporan piutang cust. omzet cust dan omset cust
+[33m22c2077[m HEAD@{40}: commit: update: rekap piutang
+[33m51cde72[m HEAD@{41}: commit: update: rekap piutang
+[33m4f8421a[m HEAD@{42}: commit: update: rekap piutang
+[33m4b5eaa9[m HEAD@{43}: commit: update: invoice
+[33mc2aac00[m HEAD@{44}: commit: update: invoices
+[33m198c5d3[m HEAD@{45}: commit: invoice update
+[33mdc12510[m HEAD@{46}: commit: update: invoice
+[33m338d508[m HEAD@{47}: commit: update: jurnal bayar inv
+[33m969b149[m HEAD@{48}: commit: update: harga
+[33m1801899[m HEAD@{49}: commit: update ds
+[33mfb29f58[m HEAD@{50}: commit: update: ds
+[33mce2f435[m HEAD@{51}: commit: update: new fiture direct sale
+[33m9747ae5[m HEAD@{52}: commit: update: new fitur
+[33m69bacd3[m HEAD@{53}: commit: update: invoice
+[33ma6995be[m HEAD@{54}: commit: update: alll
+[33m85dcaad[m HEAD@{55}: commit: update: monitor stock
+[33mf4127b7[m HEAD@{56}: commit: update:monitor
+[33m898c529[m HEAD@{57}: commit: update:monitor-stock
+[33m3dd79fa[m HEAD@{58}: commit: update:monitor stock
+[33me5c34a2[m HEAD@{59}: commit: update: kartu stock
+[33mab9c055[m HEAD@{60}: commit: update: lap-qty
+[33ma8d93e7[m HEAD@{61}: commit: update:lap-qty
+[33m3fddc3a[m HEAD@{62}: commit: update: lap-qty
+[33mca3f5a6[m HEAD@{63}: commit: update: new fiture lap-qty
+[33mf5c61cb[m HEAD@{64}: commit: update: monitor stock
+[33md5a3663[m HEAD@{65}: commit: update: neraca dan laba rugi
+[33mc5ad713[m HEAD@{66}: commit: update: lap piutang
+[33m6c5380c[m HEAD@{67}: commit: update: lap piutang
+[33m1e2e4bd[m HEAD@{68}: commit: update: rekap piutang
+[33m420f933[m HEAD@{69}: commit: update: rekap piutang
+[33mcc4aad4[m HEAD@{70}: commit: update: laporan rekap piutang
+[33m7f58cdf[m HEAD@{71}: commit: update: verifikasi bbm dan rekap pembayaran harian
+[33m578df7c[m HEAD@{72}: commit: update:rekap pembayaran harian dan verifkasi bbm
+[33m1c13768[m HEAD@{73}: commit: update: rekap pembayaran harian dan verifikasi bbm
+[33me83d73c[m HEAD@{74}: commit: update: export excel laporan ppn
+[33m21983de[m HEAD@{75}: commit: update: new verifikasi bbm
+[33m41594c6[m HEAD@{76}: commit: update: new verifikasi bbm
+[33m74ed17a[m HEAD@{77}: commit: update: rekap pembayaran harian
+[33m44a74d7[m HEAD@{78}: commit: upate:rekap pembayaran harian
+[33m90b9482[m HEAD@{79}: commit: update: rekap pemabayaran harian
+[33m6030abd[m HEAD@{80}: commit: update: new rekap pembayaran harian
+[33mfbbe39d[m HEAD@{81}: commit: update:
+[33me631c5b[m HEAD@{82}: commit: update: new rekap pembayaran harian
+[33m6c9b108[m HEAD@{83}: commit: update: new rekap pembayaran harian
+[33m0ff4aeb[m HEAD@{84}: commit: update: new rekap pembayaran harian
+[33mcb09f03[m HEAD@{85}: commit: update: rekap pembayaran harian
+[33m6ebbdc6[m HEAD@{86}: commit: update: rekap pembayaran harian
+[33m07e71c2[m HEAD@{87}: commit: update: rekap pembayaran harian
+[33m777f74a[m HEAD@{88}: commit: update: new rekap pembayaran harian
+[33m7977533[m HEAD@{89}: commit: upated: inv external
+[33m1486020[m HEAD@{90}: commit: upated: inv external
+[33mad24e49[m HEAD@{91}: commit: upated: inv external
+[33m208ddfb[m HEAD@{92}: commit: upated: inv external
+[33mbfdc938[m HEAD@{93}: commit: upated: inv external
+[33m972a03b[m HEAD@{94}: commit: update: jurnal
+[33m661f746[m HEAD@{95}: commit: update: invoice KWT
+[33m1f3e3b0[m HEAD@{96}: commit: update: monitoring stock
+[33m098961c[m HEAD@{97}: commit: update: invoice
+[33m45e209f[m HEAD@{98}: commit: update: monitoring stock
+[33mf27ffc9[m HEAD@{99}: commit: update: omzet total
+[33me704504[m HEAD@{100}: commit: update: bb pembantu pasangan coa_id 91
+[33m97ec938[m HEAD@{101}: commit: update: jurnal manual OCBC BBMO dan BBKO
+[33m9d9f63d[m HEAD@{102}: commit: update: fixed new kolom gudang
+[33m46957ee[m HEAD@{103}: commit: update: fixed new kolom gudang
+[33m2ba783c[m HEAD@{104}: commit: update: cetak sj,list sj dan new kolom gudang
+[33mf1db53e[m HEAD@{105}: commit: update: new fitur kartu stock di menu monitoring stock3
+[33mcebe3ef[m HEAD@{106}: commit: update: new fitur kartu stock di menu monitoring stock
+[33mdd96d66[m HEAD@{107}: commit: update: new fitur kartu stock di menu monitoring stock
+[33m816f08e[m HEAD@{108}: commit: update: laporan ppn
+[33m2668feb[m HEAD@{109}: commit: update invoice
+[33m70eff70[m HEAD@{110}: commit: update rekap piutang
+[33m7f86848[m HEAD@{111}: commit: update rekap piutang
+[33m44c46cd[m HEAD@{112}: commit: update rekap piutang
+[33ma72800b[m HEAD@{113}: commit: update rekap piutang
+[33mdcaf433[m HEAD@{114}: commit: update: Rekap piutang dan Edit Jurnal
+[33m07d57cd[m HEAD@{115}: commit: update: Rekap piutang dan Edit Jurnal
+[33ma129117[m HEAD@{116}: commit: update invoice
+[33m967a3d2[m HEAD@{117}: commit: update 28-02-25
+[33m1161ba3[m HEAD@{118}: commit: update fee sales
+[33maef505b[m HEAD@{119}: commit: update 28-02-25
+[33mdcfa3fd[m HEAD@{120}: commit: update 28-02-25
+[33m8dab1e1[m HEAD@{121}: commit: update: laporan ppn dan lap fee sales (front-end)
+[33maf7ce92[m HEAD@{122}: commit: update: laporan ppn dan lap fee sales (front-end)
+[33medeecbc[m HEAD@{123}: commit: update: edit sj
+[33mf6f7387[m HEAD@{124}: commit: update : invoice
+[33m5b9f6e5[m HEAD@{125}: commit: update invoice
+[33ma231535[m HEAD@{126}: commit: update invoice
+[33m1e1303d[m HEAD@{127}: commit: update invoice
+[33m69df523[m HEAD@{128}: commit: update: lap piutang
+[33md98dba9[m HEAD@{129}: commit: update: lap piutang
+[33m7f5ba7b[m HEAD@{130}: commit: update edit jurnal trucking
+[33m7df5baf[m HEAD@{131}: commit: update : edit jurnal
+[33m5f019d8[m HEAD@{132}: commit: update:jurnal filter group
+[33m3ae4c22[m HEAD@{133}: commit: update: filter tipe jurnal
+[33mcaf9a7d[m HEAD@{134}: commit: update: lap omzet customer
+[33m5a8befd[m HEAD@{135}: commit: update: monitoring stock
+[33m9c7022b[m HEAD@{136}: commit: update: monitoring stock
+[33m9659781[m HEAD@{137}: commit: update: monitoring stock
+[33mf8b7012[m HEAD@{138}: commit: update: monitoring stock
+[33mbc490ac[m HEAD@{139}: commit: update: monitoring stock
+[33m03c825b[m HEAD@{140}: commit: update: laporan salesman dan monitoring stock
+[33m5ce3e6b[m HEAD@{141}: commit: update: jurnal manual
+[33m95327c8[m HEAD@{142}: commit: update : jurnal manual
+[33m10659ae[m HEAD@{143}: commit: update: jurnal manual dan lap piutang
+[33m43735d3[m HEAD@{144}: commit: update: jurnal edit, tambah baris, penerimaan tagihan dan monitor stock
+[33m5369d38[m HEAD@{145}: commit: update :jurnal
+[33mf0bedf4[m HEAD@{146}: commit: update :jurnal
+[33m09a127a[m HEAD@{147}: commit: update: edit jurnal
+[33m5c7f6b6[m HEAD@{148}: commit: update: list sj
+[33m7fc7517[m HEAD@{149}: commit: update: lap-piutang
+[33m8c1dcb0[m HEAD@{150}: commit: update: lap-piutang
+[33me94f3ff[m HEAD@{151}: commit: update: lap-piutang
+[33me2e85e7[m HEAD@{152}: commit: update: lap-piutang
+[33m5ff9ab9[m HEAD@{153}: commit: update: lap-piutang
+[33me53a2bd[m HEAD@{154}: commit: update: lap-piutang
+[33m0c5e38f[m HEAD@{155}: commit: update: lap piutang
+[33mcc0fb53[m HEAD@{156}: commit: update: report sales
+[33m2fa4731[m HEAD@{157}: commit: update : jurnal otomatis
+[33mee2b98c[m HEAD@{158}: commit: update : jurnal otomatis
+[33mf3080bf[m HEAD@{159}: commit: update edit jurnal
+[33mdf876b8[m HEAD@{160}: commit: update: jurnal otomatis dan edit jurnal
+[33m5889114[m HEAD@{161}: commit: update: edit jurnal
+[33m08188ad[m HEAD@{162}: commit: update: toko mama invoice
+[33m9cb265f[m HEAD@{163}: commit: update 28-02-25
+[33m74a7d08[m HEAD@{164}: commit: update:penerimaan tagihan
+[33m07c3675[m HEAD@{165}: commit: update: lap piutang
+[33m5e5c831[m HEAD@{166}: commit: update: invoice supplier
+[33m371264f[m HEAD@{167}: commit: update: jurnal
+[33m87e3d08[m HEAD@{168}: commit: update:list jurnal
+[33m00c8b61[m HEAD@{169}: commit: update
+[33m7da9707[m HEAD@{170}: commit: updated: lap omzet cust
+[33m2c4197d[m HEAD@{171}: commit: update
+[33m9721134[m HEAD@{172}: commit: update : new fitur lap report cust, montior stock, jurnal otomatis
+[33m80c9e3a[m HEAD@{173}: commit: update: jurnal export
+[33m6448d90[m HEAD@{174}: commit: update: jurnal manual, new fitur daily report sales,jurnal hutang
+[33mabf5d06[m HEAD@{175}: commit: update: jurnal manual, new fitur daily report sales,jurnal hutang
+[33m59910c5[m HEAD@{176}: commit: update: list sj, edit by barang
+[33m183ce06[m HEAD@{177}: commit: update: list sj, edit by barang
+[33m28b648a[m HEAD@{178}: commit: update: edit by barang sj, edit jurnal, stock
+[33m3982e22[m HEAD@{179}: commit: tes
+[33me3bba52[m HEAD@{180}: commit: update: jurnal otomatis
+[33m048bf8b[m HEAD@{181}: commit: update: preview invoice
+[33mccb6561[m HEAD@{182}: commit: update: no jurnal
+[33m58a72ff[m HEAD@{183}: commit: update: invoice
+[33mf4054b0[m HEAD@{184}: commit: update: jurnal otomatis di invoice
+[33m5846f4a[m HEAD@{185}: commit: update: jurnal otomatis di invoice
+[33ma9ca8fe[m HEAD@{186}: commit: update: monitor stock juga sudah bisa melihat no jurnal
+[33m9b02b14[m HEAD@{187}: commit: update pemecah ribuan
+[33m892f4ba[m HEAD@{188}: commit: update: time server
+[33mfce3dfe[m HEAD@{189}: commit: update: time server
+[33m493d522[m HEAD@{190}: commit: update: tgl jam server
+[33m1a98bc4[m HEAD@{191}: commit: update: time server
+[33m6fea3c9[m HEAD@{192}: commit: update: preview invoice
+[33m70e339d[m HEAD@{193}: commit: update: harga jual
+[33m25513ee[m HEAD@{194}: commit: update: harga jual
+[33m64008ef[m HEAD@{195}: commit: update: harga jual
+[33m57e12db[m HEAD@{196}: commit: update: harga jual
+[33m50758c6[m HEAD@{197}: commit: update: surat jalan
+[33me1c5e06[m HEAD@{198}: commit: update: validasi pemilihan konfirmasi penerimaan
+[33m289ce91[m HEAD@{199}: commit: update: edit jurnal
+[33m6ce88a3[m HEAD@{200}: commit: update: coa di konfirmasi penerimaan
+[33m892f28b[m HEAD@{201}: commit: update: edit jurnal
+[33md46b07e[m HEAD@{202}: commit: update jurnal otomatis
+[33mb8d2b5c[m HEAD@{203}: commit: update jurnal otomatis
+[33m042a927[m HEAD@{204}: commit: update: monitor stock
+[33m0cba485[m HEAD@{205}: commit: update: monitor stock
+[33mab19bd4[m HEAD@{206}: commit: update: monitor stock
+[33m45d9849[m HEAD@{207}: commit: update: sj
+[33m49e9330[m HEAD@{208}: commit: update jurnal otomatis dan cetak surat jalan dan invoice
+[33m08eaaf4[m HEAD@{209}: commit: update big
+[33m2177800[m HEAD@{210}: commit: update: surat jalan,cetak invoice, buat suarat jalan(ppn dan noppn), preview invoice, dan cetak invoice
+[33m137cec4[m HEAD@{211}: commit: update: CETAK invoice
+[33m2be472b[m HEAD@{212}: commit: update: CETAK invoice
+[33m52f014d[m HEAD@{213}: commit: update: CETAK invoice
+[33ma44fafa[m HEAD@{214}: commit: update: CETAK invoice
+[33m31c1c9c[m HEAD@{215}: commit: update: CETAK SJ
+[33mc1189e5[m HEAD@{216}: commit: update: list surat jalan, cetak invoice, dan buat surat jalan validasi
+[33m8dfd12b[m HEAD@{217}: commit: update: suratjalan
+[33m9bfd803[m HEAD@{218}: commit: update: suratjalan
+[33mf2aae1a[m HEAD@{219}: commit: update: suratjalan
+[33mc3d8097[m HEAD@{220}: commit: update: suratjalan
+[33md091b75[m HEAD@{221}: commit: update: suratjalan
+[33m0945160[m HEAD@{222}: commit: update: tokomama2/7/2025 6
+[33m57fe1f2[m HEAD@{223}: commit: update: tokomama2/7/2025 3
+[33m0e9ff4f[m HEAD@{224}: commit: update: tokomama2/7/2025 3
+[33m719255f[m HEAD@{225}: commit: update: tokomama2/7/2025 3
+[33m0ae510a[m HEAD@{226}: commit: update: tokomama2/7/2025 2
+[33mfd582d6[m HEAD@{227}: commit: update: tokomama2/7/2025 2
+[33mdbfeb46[m HEAD@{228}: commit: update: tokomama2/7/2025 2
+[33m4430672[m HEAD@{229}: commit: update: tokomama2/7/2025 2
+[33ma1e75e4[m HEAD@{230}: commit: update: tokomama2/7/2025
+[33md796911[m HEAD@{231}: commit: updated: tokomama new
+[33m24d367b[m HEAD@{232}: commit: update tokomama konfirmasi penerimaan
+[33mbc2639d[m HEAD@{233}: commit: update tokomama konfirmasi penerimaan
+[33m1148f90[m HEAD@{234}: commit: update tokomama
+[33mcaa01b4[m HEAD@{235}: commit: new toko mama
+[33m40a8c2e[m HEAD@{236}: commit: fixed: edit jurnal keterang kode unik
+[33m5a30f54[m HEAD@{237}: commit: fixed: edit jurnal tambah baris
+[33m052de03[m HEAD@{238}: commit: fixed: nomor jurnal
+[33m2747a61[m HEAD@{239}: commit: update: laporan-ppn-csv
+[33md724c66[m HEAD@{240}: commit: update: laporan-ppn dan buku-besar
+[33m52b32c6[m HEAD@{241}: commit: update: laporan-ppn
+[33mfc0640f[m HEAD@{242}: commit: update: laporan-ppn
+[33m0ac7404[m HEAD@{243}: commit: update: laporan-ppn
+[33mbd595b8[m HEAD@{244}: commit: update: invoice-pdf,surat-penerimaan pdf, dan preview-invoice
+[33mcbe5393[m HEAD@{245}: commit: update: pre invoice
+[33mbf77774[m HEAD@{246}: commit: update: laporan ppn, export lapon ppn csv, dan jurnal
+[33m2d81f84[m HEAD@{247}: commit: update: jurnal search nomor dan keterangan
+[33mc89ff98[m HEAD@{248}: commit: update:
+[33mc2c18e3[m HEAD@{249}: commit: update:
+[33mf44f868[m HEAD@{250}: commit: update: editByBarang validasi
+[33m0799651[m HEAD@{251}: commit: update: export-laporan bb
+[33m10f35a3[m HEAD@{252}: commit: update: export-laporan bb
+[33m944a761[m HEAD@{253}: commit: update: export-laporan bb
+[33mc20769b[m HEAD@{254}: commit: update: export-laporan bb
+[33mda62b7e[m HEAD@{255}: commit: update: export-laporan bb
+[33m973ce4e[m HEAD@{256}: commit: update: surat jalan
+[33m1ab6a84[m HEAD@{257}: commit: update: export buku besar dan surat jalan
+[33m16897a4[m HEAD@{258}: commit: update: export buku besar dan surat jalan

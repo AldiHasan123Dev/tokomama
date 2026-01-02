@@ -117,7 +117,7 @@ class InvoiceController extends Controller
             return back()->with('error', 'NSFP Belum Tersedia, pastikan nomor NSFP tersedia.');
         }
         
-        $no = Invoice::whereYear('created_at', $thnInvoice)->max('no') + 1;
+        $no = Invoice::whereYear('tgl_invoice', $thnInvoice)->max('no') + 1;
         foreach ($nsfp as $item) {
             $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
             $month_number = $monthNumber;

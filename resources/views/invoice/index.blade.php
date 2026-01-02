@@ -20,7 +20,7 @@
             </p> --}}
               <input type="date" disabled  value="{{ $draft_inv }}">
             <input type="hidden" name="tgl_invoice"  value="{{ $draft_inv }}">
-            <input type="text" value="{{ $no_JNL }}/TM/{{ date('y') }}" name="tipe" readonly>
+            <input type="text" value="{{ $no_JNL }}/TM/{{ $jurnalTahun }}" name="tipe" readonly>
             <input type="hidden" name="invoice_count" value="{{ $invoice_count }}">
             
             <div style="overflow-x: auto; margin-top: 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">

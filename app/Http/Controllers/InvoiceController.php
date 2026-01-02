@@ -35,6 +35,21 @@ class InvoiceController extends Controller
         if($nsfp->count() < $invoice_count) {
             return back()->with('error', 'NSFP Belum Tersedia, pastikan nomor NSFP tersedia.');
         }
+        // ambil transaksi pertama (sudah dipastikan 1 customer)
+        $firstTransaksi = $transaksi->first();
+
+        // pastikan relasi suratJalan ada
+        if (!$firstTransaksi || !$firstTransaksi->suratJalan) {
+            return back()->with('error', 'Tanggal Surat Jalan tidak ditemukan');
+        }
+
+        // 🔥 ambil tanggal surat jalan
+        $tglSJ = Carbon::parse($firstTransaksi->suratJalan->tgl_sj);
+
+        // month & year dari surat jalan
+        $monthSJ = $tglSJ->month;
+        $yearSJ  = $tglSJ->year;
+        $jurnalTahun = $tglSJ->format('y'); // hasil: "25"
         $array_jumlah = [];
         foreach ($transaksi as $item) {
             $array_jumlah[$item->id] = $item->sisa;
@@ -43,11 +58,15 @@ class InvoiceController extends Controller
         $invoice_count = request('invoice_count');
 
         $currentMonth = Carbon::now()->month;
-        $noJNL = Jurnal::where('tipe', 'JNL')->whereMonth('tgl', $currentMonth)->whereYear('tgl',date('Y'))->orderBy('no', 'desc')->first() ?? 0;
-        $no_JNL =  $noJNL ? $noJNL->no + 1 : 1;
+        $noJNL = Jurnal::where('tipe', 'JNL')
+            ->whereMonth('tgl', $monthSJ)
+            ->whereYear('tgl', $yearSJ)
+            ->orderBy('no', 'desc')
+            ->first();
 
-        
-        return view('invoice.index', compact('transaksi','ids','invoice_count','array_jumlah', 'no_JNL','draft_inv'));
+        $no_JNL = $noJNL ? $noJNL->no + 1 : 1;
+
+        return view('invoice.index', compact('transaksi','ids','invoice_count','array_jumlah', 'no_JNL','draft_inv','monthSJ','yearSJ','jurnalTahun'));
     }
 
     public function preview(Request $request)
@@ -77,8 +96,10 @@ class InvoiceController extends Controller
                 ]);
             }
         }
-        $tgl_inv2 = $request->tgl_invoice; 
+        $tgl_inv2 = $request->tgl_invoice;
         $date = date_create($tgl_inv2);
+        $thnInvoice = $date->format('Y');
+        $thnInvoice2 = $date->format('y');
         $tgl_inv1 = date_format($date, 'd F Y'); 
        
         $tgl_inv = date('m', strtotime($tgl_inv2));
@@ -96,12 +117,12 @@ class InvoiceController extends Controller
             return back()->with('error', 'NSFP Belum Tersedia, pastikan nomor NSFP tersedia.');
         }
         
-        $no = Invoice::whereYear('created_at', date('Y'))->max('no') + 1;
+        $no = Invoice::whereYear('created_at', $thnInvoice)->max('no') + 1;
         foreach ($nsfp as $item) {
             $roman_numerals = array("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
             $month_number = $monthNumber;
             $month_roman = $roman_numerals[$month_number];
-            $inv = sprintf('%03d', $no) . '/INV/TM-' . $month_roman . '/' . date('Y');
+            $inv = sprintf('%03d', $no) . '/INV/TM-' . $month_roman . '/' . $thnInvoice2;
             
             array_push($array_invoice, [
                 'id_nsfp' => $item->id,
@@ -326,16 +347,14 @@ $validatedData = $request->validate([
     private function autoJurnal($idtsk, $invoice, $tipe, $tgl, $nsfp)
     {
         $bulan = date('m', strtotime($tgl));
+        $tglYear = date('Y', strtotime($tgl));
         $bulanNow = date('m');
         $tipe1 = $tipe;
         $breakTipe = explode("-", $tipe1);;
         $breakTipe1 = explode("/", $breakTipe[1]);
         $no = $breakTipe1[0];
         $jurhutNow = $bulanNow . '-' . $no + 1 . '/' . $breakTipe1[1] . '/' . $breakTipe1[2];
-       
-      
-
-        $sort = Jurnal::whereMonth('tgl', $bulan)->where('tipe', 'JNL')->whereYear('tgl',date('Y'))->get();
+        $sort = Jurnal::whereMonth('tgl', $bulan)->where('tipe', 'JNL')->whereYear('tgl', $tglYear)->get();
         $nomorArray = $sort->pluck('no')->toArray();
         if ($nomorArray == []){
             $nomorArray = [0];

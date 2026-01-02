@@ -353,7 +353,7 @@ $validatedData = $request->validate([
         $breakTipe = explode("-", $tipe1);;
         $breakTipe1 = explode("/", $breakTipe[1]);
         $no = $breakTipe1[0];
-        $jurhutNow = $bulanNow . '-' . $no + 1 . '/' . $breakTipe1[1] . '/' . $breakTipe1[2];
+        $jurhutNow = $bulan . '-' . $no + 1 . '/' . $breakTipe1[1] . '/' . $breakTipe1[2];
         $sort = Jurnal::whereMonth('tgl', $bulan)->where('tipe', 'JNL')->whereYear('tgl', $tglYear)->get();
         $nomorArray = $sort->pluck('no')->toArray();
         if ($nomorArray == []){

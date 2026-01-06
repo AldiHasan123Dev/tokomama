@@ -153,16 +153,17 @@ class JurnalManualController extends Controller
 
         $tgl = $request->tanggal_jurnal;
         $bulan = date('m', strtotime($tgl));
+        $tglThn = date('Y', strtotime($tgl));
         $bulanNow = date('m');
         $tahunNow = date('Y');
         $tahun = date('Y', strtotime($tgl));
-        $jurnalsort = Jurnal::whereYear('tgl', $tahun)  // Menambahkan kondisi untuk tahun
+        $jurnalsort = Jurnal::whereYear('tgl', $tglThn)  // Menambahkan kondisi untuk tahun
         ->where('tipe', $tipe)
         ->get();
     
         //pemecahan nomor jurnal
         if ($tipe === 'JNL'){
-            $jurnalsort = Jurnal::whereMonth('tgl', $bulan)->whereYear('tgl',date('Y'))->where('tipe', 'JNL')->get();
+            $jurnalsort = Jurnal::whereMonth('tgl', $bulan)->whereYear('tgl',$tglThn)->where('tipe', 'JNL')->get();
         }
         $nomorArray = $jurnalsort->pluck('no')->toArray();
         if ($nomorArray == []) {

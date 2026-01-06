@@ -622,15 +622,20 @@ public function inputHargaJual()
         $id_trans = $data['id_transaksi'];
         $invoice = $data['invoice'];
         $customer = $data['customer'];
-        $nomor = $data['nomor'];
+        $tahun = date('Y', strtotime($data['tanggal']));
+        $thn = date('y', strtotime($data['tanggal']));
         $tipe = $data['tipe'];
+        $jurnalsort = Jurnal::whereYear('tgl', $tahun)  // Menambahkan kondisi untuk tahun
+        ->where('tipe', $tipe)
+        ->get();
+        $nomorArray = $jurnalsort->pluck('no')->toArray();
+        if ($nomorArray == []) {
+            $nomorArray = [0];
+        }
+        $no = max($nomorArray) + 1;
+        $nomor = $no . '/' . $tipe .'-TM/' . $thn;
         $tgl_jurnal = Carbon::parse($data['tanggal'])->format('Y-m-d');
-        $no = (int) $data['no'];
         $coaId = $tipe === 'BBMN' ? 99 : 5;
-    
-        // Header Jurnal (Debit)
-        
-        // Detail Jurnal (Kredit) - loop berdasarkan jumlah item biaya
         $count = count($biaya_ids);
             for ($i = 0; $i < count($nominal); $i++) {
             // Lewati baris kosong atau nol

@@ -100,7 +100,7 @@ if ($coa_find && $coa_find->no_akun) {
                 if ($tipe=='D') {
                     $saldo_awal = Jurnal::where('coa_id',$coa_id)->whereBetween('tgl',['2023-12-01',$des])->sum('debit') - Jurnal::where('coa_id',$coa_id)->whereBetween('tgl',['2023-12-01',$des])->sum('kredit');
                 } else {
-                    $saldo_awal = Jurnal::where('coa_id',$coa_id)->whereBetween('tgl',['2023-12-01',$last])->sum('kredit') - Jurnal::where('coa_id',$coa_id)->whereBetween('tgl',['2023-12-01',$last])->sum('debit');
+                    $saldo_awal = Jurnal::where('coa_id',$coa_id)->whereBetween('tgl',['2023-12-01',$des])->sum('kredit') - Jurnal::where('coa_id',$coa_id)->whereBetween('tgl',['2023-12-01',$des])->sum('debit');
                 }
             } else {
                 $start = $now;

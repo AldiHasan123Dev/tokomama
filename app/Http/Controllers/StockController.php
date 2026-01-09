@@ -822,6 +822,23 @@ public function qty()
         ->orderBy('no_bm', 'desc');
 
     // Filter tambahan berdasarkan tgl_pembayar dan invoice (jika Anda punya relasi atau join)
+    if ((request('periode') !== null && request('periode') !== '') || request('invx') !== null && request('invx') !== '') {
+    $query->when(request('periode') !== null && request('periode') !== '', function ($q) {
+        $periode = request('periode'); // format: Y-m
+        $tahun = substr($periode, 0, 4);
+        $bulan = substr($periode, 5, 2);
+       $tglAwal = Carbon::createFromDate(2025, 1, 1)->startOfDay();
+$tglAkhir = Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->endOfDay();
+       $q->whereHas('jurnal', function ($query) use ($tglAwal, $tglAkhir) {
+    $query->whereBetween('tgl', [$tglAwal, $tglAkhir]);
+});
+
+    });
+
+    $query->when(request('invx') !== null && request('invx') !== '', function ($q) {
+        $q->where('invoice_external', 'like', '%' . request('invx') . '%');
+    });
+}
 
 
 $transaksis = $query->get();
@@ -902,39 +919,6 @@ $byInvoiceCollection = $byInvoiceCollection->sortBy('nama_barang')->values();
 
 
 // Ambil request
-$periode = request('periode');
-$invx    = request('invx');
-
-if (($periode !== null && $periode !== '') || ($invx !== null && $invx !== '')) {
-    $byInvoiceCollection = $byInvoiceCollection->filter(function ($item) use ($periode, $invx) {
-
-        $filterPeriode = true;
-        $filterInvx = true;
-
-        // Filter berdasarkan periode (filter pada tgl_jurnal)
-        if ($periode !== null && $periode !== '') {
-            $tahun = substr($periode, 0, 4);
-            $bulan = substr($periode, 5, 2);
-
-            $tglAwal = Carbon::createFromDate(2025, 1, 1)->startOfDay();
-            $tglAkhir = Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->endOfDay();
-
-            if ($item['tgl_jurnal'] && $item['tgl_jurnal'] !== '-') {
-                $tglJurnal = Carbon::parse($item['tgl_jurnal']);
-                $filterPeriode = $tglJurnal->between($tglAwal, $tglAkhir);
-            } else {
-                $filterPeriode = false;
-            }
-        }
-
-        // Filter berdasarkan invoice_external (filter like)
-        if ($invx !== null && $invx !== '') {
-            $filterInvx = str_contains($item['invoice_external'], $invx);
-        }
-
-        return $filterPeriode && $filterInvx;
-    });
-}
 
 
 // Total keseluruhan nilai

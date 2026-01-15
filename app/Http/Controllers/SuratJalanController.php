@@ -255,7 +255,7 @@ class SuratJalanController extends Controller
         if (Transaction::count() == 0) {
             $no = 1;
         } else {
-            $no = Transaction::whereYear('created_at', date('Y'))->max('no') + 1 ;
+            $no = Transaction::whereYear('tgl_bm', date('Y'))->max('no') + 1 ;
         }
 
         for ($i = 0; $i < count($request->satuan_beli); $i++) {
@@ -273,6 +273,7 @@ class SuratJalanController extends Controller
         $month_number = date("n", strtotime($request->tgl_bm));
         $month_roman = $roman_numerals[$month_number];
         $no_bm = sprintf('%03d', $no) . '/BM/TM-' . $month_roman . '/' . date('Y', strtotime($request->tgl));
+        dd($no_bm);
         for ($i = 0; $i < count($request->barang); $i++) {
             // dd($request->barang);
             if ($request->barang[$i] != null && $request->supplier[$i] != null) {

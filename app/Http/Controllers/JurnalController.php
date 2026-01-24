@@ -242,7 +242,13 @@ class JurnalController extends Controller
         $coa_awal_k = $r->awal_credit;
         $kode = $r->kode;
 
-        $new_coa = $coa_tujuan_d ?? $coa_tujuan_k;
+        if (is_null($coa_awal_d)) {
+            $new_coa = $coa_tujuan_k;
+        } elseif (is_null($coa_awal_k)) {
+            $new_coa = $coa_tujuan_d;
+        } else {
+            $new_coa = null; // opsional, kalau dua-duanya ada
+        }
         $total = 0;
 
     $lastJurnalLama = null; // untuk menyimpan jurnal lama terakhir
@@ -293,6 +299,7 @@ foreach ($jurnal as $item) {
     $total += $coa_awal_d
         ? $jurnalLama->debit
         : $jurnalLama->kredit;
+    
 
     // ============================
     // 2. Tambah jurnal balik
@@ -335,6 +342,7 @@ foreach ($jurnal as $item) {
         ];
     }
 }
+ $lastIndex = count($dataToInsert) - 1;
 
 
     DB::beginTransaction();
@@ -357,6 +365,9 @@ foreach ($jurnal as $item) {
 
         // Step 3: Update jurnal lama dengan referensi balik
         foreach ($insertedJurnal as $index => $j) {
+            if ($index === $lastIndex) {
+        continue;
+    }
             $original = $dataToInsert[$index];
             if (!empty($original['jurnal_balik'])) {
                 Jurnal::where('id', $original['jurnal_balik'])

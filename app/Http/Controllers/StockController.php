@@ -827,10 +827,11 @@ public function qty()
         $periode = request('periode'); // format: Y-m
         $tahun = substr($periode, 0, 4);
         $bulan = substr($periode, 5, 2);
-       $tglAwal = Carbon::createFromDate($tahun, 1, 1)->startOfDay();
-$tglAkhir = Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->endOfDay();
-       $q->whereHas('jurnal', function ($query) use ($tglAwal, $tglAkhir) {
-    $query->whereBetween('tgl', [$tglAwal, $tglAkhir]);
+     $tglAkhir = Carbon::create($tahun, $bulan, 1)->endOfMonth();
+
+       $q->whereHas('jurnal', function ($query) use ($tglAkhir) {
+   
+$query->where('tgl', '<=', $tglAkhir);
 });
 
     });
@@ -919,37 +920,6 @@ $byInvoiceCollection = $byInvoiceCollection->sortBy('nama_barang')->values();
 
 $periode = request('periode');
 $invx    = request('invx');
-
-if (($periode !== null && $periode !== '') || ($invx !== null && $invx !== '')) {
-    $byInvoiceCollection = $byInvoiceCollection->filter(function ($item) use ($periode, $invx) {
-
-        $filterPeriode = true;
-        $filterInvx = true;
-
-        // Filter berdasarkan periode (filter pada tgl_jurnal)
-        if ($periode !== null && $periode !== '') {
-            $tahun = substr($periode, 0, 4);
-            $bulan = substr($periode, 5, 2);
-
-            $tglAwal = Carbon::createFromDate($tahun, 1, 1)->startOfDay();
-            $tglAkhir = Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->endOfDay();
-
-            if ($item['tgl_jurnal'] && $item['tgl_jurnal'] !== '-') {
-                $tglJurnal = Carbon::parse($item['tgl_jurnal']);
-                $filterPeriode = $tglJurnal->between($tglAwal, $tglAkhir);
-            } else {
-                $filterPeriode = false;
-            }
-        }
-
-        // Filter berdasarkan invoice_external (filter like)
-        if ($invx !== null && $invx !== '') {
-            $filterInvx = str_contains($item['invoice_external'], $invx);
-        }
-
-        return $filterPeriode && $filterInvx;
-    });
-}
 
 // Ambil request
 

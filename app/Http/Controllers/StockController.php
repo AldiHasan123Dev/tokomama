@@ -1007,7 +1007,7 @@ return response()->json([
 ]);
 
 }
-
+ 
     public function update_stock(Request $request)
 {
     $data = $request->validate([

@@ -7,25 +7,31 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class JurnalExport implements WithMultipleSheets
 {
+    protected $coaId;
+
+    public function __construct($coaId = null)
+    {
+        $this->coaId = $coaId;
+    }
+
     public function sheets(): array
     {
         $sheets = [];
 
-        // Ambil request COA jika ada
-        $coaId = request('coa', null);
+        // Ambil data COA
+        $query = Coa::where('status', 'aktif');
 
-        if ($coaId) {
-            // Jika ada request COA, ekspor hanya COA tersebut
-            $coa = Coa::find($coaId);
-            if ($coa) {
-                $sheets[] = new JurnalSheetExport($coa);
-            }
-        } else {
-            // Jika tidak ada request COA, ekspor semua COA aktif
-            $coaList = Coa::where('status', 'aktif')->get();
-            foreach ($coaList as $coa) {
-                $sheets[] = new JurnalSheetExport($coa);
-            }
+        // Jika pilih COA tertentu
+        if ($this->coaId) {
+            $query->where('id', $this->coaId);
+        }
+
+        $coas = $query->orderBy('kode')->get();
+
+        // Looping semua COA jadi Sheet
+        foreach ($coas as $coa)
+        {
+            $sheets[] = new JurnalSheetExport($coa);
         }
 
         return $sheets;

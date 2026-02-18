@@ -103,10 +103,15 @@ class JurnalSheetExport implements FromView, WithTitle
         ]);
     }
 
-    public function title(): string
-    {
-        // Pastikan nama sheet tidak lebih dari 31 karakter
-        $title = $this->coa ? $this->coa->no_akun : 'Unknown COA';
-        return substr($title, 0, 31);
+   public function title(): string
+{
+    if (!$this->coa) {
+        return 'Unknown COA';
     }
+
+    $title = $this->coa->no_akun . ' - ' . $this->coa->nama_akun;
+
+    // Batas maksimal Excel = 31 karakter
+    return substr($title, 0, 31);
+}
 }

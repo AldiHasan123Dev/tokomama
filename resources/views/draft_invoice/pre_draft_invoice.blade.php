@@ -242,11 +242,14 @@
                                                         @endphp
                                                 @else
                                                 @php
+                                                
                                                         $t =
-                                                             $items['harga_jual'][$idx] *
+                                                             $items['value'][$idx] *
                                                              $items['jumlah_jual'][$idx];
                                                     @endphp
                                                 @endif
+
+
                                                 @if ($items['satuan_jual'][$idx] != $items['nama_satuan'][$idx])
                                                     (Total {{ number_format($t) }} {{ $items['nama_satuan'][$idx] }}
                                                     {{ $items['keterangan'][$idx] != '' || !is_null($items['keterangan'][$idx]) ? '= ' . $items['keterangan'][$idx] : '' }})

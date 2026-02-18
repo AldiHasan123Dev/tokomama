@@ -137,7 +137,7 @@
               <div class="label">
                   <span class="label-text">Value <span class="text-red-500">*</span></span>
               </div>
-              <input type="text" placeholder="10" name="value"
+              <input type="number" placeholder="10" name="value"
                   class="input input-bordered w-full max-w-xs rounded-md" required />
           </label>
           <label class="form-control w-full max-w-xs col-start-2">

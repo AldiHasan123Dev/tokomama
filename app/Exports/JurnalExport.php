@@ -26,7 +26,7 @@ class JurnalExport implements WithMultipleSheets
             $query->where('id', $this->coaId);
         }
 
-        $coas = $query->orderBy('kode')->get();
+        $coas = $query->orderBy('no_akun')->get();
 
         // Looping semua COA jadi Sheet
         foreach ($coas as $coa)

@@ -52,6 +52,12 @@ class JurnalManualController extends Controller
         
         $no_BBKO = $noBBKO ? $noBBKO->no + 1 : 1;
 
+        $noBBM2249 = Jurnal::where('tipe', 'BBM2249')->whereYear('tgl', $currentYear)->orderBy('no', 'desc')->first() ?? 0;
+        $no_BBM2249 = $noBBM2249 ? $noBBM2249->no + 1 : 1;
+
+        $noBBK2249 = Jurnal::where('tipe', 'BBK2249')->whereYear('tgl', $currentYear)->orderBy('no', 'desc')->first() ?? 0;
+        $no_BBK2249 = $noBBK2249 ? $noBBK2249->no + 1 : 1;
+
         // $invoices = DB::table('jurnal as j1')
         // ->where('j1.tipe', 'JNL') // Kondisi tipe JNL
         // ->where('j1.debit', '>', 0) // Kondisi debit lebih besar dari 0
@@ -107,7 +113,9 @@ class JurnalManualController extends Controller
         ->pluck('nomor');
 
         // dd($procTransactions);
-        return view('jurnal.jurnal-manual', compact('templates', 'nopol', 'coa', 'no_BBMO', 'no_BBKO', 'no_JNL', 'no_BKK', 'no_BKM', 'no_BBK', 'no_BBKN', 'no_BBM', 'no_BBMN', 'invoices', 'processedInvoices', 'procTransactions', 'transaksi','uniqueNomors', 'transaksi'));
+        return view('jurnal.jurnal-manual', compact('templates', 'nopol', 'coa', 'no_BBMO', 'no_BBKO', 'no_JNL', 'no_BKK', 'no_BKM', 'no_BBK', 'no_BBKN', 'no_BBM', 
+        'no_BBMN', 'invoices', 'processedInvoices', 'procTransactions', 'transaksi','uniqueNomors', 'transaksi','noBBK2249','noBBM2249'
+        ,'no_BBM2249','no_BBK2249'));
     }
 
     /**
@@ -149,8 +157,6 @@ class JurnalManualController extends Controller
         } else {
             $nomor =$request->tipe;
         }
-        // dd($nomor);
-
         $tgl = $request->tanggal_jurnal;
         $bulan = date('m', strtotime($tgl));
         $tglThn = date('Y', strtotime($tgl));

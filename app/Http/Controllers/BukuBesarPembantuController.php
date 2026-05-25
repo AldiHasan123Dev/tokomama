@@ -100,75 +100,44 @@ class BukuBesarPembantuController extends Controller
 
     // Logika untuk pemasok (suppliers)
     if ($selectedState == 'supplier') {
+        $suppliers = Supplier::all(); 
+        foreach ($suppliers as $supplier) {
+            $debitTotal = 0;
+            $kreditTotal = 0;
 
-    // Ambil mapping invoice_external => supplier
-    $transactions = Transaction::query()
-        ->whereNotNull('invoice_external')
-        ->whereNotNull('id_supplier')
-        ->select('invoice_external', 'id_supplier')
-        ->get()
-        ->groupBy('invoice_external');
-
-    // Ambil semua jurnal sekali saja
-    $jurnals = Jurnal::query()
-        ->where('coa_id', $selectedCoaId)
-        ->whereBetween('tgl', [$startDate, $endDate])
-        ->whereNotNull('invoice_external')
-        ->where(function ($query) {
-            $query->whereNull('invoice')
-                ->orWhere('invoice', '')
-                ->orWhere('invoice', '-')
-                ->orWhere('invoice', 0);
-        })
-        ->select(
-            'invoice_external',
-            'debit',
-            'kredit'
-        )
-        ->get();
-
-    // Penampung total supplier
-    $supplierTotals = [];
-
-    foreach ($jurnals as $jurnal) {
-
-        if (!isset($transactions[$jurnal->invoice_external])) {
-            continue;
-        }
-
-        foreach ($transactions[$jurnal->invoice_external] as $trx) {
-
-            $supplierId = $trx->id_supplier;
-
-            if (!isset($supplierTotals[$supplierId])) {
-                $supplierTotals[$supplierId] = [
-                    'debit' => 0,
-                    'kredit' => 0,
-                ];
+            $jurnals = Jurnal::where('coa_id', $selectedCoaId)
+                ->whereBetween('tgl', [$startDate, $endDate])
+                ->whereNotNull('invoice_external')
+                ->where(function($query) {
+                    $query->whereNull('invoice')
+                          ->orWhere('invoice', '')
+                          ->orWhere('invoice', '-')
+                          ->orWhere('invoice', 0);
+                })
+                ->orderBy('debit', 'asc') 
+                ->orderBy('kredit', 'asc') 
+                ->orderBy('tgl', 'asc') 
+                ->get();
+    
+            foreach ($jurnals as $j) {
+                $transaksi = Transaction::where('invoice_external', $j->invoice_external)
+                    ->where('id_supplier', $supplier->id)
+                    ->first();
+    
+                if ($transaksi && ($j->debit > 0 || $j->kredit > 0)) {
+                    $debitTotal += $j->debit;
+                    $kreditTotal += $j->kredit;
+                }
             }
-
-            $supplierTotals[$supplierId]['debit'] += $jurnal->debit;
-            $supplierTotals[$supplierId]['kredit'] += $jurnal->kredit;
+    
+            // Menyimpan nilai debit dan kredit ke supplier
+            $supplier->debit = $debitTotal;
+            $supplier->kredit = $kreditTotal;
         }
+        $suppliers = $suppliers->sortByDesc(function ($supplier) {
+            return [$supplier->debit, $supplier->kredit]; 
+        });
     }
-
-    // Ambil hanya supplier yang ada transaksi
-    $suppliers = Supplier::query()
-        ->whereIn('id', array_keys($supplierTotals))
-        ->get();
-
-    // Inject total
-    $suppliers->each(function ($supplier) use ($supplierTotals) {
-
-        $supplier->debit = $supplierTotals[$supplier->id]['debit'] ?? 0;
-        $supplier->kredit = $supplierTotals[$supplier->id]['kredit'] ?? 0;
-    });
-
-    // Sort
-    $suppliers = $suppliers->sortByDesc(function ($supplier) {
-        return $supplier->debit + $supplier->kredit;
-    })->values();
-}
     
     
    

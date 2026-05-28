@@ -433,60 +433,98 @@ if ($selisih > 1) {
             return view('laporan.lap-monitor-invoice',compact('invoices','invoiceLebihBayar'));
         }
 
-        public function dashMonitor(){
-    $currentMonth = now()->month;
-    $currentYear = now()->year;
-
-    // Get the month and year from the request, or use the current month and year as defaults
+        public function dashMonitor()
+{
     $bulan = date('m');
     $tahun = date('Y');
 
-    // Define the start date as January 2023
     $startDate = '2023-01-01';
-    $tahunCo = $tahun;
-    $dateCo = now()->create($tahunCo . '-' . '01' . '-01')->startOfMonth()->toDateString();
-    // Define the end date based on the selected month and year
-    $endDate = now()->create($tahun . '-' . $bulan . '-01')->endOfMonth()->toDateString();
 
-    // Get COA data based on account numbers
-    $coa1 = Coa::whereIn('id',[8,89,91,90])->orderBy('no_akun')->get();
-    $coa2 = Coa::whereIn('id',[35,98])->orderBy('no_akun')->get();
+    $endDate = now()
+        ->create($tahun . '-' . $bulan . '-01')
+        ->endOfMonth()
+        ->toDateString();
 
-    // Initialize totals array
-    $totals = [];
+    $coa1 = Coa::whereIn('id', [8, 89, 91, 90,46])
+        ->orderBy('no_akun')
+        ->get();
+
+    $coa2 = Coa::whereIn('id', [35, 98, 36])
+        ->orderBy('no_akun')
+        ->get();
+
+    $coa3 = Coa::whereIn('id', [2, 5, 6, 96, 99])
+        ->orderBy('no_akun')
+        ->get();
+
     $coaId1 = $coa1->pluck('id')->toArray();
     $coaId2 = $coa2->pluck('id')->toArray();
+    $coaId3 = $coa3->pluck('id')->toArray();
 
-    // Merge all COA IDs into a single array
     $allCoaIds = array_merge($coaId1, $coaId2);
 
-    foreach ($allCoaIds as $coaId) {
-        // Calculate debit and credit totals within the date range
-        $debit = Jurnal::where('coa_id', $coaId)
-            ->whereBetween('tgl', [$startDate, $endDate])
-            ->sum('debit');
+    // Ambil data jurnal coa1 & coa2
+    $jurnals = Jurnal::selectRaw('
+            coa_id,
+            SUM(debit) as total_debit,
+            SUM(kredit) as total_kredit
+        ')
+        ->whereIn('coa_id', $allCoaIds)
+        ->whereBetween('tgl', [$startDate, $endDate])
+        ->groupBy('coa_id')
+        ->get()
+        ->keyBy('coa_id');
 
-        $kredit = Jurnal::where('coa_id', $coaId)
-            ->whereBetween('tgl', [$startDate, $endDate])
-            ->sum('kredit');
+    $totals = [];
+
+    foreach ($allCoaIds as $coaId) {
+
+        $debit = $jurnals[$coaId]->total_debit ?? 0;
+        $kredit = $jurnals[$coaId]->total_kredit ?? 0;
+
         if (in_array($coaId, $coaId1)) {
             $selisih = $debit - $kredit;
         } else {
             $selisih = $kredit - $debit;
         }
-        // Store the totals in the array
+
         $totals[$coaId] = [
             'debit' => $debit,
             'kredit' => $kredit,
             'selisih' => $selisih,
         ];
-        }
-    return view('laporan.ds-monitor', compact(
-        'coa1', 'coa2', 
-        'totals',
-        'bulan', 'tahun', 'startDate', 'endDate'
-    ));
     }
+
+    // =========================
+    // TOTAL GABUNGAN COA3
+    // =========================
+    $coa3Total = Jurnal::selectRaw('
+            SUM(debit) as total_debit,
+            SUM(kredit) as total_kredit
+        ')
+        ->whereIn('coa_id', $coaId3)
+        ->whereBetween('tgl', [$startDate, $endDate])
+        ->first();
+
+    $debitCoa3 = $coa3Total->total_debit ?? 0;
+    $kreditCoa3 = $coa3Total->total_kredit ?? 0;
+
+    $totals['coa3'] = [
+        'debit' => $debitCoa3,
+        'kredit' => $kreditCoa3,
+        'selisih' => $debitCoa3 - $kreditCoa3,
+    ];
+
+    return view('laporan.ds-monitor', compact(
+        'coa1',
+        'coa2',
+        'totals',
+        'bulan',
+        'tahun',
+        'startDate',
+        'endDate'
+    ));
+}
 
         public function listInv(Request $request)
         {

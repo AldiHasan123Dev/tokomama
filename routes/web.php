@@ -191,9 +191,11 @@ Route::middleware('auth')->group(function () {
     Route::get('bb-data/{month}/{year}/{coa}', [BukuBesarController::class, 'datatable'])->name('buku-besar.data');
     Route::resource('neraca', Neraca::class);
     Route::resource('laba-rugi', LabaRugi::class);
-    Route::resource('buku-besar-pembantu', BukuBesarPembantuController::class);
     Route::get('lr-akumulatif', [LabaRugi::class, 'LRberjalan'])->name('lr.berjalan');
+    Route::resource('buku-besar-pembantu', BukuBesarPembantuController::class)
+    ->except(['show']);
     Route::get('buku-besar-pembantu/{id}/detail', [BukuBesarPembantuController::class, 'showDetail'])->name('buku-besar-pembantu.showDetail');
+    Route::get('buku-besar-pembantu/detail-jurnal-blum-bayar', [BukuBesarPembantuController::class, 'detail'])->name('buku-besar-pembantu.detail');
     Route::get('/export-ncs', [BukuBesarPembantuController::class, 'exportNcs'])->name('export.ncs');
     Route::get('/export-customers', [BukuBesarPembantuController::class, 'exportCustomer'])->name('export.customers');
     Route::get('/export-supplier', [BukuBesarPembantuController::class, 'exportSupplier'])->name('export.supplier');

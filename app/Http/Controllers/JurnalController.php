@@ -119,6 +119,7 @@ class JurnalController extends Controller
             'coa.nama_akun as nama_akun',
             'coa.no_akun as coa_no_akun'
         )
+        ->whereNull('balik')
         ->leftJoin('coa', 'coa.id', '=', 'jurnal.coa_id');
 
 

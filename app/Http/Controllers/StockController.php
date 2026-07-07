@@ -810,6 +810,7 @@ foreach ($gabungan as $item) {
 
 public function qty()
 {
+     dd('Route OK');
     $page   = request('page', 1);
     $limit  = request('rows', 10);
     $sidx   = request('sidx', 'transaksi.id');

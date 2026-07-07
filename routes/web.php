@@ -63,7 +63,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/surat-jalan/checkBarangCount', [SuratJalanController::class, 'checkBarangCount'])->name('surat-jalan.checkBarangCount');
-
+    Route::get('/data-lap-qty', [StockController::class, 'qty'])->name('data.qty');
 Route::middleware('auth')->group(function () {
     Route::get('/get-stock/{id}', [SuratJalanController::class, 'getStock'])->name('sj.getStock');
     Route::get('/get-harga', [DirectSaleController::class, 'getHarga']);
@@ -143,7 +143,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/jurnal-edit-list', [JurnalController::class, 'datatableEdit'])->name('jurnal.edit.list');
     Route::get('/jurnal-transaksi', [JurnalManualController::class, 'transaksi'])->name('jurnal-manual-transaksi');
     Route::get('/lap-qty', [StockController::class, 'lapQty'])->name('lap.qty');
-    Route::get('/data-lap-qty', [StockController::class, 'qty'])->name('data.qty');
     Route::resource('jurnal-manual', JurnalManualController::class);
     Route::post('jurnal-hutang', [JurnalManualController::class, 'Jurnalhutang'])->name('jurnal.hutang');
     Route::post('/jurnal-manual-template', [JurnalManualController::class, 'terapanTemplateJurnal'])->name('jurnal.template.terapan');

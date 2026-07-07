@@ -97,7 +97,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/keuangan/invoice-pending/cetak', [KeuanganController::class, 'cetakDraftInv'])->name('draft-invoice.cetak');
     Route::get('/surat-jalan-tarif-barang', [SuratJalanController::class, 'tarif'])->name('surat-jalan.barang');
     Route::get('/barang-masuk/harga-beli', [SuratJalanController::class, 'harga_beli'])->name('harga_beli');
-    Route::get('/surat-jalan/editBarang', [SuratJalanController::class, 'editBarang'])->name('surat-jalan.editBarang');
+    Route::get('/surat-jalan/editBarang', [SuratJalanController::class, 'editBarang'])->name('surat-jalan.editBarang1');
     Route::post('/surat-jalan/editBarang', [SuratJalanController::class, 'editBarangPost'])->name('surat-jalan.editBarang');
     Route::delete('/surat-jalan/hapusBarang/', [SuratJalanController::class, 'hapusBarang'])->name('surat-jalan.hapusBarang');
     Route::post('/surat-jalan/tambahBarang', [SuratJalanController::class, 'tambahBarang'])->name('surat-jalan.tambahBarang');

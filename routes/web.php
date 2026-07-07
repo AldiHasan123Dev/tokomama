@@ -70,12 +70,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/master/blokir',  [CustomerController::class, 'blokir'])->name('master.customer.blokir.update');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/master/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/barang-masuk/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/laporan/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/keuangan/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/pajak/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/surat-jalan/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/master/profile', [ProfileController::class, 'edit'])->name('profile.edit.master');
+    Route::get('/barang-masuk/profile', [ProfileController::class, 'edit'])->name('profile.edit.barang-masuk');
+    Route::get('/laporan/profile', [ProfileController::class, 'edit'])->name('profile.edit.laporan');
+    Route::get('/keuangan/profile', [ProfileController::class, 'edit'])->name('profile.edit.keuangan');
+    Route::get('/pajak/profile', [ProfileController::class, 'edit'])->name('profile.edit.pajak');
+    Route::get('/surat-jalan/profile', [ProfileController::class, 'edit'])->name('profile.edit.surat-jalan');
     Route::get('/direct_sale/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 
 

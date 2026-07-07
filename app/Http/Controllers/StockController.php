@@ -810,7 +810,7 @@ foreach ($gabungan as $item) {
 
 public function qty()
 {
-     dd('Route OK');
+     try {
     $page   = request('page', 1);
     $limit  = request('rows', 10);
     $sidx   = request('sidx', 'transaksi.id');
@@ -1010,6 +1010,16 @@ return response()->json([
         'total_harga_beli' => $totalNilaiHB
     ]
 ]);
+
+} catch (\Throwable $e) {
+
+        dd([
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+        ]);
+
+    }
 
 }
  

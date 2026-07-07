@@ -67,7 +67,7 @@ class TransactionController extends Controller
     {
         DB::transaction(function () use ($request) {
             $year = date('y');
-            $month = date('m');
+            $month = date('m'); 
             $totalDebit = 0;
             $nomor_surat = null;
             $invoice_external = null;

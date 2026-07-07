@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/keuangan/profile', [ProfileController::class, 'edit'])->name('profile.edit.keuangan');
     Route::get('/pajak/profile', [ProfileController::class, 'edit'])->name('profile.edit.pajak');
     Route::get('/surat-jalan/profile', [ProfileController::class, 'edit'])->name('profile.edit.surat-jalan');
-    Route::get('/direct_sale/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/direct_sale/profile', [ProfileController::class, 'edit'])->name('profile.edit.direct-sale');
 
 
     Route::put('/profileUpdate/{id}', [ProfileController::class, 'update1'])->name('profile.update1');

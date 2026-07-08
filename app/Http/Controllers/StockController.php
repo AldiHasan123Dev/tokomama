@@ -886,11 +886,11 @@ foreach ($combined as $key => $items) {
         $groupKey = $invx . '||' . $idBarang . '||' . $no_bm;
 
         if (!isset($byInvoice[$groupKey])) {
-           $byInvoice[$groupKey] = [
+            $byInvoice[$groupKey] = [
                 'invoice_external' => $invx,
-                'id_barang'        => optional($item->barang)->id,
-                'nama_barang'      => optional($item->barang)->nama ?? '-',
-                'supplier'         => optional($item->suppliers)->nama ?? '-',
+                'id_barang'        => $idBarang,
+                'nama_barang'      => $item->barang->nama ?? '-',
+                'supplier'         => $item->suppliers->nama ?? '-',
                 'jumlah_beli'      => 0,
                 'jumlah_jual'      => 0,
                 'harga_beli'       => $item->harga_beli ?? 0,
@@ -898,10 +898,10 @@ foreach ($combined as $key => $items) {
                 'sisa'             => 0,
                 'sisa1'            => 0,
                 'status'           => $item->stts ?? '-',
-                'no_bm'            => $item->no_bm ?? '-',
-                'satuan'           => data_get($item, 'barang.satuan.nama_satuan', '-'),
+                'no_bm'            => $item->no_bm,
+                'satuan'           => $item->barang->satuan->nama_satuan ?? '-',
                 'total_nilai'      => 0,
-                'tgl_jurnal'       => optional(optional($item->jurnals)->firstWhere('coa_id', 89))->tgl ?? '-',
+                'tgl_jurnal'       => optional($item->jurnals->firstWhere('coa_id', 89))->tgl ?? '-', // ⬅️ tambahkan ini
             ];
         }
 

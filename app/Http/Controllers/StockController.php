@@ -623,6 +623,55 @@ foreach ($barang as $barangItem) {
             ->orderBy('no_bm')
             ->get();
     }
+
+    // =============================
+// STOCK AKHIR TAHUN SEBELUMNYA
+// =============================
+$stockAkhirTahunLalu = [];
+
+$tglAwalTahun = Carbon::create($year, 1, 1)->startOfDay();
+
+// Semua transaksi masuk sebelum tahun yang dipilih
+$barangMasukLalu = Transaction::with('jurnals')
+    ->whereNull('id_surat_jalan')
+    ->whereNotNull('no_bm')
+    ->whereHas('jurnals', function ($q) use ($tglAwalTahun) {
+        $q->where('coa_id', 89)
+          ->where('tgl', '<', $tglAwalTahun);
+    })
+    ->when($barang_id, fn($q) => $q->where('id_barang', $barang_id))
+    ->get();
+
+foreach ($barangMasukLalu as $item) {
+    $id = $item->id_barang;
+
+    if (!isset($stockAkhirTahunLalu[$id])) {
+        $stockAkhirTahunLalu[$id] = 0;
+    }
+
+    $stockAkhirTahunLalu[$id] += $item->jumlah_beli;
+}
+
+
+// Semua transaksi keluar sebelum tahun yang dipilih
+$barangKeluarLalu = Transaction::with('suratJalan')
+    ->whereNotNull('no_bm')
+    ->whereHas('suratJalan', function ($q) use ($tglAwalTahun) {
+        $q->where('tgl_sj', '<', $tglAwalTahun);
+    })
+    ->when($barang_id, fn($q) => $q->where('id_barang', $barang_id))
+    ->get();
+
+foreach ($barangKeluarLalu as $item) {
+
+    $id = $item->id_barang;
+
+    if (!isset($stockAkhirTahunLalu[$id])) {
+        $stockAkhirTahunLalu[$id] = 0;
+    }
+
+    $stockAkhirTahunLalu[$id] -= $item->jumlah_jual;
+}
     $hasil = [];
 
 // Barang masuk (data)
@@ -655,9 +704,18 @@ foreach ($data as $item) {
     $hasil[$id]['detail'][$bulanIndex]['jumlah_beli'] += $item->jumlah_beli;
 
     // Update stock_awal dari bulan sebelumnya jika ada
-    if ($bulanIndex > 0 && isset($hasil[$id]['detail'][$bulanIndex - 1])) {
-        $hasil[$id]['detail'][$bulanIndex]['stock_awal'] = $hasil[$id]['detail'][$bulanIndex - 1]['sisa_stock'];
-    }
+
+    if ($bulanIndex == 0) {
+
+    // Januari = stok akhir tahun sebelumnya
+    $hasil[$id]['detail'][$bulanIndex]['stock_awal'] =
+        $stockAkhirTahunLalu[$id] ?? 0;
+
+} elseif (isset($hasil[$id]['detail'][$bulanIndex - 1])) {
+
+    $hasil[$id]['detail'][$bulanIndex]['stock_awal'] =
+        $hasil[$id]['detail'][$bulanIndex - 1]['sisa_stock'];
+}
 
     $hasil[$id]['detail'][$bulanIndex]['sisa_stock'] =
         $hasil[$id]['detail'][$bulanIndex]['stock_awal'] +
@@ -694,10 +752,17 @@ foreach ($data1 as $item) {
     $hasil[$id]['detail'][$bulanIndex]['jumlah_jual'] += $item->jumlah_jual;
 
     // Update stock_awal dari bulan sebelumnya jika ada
-    if ($bulanIndex > 0 && isset($hasil[$id]['detail'][$bulanIndex - 1])) {
-        $hasil[$id]['detail'][$bulanIndex]['stock_awal'] =
-            $hasil[$id]['detail'][$bulanIndex - 1]['sisa_stock'];
-    }
+
+    if ($bulanIndex == 0) {
+
+    $hasil[$id]['detail'][$bulanIndex]['stock_awal'] =
+        $stockAkhirTahunLalu[$id] ?? 0;
+
+} elseif (isset($hasil[$id]['detail'][$bulanIndex - 1])) {
+
+    $hasil[$id]['detail'][$bulanIndex]['stock_awal'] =
+        $hasil[$id]['detail'][$bulanIndex - 1]['sisa_stock'];
+}
 
     // Perbarui sisa_stock setelah pengurangan
     $hasil[$id]['detail'][$bulanIndex]['sisa_stock'] =

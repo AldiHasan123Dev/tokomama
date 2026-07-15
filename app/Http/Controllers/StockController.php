@@ -531,7 +531,7 @@ foreach ($barang as $barangItem) {
     // Ambil parameter dari request
     $barang_id = $request->get('barang') ?? null;
     $month = $request->get('month') ?? date('m'); // Default ke bulan sekarang jika null
-    $year = $request->get('year', date('Y'));
+    $year = $request->get('year') ?? date('Y'); // Default ke tahun sekarang jika null
 
     $months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
 

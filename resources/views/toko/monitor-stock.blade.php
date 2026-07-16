@@ -147,58 +147,55 @@
             /* Warna latar belakang header */
         }
 
-     #reminders-stock-table {
-    font-size: 8px;
-    margin: 10px 0;
-    width: 100%;
-}
+        #reminders-stock-table {
+            font-size: 8px;
+            margin: 10px 0;
+            width: 100%;
+        }
 
-#reminders-stock-table th,
-#reminders-stock-table td {
-    padding: 4px 6px !important;
-    text-align: left;
-    vertical-align: middle;
-    white-space: nowrap;
-}
+        #reminders-stock-table th,
+        #reminders-stock-table td {
+            padding: 4px 6px !important;
+            text-align: left;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
 
-.dataTables_wrapper .dataTables_filter input {
-    font-size: 12px;
-    padding: 4px;
-    height: auto;
-}
+        .dataTables_wrapper .dataTables_filter input {
+            font-size: 12px;
+            padding: 4px;
+            height: auto;
+        }
 
-.dataTables_wrapper .dataTables_length select {
-    font-size: 12px;
-    padding: 2px;
-    height: auto;
-}
-.sort-buttons {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 12px;
-}
+        .dataTables_wrapper .dataTables_length select {
+            font-size: 12px;
+            padding: 2px;
+            height: auto;
+        }
 
-.sort-button {
-    padding: 8px 14px;
-    background-color: #ffffff;
-    border: 2px solid #00ff44;
-    color: #2eb86a;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+        .sort-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
 
-.sort-button:hover {
-    background-color: #179e3d;
-    color: rgb(255, 255, 255);
-    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
-}
+        .sort-button {
+            padding: 8px 14px;
+            background-color: #ffffff;
+            border: 2px solid #00ff44;
+            color: #2eb86a;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-
-
-        
+        .sort-button:hover {
+            background-color: #179e3d;
+            color: rgb(255, 255, 255);
+            box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
+        }
     </style>
 
     {{-- <x-keuangan.card-keuangan>
@@ -227,21 +224,21 @@
             <div class="overflow-x-auto mt-5">
                 <div class="table-responsive">
                     <!-- Checkbox "Select All" di luar tabel -->
-<div class="sort-buttons">
-    <button id="sortSisaAsc" class="sort-button">
-         {{-- ↑  --}}
-        Urutkan Sisa Terkecil
-    </button>
-    <button id="sortSisaDesc" class="sort-button">
-        {{-- ↓  --}}
-        Urutkan Sisa Terbesar
-    </button>
+                    <div class="sort-buttons">
+                        <button id="sortSisaAsc" class="sort-button">
+                            {{-- ↑  --}}
+                            Urutkan Sisa Terkecil
+                        </button>
+                        <button id="sortSisaDesc" class="sort-button">
+                            {{-- ↓  --}}
+                            Urutkan Sisa Terbesar
+                        </button>
 
-    <button id="reset" class="sort-button">
-        {{-- ↓  --}}
-        Reset
-    </button>
-</div>
+                        <button id="reset" class="sort-button">
+                            {{-- ↓  --}}
+                            Reset
+                        </button>
+                    </div>
 
 
                     <table class="table" id="table-getfaktur"></table>
@@ -279,33 +276,33 @@
         </div>
     </x-keuangan.card-keuangan>
 
-    @if(count($combinedData) > 0)
-<x-keuangan.card-keuangan>
-    <x-slot:tittle>Reminders Stock</x-slot:tittle>
-    <div class="container">
-            <table id="reminders-stock-table" class="table-custom table table-bordered">
-                <thead class="table-dark">
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Barang</th>
-                        <th>Sisa Stock</th>
-                        <th>Minimum Stock</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($combinedData as $index => $item)
+    @if (count($combinedData) > 0)
+        <x-keuangan.card-keuangan>
+            <x-slot:tittle>Reminders Stock</x-slot:tittle>
+            <div class="container">
+                <table id="reminders-stock-table" class="table-custom table table-bordered">
+                    <thead class="table-dark">
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item['nama'] }}</td>
-                            <td>{{ number_format($item['sisa']) }}</td>
-                            <td>{{ number_format($item['minimum_stock']) }}</td>
+                            <th>No</th>
+                            <th>Nama Barang</th>
+                            <th>Sisa Stock</th>
+                            <th>Minimum Stock</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @endif
+                    </thead>
+                    <tbody>
+                        @foreach ($combinedData as $index => $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item['nama'] }}</td>
+                                <td>{{ number_format($item['sisa']) }}</td>
+                                <td>{{ number_format($item['minimum_stock']) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+    @endif
     </div>
-</x-keuangan.card-keuangan>
+    </x-keuangan.card-keuangan>
 
 
     <x-keuangan.card-keuangan>
@@ -329,10 +326,12 @@
                     </form>
                     <div class="font-bold">Tahun : </div>
                     <div>
-                        <select class="js-example-basic-single w-1/2" name="akun" id="thn">
-                            <option selected value="{{ date('Y') }}">{{ date('Y') }}</option>
-                            @for ($year = date('Y'); $year >= 2025; $year--)
-                                <option value="{{ $year }}">{{ $year }}</option>
+                        <select class="js-example-basic-single w-1/2" name="year" id="thn">
+                            @for ($i = date('Y'); $i >= 2025; $i--)
+                                <option value="{{ $i }}"
+                                    {{ request('year', date('Y')) == $i ? 'selected' : '' }}>
+                                    {{ $i }}
+                                </option>
                             @endfor
                         </select>
                     </div>
@@ -528,38 +527,38 @@
                 ordering: false, // urutkan berdasarkan nama barang
             });
 
-            $('#sortSisaAsc').on('click', function () {
-    $("#jqGrid1").jqGrid('setGridParam', {
-        datatype: 'json',
-        postData: {
-            sisa_asc: true,
-            sisa_desc: null // reset jika sebelumnya di klik descending
-        },
-        page: 1
-    }).trigger('reloadGrid');
-});
+            $('#sortSisaAsc').on('click', function() {
+                $("#jqGrid1").jqGrid('setGridParam', {
+                    datatype: 'json',
+                    postData: {
+                        sisa_asc: true,
+                        sisa_desc: null // reset jika sebelumnya di klik descending
+                    },
+                    page: 1
+                }).trigger('reloadGrid');
+            });
 
-$('#reset').on('click', function () {
-    $("#jqGrid1").jqGrid('setGridParam', {
-        datatype: 'json',
-        postData: {
-            sisa_asc: null,
-            sisa_desc: null // reset jika sebelumnya di klik descending
-        },
-        page: 1
-    }).trigger('reloadGrid');
-});
+            $('#reset').on('click', function() {
+                $("#jqGrid1").jqGrid('setGridParam', {
+                    datatype: 'json',
+                    postData: {
+                        sisa_asc: null,
+                        sisa_desc: null // reset jika sebelumnya di klik descending
+                    },
+                    page: 1
+                }).trigger('reloadGrid');
+            });
 
-$('#sortSisaDesc').on('click', function () {
-    $("#jqGrid1").jqGrid('setGridParam', {
-        datatype: 'json',
-        postData: {
-            sisa_desc: true,
-            sisa_asc: null // reset jika sebelumnya di klik ascending
-        },
-        page: 1
-    }).trigger('reloadGrid');
-});
+            $('#sortSisaDesc').on('click', function() {
+                $("#jqGrid1").jqGrid('setGridParam', {
+                    datatype: 'json',
+                    postData: {
+                        sisa_desc: true,
+                        sisa_asc: null // reset jika sebelumnya di klik ascending
+                    },
+                    page: 1
+                }).trigger('reloadGrid');
+            });
 
 
             $(function() {
@@ -568,9 +567,13 @@ $('#sortSisaDesc').on('click', function () {
                     datatype: "json",
                     mtype: "GET",
                     postData: {
-    sisa_asc: function() { return $('#sortSisaAsc').val(); },
-    sisa_desc: function() { return $('#sortSisaDesc').val(); }
-},
+                        sisa_asc: function() {
+                            return $('#sortSisaAsc').val();
+                        },
+                        sisa_desc: function() {
+                            return $('#sortSisaDesc').val();
+                        }
+                    },
                     colModel: [{
                             label: 'No',
                             name: 'index',

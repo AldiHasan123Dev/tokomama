@@ -521,6 +521,18 @@
                 });
             });
 
+            $('#thn').change(function () {
+
+    let barang = $('#barang').val();
+    let tahun  = $(this).val();
+
+    window.location =
+        "{{ route('monitor-stock') }}" +
+        "?barang=" + barang +
+        "&year=" + tahun;
+
+});
+
             $('#reminders-stock-table').DataTable({
                 pageLength: 20,
                 scrollX: true,

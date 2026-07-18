@@ -164,14 +164,15 @@
                         <tr>
                             <td>
                                 @if ($trans->sisa > 0)
-                                <button
-                                    onclick="openModal({{ $trans->suratJalan->id }}, '{{ $trans->barang->status_ppn }}')">
-                                    <i class="fa-solid fa-plus text-green-500 mr-5"></i>
-                                </button>
-                                <button
-                                    onclick="getData({{ $trans->id }}, {{ $trans->id_supplier }}, {{ $trans->jumlah_jual }}, '{{ $trans->satuan_jual }}', '{{ $trans->suratJalan->nomor_surat }}',' {{ $trans->suppliers->nama }}', '{{ $trans->keterangan }}')"
-                                    class="text-yellow-300"><i class="fa-solid fa-pencil"></i></button>
-                                <form onsubmit="deleteData({{ $trans->id }}, {{ $trans->id_surat_jalan }}); return false;">
+                                    <button
+                                        onclick="openModal({{ $trans->suratJalan->id }}, '{{ $trans->barang->status_ppn }}')">
+                                        <i class="fa-solid fa-plus text-green-500 mr-5"></i>
+                                    </button>
+                                    <button
+                                        onclick="getData({{ $trans->id }}, {{ $trans->id_supplier }}, {{ $trans->jumlah_jual }}, '{{ $trans->satuan_jual }}', '{{ $trans->suratJalan->nomor_surat }}',' {{ $trans->suppliers->nama }}', '{{ $trans->keterangan }}')"
+                                        class="text-yellow-300"><i class="fa-solid fa-pencil"></i></button>
+                                    <form
+                                        onsubmit="deleteData({{ $trans->id }}, {{ $trans->id_surat_jalan }}); return false;">
                                         @csrf
                                         @method('delete')
                                         <button type="submit"><i class="fa-solid fa-trash text-red-500"></i></button>
@@ -184,7 +185,7 @@
                             <td>
                                 {{ $trans->satuan_jual }}
                             </td>
-                            {{-- <td @if($trans->satuan_jual !== $trans->satuan_beli) style="background-color: red; color: white;" @endif>
+                            {{-- <td @if ($trans->satuan_jual !== $trans->satuan_beli) style="background-color: red; color: white;" @endif>
                                 {{ $trans->satuan_beli }}
                             </td>                             --}}
                             {{-- <td>{{ number_format($trans->margin) }}</td> --}}
@@ -209,14 +210,14 @@
 
             // Fungsi untuk menampilkan modal edit barang
             function getData(id, id_supplier, kuantitas, satuan, surat_jalan, supplier, keterangan) {
-    $.ajax({
-        url: `/get-stock/${id}`, // Pastikan rute ini ada di backend
-        type: 'GET',
-        success: function(response) {
-            let sisaStock = response.stock;
-            let jumlahJual = response.trx_jumlah_jual; // Pastikan respons dari backend mengandung stock
+                $.ajax({
+                    url: `/get-stock/${id}`, // Pastikan rute ini ada di backend
+                    type: 'GET',
+                    success: function(response) {
+                        let sisaStock = response.stock;
+                        let jumlahJual = response.trx_jumlah_jual; // Pastikan respons dari backend mengandung stock
 
-            $('#dialog').html(`
+                        $('#dialog').html(`
                 <dialog id="my_modal_5" class="modal">
                     <div class="modal-box">
                         <form method="dialog">
@@ -227,7 +228,7 @@
                             <p class="mb-0">Stock: <strong>${sisaStock}</strong></p>
                             <p class="mb-0">Jumlah Jual di SJ: <strong>${jumlahJual}</strong></p>
                         </div>
-                        <form action="{{ route('surat-jalan.editBarang') }}" method="post">
+                        <form id="formEditBarang" action="{{ route('surat-jalan.editBarang') }}" method="post">
                             @csrf
                             <input type="hidden" name="id" value="${id}" />
                             <input type="hidden" name="id_supplier" value="${id_supplier}" />
@@ -253,47 +254,67 @@
                             <label class="form-label">Keterangan:</label>
                             <input type="text" name="keterangan" class="input-field" value="${keterangan}" />
 
-                            <button type="submit" class="submit-button">Edit</button>
+                            <button type="submit" id="btnEditBarang" class="submit-button">
+    Edit
+</button>
                         </form>
                     </div>
                 </dialog>
             `);
 
-            // Inisialisasi select2
-            $('#satuan').select2({
-                dropdownParent: $(`#my_modal_5`),
-                dropdownAutoWidth: true,
-                width: '100%'
-            });
-            $('#qty').select2({
-                dropdownParent: $(`#my_modal_5`),
-                dropdownAutoWidth: true,
-                width: '100%'
-            });
+                        // Inisialisasi select2
+                        $('#satuan').select2({
+                            dropdownParent: $(`#my_modal_5`),
+                            dropdownAutoWidth: true,
+                            width: '100%'
+                        });
+                        $('#qty').select2({
+                            dropdownParent: $(`#my_modal_5`),
+                            dropdownAutoWidth: true,
+                            width: '100%'
+                        });
 
-            // Menampilkan modal
-            my_modal_5.showModal();
+                        // Cegah double submit + konfirmasi
+                        $('#formEditBarang').on('submit', function(e) {
+                            e.preventDefault();
 
-            // Event listener untuk menangani perubahan select qty
-            $('#qty').on('change', function () {
-                let selectedValue = $(this).val();
-                if (selectedValue === "tambah") {
-                    document.getElementById('tambahInput').style.display = "block";
-                    document.getElementById('kurangiInput').style.display = "none";
-                } else if (selectedValue === "kurangi") {
-                    document.getElementById('tambahInput').style.display = "none";
-                    document.getElementById('kurangiInput').style.display = "block";
-                } else {
-                    document.getElementById('tambahInput').style.display = "none";
-                    document.getElementById('kurangiInput').style.display = "none";
-                }
-            });
+                            if (!confirm(`Apakah Anda yakin akan mengubah item barang pada Surat Jalan ${surat_jalan}?`)) {
+                                return;
+                            }
 
-            // Trigger change agar kondisi awal sesuai
-            $('#qty').trigger('change');
-        }
-    });
-}
+                            let btn = $('#btnEditBarang');
+
+                            // Disable tombol agar tidak bisa diklik lagi
+                            btn.prop('disabled', true);
+                            btn.html('<i class="fa fa-spinner fa-spin"></i> Memproses...');
+
+                            // Submit form
+                            this.submit();
+                        });
+
+                        // Menampilkan modal
+                        my_modal_5.showModal();
+
+                        // Event listener untuk menangani perubahan select qty
+                        $('#qty').on('change', function() {
+                            let selectedValue = $(this).val();
+                            if (selectedValue === "tambah") {
+                                document.getElementById('tambahInput').style.display = "block";
+                                document.getElementById('kurangiInput').style.display = "none";
+                            } else if (selectedValue === "kurangi") {
+                                document.getElementById('tambahInput').style.display = "none";
+                                document.getElementById('kurangiInput').style.display = "block";
+                            } else {
+                                document.getElementById('tambahInput').style.display = "none";
+                                document.getElementById('kurangiInput').style.display = "none";
+                            }
+                        });
+
+                        // Trigger change agar kondisi awal sesuai
+                        $('#qty').trigger('change');
+                    }
+                });
+            }
 
 
 
@@ -368,7 +389,8 @@
                         if (response.count === 1) {
                             // Jika hanya ada 1 barang di surat jalan
                             alert(
-                                'Ini adalah satu-satunya barang dalam surat jalan yang akan anda hapus, silakan tambahkan barang terlebih dahulu');
+                                'Ini adalah satu-satunya barang dalam surat jalan yang akan anda hapus, silakan tambahkan barang terlebih dahulu'
+                                );
                         } else {
                             // Tampilkan konfirmasi untuk penghapusan jika barang lebih dari 1
                             if (confirm('Apa anda yakin akan menghapus data ini?')) {

@@ -491,6 +491,7 @@ class KeuanganController extends Controller
                 }
             }
         }
+        // dd($inv);
         $transaksi = Transaction::where('id', $id_transaksi)->first();
       
         // Pass data to view

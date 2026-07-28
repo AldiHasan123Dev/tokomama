@@ -91,11 +91,11 @@
                     <td style="font-size: 0.8rem; font-weight: bold;">Jl. Baru - Melati (Ruko depan PLN)
                         <br> Abepura, Jayapura
                     </td>
-                    <td style="font-weight: bold; font-size: 1rem; text-align: center;"><u>SALES ORDER</u></td>
+                     <td style="font-weight: bold; font-size: 1rem; text-align: center;"><u>INVOICE</u></td>
                 </tr>
                 <tr>
                     <td style="font-size: 0.8rem; font-weight: bold;">HP: 08112692861 / 08112692859</td>
-                    <td style="text-align: center; font-size: 0.8rem">SO : {{ $draft_no ?? '-' }}</td>
+                    <td style="text-align: center; font-size: 0.8rem">Ref : {{ $draft_no ?? '-' }}</td>
                 </tr>
                 <tr>
                     <td></td>

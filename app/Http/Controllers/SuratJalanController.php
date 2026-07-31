@@ -241,9 +241,7 @@ class SuratJalanController extends Controller
             return back()->with('error', 'ID Surat Jalan tidak valid');
         }
     
-         return redirect()
-    ->route('pending.invoice')
-    ->with('success', 'Nomor Surat Jalan ' . $data['nomor_surat'] . ' berhasil dibuat.');
+         return redirect()->route('pending.invoice');
     }
     
     

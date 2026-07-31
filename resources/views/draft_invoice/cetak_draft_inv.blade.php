@@ -383,16 +383,9 @@
                 <p style="font-weight: bold;padding-left:30px; font-size: 0.8rem">
                     Admin Gudang (Nama dan Paraf) :
                 </p>
-                <table
-                    style="
-        width:85%;
-         margin-left:50px;
-        font-size:0.8rem;
-        border-collapse:collapse;
-        transform: translateY(-35px);">
-                    <tr>
-                        <td
-                            style="text-align: left;  margin:-100px auto 10; padding:4px 4px 4px 4px; font-style:italic;">
+                <table style="width:85%; margin:-100px auto 10; font-size:0.8rem; border-collapse:collapse;">
+                    <tr> 
+                        <td style="text-align: left;  margin:-100px auto 10; padding:4px 4px 4px 4px; font-style:italic;">
                             <br>
                             <br>
                             <br>

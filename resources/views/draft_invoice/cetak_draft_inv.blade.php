@@ -389,7 +389,7 @@
          margin-left:50px;
         font-size:0.8rem;
         border-collapse:collapse;
-        transform: translateY(-34px);">
+        transform: translateY(-40px);">
                     <tr>
                         <td
                             style="text-align: left;  margin:-100px auto 10; padding:4px 4px 4px 4px; font-style:italic;">

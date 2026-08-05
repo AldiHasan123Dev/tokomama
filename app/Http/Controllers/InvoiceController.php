@@ -378,7 +378,6 @@ $validatedData = $request->validate([
         ])
         ->where('invoice', $invoiceArray) // Menggunakan string langsung tanpa loop
         ->get();
-        dd($newNoJNL,$jurhut);
         
         $id_transaksi = $result->pluck('id_transaksi');
         $id_invx = $result->pluck('transaksi.invoice_external');

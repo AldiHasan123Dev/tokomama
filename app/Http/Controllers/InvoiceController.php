@@ -354,12 +354,12 @@ $validatedData = $request->validate([
         $breakTipe1 = explode("/", $breakTipe[1]);
         $no = $breakTipe1[0];
         $jurhutNow = $bulan . '-' . $no + 1 . '/' . $breakTipe1[1] . '/' . $breakTipe1[2];
-        $sort = Jurnal::whereMonth('tgl', $bulan)->where('tipe', 'JNL')->whereYear('tgl', $tglYear)->get();
-        $nomorArray = $sort->pluck('no')->toArray();
-        if ($nomorArray == []){
-            $nomorArray = [0];
-        }
-        $maxArray = end($nomorArray);
+        $maxArray = Jurnal::whereMonth('tgl', $bulan)
+            ->whereYear('tgl', $tglYear)
+            ->where('tipe', 'JNL')
+            ->max('no');
+
+        $maxArray = $maxArray ?? 0;
 
         $break = explode('/', $tipe1);
         $part = $break[0];
@@ -378,6 +378,7 @@ $validatedData = $request->validate([
         ])
         ->where('invoice', $invoiceArray) // Menggunakan string langsung tanpa loop
         ->get();
+        dd($newNoJNL,$jurhut);
         
         $id_transaksi = $result->pluck('id_transaksi');
         $id_invx = $result->pluck('transaksi.invoice_external');

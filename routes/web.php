@@ -199,6 +199,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/export-customers', [BukuBesarPembantuController::class, 'exportCustomer'])->name('export.customers');
     Route::get('/export-supplier', [BukuBesarPembantuController::class, 'exportSupplier'])->name('export.supplier');
     Route::resource('invoice-external', InvoiceExternalController::class);
+    Route::post('/jurnal/delete-items', [JurnalController::class, 'deleteItems'])
+    ->name('jurnal.items.delete');
 });
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {

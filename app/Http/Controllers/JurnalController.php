@@ -548,6 +548,36 @@ public function JurnalBalikcari(Request $req)
         return view('jurnal.edit-jurnal', compact('latestId','cekVoucher_d', 'cekVoucher_k','jurnals','data', 'tgl', 'coa', 'nopol', 'invProc', 'invExtProc'));
     }
 
+    public function deleteItems(Request $request)
+{
+    $ids = $request->input('ids', []);
+
+    if (empty($ids)) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Tidak ada item jurnal yang dipilih.'
+        ], 422);
+    }
+
+    try {
+        $deleted = Jurnal::whereIn('id', $ids)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => $deleted . ' item jurnal berhasil dihapus.',
+            'deleted' => $deleted
+        ]);
+
+    } catch (\Exception $e) {
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Gagal menghapus item jurnal.',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
     public function merger()
     {
         $jurnal = Jurnal::groupBy('nomor')->orderBy('nomor', 'asc')->get();

@@ -95,7 +95,7 @@
                                             </select>
                                     </td>
                                     <td>
-                                        <input type="number" min="0" style="width:120px" onchange="inputBarang()" name="jumlah_jual[]" id="jumlah_jual-{{ $i }}"
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_jual[]" id="jumlah_jual-{{ $i }}"
                                             class="form-control">
                                     </td>
                                     <td>
@@ -188,7 +188,7 @@
                                     </div>
                                     <input type="number"
                                         class="input input-bordered w-full max-w-xs rounded-lg bg-transparent dark:text-white"
-                                        id="jumlah" min="0" name="jumlah" />
+                                        id="jumlah" name="jumlah" />
                                 </label>
                             </div>
                             <div>
@@ -509,7 +509,7 @@ document.getElementById("submit").addEventListener("click", function (e) {
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="number" style="width:120px" min="0" onchange="inputBarang()" name="jumlah_jual[]" id="jumlah_jual-${q}"
+                                        <input type="number" style="width:120px" onchange="inputBarang()" name="jumlah_jual[]" id="jumlah_jual-${q}"
                                             class="form-control">
                                     </td>
                                     <td>

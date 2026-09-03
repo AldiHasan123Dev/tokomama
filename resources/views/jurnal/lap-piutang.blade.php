@@ -480,7 +480,7 @@
                     'monthlySelisihInvoice' => $monthlySelisihInvoice,
                     'monthlyTotals' => $monthlyTotals,
                     'months' => $months,
-                    'year' => request('year') ?? 2025
+                    'year' => request('year') ?? date('Y')
                 ])
             </div>
         </div>

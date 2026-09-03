@@ -442,14 +442,16 @@
     <div class="form-filter">
         {{-- Pilih Tahun --}}
         <div class="form-group">
-            <label for="year">Pilih Tahun</label>
-            <select name="year" id="year">
-                <option value="" disabled {{ request('year') ? '' : 'selected' }}>Pilih Tahun</option>
-                @foreach ($years as $year)
-                    <option value="{{ $year }}">{{ $year }}</option>
-                @endforeach
-            </select>
-        </div>
+    <label for="year">Pilih Tahun</label>
+    <select name="year" id="year">
+        @foreach ($years as $year)
+            <option value="{{ $year }}"
+                {{ request('year', date('Y')) == $year ? 'selected' : '' }}>
+                {{ $year }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
         {{-- Pilih Customer --}}
         <div class="form-group">

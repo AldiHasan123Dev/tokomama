@@ -1250,7 +1250,7 @@ public function lapPiutang()
     ->join('surat_jalan as sj', 't.id_surat_jalan', '=', 'sj.id')
     ->join('customer as c', 'sj.id_customer', '=', 'c.id')
     ->join('barang as b', 't.id_barang', '=', 'b.id') 
-    ->whereYear('i.tgl_invoice', request('year') ?? 2025)
+    ->whereYear('i.tgl_invoice', request('year') ?? date('Y'))
     ->when(request('customers'), function ($query) {
         $query->where('c.id', request('customers'));
     })
@@ -1261,7 +1261,7 @@ $jurnals = Jurnal::withTrashed()
     ->whereIn('tipe', ['BBM','BBMN'])
     ->whereNull('deleted_at')
     ->where('debit', '!=', 0)
-    ->where('tgl', '>', (request('year') ?? 2025) . '-01-01')
+    ->where('tgl', '>', (request('year') ?? date('Y')) . '-01-01')
     ->whereNotNull('invoice')
     ->when(request('customers'), function ($query) {
         $query->whereHas('transaksi.suratJalan.customer', function ($q) {
@@ -1367,7 +1367,7 @@ $months = [
             'monthlySelisihInvoice' => $monthlySelisihInvoice,
             'monthlyTotals' => $monthlyTotals,
             'months' => $months,
-            'year' => request('year') ?? 2025
+            'year' => request('year') ?? date('Y')
         ])->render();
 
         return response()->json(['tableHtml' => $html]);

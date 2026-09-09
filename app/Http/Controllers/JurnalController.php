@@ -781,7 +781,7 @@ public function JurnalBalikcari(Request $req)
                 $part = explode(' ', $request->invoice_external);
                 $invext = explode('_', $request->invoice_external)[0];
                 $index1 = explode('_', $part[0]);
-                $index = (int) $index1[1];
+                $index = (int) $index1;
                 
                 $invoice_external = Transaction::where('invoice_external', $invext)
                     ->with(['suratJalan.customer', 'barang', 'suppliers'])

@@ -402,7 +402,7 @@
                     <tr>
                         <th style="text-align: left; padding-left: 50px;"></th>
                         <td style="padding-top:30px;">_____________________</td>
-                        <th style="padding-top:30px">(MAMA BAHAGIA)</th>
+                        <th style="padding-top:30px">(ADMIN)</th>
                     </tr>
                     <tr>
                         <td></td>

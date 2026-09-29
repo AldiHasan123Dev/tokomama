@@ -35,6 +35,15 @@
                 <div id="jqGridPager"></div>
             </div>
         </div>
+        <div class="card border rounded-lg shadow-sm p-4">
+            <div class="text-sm text-gray-500">
+                Total Harga Beli
+            </div>
+
+            <div id="total-harga-beli" class="text-xl font-bold mt-2">
+                0
+            </div>
+        </div>
     </x-keuangan.card-keuangan>
 
     <x-slot:script>
@@ -124,6 +133,32 @@
                         },
                         {
                             search: true,
+                            name: 'harga_beli',
+                            index: 'harga_beli',
+                            label: 'Harga Beli',
+                            width: 100,
+                            formatoptions: {
+                                decimalPlaces: 4,
+                                thousandsSeparator: ',',
+                            },
+                            align: 'right',
+                            formatter: function(cellValue) {
+                                if (!isNaN(cellValue)) {
+                                    let parts = cellValue.toString().split('.');
+                                    let formattedInteger = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,
+                                        ",");
+                                    if (parts.length > 1) {
+                                        if (parseInt(parts[1]) !== 0) {
+                                            return `${formattedInteger}.<span style="color: red;">${parts[1]}</span>`;
+                                        }
+                                    }
+                                    return formattedInteger + (parts[1] ? '.' + parts[1] : '');
+                                }
+                                return cellValue;
+                            }
+                        },
+                        {
+                            search: true,
                             name: 'subtotal',
                             index: 'subtotal',
                             label: 'Subtotal',
@@ -177,8 +212,28 @@
                     loadonce: true,
                     serverPaging: true,
                     loadComplete: function(data) {
-                        console.log('Data received from server:', data);
-                        console.log('Data structure:', data.data);
+
+                        let totalSisa = 0;
+                        let totalHargaBeli = 0;
+
+                        (data.data || []).forEach(function(item) {
+
+                            let sisa = parseFloat(item.sisa) || 0;
+                            let hargaBeli = parseFloat(item.harga_beli) || 0;
+
+                            totalSisa += sisa;
+                            totalHargaBeli += hargaBeli;
+                        });
+
+                        let total = totalSisa * totalHargaBeli;
+
+                        $('#total-harga-beli').text(
+                            total.toLocaleString('id-ID')
+                        );
+
+                        console.log('Total Sisa:', totalSisa);
+                        console.log('Total Harga Beli:', totalHargaBeli);
+                        console.log('Total:', total);
                     },
                     jsonReader: {
                         root: "data",
@@ -211,7 +266,7 @@
                 e.preventDefault(); // Mencegah form untuk submit otomatis
                 var ids = $("#table-getfaktur input:checkbox:checked").map(function() {
                     return $(this).closest('tr').find('td:last-child')
-                .text(); // Mengambil ID dari kolom terakhir
+                        .text(); // Mengambil ID dari kolom terakhir
                 }).get();
 
                 // Cek apakah ids kosong

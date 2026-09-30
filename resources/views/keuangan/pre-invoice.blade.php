@@ -212,29 +212,25 @@
                     loadonce: true,
                     serverPaging: true,
                     loadComplete: function(data) {
+    let totalHargaBeli = 0;
 
-                        let totalSisa = 0;
-                        let totalHargaBeli = 0;
+    (data.data || []).forEach(function(item) {
+        let sisa = parseFloat(item.sisa) || 0;
+        let hargaBeli = parseFloat(item.harga_beli) || 0;
 
-                        (data.data || []).forEach(function(item) {
+        // Harga beli per item × sisa
+        let subtotalHargaBeli = hargaBeli * sisa;
 
-                            let sisa = parseFloat(item.sisa) || 0;
-                            let hargaBeli = parseFloat(item.harga_beli) || 0;
+        // Jumlahkan hasil setiap item
+        totalHargaBeli += subtotalHargaBeli;
+    });
 
-                            totalSisa += sisa;
-                            totalHargaBeli += hargaBeli;
-                        });
+    $('#total-harga-beli').text(
+        totalHargaBeli.toLocaleString('id-ID')
+    );
 
-                        let total = totalSisa * totalHargaBeli;
-
-                        $('#total-harga-beli').text(
-                            total.toLocaleString('id-ID')
-                        );
-
-                        console.log('Total Sisa:', totalSisa);
-                        console.log('Total Harga Beli:', totalHargaBeli);
-                        console.log('Total:', total);
-                    },
+    console.log('Total Harga Beli:', totalHargaBeli);
+},
                     jsonReader: {
                         root: "data",
                         page: "current_page",

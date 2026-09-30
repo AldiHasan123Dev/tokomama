@@ -218,12 +218,13 @@
         let sisa = parseFloat(item.sisa) || 0;
         let hargaBeli = parseFloat(item.harga_beli) || 0;
 
-        // Harga beli per item × sisa
         let subtotalHargaBeli = hargaBeli * sisa;
 
-        // Jumlahkan hasil setiap item
         totalHargaBeli += subtotalHargaBeli;
     });
+
+    // Bulatkan hasil akhir
+    totalHargaBeli = Math.round(totalHargaBeli);
 
     $('#total-harga-beli').text(
         totalHargaBeli.toLocaleString('id-ID')

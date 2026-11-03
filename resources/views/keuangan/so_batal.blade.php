@@ -192,15 +192,17 @@
                             sortable: false,
                             search: false,
                             formatter: function(cellValue, options, rowObject) {
-                                // rowId = field "id" dari JSON (PK DraftInvoice), sesuai jsonReader
                                 const id = Number(options.rowId || rowObject.id);
 
                                 if (!Number.isInteger(id) || id <= 0) {
                                     return '';
                                 }
 
+                                const draftNo = $('<div>').text(rowObject.draft_no || '-').html()
+                                    .replace(/"/g, '&quot;');
+
                                 return '<button type="button" class="btn-tarik-so" data-id="' + id +
-                                    '">Tarik SO</button>';
+                                    '" data-draft="' + draftNo + '">Tarik SO</button>';
                             }
                         },
                         {
@@ -262,13 +264,14 @@
             $(document).on('click', '.btn-tarik-so', function() {
                 const $btn = $(this);
                 const id = $btn.data('id');
+                const draftNo = $btn.data('draft') || '-';
 
                 if (!id) {
-                    alert('ID tidak ditemukan.');
+                    alert('SO tidak ditemukan.');
                     return;
                 }
 
-                if (!confirm('Apakah kamu yakin menarik SO?')) {
+                if (!confirm('Apakah kamu yakin menarik SO ini?\n\nNomor Surat: ' + draftNo)) {
                     return;
                 }
 
@@ -285,7 +288,7 @@
                     },
                     dataType: 'json',
                     success: function(res) {
-                        alert(res.message || 'Data berhasil dihapus.');
+                        alert(res.message || 'SO Berhasil di tarik.');
 
                         // loadonce: true, jadi harus kembali ke datatype json agar data diambil ulang dari server
                         $("#table-getfaktur")

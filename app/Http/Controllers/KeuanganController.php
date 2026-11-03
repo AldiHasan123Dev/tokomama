@@ -58,7 +58,7 @@ class KeuanganController extends Controller
 
     function TarikSo()
     {
-        return view('keuangan.so_batal');
+        return view('keuangan.tarik_so');
     }
 
     function invoiceDraf(SuratJalan $surat_jalan)

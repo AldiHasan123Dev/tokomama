@@ -10,6 +10,7 @@ use App\Models\DraftInvoice;
 use App\Models\Barang;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse; 
 use App\Models\SuratJalan;
 use App\Models\Satuan;
 use Illuminate\Support\Facades\DB;
@@ -228,6 +229,36 @@ class InvoiceController extends Controller
         // Pass data to view
         return view('invoice.pre-invoice', compact('invoice_count', 'tipe', 'data', 'inv', 'barang', 'satuan', 'tgl_inv2', 'tgl_inv1', 'transaksi', 'modified'));
     }
+
+     public function hapusForced(int $id): JsonResponse
+{
+    try {
+        DB::transaction(function () use ($id) {
+            $data = DraftInvoice::withTrashed()->findOrFail($id);
+            $data->forceDelete();
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'SO Berhasil ditarik, Silahkan cek di menu draft invoice.',
+        ]);
+    } catch (ModelNotFoundException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Data tidak ditemukan.',
+        ], 404);
+    } catch (Throwable $e) {
+        Log::error('Hapus forced gagal', [
+            'id' => $id,
+            'message' => $e->getMessage(),
+        ]);
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Gagal menghapus data.',
+        ], 500);
+    }
+}
     
     
 

@@ -56,6 +56,11 @@ class KeuanganController extends Controller
         return view('keuangan.pre-invoice');
     }
 
+    function TarikSo()
+    {
+        return view('keuangan.so_batal');
+    }
+
     function invoiceDraf(SuratJalan $surat_jalan)
     {
         return view('keuangan.draf_invoice', compact('surat_jalan'));
@@ -197,8 +202,7 @@ class KeuanganController extends Controller
         ]);
     }
     
-        public function storeDraftInv(Request $request)
-{
+        public function storeDraftInv(Request $request) {
     // Validasi data yang diterima
     $validatedData = $request->validate([
         'nsfp' => 'required',

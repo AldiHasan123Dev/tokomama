@@ -3,6 +3,30 @@
         tr.selected {
             background-color: lightskyblue !important;
         }
+
+        /* Beri ruang di dalam kolom Aksi */
+        #table-getfaktur td[aria-describedby="table-getfaktur_aksi"] {
+            padding: 0 4px !important;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        /* Tombol Tarik SO */
+        #table-getfaktur .btn-tarik-so {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 3px 7px;
+            border: 0;
+            border-radius: 4px;
+            background-color: #c81414;
+            color: #fff;
+            font-size: 10px;
+            line-height: 1.2 !important;
+            white-space: nowrap;
+            cursor: pointer;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
         integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
@@ -10,27 +34,20 @@
     <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets/css/ui.jqgrid-bootstrap5.css') }}" />
 
     <x-keuangan.card-keuangan>
-        <x-slot:tittle>Draft Invoice ready to Invoice Final</x-slot:tittle>
+        <x-slot:tittle>Tarik SO</x-slot:tittle>
+
         <x-slot:button>
-            <form action="{{ route('invoice-transaksi.index') }}" method="get" id="form">
-                <input type="hidden" name="id_transaksi" id="id_transaksi">
-                <div class="flex gap-2">
-                    <div class="flex-gap-2">
-                        <input type="hidden" name="invoice_count" id="count" value="1"
-                            class="rounded-md form-control text-center" min="1" style="height: 28px">
-                    </div>
-                    <button type="submit" class="btn font-semibold bg-green-500 btn-sm text-white mt-4">Buat
-                        Invoice</button>
+            <div class="flex gap-2">
+                <div class="flex-gap-2">
+                    <input type="hidden" name="invoice_count" id="count" value="1"
+                        class="rounded-md form-control text-center" min="1" style="height: 28px">
                 </div>
-            </form>
+            </div>
         </x-slot:button>
 
         <div class="overflow-x-auto mt-5">
             <div class="table-responsive">
                 <!-- Checkbox "Select All" di luar tabel -->
-                <div class="mb-2">
-                    <input type="checkbox" class="m-2" id="select-all" /> Pilih Semua
-                </div>
                 <table class="table" id="table-getfaktur"></table>
                 <div id="jqGridPager"></div>
             </div>
@@ -58,16 +75,6 @@
                     mtype: "GET",
                     datatype: "json",
                     colModel: [{
-                            name: 'checkbox',
-                            index: 'checkbox',
-                            label: 'Pilih',
-                            width: 50,
-                            align: 'center',
-                            formatter: function() {
-                                return '<input type="checkbox" class="row-checkbox" />'; // Checkbox untuk setiap baris
-                            }
-                        },
-                        {
                             search: true,
                             name: 'DT_RowIndex',
                             index: 'DT_RowIndex',
@@ -177,8 +184,28 @@
                             align: 'center'
                         },
                         {
-                            name: 'id_transaksi',
-                            index: 'id_transaksi',
+                            name: 'aksi',
+                            index: 'aksi',
+                            label: 'Aksi',
+                            width: 72,
+                            align: 'center',
+                            sortable: false,
+                            search: false,
+                            formatter: function(cellValue, options, rowObject) {
+                                // rowId = field "id" dari JSON (PK DraftInvoice), sesuai jsonReader
+                                const id = Number(options.rowId || rowObject.id);
+
+                                if (!Number.isInteger(id) || id <= 0) {
+                                    return '';
+                                }
+
+                                return '<button type="button" class="btn-tarik-so" data-id="' + id +
+                                    '">Tarik SO</button>';
+                            }
+                        },
+                        {
+                            name: 'id',
+                            index: 'id',
                             hidden: true
                         },
                     ],
@@ -229,14 +256,53 @@
                     refresh: true
                 });
                 $("#table-getfaktur").jqGrid('filterToolbar');
-
-                // Menghandle checkbox "Select All"
-                $('#select-all').change(function() {
-                    var checked = $(this).is(':checked');
-                    $('.row-checkbox').prop('checked', checked);
-                });
             });
 
+            // Proses Tarik SO berdasarkan baris yang diklik
+            $(document).on('click', '.btn-tarik-so', function() {
+                const $btn = $(this);
+                const id = $btn.data('id');
+
+                if (!id) {
+                    alert('ID tidak ditemukan.');
+                    return;
+                }
+
+                if (!confirm('Apakah kamu yakin menarik SO?')) {
+                    return;
+                }
+
+                const url = "{{ route('invoice.hapus-forced', ':id') }}".replace(':id', id);
+
+                $btn.prop('disabled', true).text('Proses...');
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        _method: 'DELETE',
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        alert(res.message || 'Data berhasil dihapus.');
+
+                        // loadonce: true, jadi harus kembali ke datatype json agar data diambil ulang dari server
+                        $("#table-getfaktur")
+                            .jqGrid('setGridParam', {
+                                datatype: 'json'
+                            })
+                            .trigger('reloadGrid');
+                    },
+                    error: function(xhr) {
+                        const msg = (xhr.responseJSON && xhr.responseJSON.message) ?
+                            xhr.responseJSON.message :
+                            'Terjadi kesalahan saat menghapus data.';
+                        alert(msg);
+                        $btn.prop('disabled', false).text('Tarik SO');
+                    }
+                });
+            });
             // Menghandle form submit untuk mengambil ID transaksi yang dipilih
             $('#form').submit(function(e) {
                 e.preventDefault(); // Mencegah form untuk submit otomatis

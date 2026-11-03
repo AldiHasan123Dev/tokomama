@@ -201,6 +201,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('invoice-external', InvoiceExternalController::class);
     Route::post('/jurnal/delete-items', [JurnalController::class, 'deleteItems'])
     ->name('jurnal.items.delete');
+    Route::delete('/invoice/hapus-forced/{id}', [InvoiceController::class, 'hapusForced'])
+    ->whereNumber('id')
+    ->name('invoice.hapus-forced');
 });
 
 Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('auth')->group(function () {
@@ -212,6 +215,7 @@ Route::prefix('keuangan')->controller(KeuanganController::class)->middleware('au
     Route::post('invoice-pending/cetak-draft-invoice', 'storeDraftInv')->name('pending.invoice.draft_invoice.cetak');
     Route::get('invoice', 'invoice')->name('keuangan.invoice');
     Route::get('pre-invoice', 'preInvoice')->name('keuangan.pre-invoice');
+    Route::get('tarik-so', 'TarikSo')->name('keuangan.tarik-so');
     Route::get('pre-invoice-ab', 'preInvoiceAb')->name('keuangan.pre-invoice-ab');
     Route::get('jurnal-bayar', 'jurnalBayar')->name('keuangan.jurnal-bayar');
     Route::post('draf-invoice/{surat_jalan}', 'submitInvoice')->name('keuangan.invoice.submit');

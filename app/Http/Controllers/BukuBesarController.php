@@ -36,29 +36,30 @@ class BukuBesarController extends Controller
         $month = $_GET['month'] ?? date('m');
         $year = $_GET['year'] ?? date('Y');
 
-             $query = Jurnal::leftJoin('transaksi', 'jurnal.id_transaksi', '=', 'transaksi.id')
-    ->select('jurnal.*', 'transaksi.no_bm');
+    $query = Jurnal::query()
+        ->leftJoin('transaksi', 'jurnal.id_transaksi', '=', 'transaksi.id')
+        ->select('jurnal.*', 'transaksi.no_bm');
 
-if ($coa_id) {
-    $data = $query
-        ->whereMonth('jurnal.tgl', $month)
-        ->whereYear('jurnal.tgl', $year)
-        ->where('jurnal.coa_id', $coa_id)
-        ->orderBy('jurnal.tgl', 'asc')
-        ->orderByRaw("FIELD(jurnal.tipe, 'BBM', 'BBK', 'BKM', 'BKK', 'BBMO', 'BBKO', 'JNL') ASC")
-        ->orderBy('jurnal.created_at', 'asc')
-        ->orderBy('jurnal.no', 'asc')
-        ->get();
-} else {
-    $data = $query
-        ->whereMonth('jurnal.tgl', $month)
-        ->whereYear('jurnal.tgl', $year)
-        ->orderBy('jurnal.tgl', 'asc')
-        ->orderByRaw("FIELD(jurnal.tipe, 'BBM', 'BBK', 'BKM', 'BKK', 'BBMO', 'BBKO', 'JNL') ASC")
-        ->orderBy('jurnal.created_at', 'asc')
-        ->orderBy('jurnal.no', 'asc')
-        ->get();
-}
+    if ($coa_id) {
+        $data = $query
+            ->whereMonth('jurnal.tgl', $month)
+            ->whereYear('jurnal.tgl', $year)
+            ->where('jurnal.coa_id', $coa_id)
+            ->orderBy('jurnal.tgl', 'asc')
+            ->orderByRaw("FIELD(jurnal.tipe, 'BBM', 'BBK', 'BKM', 'BKK', 'BBMO', 'BBKO', 'JNL') ASC")
+            ->orderBy('jurnal.created_at', 'asc')
+            ->orderBy('jurnal.no', 'asc')
+            ->get();
+    } else {
+        $data = $query
+            ->whereMonth('jurnal.tgl', $month)
+            ->whereYear('jurnal.tgl', $year)
+            ->orderBy('jurnal.tgl', 'asc')
+            ->orderByRaw("FIELD(jurnal.tipe, 'BBM', 'BBK', 'BKM', 'BKK', 'BBMO', 'BBKO', 'JNL') ASC")
+            ->orderBy('jurnal.created_at', 'asc')
+            ->orderBy('jurnal.no', 'asc')
+            ->get();
+    }
         
         
 
